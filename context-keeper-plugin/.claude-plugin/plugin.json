@@ -9,5 +9,31 @@
   "homepage": "https://github.com/jenningsloy318/claude-artifacts",
   "repository": "https://github.com/jenningsloy318/claude-artifacts",
   "license": "MIT",
-  "keywords": ["context", "keeper", "persistence", "memory", "compaction", "summary", "continuity"]
+  "keywords": ["context", "keeper", "persistence", "memory", "compaction", "summary", "continuity"],
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/precompact.py",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/session_start.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }
