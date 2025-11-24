@@ -476,4 +476,4 @@ Priority order based on industry consensus:
 
 ---
 
-**Output Location:** `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-research-report.md`
+**Output Location:** `specification/08-code-review-agent/08-research-report.md`

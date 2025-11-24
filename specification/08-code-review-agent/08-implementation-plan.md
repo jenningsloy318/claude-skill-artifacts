@@ -1,6 +1,6 @@
 # Implementation Plan: dev-workflow:code-reviewer Agent
 
-**Specification:** `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-specification.md`
+**Specification:** `specification/08-code-review-agent/08-specification.md`
 **Estimated Phases:** 4
 
 ## Milestones
@@ -13,7 +13,7 @@
 
 #### Deliverables
 
-- [ ] Agent file created at `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-reviewer.md`
+- [ ] Agent file created at `dev-workflow-plugin/agents/code-reviewer.md`
 - [ ] YAML frontmatter with name, description, model
 - [ ] Opening persona statement
 - [ ] Core Capabilities section (6 capabilities)
@@ -29,7 +29,7 @@
 
 #### Files Affected
 
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-reviewer.md` (new file)
+- `dev-workflow-plugin/agents/code-reviewer.md` (new file)
 
 ---
 
@@ -60,7 +60,7 @@
 
 #### Files Affected
 
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-reviewer.md`
+- `dev-workflow-plugin/agents/code-reviewer.md`
 
 ---
 
@@ -91,7 +91,7 @@
 
 #### Files Affected
 
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-reviewer.md`
+- `dev-workflow-plugin/agents/code-reviewer.md`
 
 ---
 
@@ -117,9 +117,9 @@
 
 #### Files Affected
 
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/execution-coordinator.md`
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/skills/dev-workflow/SKILL.md`
-- `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/spec-writer.md`
+- `dev-workflow-plugin/agents/execution-coordinator.md`
+- `dev-workflow-plugin/skills/dev-workflow/SKILL.md`
+- `dev-workflow-plugin/agents/spec-writer.md`
 
 ---
 

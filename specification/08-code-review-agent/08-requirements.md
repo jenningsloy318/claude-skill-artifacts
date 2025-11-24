@@ -449,4 +449,4 @@ The following implementation steps are ready to proceed:
 7. [ ] Create static analysis tool detection logic
 8. [ ] Test integration with execution-coordinator workflow
 
-**Output Location:** `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-requirements.md`
+**Output Location:** `specification/08-code-review-agent/08-requirements.md`

@@ -1,7 +1,7 @@
 # Code Assessment: dev-workflow Plugin Agent Structure and Patterns
 
 **Date:** 2025-11-24 08:23:24 UTC
-**Scope:** Agent definition patterns in `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/`
+**Scope:** Agent definition patterns in `dev-workflow-plugin/agents/`
 
 ## Executive Summary
 
@@ -358,7 +358,7 @@ The new `dev-workflow:code-reviewer` should replace `superpowers:code-reviewer` 
 
 **For the new code-reviewer agent:**
 
-1. **File Location:** `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-reviewer.md`
+1. **File Location:** `dev-workflow-plugin/agents/code-reviewer.md`
 
 2. **YAML Frontmatter:**
    ```yaml
@@ -399,18 +399,18 @@ The new `dev-workflow:code-reviewer` should replace `superpowers:code-reviewer` 
 
 | File | Purpose |
 |------|---------|
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/skills/dev-workflow/SKILL.md` | Main workflow orchestration |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/execution-coordinator.md` | Orchestrates implementation phase, invokes code review |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/code-assessor.md` | Pre-implementation code assessment pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/qa-agent.md` | QA testing agent pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/research-agent.md` | Research agent pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/spec-writer.md` | Specification writing pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/requirements-clarifier.md` | Requirements gathering pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/frontend-developer.md` | Specialist developer pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/debug-analyzer.md` | Debug analysis pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/architecture-agent.md` | Architecture design with verification blocks |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/agents/search-agent.md` | Sub-agent pattern |
-| `/home/jenningsl/development/claude-artifacts/dev-workflow-plugin/.claude-plugin/plugin.json` | Plugin metadata |
+| `dev-workflow-plugin/skills/dev-workflow/SKILL.md` | Main workflow orchestration |
+| `dev-workflow-plugin/agents/execution-coordinator.md` | Orchestrates implementation phase, invokes code review |
+| `dev-workflow-plugin/agents/code-assessor.md` | Pre-implementation code assessment pattern |
+| `dev-workflow-plugin/agents/qa-agent.md` | QA testing agent pattern |
+| `dev-workflow-plugin/agents/research-agent.md` | Research agent pattern |
+| `dev-workflow-plugin/agents/spec-writer.md` | Specification writing pattern |
+| `dev-workflow-plugin/agents/requirements-clarifier.md` | Requirements gathering pattern |
+| `dev-workflow-plugin/agents/frontend-developer.md` | Specialist developer pattern |
+| `dev-workflow-plugin/agents/debug-analyzer.md` | Debug analysis pattern |
+| `dev-workflow-plugin/agents/architecture-agent.md` | Architecture design with verification blocks |
+| `dev-workflow-plugin/agents/search-agent.md` | Sub-agent pattern |
+| `dev-workflow-plugin/.claude-plugin/plugin.json` | Plugin metadata |
 
 ---
 

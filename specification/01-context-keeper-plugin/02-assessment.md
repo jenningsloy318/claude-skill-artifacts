@@ -10,7 +10,6 @@
 ### 1.1 Existing Project Structure
 
 ```
-/home/jenningsl/development/claude-artifacts/
 └── .claude/
     └── settings.local.json    # Currently only has permissions config
 ```

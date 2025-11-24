@@ -499,9 +499,9 @@ The agent automatically detects project linting configuration:
 
 ## 10. References
 
-- Requirements: `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-requirements.md`
-- Research Report: `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-research-report.md`
-- Assessment: `/home/jenningsl/development/claude-artifacts/specification/08-code-review-agent/08-assessment.md`
+- Requirements: `specification/08-code-review-agent/08-requirements.md`
+- Research Report: `specification/08-code-review-agent/08-research-report.md`
+- Assessment: `specification/08-code-review-agent/08-assessment.md`
 - CodeAgent Paper: arXiv:2402.02172
 - SonarQube Clean Code: https://docs.sonarsource.com/sonarqube-server/
 - superpowers:code-reviewer: obra/superpowers GitHub
