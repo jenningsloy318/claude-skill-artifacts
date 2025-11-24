@@ -160,6 +160,54 @@ When invoked, you will receive:
 └─────────────────────────────────────────────────────────┘
 ```
 
+5. **Concurrency Strategy**
+
+Elaborate on concurrency architecture with explicit decisions:
+
+| Decision | Options | Guidance |
+|----------|---------|----------|
+| **Thread Model** | Single-threaded / Main-worker / Thread pool | Main-worker for I/O-bound apps; thread pool for CPU-bound |
+| **Worker Count** | Fixed / Dynamic / CPU cores | `CPU cores - 1` for compute; `2 × cores` for I/O-heavy |
+| **Event Loop Jobs** | UI updates, timers, signals | Keep < 1ms; defer heavy work to workers |
+| **Background Jobs** | File I/O, network, computation | All blocking operations; batch when possible |
+| **Queue Design** | Lock-free / Mutex-protected | Lock-free (MPSC/MPMC) for high-throughput paths |
+| **Multi-core Exploitation** | Parallel queues / Work-stealing | Work-stealing for uneven workloads |
+
+**Concurrency Patterns:**
+
+- **Lock-Free Queues**: Use MPSC for single-consumer patterns, MPMC for multiple consumers
+- **Work-Stealing**: Each worker has local queue; steal from others when idle
+- **SIMD Blocks**: Identify data-parallel operations for vectorization (image processing, matrix ops)
+- **GPU Off-loading**: Consider for massively parallel tasks (ML inference, rendering, crypto)
+
+**Decision Framework:**
+
+```
+Is operation blocking? ─── No ──→ Event loop (main thread)
+        │
+       Yes
+        │
+        ▼
+CPU-bound? ─── Yes ──→ Worker thread pool (compute)
+    │                   Consider: SIMD, GPU, parallel queues
+    │
+   No (I/O-bound)
+    │
+    ▼
+Async I/O available? ─── Yes ──→ Async runtime (non-blocking)
+        │
+       No
+        │
+        ▼
+    Dedicated I/O worker threads
+```
+
+**Document in Architecture:**
+- Thread model choice with rationale
+- Worker thread count formula
+- Queue implementation (lock-free vs mutex)
+- SIMD/GPU candidates with justification
+
 <phase_3_verification>
 
 **YAGNI Verification:**
@@ -170,9 +218,16 @@ When invoked, you will receive:
 - [ ] Does each module have exactly ONE responsibility?
 - [ ] Are there circular dependencies?
 
+**Concurrency Verification:**
+- [ ] Is main-worker split needed or is single-threaded sufficient?
+- [ ] Is worker thread count justified (not arbitrary)?
+- [ ] Are event-loop vs background thread boundaries clear?
+- [ ] Is lock-free queue needed or is mutex acceptable?
+- [ ] Are SIMD/GPU candidates identified (if applicable)?
+
 **Action:** Remove speculative modules, simplify over-engineering.
 
-**Proceed only if:** All modules map to requirements, no cycles.
+**Proceed only if:** All modules map to requirements, no cycles, concurrency strategy justified.
 
 </phase_3_verification>
 
