@@ -208,6 +208,119 @@ Async I/O available? ─── Yes ──→ Async runtime (non-blocking)
 - Queue implementation (lock-free vs mutex)
 - SIMD/GPU candidates with justification
 
+6. **Complexity Analysis**
+
+Evaluate algorithmic efficiency for each critical operation:
+
+**Time Complexity Assessment:**
+
+| Operation | Target | Acceptable | Avoid |
+|-----------|--------|------------|-------|
+| Lookup/Get | O(1) | O(log N) | O(N) |
+| Insert/Update | O(1) | O(log N) | O(N) |
+| Search (indexed) | O(log N) | O(N) | O(N²) |
+| Search (unindexed) | O(N) | - | O(N²) |
+| Sort | O(N log N) | - | O(N²) |
+| Batch operations | O(N) | O(N log N) | O(N²) |
+
+**Space Complexity Assessment:**
+
+| Pattern | Memory | When to Use |
+|---------|--------|-------------|
+| In-place | O(1) | Memory-constrained, mutable data |
+| Linear copy | O(N) | Immutable data, parallelism |
+| Cache/Index | O(N) | Read-heavy, lookup performance |
+| Streaming | O(1) | Large datasets, pipeline processing |
+
+**Complexity Decision Framework:**
+
+```
+Is data size bounded? ─── Yes ──→ O(N²) acceptable for small N (<100)
+        │
+       No (unbounded/large N)
+        │
+        ▼
+Hot path? ─── Yes ──→ Target O(1) or O(log N)
+    │                  Use hash maps, B-trees, skip lists
+    │
+   No (cold path)
+    │
+    ▼
+    O(N) acceptable, optimize if profiling shows bottleneck
+```
+
+**Document for Each Module:**
+- Critical operations with complexity bounds
+- Data structure choices with justification
+- Memory allocation strategy (pooling, arena, GC-managed)
+- Trade-offs: time vs space, simplicity vs performance
+
+7. **Modular Design & Interface Contracts**
+
+Enforce loose coupling and clean interfaces:
+
+**Coupling Assessment:**
+
+| Coupling Type | Level | Description | Action |
+|---------------|-------|-------------|--------|
+| No coupling | Best | Modules share nothing | Ideal for independent features |
+| Data coupling | Good | Share only data via parameters | Standard approach |
+| Stamp coupling | Acceptable | Share data structures | Minimize shared structures |
+| Control coupling | Caution | One controls another's flow | Refactor to events/callbacks |
+| Common coupling | Avoid | Share global state | Extract to explicit dependency |
+| Content coupling | Never | Direct access to internals | Always refactor |
+
+**Interface Design Rules:**
+
+1. **Minimal Surface**: Expose only what's necessary
+   ```typescript
+   // Good: Minimal interface
+   interface UserService {
+     getById(id: string): Promise<User>;
+     create(data: CreateUserDTO): Promise<User>;
+   }
+
+   // Bad: Exposing internals
+   interface UserService {
+     getById(id: string): Promise<User>;
+     create(data: CreateUserDTO): Promise<User>;
+     _validateEmail(email: string): boolean;  // Internal
+     _hashPassword(pwd: string): string;      // Internal
+   }
+   ```
+
+2. **Contract Stability**: Interfaces don't change without versioning
+3. **Dependency Direction**: Higher layers depend on lower, never reverse
+4. **Abstraction Boundaries**: Cross-module calls go through interfaces only
+
+**Module Independence Checklist:**
+
+| Question | Yes = Good | No = Refactor |
+|----------|------------|---------------|
+| Can module be tested in isolation? | ✓ | Reduce dependencies |
+| Can module be replaced without changing others? | ✓ | Abstract interface |
+| Does module hide implementation details? | ✓ | Encapsulate internals |
+| Is module's purpose describable in one sentence? | ✓ | Split if multiple concerns |
+
+**Interface Documentation Template:**
+
+```typescript
+/**
+ * @module ModuleName
+ * @purpose Single sentence describing responsibility
+ * @dependencies List of required modules
+ * @consumers List of modules that depend on this
+ * @invariants Guarantees this module maintains
+ */
+interface ModuleInterface {
+  /**
+   * @complexity Time: O(?), Space: O(?)
+   * @throws ErrorType when condition
+   */
+  operation(input: InputType): Promise<OutputType>;
+}
+```
+
 <phase_3_verification>
 
 **YAGNI Verification:**
@@ -225,9 +338,22 @@ Async I/O available? ─── Yes ──→ Async runtime (non-blocking)
 - [ ] Is lock-free queue needed or is mutex acceptable?
 - [ ] Are SIMD/GPU candidates identified (if applicable)?
 
+**Complexity Verification:**
+- [ ] Are hot-path operations O(1) or O(log N)?
+- [ ] Are O(N²) algorithms justified (small bounded N only)?
+- [ ] Is space complexity appropriate for target environment?
+- [ ] Are data structure choices documented with rationale?
+
+**Modular Design Verification:**
+- [ ] Is coupling at data-coupling level or better?
+- [ ] Can each module be tested in isolation?
+- [ ] Do all cross-module calls go through interfaces?
+- [ ] Is each module's purpose describable in one sentence?
+- [ ] Are interfaces minimal and stable?
+
 **Action:** Remove speculative modules, simplify over-engineering.
 
-**Proceed only if:** All modules map to requirements, no cycles, concurrency strategy justified.
+**Proceed only if:** All modules map to requirements, no cycles, concurrency justified, complexity acceptable, coupling minimized.
 
 </phase_3_verification>
 
@@ -374,8 +500,20 @@ response:
 - [ ] SOLID principles followed?
 - [ ] DRY - No duplicated responsibilities?
 - [ ] YAGNI - No speculative architecture?
-- [ ] Loose coupling achieved?
+- [ ] Loose coupling achieved (data-coupling or better)?
 - [ ] High cohesion within modules?
+
+**Complexity & Performance:**
+- [ ] Hot-path operations have O(1) or O(log N) complexity?
+- [ ] Space complexity documented and justified?
+- [ ] Data structures optimized for access patterns?
+- [ ] No O(N²) on unbounded data?
+
+**Modular Design:**
+- [ ] All modules testable in isolation?
+- [ ] Cross-module communication via interfaces only?
+- [ ] No content or common coupling?
+- [ ] Interfaces documented with complexity annotations?
 
 **Implementation Readiness:**
 - [ ] Interfaces defined for all modules?
