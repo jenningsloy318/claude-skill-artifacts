@@ -183,12 +183,57 @@ interface DataModel {
 | [case] | [behavior] | [test] |
 
 ## 6. Security Considerations
-- [Security implication 1]: [mitigation]
-- [Security implication 2]: [mitigation]
+
+### 6.1 Input Validation
+| Input | Validation | Sanitization |
+|-------|------------|--------------|
+| [input field] | [validation rules] | [sanitization method] |
+
+### 6.2 Authentication & Authorization
+- **Auth required:** [yes/no]
+- **Permission checks:** [list of permissions]
+- **Role restrictions:** [roles that can access]
+
+### 6.3 Data Protection
+- **Sensitive data:** [list fields containing PII, credentials, etc.]
+- **Encryption:** [at rest / in transit requirements]
+- **Logging:** [what to log, what to redact]
+
+### 6.4 OWASP Considerations
+| Risk | Applicable | Mitigation |
+|------|------------|------------|
+| Injection | [yes/no] | [mitigation] |
+| Broken Auth | [yes/no] | [mitigation] |
+| XSS | [yes/no] | [mitigation] |
+| CSRF | [yes/no] | [mitigation] |
+| Security Misconfiguration | [yes/no] | [mitigation] |
 
 ## 7. Performance Considerations
-- [Performance implication 1]: [optimization]
-- [Performance implication 2]: [optimization]
+
+### 7.1 Complexity Analysis
+| Operation | Time Complexity | Space Complexity |
+|-----------|-----------------|------------------|
+| [operation] | O([complexity]) | O([complexity]) |
+
+### 7.2 Database Optimization
+- **Indexes needed:** [list of indexes]
+- **Query optimization:** [N+1 prevention, batch operations]
+- **Connection pooling:** [requirements]
+
+### 7.3 Caching Strategy
+| Data | Cache Type | TTL | Invalidation |
+|------|------------|-----|--------------|
+| [data] | [memory/redis/cdn] | [duration] | [trigger] |
+
+### 7.4 Scalability
+- **Bottlenecks:** [identified bottlenecks]
+- **Horizontal scaling:** [considerations]
+- **Rate limiting:** [requirements]
+
+### 7.5 Resource Usage
+- **Memory:** [expected usage, limits]
+- **CPU:** [expected usage, async considerations]
+- **Network:** [payload sizes, request frequency]
 
 ## 8. Rollout Plan
 1. [Step 1]
