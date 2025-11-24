@@ -262,12 +262,12 @@ When a new session starts (or resumes after compaction):
 3. Inject summary content as context
 4. Output via stdout (becomes system context)
 
-### 6.2 Slash Command `/load-session`
+### 6.2 Slash Command `/load-context`
 
 Allow manual loading of specific sessions:
 
 ```bash
-/load-session abc123
+/load-context abc123
 ```
 
 ### 6.3 Skill Integration

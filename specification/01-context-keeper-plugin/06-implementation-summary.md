@@ -15,7 +15,7 @@ A complete **Claude Code Plugin Marketplace** for session persistence that autom
 claude-artifacts/
 ├── .claude-plugin/
 │   └── marketplace.json         # Marketplace manifest
-├── session-persistence-plugin/
+├── context-keeper-plugin/
 │   ├── .claude-plugin/
 │   │   └── plugin.json          # Plugin manifest
 │   ├── hooks/
@@ -23,9 +23,9 @@ claude-artifacts/
 │   │   ├── precompact.py        # PreCompact hook script
 │   │   └── session_start.py     # SessionStart hook script
 │   ├── commands/
-│   │   └── load-session.md      # Slash command for manual loading
+│   │   └── load-context.md      # Slash command for manual loading
 │   ├── skills/
-│   │   └── session-manager/
+│   │   └── context-manager/
 │   │       └── SKILL.md         # Session management skill
 │   ├── README.md                # Plugin documentation
 │   └── LICENSE                  # MIT license
@@ -53,7 +53,7 @@ claude-artifacts/
 claude plugin marketplace add jenningsloy318/claude-artifacts
 
 # Install the plugin
-claude plugin install session-persistence@claude-artifacts
+claude plugin install context-keeper@claude-artifacts
 ```
 
 No manual configuration required - hooks are automatically registered via `hooks/hooks.json`.
@@ -157,7 +157,7 @@ With LLM (when API key available):
 - Status: PASS
 
 ### Test 4: Plugin Validation
-- Command: `claude plugin validate ./session-persistence-plugin`
+- Command: `claude plugin validate ./context-keeper-plugin`
 - Status: PASS
 
 ### Test 5: Marketplace Validation
@@ -175,8 +175,8 @@ Just use Claude Code normally. When compaction occurs (manual or auto):
 
 ### Manual Loading
 ```
-/load-session              # Load most recent
-/load-session abc123       # Load specific session
+/load-context              # Load most recent
+/load-context abc123       # Load specific session
 ```
 
 ### Session Management
@@ -210,22 +210,22 @@ Ask Claude about sessions:
 - `.claude-plugin/marketplace.json`
 
 ### Plugin Package
-- `session-persistence-plugin/.claude-plugin/plugin.json`
-- `session-persistence-plugin/hooks/hooks.json`
-- `session-persistence-plugin/hooks/precompact.py` (493 lines)
-- `session-persistence-plugin/hooks/session_start.py` (140 lines)
-- `session-persistence-plugin/commands/load-session.md`
-- `session-persistence-plugin/skills/session-manager/SKILL.md`
-- `session-persistence-plugin/README.md`
-- `session-persistence-plugin/LICENSE`
+- `context-keeper-plugin/.claude-plugin/plugin.json`
+- `context-keeper-plugin/hooks/hooks.json`
+- `context-keeper-plugin/hooks/precompact.py` (493 lines)
+- `context-keeper-plugin/hooks/session_start.py` (140 lines)
+- `context-keeper-plugin/commands/load-context.md`
+- `context-keeper-plugin/skills/context-manager/SKILL.md`
+- `context-keeper-plugin/README.md`
+- `context-keeper-plugin/LICENSE`
 
 ### Specification Documents
-- `specification/01-session-persistence-plugin/01-research-report.md`
-- `specification/01-session-persistence-plugin/02-assessment.md`
-- `specification/01-session-persistence-plugin/03-technical-specification.md`
-- `specification/01-session-persistence-plugin/04-implementation-plan.md`
-- `specification/01-session-persistence-plugin/05-task-list.md`
-- `specification/01-session-persistence-plugin/06-implementation-summary.md`
+- `specification/01-context-keeper-plugin/01-research-report.md`
+- `specification/01-context-keeper-plugin/02-assessment.md`
+- `specification/01-context-keeper-plugin/03-technical-specification.md`
+- `specification/01-context-keeper-plugin/04-implementation-plan.md`
+- `specification/01-context-keeper-plugin/05-task-list.md`
+- `specification/01-context-keeper-plugin/06-implementation-summary.md`
 
 ---
 
@@ -242,4 +242,4 @@ To enable LLM-based summaries (higher quality), set the `CLAUDE_SUMMARY_API_KEY`
 ### Repository
 - **GitHub:** https://github.com/jenningsloy318/claude-artifacts
 - **Marketplace:** `jenningsloy318/claude-artifacts`
-- **Plugin:** `session-persistence@claude-artifacts`
+- **Plugin:** `context-keeper@claude-artifacts`

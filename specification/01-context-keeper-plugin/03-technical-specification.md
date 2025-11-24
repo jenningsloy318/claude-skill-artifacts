@@ -104,7 +104,7 @@ Implement a PreCompact hook system that automatically summarizes and persists Cl
 │  └────────────────┘     └─────────────────┘                       │
 │                                                                    │
 │  ┌────────────────┐     ┌─────────────────┐                       │
-│  │ /load-session  │────▶│ load-session.md │                       │
+│  │ /load-context  │────▶│ load-context.md │                       │
 │  │ (Slash Cmd)    │     │ (Command)       │                       │
 │  └────────────────┘     └─────────────────┘                       │
 │                                                                    │
@@ -125,9 +125,9 @@ Implement a PreCompact hook system that automatically summarizes and persists Cl
 │   ├── precompact.py           # PreCompact hook script
 │   └── session_start.py        # SessionStart hook script
 ├── commands/
-│   └── load-session.md         # Slash command definition
+│   └── load-context.md         # Slash command definition
 ├── skills/
-│   └── session-manager/
+│   └── context-manager/
 │       └── SKILL.md            # Session management skill
 └── summaries/
     ├── index.json              # Summary index
@@ -435,11 +435,11 @@ if __name__ == "__main__":
     main()
 ```
 
-### 3.4 Slash Command (load-session.md)
+### 3.4 Slash Command (load-context.md)
 
 ```markdown
 ---
-name: load-session
+name: load-context
 description: Load a specific session summary into context
 arguments:
   - name: session_id
@@ -451,8 +451,8 @@ Load a previous session summary to restore context.
 
 ## Usage
 
-- `/load-session` - Load the most recent session
-- `/load-session abc123` - Load a specific session by ID
+- `/load-context` - Load the most recent session
+- `/load-context abc123` - Load a specific session by ID
 
 ## Available Sessions
 
@@ -479,7 +479,7 @@ When this command is run:
 
 ```markdown
 ---
-name: session-manager
+name: context-manager
 description: Manage Claude Code session summaries. Use when user wants to list, load, or manage saved sessions. Triggers on "list sessions", "show summaries", "load session", "what sessions", "previous work".
 ---
 

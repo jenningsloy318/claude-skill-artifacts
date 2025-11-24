@@ -21,7 +21,7 @@ This plan breaks down the implementation into phases and milestones for the PreC
 1. Create `.claude/hooks/` directory
 2. Create `.claude/summaries/` directory
 3. Create `.claude/commands/` directory
-4. Create `.claude/skills/session-manager/` directory
+4. Create `.claude/skills/context-manager/` directory
 5. Update `.claude/settings.local.json` with hook configuration
 
 **Deliverables:**
@@ -100,7 +100,7 @@ This plan breaks down the implementation into phases and milestones for the PreC
 **Objective:** Create manual session loading command
 
 **Tasks:**
-1. Create `/load-session` command definition
+1. Create `/load-context` command definition
    - Command markdown file
    - Argument handling (optional session_id)
 
@@ -110,7 +110,7 @@ This plan breaks down the implementation into phases and milestones for the PreC
    - Inject into context
 
 **Deliverables:**
-- Working `/load-session` command
+- Working `/load-context` command
 
 **Dependencies:** Milestone 1.2
 
@@ -131,7 +131,7 @@ This plan breaks down the implementation into phases and milestones for the PreC
    - Search sessions
 
 **Deliverables:**
-- Working `session-manager` skill
+- Working `context-manager` skill
 
 **Dependencies:** Milestone 2.1
 

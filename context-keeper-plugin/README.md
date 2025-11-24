@@ -1,14 +1,14 @@
-# Session Persistence Plugin for Claude Code
+# Context Keeper Plugin for Claude Code
 
-Automatically summarize and persist Claude Code sessions before context compaction, with automatic context restoration on resume.
+Automatically summarize and persist conversation context before compaction, with automatic context restoration on resume.
 
 ## Features
 
-- **Automatic Session Summaries**: Generates comprehensive summaries before context compaction (manual `/compact` or automatic)
-- **Context Restoration**: Automatically reloads session context when resuming after compaction
-- **Timestamp-based Versioning**: Multiple compactions within the same session create versioned snapshots
-- **Manual Loading**: Load previous sessions via `/load-session` command
-- **Session Management Skill**: Natural language session queries ("list my sessions", "load previous session")
+- **Automatic Context Summaries**: Generates comprehensive summaries before context compaction (manual `/compact` or automatic)
+- **Context Restoration**: Automatically reloads context when resuming after compaction
+- **Timestamp-based Versioning**: Multiple compactions create versioned snapshots
+- **Manual Loading**: Load previous contexts via `/load-context` command
+- **Context Management Skill**: Natural language context queries ("list my contexts", "load previous context")
 - **LLM or Structured Extraction**: Uses Claude API for intelligent summaries, with graceful fallback to structured extraction
 
 ## Installation
@@ -18,7 +18,7 @@ Automatically summarize and persist Claude Code sessions before context compacti
 claude plugin marketplace add jenningsloy318/claude-artifacts
 
 # Install the plugin
-claude plugin install session-persistence@claude-artifacts
+claude plugin install context-keeper@claude-artifacts
 ```
 
 ## Quick Start
@@ -26,7 +26,7 @@ claude plugin install session-persistence@claude-artifacts
 ```bash
 # 1. Add marketplace and install plugin
 claude plugin marketplace add jenningsloy318/claude-artifacts
-claude plugin install session-persistence@claude-artifacts
+claude plugin install context-keeper@claude-artifacts
 
 # 2. (Optional) Set API key for LLM-based summaries
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
@@ -69,17 +69,17 @@ export CLAUDE_SUMMARY_API_KEY="your-api-key-here"
 
 ### On Compaction (PreCompact Hook)
 
-1. Hook receives session metadata via stdin
+1. Hook receives context metadata via stdin
 2. Reads full transcript from transcript_path
 3. Extracts: user messages, assistant responses, tool calls, files modified
 4. Generates summary (LLM if API key available, structured extraction otherwise)
-5. Saves to `.claude/summaries/{session_id}/{timestamp}/`
+5. Saves to `.claude/summaries/{context_id}/{timestamp}/`
 6. Updates index.json
 7. Creates/updates "latest" symlink
 
-### On Session Resume (SessionStart Hook)
+### On Resume (SessionStart Hook)
 
-1. Hook receives session metadata
+1. Hook receives context metadata
 2. Checks for existing summaries in project
 3. Loads most recent summary (within 24 hours)
 4. Outputs context to stdout (injected into Claude's context)
@@ -91,7 +91,7 @@ Summaries are stored per-project:
 ```
 {PROJECT}/.claude/summaries/
 ├── index.json                          # Global index of all summaries
-└── {session_id}/
+└── {context_id}/
     ├── {timestamp}/
     │   ├── summary.md                  # Human-readable summary
     │   └── metadata.json               # Machine-readable metadata
@@ -103,22 +103,22 @@ Summaries are stored per-project:
 ### Automatic (After Compaction)
 
 Just use Claude Code normally. When compaction occurs:
-1. PreCompact hook automatically saves session summary
+1. PreCompact hook automatically saves context summary
 2. SessionStart hook automatically reloads context
 
 ### Manual Loading
 
 ```
-/load-session              # Load most recent session
-/load-session abc123       # Load specific session by ID
+/load-context              # Load most recent context
+/load-context abc123       # Load specific context by ID
 ```
 
-### Session Management
+### Context Management
 
 Ask Claude naturally:
-- "What sessions do I have?"
-- "List my session history"
-- "Load the previous session"
+- "What contexts do I have?"
+- "List my context history"
+- "Load the previous context"
 - "Show summaries for this project"
 
 ## Summary Content
@@ -134,7 +134,7 @@ Ask Claude naturally:
 
 ### Structured Extraction (No API key)
 
-- **Metadata**: Session ID, project, trigger, timestamp
+- **Metadata**: Context ID, project, trigger, timestamp
 - **Files Modified**: List of files created/edited
 - **Tool Usage**: Breakdown of tools used
 - **Sample User Requests**: Key user messages
@@ -176,9 +176,9 @@ Contributions welcome! Please open an issue or submit a pull request at https://
 ### v1.0.0
 
 - Initial release
-- PreCompact hook for automatic session summarization
+- PreCompact hook for automatic context summarization
 - SessionStart hook for context restoration
-- Slash command for manual session loading
-- Session management skill
+- Slash command for manual context loading
+- Context management skill
 - Support for custom API URL
 - Graceful fallback to structured extraction

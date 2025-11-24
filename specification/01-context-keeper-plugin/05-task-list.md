@@ -13,7 +13,7 @@
 - [ ] **T1.1.1** Create `.claude/hooks/` directory
 - [ ] **T1.1.2** Create `.claude/summaries/` directory
 - [ ] **T1.1.3** Create `.claude/commands/` directory
-- [ ] **T1.1.4** Create `.claude/skills/session-manager/` directory
+- [ ] **T1.1.4** Create `.claude/skills/context-manager/` directory
 - [ ] **T1.1.5** Update `.claude/settings.local.json` with PreCompact hook config
 - [ ] **T1.1.6** Update `.claude/settings.local.json` with SessionStart hook config
 
@@ -42,12 +42,12 @@
 ### Phase 2: User Interface
 
 #### 2.1 Slash Command
-- [ ] **T2.1.1** Create `.claude/commands/load-session.md`
+- [ ] **T2.1.1** Create `.claude/commands/load-context.md`
 - [ ] **T2.1.2** Document command usage and examples
-- [ ] **T2.1.3** Test `/load-session` command
+- [ ] **T2.1.3** Test `/load-context` command
 
 #### 2.2 Session Manager Skill
-- [ ] **T2.2.1** Create `.claude/skills/session-manager/SKILL.md`
+- [ ] **T2.2.1** Create `.claude/skills/context-manager/SKILL.md`
 - [ ] **T2.2.2** Define trigger conditions
 - [ ] **T2.2.3** Document available actions
 - [ ] **T2.2.4** Test skill invocation
@@ -133,8 +133,8 @@ T1.1.1-6 (Directory Setup)
 - ✓ Handles missing summaries gracefully
 
 ### Slash Command
-- ✓ `/load-session` loads latest session
-- ✓ `/load-session {id}` loads specific session
+- ✓ `/load-context` loads latest session
+- ✓ `/load-context {id}` loads specific session
 - ✓ Shows helpful error if session not found
 
 ### Skill
@@ -153,9 +153,9 @@ T1.1.1-6 (Directory Setup)
 │   ├── precompact.py           # PreCompact hook script
 │   └── session_start.py        # SessionStart hook script
 ├── commands/
-│   └── load-session.md         # Slash command
+│   └── load-context.md         # Slash command
 ├── skills/
-│   └── session-manager/
+│   └── context-manager/
 │       └── SKILL.md            # Session management skill
 └── summaries/
     └── index.json              # Summary index (created at runtime)
