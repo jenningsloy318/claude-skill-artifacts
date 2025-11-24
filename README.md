@@ -29,6 +29,8 @@ claude plugin install context-keeper@claude-artifacts
 
 # 2. (Optional) Set API key for LLM-based summaries
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
+# Or use your existing Anthropic API key as fallback
+export ANTHROPIC_API_KEY="your-api-key"
 
 # 3. Use Claude Code normally - summaries are automatic!
 ```
