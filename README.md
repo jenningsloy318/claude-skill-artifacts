@@ -11,31 +11,22 @@ A Claude Code plugin marketplace for context persistence and productivity tools.
 | [context-keeper](./context-keeper-plugin/) | Automatically summarize and persist conversation context before compaction | v1.0.0 |
 | [dev-workflow](./dev-workflow-plugin/) | Comprehensive development workflow with structured phases for implementing features, fixing bugs, and refactoring | v1.0.0 |
 
-## Installation
+## Getting Started
 
 ```bash
-# Add the marketplace
+# 1. Add the marketplace
 claude plugin marketplace add jenningsloy318/claude-artifacts
 
-# Install a plugin
+# 2. Install plugins
 claude plugin install context-keeper@claude-artifacts
-```
+claude plugin install dev-workflow@claude-artifacts
 
-## Quick Start: Context Keeper Plugin
-
-```bash
-# 1. Add marketplace and install plugin
-claude plugin marketplace add jenningsloy318/claude-artifacts
-claude plugin install context-keeper@claude-artifacts
-
-# 2. (Optional) Set API key for LLM-based summaries
+# 3. (Optional) Set API key for LLM-based summaries in context-keeper
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
 # Or use your existing Anthropic API key as fallback
 export ANTHROPIC_API_KEY="your-api-key"
-# Optional: Custom API URL (for proxy or regional endpoints)
-export CLAUDE_SUMMARY_API_URL="https://api.anthropic.com"
 
-# 3. Use Claude Code normally - summaries are automatic!
+# 4. Use Claude Code normally - plugins are active!
 ```
 
 ## Marketplace Management

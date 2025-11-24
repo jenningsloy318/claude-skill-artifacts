@@ -241,9 +241,11 @@ Task(
 **CRITICAL:** Do not pause or stop during execution. If multiple options exist, choose the one that continues implementation.
 
 The execution-coordinator will invoke specialist agents as needed:
-- `rust-pro`, `backend-developer`, `frontend-developer`, `mobile-developer`
-- `dev-workflow:code-reviewer`, `superpowers:test-driven-development`
-- `documentation-expert`
+- `dev-workflow:rust-developer`, `dev-workflow:golang-developer`
+- `dev-workflow:frontend-developer`, `dev-workflow:backend-developer`
+- `dev-workflow:android-developer`, `dev-workflow:ios-developer`
+- `dev-workflow:windows-app-developer`, `dev-workflow:macos-app-developer`
+- `dev-workflow:code-reviewer`, `dev-workflow:qa-agent`
 
 **Output:** Code, tests, and `[index]-implementation-summary.md`
 
@@ -357,10 +359,6 @@ Upon completion of all tasks:
 |-------|---------|
 | `dev-workflow:dev-rules` | Core development rules and philosophy |
 
-## External Agents to Use
+## Notes
 
-- `superpowers:subagent-driven-development` - Parallel agent coordination
-- `superpowers:systematic-debugging` - Debugging methodology
-- `documentation-expert` - Technical documentation
-
-**Note:** `superpowers:code-reviewer` has been replaced by `dev-workflow:code-reviewer` (internal agent).
+All agents listed above are provided by this plugin (`dev-workflow:*` prefix). The plugin is self-contained and does not depend on external agents from other plugins.
