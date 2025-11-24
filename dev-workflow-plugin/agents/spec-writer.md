@@ -89,7 +89,6 @@ Generate granular tasks for execution.
 
 ### 3.1 Architecture
 
-```
 ┌─────────────────┐     ┌─────────────────┐
 │   Component A   │────▶│   Component B   │
 │                 │     │                 │
@@ -100,7 +99,7 @@ Generate granular tasks for execution.
 ┌─────────────────┐     ┌─────────────────┐
 │   Component C   │     │   Component D   │
 └─────────────────┘     └─────────────────┘
-```
+
 
 ### 3.2 Components
 
@@ -314,11 +313,11 @@ interface DataModel {
 
 ## Task Dependencies
 
-```
+
 T1.1 ──┬──▶ T1.2 ──┬──▶ T2.1
        │          │
        └──▶ T1.3 ─┘
-```
+
 
 ## Priority Order
 1. T1.1 - [reason]
