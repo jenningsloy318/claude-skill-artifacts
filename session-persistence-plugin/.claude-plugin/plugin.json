@@ -1,0 +1,13 @@
+{
+  "name": "session-persistence",
+  "description": "Automatically summarize and persist Claude Code sessions before context compaction, with automatic context restoration on resume",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jennings L",
+    "email": "jennings@example.com"
+  },
+  "homepage": "https://github.com/jenningsl/session-persistence-plugin",
+  "repository": "https://github.com/jenningsl/session-persistence-plugin",
+  "license": "MIT",
+  "keywords": ["session", "persistence", "memory", "context", "compaction", "summary", "continuity"]
+}
