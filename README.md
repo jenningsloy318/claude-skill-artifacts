@@ -21,10 +21,10 @@ claude plugin marketplace add jenningsloy318/claude-artifacts
 claude plugin install context-keeper@claude-artifacts
 claude plugin install dev-workflow@claude-artifacts
 
-# 3. (Optional) Set API key for LLM-based summaries in context-keeper
+# 3. (Optional) Configure LLM-based summaries in context-keeper
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
-# Or use your existing Anthropic API key as fallback
-export ANTHROPIC_API_KEY="your-api-key"
+# Optional: Custom API URL (for proxy or regional endpoints)
+export CLAUDE_SUMMARY_API_URL="https://api.anthropic.com"
 
 # 4. Use Claude Code normally - plugins are active!
 ```
