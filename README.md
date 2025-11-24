@@ -12,50 +12,25 @@ A Claude Code plugin marketplace for session management, context persistence, an
 
 ## Installation
 
-### Method 1: Add as Marketplace (Recommended)
-
-Add this repository as a marketplace to install plugins easily:
-
 ```bash
 # Add the marketplace
 claude plugin marketplace add jenningsloy318/claude-artifacts
 
-# Install a plugin from this marketplace
+# Install a plugin
 claude plugin install session-persistence@claude-artifacts
 ```
-
-### Method 2: Clone and Use with --plugin-dir
-
-```bash
-# Clone the repository
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-cd claude-artifacts
-
-# Run Claude Code with a specific plugin
-claude --plugin-dir ./session-persistence-plugin
-```
-
-### Method 3: Manual Installation
-
-See individual plugin README files for manual installation instructions.
 
 ## Quick Start: Session Persistence Plugin
 
 ```bash
-# Option A: Via marketplace (after adding)
+# 1. Add marketplace and install plugin
 claude plugin marketplace add jenningsloy318/claude-artifacts
 claude plugin install session-persistence@claude-artifacts
 
-# Option B: Via --plugin-dir
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-cd claude-artifacts
-claude --plugin-dir ./session-persistence-plugin
-```
-
-Then optionally set up environment variables for LLM-based summaries:
-
-```bash
+# 2. (Optional) Set API key for LLM-based summaries
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
+
+# 3. Use Claude Code normally - summaries are automatic!
 ```
 
 ## Marketplace Management
@@ -108,18 +83,10 @@ claude-artifacts/
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── hooks/
-│   │   ├── hooks.json
-│   │   ├── precompact.py
-│   │   └── session_start.py
 │   ├── commands/
-│   │   └── load-session.md
 │   ├── skills/
-│   │   └── session-manager/
-│   │       └── SKILL.md
-│   ├── README.md
-│   └── LICENSE
+│   └── README.md
 ├── specification/                 # Design documents and specs
-│   └── 01-session-persistence-plugin/
 └── [future-plugins]/              # More plugins to come
 ```
 

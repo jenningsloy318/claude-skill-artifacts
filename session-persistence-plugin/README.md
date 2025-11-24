@@ -13,8 +13,6 @@ Automatically summarize and persist Claude Code sessions before context compacti
 
 ## Installation
 
-### Option 1: Via Marketplace (Recommended)
-
 ```bash
 # Add the marketplace
 claude plugin marketplace add jenningsloy318/claude-artifacts
@@ -23,86 +21,17 @@ claude plugin marketplace add jenningsloy318/claude-artifacts
 claude plugin install session-persistence@claude-artifacts
 ```
 
-### Option 2: Clone and Use with --plugin-dir
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-cd claude-artifacts
+# 1. Add marketplace and install plugin
+claude plugin marketplace add jenningsloy318/claude-artifacts
+claude plugin install session-persistence@claude-artifacts
 
-# Run Claude Code with the plugin loaded
-claude --plugin-dir ./session-persistence-plugin
-```
+# 2. (Optional) Set API key for LLM-based summaries
+export CLAUDE_SUMMARY_API_KEY="your-api-key"
 
-### Option 3: Clone Plugin Only
-
-```bash
-# Clone the repository
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-
-# Copy the plugin to your preferred location
-cp -r claude-artifacts/session-persistence-plugin ~/plugins/
-
-# Run Claude Code with the plugin
-claude --plugin-dir ~/plugins/session-persistence-plugin
-```
-
-### Option 4: Manual Installation
-
-Copy the contents to your Claude Code user directory:
-
-```bash
-# Clone first
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-cd claude-artifacts/session-persistence-plugin
-
-# Create directories
-mkdir -p ~/.claude/hooks
-mkdir -p ~/.claude/commands
-mkdir -p ~/.claude/skills/session-manager
-
-# Copy files
-cp hooks/precompact.py ~/.claude/hooks/
-cp hooks/session_start.py ~/.claude/hooks/
-cp commands/load-session.md ~/.claude/commands/
-cp skills/session-manager/SKILL.md ~/.claude/skills/session-manager/
-
-# Make hooks executable
-chmod +x ~/.claude/hooks/precompact.py
-chmod +x ~/.claude/hooks/session_start.py
-```
-
-Then add the following to your `~/.claude/settings.json`:
-
-```json
-{
-  "hooks": {
-    "PreCompact": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/hooks/precompact.py",
-            "timeout": 120
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "resume|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/hooks/session_start.py",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
-}
+# 3. Use Claude Code normally - summaries are automatic!
 ```
 
 ## Requirements
@@ -134,25 +63,6 @@ Add to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
 export CLAUDE_SUMMARY_API_KEY="your-api-key-here"
 # Optional: Custom API URL
 # export CLAUDE_SUMMARY_API_URL="https://your-proxy.example.com/v1"
-```
-
-## Quick Start
-
-```bash
-# Option A: Via marketplace (recommended)
-claude plugin marketplace add jenningsloy318/claude-artifacts
-claude plugin install session-persistence@claude-artifacts
-
-# Option B: Via --plugin-dir
-git clone https://github.com/jenningsloy318/claude-artifacts.git
-cd claude-artifacts
-claude --plugin-dir ./session-persistence-plugin
-```
-
-Then optionally set up LLM-based summaries:
-
-```bash
-export CLAUDE_SUMMARY_API_KEY="your-api-key"
 ```
 
 ## How It Works
@@ -234,16 +144,13 @@ Ask Claude naturally:
 
 ### Hook Not Triggering
 
-1. Verify plugin is loaded: check Claude Code startup messages
-2. For manual install: verify hooks are in `~/.claude/hooks/`
-3. Check `~/.claude/settings.json` has correct hook configuration
-4. Ensure Python 3 is available: `which python3`
+1. Verify plugin is installed: `claude plugin list`
+2. Ensure Python 3 is available: `which python3`
 
 ### No Summary Generated
 
-1. Check stderr for errors: `python3 ~/.claude/hooks/precompact.py < test_input.json`
+1. Check stderr for errors
 2. Verify transcript_path exists and is readable
-3. Check file permissions on hooks directory
 
 ### LLM Summary Failing
 
