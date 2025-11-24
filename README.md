@@ -31,6 +31,8 @@ claude plugin install context-keeper@claude-artifacts
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
 # Or use your existing Anthropic API key as fallback
 export ANTHROPIC_API_KEY="your-api-key"
+# Optional: Custom API URL (for proxy or regional endpoints)
+export CLAUDE_SUMMARY_API_URL="https://api.anthropic.com"
 
 # 3. Use Claude Code normally - summaries are automatic!
 ```
