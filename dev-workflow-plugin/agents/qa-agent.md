@@ -641,33 +641,7 @@ Feature: Web App Testing
 
 # STATIC CODE ANALYSIS: CODERABBIT CLI
 
-## CodeRabbit CLI Usage
-
-Use CodeRabbit CLI for AI-powered static code review before committing. Run as a quality gate to catch issues early.
-
-### When to Run
-
-| Phase | Command | Purpose |
-|-------|---------|---------|
-| Pre-commit | `cr --type uncommitted --plain` | Review uncommitted changes |
-| Pre-merge | `cr --base main --plain` | Review all changes vs main branch |
-| Agent mode | `cr --prompt-only` | Minimal output for automated fix loops |
-
-### Severity Response
-
-| Severity | Action |
-|----------|--------|
-| Critical | Block commit, fix immediately |
-| High | Fix before merge |
-| Medium | Fix in same PR |
-| Low | Track for later |
-
-### Integration Pattern
-
-1. Run `cr --plain` before other QA modalities
-2. Categorize findings by severity
-3. Fix critical/high issues before proceeding
-4. Include CodeRabbit summary in test report
+Run `coderabbit --prompt-only` in background and ask the development agent to fix the errors and issues it finds.
 
 ---
 
