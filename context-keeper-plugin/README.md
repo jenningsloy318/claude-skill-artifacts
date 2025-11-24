@@ -13,6 +13,8 @@ Automatically summarize and persist conversation context before compaction, with
 
 ## Installation
 
+### Step 1: Add Marketplace and Install Plugin
+
 ```bash
 # Add the marketplace
 claude plugin marketplace add jenningsloy318/claude-artifacts
@@ -21,6 +23,57 @@ claude plugin marketplace add jenningsloy318/claude-artifacts
 claude plugin install context-keeper@claude-artifacts
 ```
 
+### Step 2: Configure Hooks in Settings
+
+The plugin requires hooks to be configured in your Claude Code settings. Add the following to `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_ROOT}/context-keeper-plugin/hooks/precompact.py",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_ROOT}/context-keeper-plugin/hooks/session_start.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**If you already have hooks configured**, merge the `PreCompact` and `SessionStart` arrays into your existing `hooks` object:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [...],  // Your existing hooks
+    "PreCompact": [...],   // Add this
+    "SessionStart": [...]  // Add this
+  }
+}
+```
+
+### Step 3: Restart Claude Code
+
+After configuring hooks, restart Claude Code for the changes to take effect.
+
 ## Quick Start
 
 ```bash
@@ -28,10 +81,14 @@ claude plugin install context-keeper@claude-artifacts
 claude plugin marketplace add jenningsloy318/claude-artifacts
 claude plugin install context-keeper@claude-artifacts
 
-# 2. (Optional) Set API key for LLM-based summaries
+# 2. Configure hooks in ~/.claude/settings.json (see above)
+
+# 3. (Optional) Set API key for LLM-based summaries
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
 
-# 3. Use Claude Code normally - summaries are automatic!
+# 4. Restart Claude Code
+
+# 5. Use Claude Code normally - summaries are automatic!
 ```
 
 ## Requirements

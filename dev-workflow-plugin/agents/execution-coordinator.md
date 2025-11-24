@@ -45,11 +45,14 @@ When invoked, you will receive:
 **Specialist Agents to Invoke:**
 | Domain | Agent |
 |--------|-------|
-| Rust | `rust-pro` |
-| Backend | `backend-developer` |
-| Frontend | `frontend-developer` |
-| Mobile | `mobile-developer` |
-| Full Stack | `fullstack-developer` |
+| Rust | `dev-workflow:rust-developer` |
+| Go | `dev-workflow:golang-developer` |
+| Backend (Node/Python) | `dev-workflow:backend-developer` |
+| Frontend (React/Next.js) | `dev-workflow:frontend-developer` |
+| Android | `dev-workflow:android-developer` |
+| iOS | `dev-workflow:ios-developer` |
+| Windows Desktop | `dev-workflow:windows-app-developer` |
+| macOS Desktop | `dev-workflow:macos-app-developer` |
 
 ### Testing Agent Role
 
@@ -71,6 +74,25 @@ When invoked, you will receive:
 |---------|-------|
 | Code Review | `superpowers:code-reviewer` |
 | TDD | `superpowers:test-driven-development` |
+| QA Testing | `dev-workflow:qa-agent` |
+
+### QA Agent Role
+
+**Responsibilities:**
+- Generate declarative test plans from specifications
+- Execute modality-specific testing (CLI, Desktop UI, Web App)
+- Ensure deterministic re-runs with trace recording
+- Provide feedback loop with defect reports
+
+**Modality-Specific Strategies:**
+
+| Modality | Testing Approach |
+|----------|-----------------|
+| CLI | --help parsing, value matrix, sandbox execution, exit codes, golden-file diff |
+| Desktop UI | AT-SPI/Accessibility API/UI-Automation, control tree, screenshot comparison |
+| Web App | Playwright MCP, Chrome DevTools, console/network monitoring, trace.zip |
+
+**Invoke via:** `dev-workflow:qa-agent`
 
 ### Documentation Agent Role
 
