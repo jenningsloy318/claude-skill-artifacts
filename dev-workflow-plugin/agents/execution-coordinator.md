@@ -126,6 +126,48 @@ When invoked, you will receive:
 **Specialist Agent:**
 - `documentation-expert`
 
+## Git Checkpoint Rules (CRITICAL - MANDATORY)
+
+**To prevent losing work during context compaction or errors:**
+
+### After EVERY Completed Task
+```bash
+git add <modified-files>
+git commit -m "task: [task description]"
+```
+
+### Before Starting Each Phase/Milestone
+```bash
+git status  # MUST show "working tree clean" or commit/stash first
+```
+
+### Every 3-5 File Edits
+Create a checkpoint commit or stash:
+```bash
+git stash push -m "checkpoint: [description]"
+# OR
+git commit -m "wip: [progress description]"
+```
+
+### Verification Pattern
+After each task completion:
+1. Run `git status`
+2. If files are uncommitted → commit them NOW
+3. Verify "working tree clean" before next task
+4. NEVER proceed with uncommitted changes
+
+**FORBIDDEN:**
+❌ Completing multiple tasks before committing
+❌ Proceeding to next phase with uncommitted files
+❌ Leaving modified files in working directory between tasks
+
+**REQUIRED:**
+✅ Commit after EVERY single task completion
+✅ `git status` verification before each phase
+✅ Stash before risky operations
+
+---
+
 ## Execution Process
 
 ### Step 1: Task Assignment
@@ -136,8 +178,9 @@ For each task in task list:
   2. Assign task with context
   3. Wait for completion
   4. Verify output (build, tests)
-  5. Update task status
-  6. Move to next task
+  5. **CHECKPOINT: git add + commit immediately**
+  6. Update task status
+  7. Move to next task
 ```
 
 ### Step 2: Parallel Coordination
@@ -315,9 +358,11 @@ Otherwise, make the best decision and continue.
 
 Every execution must:
 - [ ] Complete all assigned tasks
+- [ ] **COMMIT after each task completion** (not batched)
 - [ ] Verify build passes
 - [ ] Verify tests pass
 - [ ] Document all decisions
 - [ ] Track all challenges
 - [ ] Create implementation summary
-- [ ] Prepare for commit
+- [ ] **Final git status shows "working tree clean"**
+- [ ] All changes committed and pushed

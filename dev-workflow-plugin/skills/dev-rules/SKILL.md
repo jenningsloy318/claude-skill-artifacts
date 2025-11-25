@@ -40,6 +40,51 @@ When implementing designs from Figma:
 - Don't use `git add -A` - use `git add file1 file2` (only files you edited/created/deleted)
 - Before committing, **ALWAYS** generate proper commit messages
 
+## Git Safety & Checkpoint Rules (CRITICAL)
+
+### Frequent Checkpoints (MANDATORY)
+To prevent losing work during context compaction or errors:
+
+1. **Stash Before Major Operations**
+   - Before starting a new phase, run `git stash push -m "checkpoint: [phase name]"`
+   - Before risky operations (refactoring, large changes), create a stash
+   - Use `git stash list` to verify stashes exist
+
+2. **Commit After Every Completed Task**
+   - After completing ANY task from the task list, commit immediately
+   - Don't batch multiple tasks into one commit
+   - Small, frequent commits > large, infrequent commits
+   - Each commit should be atomic and compilable
+
+3. **Verification Before Phase Transitions**
+   - Before moving to next phase, run `git status` to check for uncommitted changes
+   - ALL modified/created/deleted files MUST be either committed or stashed
+   - Never leave files in "Changes not staged for commit" state between phases
+
+4. **End-of-Session Cleanup**
+   - Before ending work (or if context is getting large), ensure:
+     - All work is committed OR stashed
+     - Run `git status` - should show "nothing to commit, working tree clean"
+     - If not clean, commit with WIP message or stash
+
+### Checkpoint Triggers
+Create a checkpoint (commit or stash) when:
+- [ ] Completing a task from the task list
+- [ ] Before starting a new phase
+- [ ] After successful test run
+- [ ] Before any refactoring
+- [ ] Every 15-20 minutes of active coding
+- [ ] Before context compaction warning appears
+
+### Recovery Commands
+If files are lost, use:
+```bash
+git stash list                    # List all stashes
+git stash pop                     # Restore most recent stash
+git reflog                        # Find lost commits
+git checkout -- <file>            # Restore file from last commit
+```
+
 ## Development Philosophy
 
 ### Core Principles

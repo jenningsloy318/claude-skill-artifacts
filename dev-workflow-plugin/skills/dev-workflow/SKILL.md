@@ -36,11 +36,14 @@ Development Workflow Progress:
 - [ ] Phase 5.5: UI/UX Design (for features with UI - optional)
 - [ ] Phase 6: Specification Writing (tech spec, plan, tasks)
 - [ ] Phase 7: Specification Review (validate against requirements)
-- [ ] Phase 8-9: Execution & Coordination (parallel agents)
+- [ ] Phase 8-9: Execution & Coordination (parallel agents) [CHECKPOINT after each task]
 - [ ] Phase 9.5: Quality Assurance (modality-specific testing)
 - [ ] Phase 10: Cleanup (remove temp files, unused code)
 - [ ] Phase 11: Commit & Push (descriptive message)
+- [ ] Phase 12: Final Verification (git status shows clean working tree)
 ```
+
+**CHECKPOINT RULE:** Between each phase, run `git status`. All changes MUST be committed or stashed before proceeding.
 
 ---
 
@@ -263,11 +266,33 @@ Task(
 4. If multiple implementation options exist, choose the one that continues implementation
 5. Only stop if blocked by external dependencies or critical errors
 
+**CRITICAL GIT CHECKPOINT RULES (MANDATORY):**
+1. **After EACH completed task**: Commit immediately with descriptive message
+2. **Before starting each milestone/phase**: Run `git status` and stash/commit any pending changes
+3. **Every 3-5 file edits**: Create checkpoint commit or stash
+4. **Before risky operations**: Stash current work with `git stash push -m "checkpoint: [description]"`
+5. **Verification**: After each task completion, run `git status` to ensure nothing is left uncommitted
+6. **NEVER proceed to next task** with uncommitted changes in working directory
+
+**Checkpoint Pattern:**
+```bash
+# After completing each task:
+git add <modified-files>
+git commit -m "task: [task description]"
+
+# Before starting new phase:
+git status  # Must show "working tree clean"
+
+# If context getting large, stash as backup:
+git stash push -m "checkpoint: phase X progress"
+```
+
 **Multi-Phase Implementation:**
 - When spec-writer creates implementation plan with multiple phases (Phase 1, Phase 2, Phase 3, etc.)
 - Execution coordinator MUST implement ALL phases without interruption
 - Do NOT seek permission between phases - treat as single continuous workflow
 - Progress through: Phase 1 → Phase 2 → Phase 3 → ... → Final Phase automatically
+- **COMMIT at each phase boundary** to prevent losing work
 
 The execution-coordinator will invoke specialist agents as needed:
 - `dev-workflow:rust-developer`, `dev-workflow:golang-developer`
