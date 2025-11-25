@@ -1,5 +1,5 @@
 ---
-name: fix-impl
+name: dev-workflow:fix-impl
 description: Execute the complete development workflow for implementing features or fixing bugs
 ---
 
@@ -10,7 +10,7 @@ This command orchestrates the complete development workflow.
 ## Usage
 
 ```
-/fix-impl [description of task]
+/dev-workflow:fix-impl [description of task]
 ```
 
 ## What This Command Does
@@ -50,10 +50,10 @@ When this command is invoked:
 ## Example Invocations
 
 ```
-/fix-impl Fix the login button not responding on mobile
-/fix-impl Implement user profile page with avatar upload
-/fix-impl Refactor the authentication module for better testability
-/fix-impl Improve API response time for product listing
+/dev-workflow:fix-impl Fix the login button not responding on mobile
+/dev-workflow:fix-impl Implement user profile page with avatar upload
+/dev-workflow:fix-impl Refactor the authentication module for better testability
+/dev-workflow:fix-impl Improve API response time for product listing
 ```
 
 ## Notes
