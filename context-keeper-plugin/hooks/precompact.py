@@ -34,23 +34,9 @@ SUMMARY_MODEL = "claude-sonnet-4-20250514"
 MAX_TOKENS = 4000
 TIMEOUT_SECONDS = 90
 
-# Debug log file path (always logs here so we can check what happened)
-DEBUG_LOG_PATH = Path.home() / ".claude" / "precompact-debug.log"
-
-
 # ============================================================================
 # Input/Output Helpers
 # ============================================================================
-
-def _write_to_debug_log(message: str):
-    """Append message to debug log file."""
-    try:
-        with open(DEBUG_LOG_PATH, 'a', encoding='utf-8') as f:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            f.write(f"[{timestamp}] {message}\n")
-    except Exception:
-        pass  # Silently ignore log failures
-
 
 def _ensure_package_installed(package_name: str) -> bool:
     """Ensure a Python package is installed, auto-installing if needed."""
@@ -60,7 +46,7 @@ def _ensure_package_installed(package_name: str) -> bool:
     except ImportError:
         pass
 
-    _write_to_debug_log(f"{package_name} package not found, attempting auto-install...")
+    print(f"[PreCompact] {package_name} not found, attempting auto-install...", file=sys.stderr)
 
     # Try different pip installation methods
     install_commands = [
@@ -72,7 +58,6 @@ def _ensure_package_installed(package_name: str) -> bool:
 
     for cmd in install_commands:
         try:
-            _write_to_debug_log(f"Trying: {' '.join(cmd)}")
             result = subprocess.run(
                 cmd,
                 capture_output=True,
@@ -80,23 +65,19 @@ def _ensure_package_installed(package_name: str) -> bool:
                 timeout=60
             )
             if result.returncode == 0:
-                _write_to_debug_log(f"Successfully installed {package_name} via: {' '.join(cmd)}")
                 # Verify import works now
                 try:
-                    mod = __import__(package_name.replace("-", "_"))
-                    _write_to_debug_log(f"{package_name} version: {getattr(mod, '__version__', 'unknown')}")
+                    __import__(package_name.replace("-", "_"))
+                    print(f"[PreCompact] ✅ Successfully installed {package_name}", file=sys.stderr)
                     return True
                 except ImportError:
-                    _write_to_debug_log("Import still failed after installation")
                     continue
-            else:
-                _write_to_debug_log(f"Command failed: {result.stderr[:200] if result.stderr else 'no error'}")
         except subprocess.TimeoutExpired:
-            _write_to_debug_log(f"Command timed out: {' '.join(cmd)}")
-        except Exception as e:
-            _write_to_debug_log(f"Command error: {e}")
+            pass
+        except Exception:
+            pass
 
-    _write_to_debug_log("All installation attempts failed")
+    print(f"[PreCompact] ❌ Failed to install {package_name}", file=sys.stderr)
     return False
 
 
@@ -116,21 +97,18 @@ def read_hook_input() -> dict:
 
 
 def log_error(message: str):
-    """Log error to stderr and debug file."""
-    print(f"[PreCompact Error] {message}", file=sys.stderr)
-    _write_to_debug_log(f"ERROR: {message}")
+    """Log error to stderr."""
+    print(f"[PreCompact] ❌ {message}", file=sys.stderr)
 
 
 def log_info(message: str):
-    """Log info to stdout (visible to user) and debug file."""
+    """Log info to stdout (visible to user)."""
     print(f"[PreCompact] {message}")
-    _write_to_debug_log(f"INFO: {message}")
 
 
 def log_debug(message: str):
-    """Log debug info to debug file (always) and stderr."""
-    _write_to_debug_log(f"DEBUG: {message}")
-    print(f"[PreCompact Debug] {message}", file=sys.stderr)
+    """No-op debug logging (disabled)."""
+    pass  # Debug logging disabled - use visible messages instead
 
 
 # ============================================================================
@@ -770,23 +748,18 @@ Summary excerpt:
 # ============================================================================
 
 def main():
-    log_debug("=" * 60)
-    log_debug("=== PRECOMPACT HOOK STARTED ===")
-    log_debug(f"Python version: {sys.version}")
-    log_debug(f"Script path: {__file__}")
-    log_debug(f"Working directory: {os.getcwd()}")
-    log_debug(f"HOME: {Path.home()}")
-    log_debug("=" * 60)
+    # Print visible banner to stderr
+    print("\n" + "=" * 60, file=sys.stderr)
+    print("🔄 [context-keeper] PreCompact Hook Running...", file=sys.stderr)
+    print("=" * 60, file=sys.stderr)
 
     try:
         # Read input from Claude Code
-        log_debug("Reading hook input from stdin...")
         hook_input = read_hook_input()
-        log_debug(f"Hook input received: {bool(hook_input)}")
 
         if not hook_input:
             log_error("No input received")
-            log_debug("=== PRECOMPACT HOOK ENDED (no input) ===")
+            print("=" * 60 + "\n", file=sys.stderr)
             sys.exit(1)
 
         # Extract session information
@@ -795,24 +768,22 @@ def main():
         trigger = hook_input.get("trigger", "unknown")
         cwd = hook_input.get("cwd", os.getcwd())
 
-        log_debug(f"Session ID: {session_id}")
-        log_debug(f"Transcript path: {transcript_path}")
-        log_debug(f"Trigger: {trigger}")
-        log_debug(f"CWD: {cwd}")
-
-        log_info(f"Processing session {session_id[:8]}... (trigger: {trigger})")
+        print(f"📋 [context-keeper] Processing session {session_id[:8]}... (trigger: {trigger})", file=sys.stderr)
 
         # Parse transcript
         if not transcript_path:
             log_error("No transcript path provided")
+            print("=" * 60 + "\n", file=sys.stderr)
             sys.exit(1)
 
+        print("📖 [context-keeper] Parsing transcript...", file=sys.stderr)
         messages = parse_transcript(transcript_path)
         if not messages:
-            log_info("No messages in transcript, skipping summary")
+            print("ℹ️  [context-keeper] No messages in transcript, skipping", file=sys.stderr)
+            print("=" * 60 + "\n", file=sys.stderr)
             sys.exit(0)
 
-        log_info(f"Parsed {len(messages)} messages from transcript")
+        print(f"📊 [context-keeper] Found {len(messages)} messages", file=sys.stderr)
 
         # Extract content
         content = extract_conversation_content(messages)
@@ -826,7 +797,7 @@ def main():
         }
 
         # Generate summary
-        log_info("Generating summary...")
+        print("🤖 [context-keeper] Generating summary with AI...", file=sys.stderr)
         summary = generate_summary(content, session_info)
 
         # Prepare metadata
@@ -839,7 +810,7 @@ def main():
         }
 
         # Save to project directory
-        log_debug("Saving summary to project directory...")
+        print("💾 [context-keeper] Saving summary...", file=sys.stderr)
         summary_path = save_summary(session_id, summary, metadata, cwd)
 
         log_info(f"Summary saved: {summary_path}")
@@ -847,26 +818,21 @@ def main():
         log_info(f"Topics: {', '.join(metadata['topics'][:5]) if metadata['topics'] else 'none extracted'}")
 
         # Persist to nowledge (non-blocking, optional)
-        log_debug("Attempting to persist to nowledge...")
         try:
             nowledge_success = persist_to_nowledge(summary, metadata, content)
             if nowledge_success:
-                log_debug("Nowledge persistence successful")
-            else:
-                log_debug("Nowledge persistence skipped or failed (non-blocking)")
-        except Exception as e:
-            log_debug(f"Nowledge persistence error (non-blocking): {e}")
+                print("☁️  [context-keeper] Persisted to nowledge", file=sys.stderr)
+        except Exception:
+            pass  # Non-blocking
 
-        log_debug("=" * 60)
-        log_debug("=== PRECOMPACT HOOK COMPLETED SUCCESSFULLY ===")
-        log_debug("=" * 60)
+        # Print visible completion message
+        print("✅ [context-keeper] Session context saved successfully!", file=sys.stderr)
+        print("=" * 60 + "\n", file=sys.stderr)
         sys.exit(0)
 
     except Exception as e:
         log_error(f"Unexpected error: {e}")
-        log_debug("=== PRECOMPACT HOOK ENDED (exception) ===")
-        import traceback
-        traceback.print_exc(file=sys.stderr)
+        print("=" * 60 + "\n", file=sys.stderr)
         sys.exit(1)
 
 
