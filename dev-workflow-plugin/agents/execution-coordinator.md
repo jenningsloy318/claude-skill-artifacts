@@ -168,6 +168,88 @@ After each task completion:
 
 ---
 
+## Documentation Update Rules (CRITICAL - MANDATORY)
+
+**At every milestone/phase completion, update these documents:**
+
+### 1. Task List Updates
+After completing each task or milestone, update `[index]-task-list.md`:
+```markdown
+# Update task-list.md:
+- [x] Task 1: Description (completed)
+- [x] Task 2: Description (completed)
+- [ ] Task 3: Description (in progress)
+- [ ] Task 4: Description (pending)
+
+## Milestone 1 Status: COMPLETE
+- Started: [timestamp]
+- Completed: [timestamp]
+- Notes: [any relevant notes]
+```
+
+### 2. Implementation Summary Updates
+Update `[index]-implementation-summary.md` at EACH milestone:
+```markdown
+## Milestone X Progress Update
+
+### Completed in this milestone:
+- Files created: [list with purposes]
+- Files modified: [list with changes]
+- Tests added: [count and coverage]
+
+### Technical Decisions Made:
+1. [Decision]: [rationale]
+
+### Challenges Encountered:
+1. [Challenge]: [solution]
+
+### Deviations from Specification:
+- [If any, document what and why]
+```
+
+### 3. Specification Updates
+When implementation reveals necessary spec changes, update `[index]-specification.md`:
+```markdown
+[UPDATED: YYYY-MM-DD] Section X.Y
+- Original: [what the spec said]
+- Changed to: [new specification]
+- Reason: [why the change was needed]
+- Impact: [what else this affects]
+```
+
+### Documentation Update Triggers
+Update documents when:
+- [ ] Completing ANY task from the task list
+- [ ] Finishing a milestone/phase
+- [ ] Making a technical decision not in original spec
+- [ ] Encountering and solving a challenge
+- [ ] Discovering spec needs modification
+- [ ] Before committing code changes
+
+### Enforcement Pattern
+```
+After completing each task/milestone:
+1. Update task-list.md (mark completed, add new tasks)
+2. Update implementation-summary.md (add progress)
+3. If spec changed → Update specification.md
+4. Commit ALL changes together (code + docs)
+5. Verify docs are current before next task
+```
+
+**FORBIDDEN:**
+❌ Completing a milestone without updating task list
+❌ Moving to next phase with outdated implementation summary
+❌ Changing implementation without documenting deviation from spec
+❌ Committing code without corresponding doc updates
+
+**REQUIRED:**
+✅ Task list always reflects actual completion state
+✅ Implementation summary updated at every milestone
+✅ Spec changes documented with [UPDATED] markers
+✅ Docs committed together with related code changes
+
+---
+
 ## Execution Process
 
 ### Step 1: Task Assignment
@@ -178,9 +260,22 @@ For each task in task list:
   2. Assign task with context
   3. Wait for completion
   4. Verify output (build, tests)
-  5. **CHECKPOINT: git add + commit immediately**
-  6. Update task status
-  7. Move to next task
+  5. **UPDATE DOCS: task-list.md, implementation-summary.md**
+  6. **CHECKPOINT: git add (code + docs) + commit immediately**
+  7. Update task status (TodoWrite)
+  8. Move to next task
+```
+
+### Step 1.5: Milestone/Phase Boundary
+
+At each milestone/phase completion:
+```
+1. Mark all milestone tasks complete in task-list.md
+2. Add milestone summary to implementation-summary.md
+3. Review: any spec deviations? → Update specification.md
+4. Commit all changes: git commit -m "milestone X: [description]"
+5. Verify git status clean
+6. Proceed to next milestone
 ```
 
 ### Step 2: Parallel Coordination
@@ -358,11 +453,15 @@ Otherwise, make the best decision and continue.
 
 Every execution must:
 - [ ] Complete all assigned tasks
-- [ ] **COMMIT after each task completion** (not batched)
+- [ ] **UPDATE task-list.md after each task** (mark completed)
+- [ ] **UPDATE implementation-summary.md at each milestone**
+- [ ] **UPDATE specification.md if implementation deviates**
+- [ ] **COMMIT after each task completion** (code + docs together)
 - [ ] Verify build passes
 - [ ] Verify tests pass
-- [ ] Document all decisions
-- [ ] Track all challenges
-- [ ] Create implementation summary
+- [ ] Document all decisions in implementation-summary.md
+- [ ] Track all challenges in implementation-summary.md
+- [ ] Create/update implementation summary at completion
 - [ ] **Final git status shows "working tree clean"**
 - [ ] All changes committed and pushed
+- [ ] **All spec docs are current and accurate**

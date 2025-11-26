@@ -47,6 +47,68 @@ Development Workflow Progress:
 
 ---
 
+## Documentation Update Rules (CRITICAL - MANDATORY)
+
+**At every milestone/phase boundary, update these documents:**
+
+### 1. Task List Updates (`[index]-task-list.md`)
+After completing each task or milestone:
+- [ ] Mark completed tasks with `[x]`
+- [ ] Add any new tasks discovered during implementation
+- [ ] Update estimated vs actual effort if tracked
+- [ ] Note any blocked or deferred tasks with reasons
+
+### 2. Implementation Summary Updates (`[index]-implementation-summary.md`)
+Update at EACH milestone/phase completion:
+- [ ] Add completed work to "Code Changes" section
+- [ ] Document any technical decisions made
+- [ ] Record challenges encountered and solutions found
+- [ ] Update test coverage status
+- [ ] Note any deviations from original specification
+
+### 3. Specification Updates (`[index]-specification.md`)
+When implementation reveals spec changes needed:
+- [ ] Update affected sections with `[UPDATED: date]` marker
+- [ ] Document why the change was necessary
+- [ ] Ensure spec still matches actual implementation
+- [ ] Add any new constraints or requirements discovered
+
+### Documentation Update Pattern
+```markdown
+# After completing Milestone/Phase X:
+
+1. Update task-list.md:
+   - [x] Task 1 (completed)
+   - [x] Task 2 (completed)
+   - [ ] Task 3 (in progress)
+
+2. Update implementation-summary.md:
+   ## Milestone X Complete
+   - Files created: [list]
+   - Files modified: [list]
+   - Decisions made: [list]
+   - Challenges: [list]
+
+3. If spec changed, update specification.md:
+   [UPDATED: YYYY-MM-DD] Section X.Y
+   - Original: [what it said]
+   - Changed to: [new content]
+   - Reason: [why]
+```
+
+### Enforcement Checklist (Before Proceeding to Next Phase)
+- [ ] Task list reflects current state
+- [ ] Implementation summary includes latest progress
+- [ ] Any spec deviations are documented
+- [ ] All doc updates are committed with code changes
+
+**FORBIDDEN:**
+❌ Completing a milestone without updating task list
+❌ Moving to next phase with outdated implementation summary
+❌ Changing implementation without updating specification
+
+---
+
 ## Phase 0: Apply Dev Rules
 
 **SKILL:** Invoke `dev-workflow:dev-rules`

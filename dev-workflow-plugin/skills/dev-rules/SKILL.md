@@ -85,6 +85,49 @@ git reflog                        # Find lost commits
 git checkout -- <file>            # Restore file from last commit
 ```
 
+## Documentation Update Rules (CRITICAL)
+
+### Keep Spec Documents Current (MANDATORY)
+All specification documents MUST be updated as work progresses:
+
+1. **Task List (`[index]-task-list.md`)**
+   - Mark tasks complete immediately when done: `- [x] Task description`
+   - Add new tasks discovered during implementation
+   - Update status at every milestone boundary
+   - Never leave task list stale between commits
+
+2. **Implementation Summary (`[index]-implementation-summary.md`)**
+   - Update after EACH milestone/phase completion
+   - Document files created/modified/deleted
+   - Record technical decisions and rationale
+   - Track challenges encountered and solutions
+   - Note any deviations from original specification
+
+3. **Specification (`[index]-specification.md`)**
+   - Update when implementation differs from original spec
+   - Use `[UPDATED: YYYY-MM-DD]` marker for changed sections
+   - Document why the change was necessary
+   - Keep spec aligned with actual implementation
+
+### Documentation Commit Rules
+- **Commit docs WITH code**: Never commit code without updating related docs
+- **Atomic doc updates**: Each task completion = task list update
+- **Milestone summaries**: Add summary section at each phase boundary
+- **Spec sync**: If code deviates from spec, update spec in same commit
+
+### Enforcement Checklist
+Before moving to next task/phase:
+- [ ] Task list reflects actual completion state
+- [ ] Implementation summary has latest progress
+- [ ] Spec changes are documented with [UPDATED] markers
+- [ ] Docs are committed together with code
+
+**FORBIDDEN:**
+❌ Completing tasks without updating task list
+❌ Finishing milestones without updating implementation summary
+❌ Implementing differently than spec without documenting deviation
+❌ Committing code changes without corresponding doc updates
+
 ## Development Philosophy
 
 ### Core Principles
