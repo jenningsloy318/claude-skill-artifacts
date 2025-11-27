@@ -14,29 +14,13 @@ Load a previous context summary to restore conversation state from before compac
 
 ## Instructions
 
-When this command is invoked:
+When this command is invoked, run the Python script located at `scripts/load_context.py` relative to the plugin directory.
 
-1. **Check for summaries directory** at `{project}/.claude/summaries/`
-   - If it doesn't exist, inform the user no summaries are available
+```bash
+python3 "$(dirname "$0")/../scripts/load_context.py" $ARGUMENTS
+```
 
-2. **If no argument provided** (load latest):
-   - Read `.claude/summaries/index.json`
-   - Get the most recent summary entry
-   - Read the summary file from `{session_id}/{timestamp}/summary.md`
-
-3. **If session ID or timestamp provided**:
-   - Search for matching context in index
-   - If found, load that specific summary
-   - If not found, list available sessions
-
-4. **Present the summary** to the user with:
-   - Context metadata (session ID, timestamp, trigger)
-   - Full summary content
-   - Option to inject into current context
-
-5. **If user wants to inject**:
-   - Wrap the summary in `<previous-context>` tags
-   - Include it in the conversation
+The script uses `jq` subprocess for efficient JSON extraction from index.json, with fallback to full JSON parsing if jq is unavailable.
 
 ## Usage Examples
 
@@ -51,21 +35,7 @@ When this command is invoked:
 # Loads summary from specific timestamp
 ```
 
-## Implementation
-
-Use the Read tool to:
-1. Read `.claude/summaries/index.json` for available contexts
-2. Read the specific `summary.md` file
-3. Present content to user
-
 ## Output Format
-
-When listing contexts:
-```
-Available Contexts:
-1. [abc123...] 2025-11-23 19:04 - 15 files modified (auto compact)
-2. [def456...] 2025-11-22 14:30 - 3 files modified (manual compact)
-```
 
 When loading a context:
 ```
@@ -74,12 +44,30 @@ When loading a context:
 **Session ID:** abc123...
 **Created:** 2025-11-23 19:04:48
 **Trigger:** auto
+**Messages:** 150
+
+---
 
 [Full summary content here]
 
 ---
 Would you like me to use this context for our conversation?
 ```
+
+When context not found:
+```
+No context found for 'xyz'.
+
+Available contexts:
+  - [abc123...] 2025-11-23 19:04
+  - [def456...] 2025-11-22 14:30
+```
+
+## Error Handling
+
+- **No summaries directory**: "No context summaries found. Run `/compact` to create your first summary."
+- **No index.json**: "Summary index not found."
+- **Summary not found**: Lists available contexts for user to choose from.
 
 ## Related Commands
 

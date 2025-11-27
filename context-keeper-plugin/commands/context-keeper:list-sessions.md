@@ -9,62 +9,30 @@ Display all stored sessions that have context summaries saved by the context-kee
 
 ## Instructions
 
-When this command is invoked:
+When this command is invoked, run the Python script located at `scripts/list_sessions.py` relative to the plugin directory.
 
-1. **Read the summaries index** at `{project}/.claude/summaries/index.json`
-   - If it doesn't exist, inform the user no sessions are available
+```bash
+python3 "$(dirname "$0")/../scripts/list_sessions.py"
+```
 
-2. **Group summaries by session ID** and calculate:
-   - Number of compactions per session
-   - Latest compaction timestamp
-   - Total files modified across all compactions
-   - Project path
-
-3. **Display a summary table** sorted by most recent activity
+The script uses `jq` subprocess for efficient JSON extraction from index.json, with fallback to full JSON parsing if jq is unavailable.
 
 ## Output Format
 
 ```
 ## Stored Sessions
 
-| # | Session ID | Compactions | Latest Activity | Project | Total Files |
-|---|------------|-------------|-----------------|---------|-------------|
-| 1 | abc123...  | 3           | 2025-11-24 19:04 | /dev/myproject | 28 |
-| 2 | def456...  | 1           | 2025-11-23 14:30 | /dev/myproject | 3  |
-| 3 | ghi789...  | 5           | 2025-11-22 10:15 | /dev/other     | 45 |
+| # | Session ID | Compactions | Latest Activity | Project | Messages |
+|---|------------|-------------|-----------------|---------|----------|
+| 1 | abc123...  | 3           | 2025-11-24 19:04 | myproject | 280 |
+| 2 | def456...  | 1           | 2025-11-23 14:30 | myproject | 45  |
+| 3 | ghi789...  | 5           | 2025-11-22 10:15 | other     | 450 |
 
 **Total:** 3 sessions with 9 context summaries
 
 ### Quick Actions
 - Use `/context-keeper:list-context <session-id>` to see all contexts for a session
 - Use `/context-keeper:load-context <session-id>` to load the latest context from a session
-```
-
-## Implementation
-
-Use the Read tool to:
-1. Read `.claude/summaries/index.json` for the summary index
-2. Group entries by session_id
-3. Calculate aggregated statistics
-4. Format and display results
-
-### Grouping Logic
-
-```python
-# Pseudo-code for grouping
-sessions = {}
-for summary in index["summaries"]:
-    sid = summary["session_id"]
-    if sid not in sessions:
-        sessions[sid] = {
-            "compaction_count": 0,
-            "latest_timestamp": None,
-            "project": summary["project"],
-            "total_files": set()
-        }
-    sessions[sid]["compaction_count"] += 1
-    sessions[sid]["total_files"].update(summary.get("files_modified", []))
-    # Update latest if more recent
 ```
 
 ## Error Handling

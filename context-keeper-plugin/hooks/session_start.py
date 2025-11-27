@@ -17,6 +17,7 @@ Environment variables:
 
 import sys
 import json
+import subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -77,23 +78,41 @@ def load_latest_summary(project_path: str, session_id: str = None) -> tuple[str,
     if not index_path.exists():
         return None, None
 
+    # Try using jq for efficient extraction (only reads first entry)
+    latest = None
     try:
-        index = json.loads(index_path.read_text(encoding='utf-8'))
-        summaries = index.get("summaries", [])
+        result = subprocess.run(
+            ['jq', '-r', '.summaries[0]'],
+            stdin=open(index_path, 'r'),
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        if result.returncode == 0 and result.stdout.strip() and result.stdout.strip() != 'null':
+            latest = json.loads(result.stdout)
+    except (subprocess.TimeoutExpired, FileNotFoundError, subprocess.SubprocessError):
+        # jq not available or failed, fall back to full JSON parsing
+        pass
 
-        if not summaries:
+    # Fallback: Read full JSON if jq failed
+    if latest is None:
+        try:
+            index = json.loads(index_path.read_text(encoding='utf-8'))
+            summaries = index.get("summaries", [])
+            if not summaries:
+                return None, None
+            latest = summaries[0]
+        except (json.JSONDecodeError, KeyError, FileNotFoundError) as e:
+            print(f"[context-keeper] Error: Failed to load from index: {e}", file=sys.stderr)
             return None, None
 
-        # Get most recent
-        latest = summaries[0]
+    try:
         summary_path = summaries_dir / latest["summary_path"]
-
         if summary_path.exists():
             summary = summary_path.read_text(encoding='utf-8')
             return summary, latest
-
-    except (json.JSONDecodeError, KeyError, FileNotFoundError) as e:
-        print(f"[context-keeper] Error: Failed to load from index: {e}", file=sys.stderr)
+    except (KeyError, TypeError) as e:
+        print(f"[context-keeper] Error: Invalid index entry: {e}", file=sys.stderr)
 
     return None, None
 
@@ -104,7 +123,7 @@ def format_context(summary: str, metadata: dict, source: str, permission_mode: s
     timestamp = metadata.get('timestamp', metadata.get('created_at', 'unknown'))
     session_id = metadata.get('session_id', 'unknown')
     trigger = metadata.get('trigger', 'unknown')
-    files_modified = metadata.get('files_modified', [])
+    message_count = metadata.get('message_count', 0)
 
     # Create context wrapper
     context = f"""<previous-session-context>
@@ -114,7 +133,7 @@ This context was automatically loaded from a previous session summary.
 - **Previous Session ID:** {session_id[:16]}...
 - **Summary Created:** {timestamp}
 - **Compaction Trigger:** {trigger}
-- **Files Modified:** {len(files_modified)}
+- **Message Count:** {message_count}
 - **Reload Source:** {source}
 - **Permission Mode:** {permission_mode}
 

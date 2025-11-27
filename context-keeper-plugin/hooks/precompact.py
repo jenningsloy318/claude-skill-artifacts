@@ -589,7 +589,6 @@ def update_index(summaries_dir: Path, session_id: str, timestamp: str, metadata:
         "created_at": metadata.get('timestamp', ''),
         "trigger": metadata.get('trigger', ''),
         "project": metadata.get('cwd', ''),
-        "files_modified": metadata.get('files_modified', []),
         "message_count": metadata.get('message_count', 0),
         "summary_path": f"{session_id}/{timestamp}/summary.md"
     }
