@@ -19,7 +19,7 @@ Add to your Claude Code settings:
 ```json
 {
   "plugins": [
-    "https://github.com/jenningsloy318/super-skill-claude-artifacts/tree/main/dev-workflow-plugin"
+    "https://github.com/jenningsloy318/super-skill-claude-artifacts/tree/main/super-dev-plugin"
   ]
 }
 ```
@@ -29,15 +29,15 @@ Add to your Claude Code settings:
 ### Command
 
 ```
-/super-dev:fix-impl [description of task]
+/super-dev:run [description of task]
 ```
 
 ### Examples
 
 ```
-/super-dev:fix-impl Fix the login button not responding on mobile
-/super-dev:fix-impl Implement user profile page with avatar upload
-/super-dev:fix-impl Refactor the authentication module for better testability
+/super-dev:run Fix the login button not responding on mobile
+/super-dev:run Implement user profile page with avatar upload
+/super-dev:run Refactor the authentication module for better testability
 ```
 
 ## Architecture
@@ -85,7 +85,7 @@ Add to your Claude Code settings:
 ## Plugin Structure
 
 ```
-dev-workflow-plugin/
+super-dev-plugin/
 ├── skills/
 │   ├── super-dev/        # Main orchestrator skill
 │   └── dev-rules/        # Development rules and philosophy
@@ -105,7 +105,7 @@ dev-workflow-plugin/
 │   ├── spec-writer.md
 │   └── qa-agent.md
 └── commands/
-    └── fix-impl.md
+    └── run.md
 ```
 
 ## Agents

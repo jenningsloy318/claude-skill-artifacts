@@ -1,5 +1,5 @@
 ---
-name: super-dev:fix-impl
+name: super-dev:run
 description: Execute the complete coordinator-driven development workflow for implementing features or fixing bugs
 ---
 
@@ -10,7 +10,7 @@ This command orchestrates the complete coordinator-driven development workflow.
 ## Usage
 
 ```
-/super-dev:fix-impl [description of task]
+/super-dev:run [description of task]
 ```
 
 ## What This Command Does
@@ -53,10 +53,10 @@ When this command is invoked:
 ## Example Invocations
 
 ```
-/super-dev:fix-impl Fix the login button not responding on mobile
-/super-dev:fix-impl Implement user profile page with avatar upload
-/super-dev:fix-impl Refactor the authentication module for better testability
-/super-dev:fix-impl Improve API response time for product listing
+/super-dev:run Fix the login button not responding on mobile
+/super-dev:run Implement user profile page with avatar upload
+/super-dev:run Refactor the authentication module for better testability
+/super-dev:run Improve API response time for product listing
 ```
 
 ## Notes
