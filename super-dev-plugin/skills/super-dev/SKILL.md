@@ -277,7 +277,19 @@ Coordinator verifies:
 - [ ] Implementation summary complete
 - [ ] No missing code or files
 - [ ] All changes committed
-- [ ] Git status clean
+- [ ] All changes pushed to remote
+- [ ] Git status clean (working tree clean)
+
+### MANDATORY: Commit and Push on Completion
+
+**CRITICAL REQUIREMENT:** When ALL tasks are complete, you MUST:
+
+1. **Stage all changes**: `git add [files]` (only files modified in this session)
+2. **Commit with descriptive message**: Follow project commit conventions
+3. **Push to remote**: `git push` to ensure changes are not lost
+4. **Verify clean state**: `git status` must show "working tree clean"
+
+**NEVER** mark workflow as complete without committing and pushing all changes.
 
 ---
 
