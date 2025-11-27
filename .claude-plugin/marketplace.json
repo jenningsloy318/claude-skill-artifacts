@@ -35,10 +35,10 @@
       "strict": false
     },
     {
-      "name": "dev-workflow",
-      "source": "./dev-workflow-plugin",
-      "description": "Comprehensive development workflow for implementing features, fixing bugs, and refactoring code with structured phases",
-      "version": "1.0.0",
+      "name": "super-dev",
+      "source": "./super-dev-plugin",
+      "description": "Coordinator-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
+      "version": "2.0.0",
       "author": {
         "name": "Jennings L",
         "url": "https://github.com/jenningsloy318"
@@ -49,11 +49,12 @@
       "keywords": [
         "development",
         "workflow",
+        "coordinator",
+        "parallel",
         "debugging",
         "implementation",
         "refactoring",
         "specification",
-        "tdd",
         "code-review"
       ],
       "category": "development",
