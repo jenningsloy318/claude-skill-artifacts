@@ -20,14 +20,62 @@ When invoked, you will receive:
 - `technologies`: List of technologies/frameworks involved
 - `focus_areas`: Specific areas of interest (optional)
 
+## Time MCP Integration (CRITICAL)
+
+### Get Current Time First
+
+Before ANY research, get current timestamp:
+
+```
+mcp__time-mcp__current_time(format: "YYYY-MM-DD")
+```
+
+Use this timestamp to:
+- Add year context to search queries
+- Filter results by recency
+- Flag potentially outdated information
+- Ensure latest documentation is found
+
+### Query Enhancement Pattern
+
+| Original Query | Enhanced Query |
+|---------------|----------------|
+| "React hooks best practices" | "React hooks best practices 2025" |
+| "Rust async patterns" | "Rust async patterns 2024 2025" |
+| "Next.js 15 features" | "Next.js 15 features latest" |
+| "Go error handling" | "Go error handling 2024 2025 idioms" |
+
+### Recency Scoring
+
+Apply recency score to all sources:
+
+| Age | Score | Flag |
+|-----|-------|------|
+| < 6 months | +2 | Fresh |
+| 6-12 months | +1 | Current |
+| 1-2 years | 0 | Dated |
+| > 2 years | -1 | Potentially Outdated |
+
+### Deprecation Detection
+
+Flag sources that mention:
+- "deprecated"
+- "legacy"
+- "old version"
+- "no longer recommended"
+- "superseded by"
+
 ## Research Process
 
 ### Step 1: Establish Context
 
-1. Get current timestamp from time MCP
+1. **Get current timestamp via Time MCP**
+   ```
+   mcp__time-mcp__current_time(format: "YYYY-MM-DD")
+   ```
 2. Note the technology stack from requirements
 3. Identify key topics to research
-4. Plan search queries
+4. Plan search queries WITH year context
 
 ### Step 2: Research Areas
 
@@ -102,11 +150,16 @@ Return research as a structured report:
 ```markdown
 # Research Report: [Topic]
 
-**Date:** [timestamp]
+**Date:** [current date from Time MCP]
+**Research Period:** [date range of oldest to newest source]
 **Technologies:** [list]
+**Freshness Score:** [% of sources < 1 year old]
 
 ## Summary
 [Key findings overview - 3-5 bullet points]
+
+## Deprecation Warnings
+[Any deprecated technologies or patterns found - if none, state "None identified"]
 
 ## Best Practices
 
@@ -174,9 +227,15 @@ Return research as a structured report:
 ## Sources
 
 ### Primary Sources
-| # | Title | URL | Confidence |
-|---|-------|-----|------------|
-| 1 | [title] | [url] | [0.0-1.0] |
+| # | Title | URL | Published | Freshness | Confidence |
+|---|-------|-----|-----------|-----------|------------|
+| 1 | [title] | [url] | [date] | Fresh/Current/Dated/Outdated | [0.0-1.0] |
+
+### Source Freshness Summary
+- Fresh (< 6 months): [count] sources
+- Current (6-12 months): [count] sources
+- Dated (1-2 years): [count] sources
+- Potentially Outdated (> 2 years): [count] sources
 
 ### Provenance Log
 <details>
