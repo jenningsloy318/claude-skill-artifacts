@@ -383,3 +383,163 @@ Every specification set must:
 - [ ] List all files to be affected
 - [ ] Identify task dependencies
 - [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory (e.g., `./01-requirements.md`)
+
+---
+
+## Sub-Specification Split (Large Features)
+
+For large, complex features that meet the criteria below, split the specification into sub-specifications.
+
+### When to Split
+
+Split into sub-specifications when:
+- Feature has **4+ distinct functional areas** (e.g., backend API, frontend UI, auth, data migration)
+- Implementation would require **15+ tasks** in a single task list
+- Feature involves **multiple independent components** that can be developed/tested separately
+- Feature spans **multiple technology domains** (e.g., mobile + web + backend)
+- **Total estimated effort exceeds 2 days** of implementation work
+
+### Sub-Specification Structure
+
+When splitting, create this directory structure within the current specification directory:
+
+```
+specification/[index]-[feature-name]/
+├── 00-master-specification.md      # Root specification with overview
+├── 00-master-implementation-plan.md # Master plan referencing all sub-specs
+├── 00-master-task-list.md          # Master task list with phases
+├── 01-[sub-spec-name]/             # First sub-specification
+│   ├── 01-specification.md
+│   ├── 01-implementation-plan.md
+│   └── 01-task-list.md
+├── 02-[sub-spec-name]/             # Second sub-specification
+│   ├── 02-specification.md
+│   ├── 02-implementation-plan.md
+│   └── 02-task-list.md
+└── 03-[sub-spec-name]/             # Additional sub-specifications
+    └── ...
+```
+
+### Master Specification Template
+
+```markdown
+# Master Specification: [Feature Name]
+
+**Date:** [timestamp]
+**Author:** Claude
+**Status:** Draft
+
+## 1. Feature Overview
+
+### 1.1 Summary
+[High-level description of the complete feature]
+
+### 1.2 Goals
+- [Overall goal 1]
+- [Overall goal 2]
+
+### 1.3 Scope Decomposition
+This feature is split into the following sub-specifications:
+
+| Index | Sub-Spec | Description | Dependencies |
+|-------|----------|-------------|--------------|
+| 01 | [name] | [brief description] | None |
+| 02 | [name] | [brief description] | 01 |
+| 03 | [name] | [brief description] | 01, 02 |
+
+## 2. Sub-Specification Dependencies
+
+```
+01-[sub-spec-1]
+      │
+      ▼
+02-[sub-spec-2] ──┬──▶ 04-[sub-spec-4]
+      │          │
+      ▼          │
+03-[sub-spec-3] ─┘
+```
+
+## 3. Integration Points
+
+### 3.1 Interfaces Between Sub-Specs
+| From | To | Interface | Contract |
+|------|-----|-----------|----------|
+| 01 | 02 | [interface name] | [API/contract description] |
+
+### 3.2 Shared Components
+- [Component 1]: Used by sub-specs [01, 02]
+- [Component 2]: Used by sub-specs [02, 03]
+
+## 4. Implementation Order
+
+**Phase 1:** Sub-spec 01 (foundation)
+**Phase 2:** Sub-specs 02, 03 (parallel, depends on 01)
+**Phase 3:** Sub-spec 04 (integration, depends on 02, 03)
+
+## 5. References
+
+- Sub-Spec 01: [./01-[name]/01-specification.md]
+- Sub-Spec 02: [./02-[name]/02-specification.md]
+- Sub-Spec 03: [./03-[name]/03-specification.md]
+```
+
+### Master Task List Template
+
+```markdown
+# Master Task List: [Feature Name]
+
+**Total Sub-Specs:** [count]
+**Total Tasks:** [count across all sub-specs]
+
+## Execution Phases
+
+### Phase 1: Foundation
+- Sub-Spec: `./01-[name]/`
+- Tasks: See `./01-[name]/01-task-list.md`
+- [ ] All Phase 1 tasks complete
+
+### Phase 2: Core Implementation
+- Sub-Specs: `./02-[name]/`, `./03-[name]/` (parallel)
+- Tasks: See respective task lists
+- [ ] All Phase 2 tasks complete
+
+### Phase 3: Integration
+- Sub-Spec: `./04-[name]/`
+- Tasks: See `./04-[name]/04-task-list.md`
+- [ ] All Phase 3 tasks complete
+
+### Final Phase: Verification
+- [ ] **TF.1** Integration tests across all sub-specs
+- [ ] **TF.2** End-to-end testing
+- [ ] **TF.3** Documentation update
+- [ ] **TF.4** Code review
+- [ ] **TF.5** Commit and push
+
+## Progress Tracker
+
+| Sub-Spec | Tasks | Completed | Status |
+|----------|-------|-----------|--------|
+| 01-[name] | [n] | [m] | 🟡 In Progress |
+| 02-[name] | [n] | [m] | ⚪ Pending |
+| 03-[name] | [n] | [m] | ⚪ Pending |
+| 04-[name] | [n] | [m] | ⚪ Pending |
+```
+
+### Sub-Specification Naming Convention
+
+Each sub-specification should be named descriptively:
+- `01-data-model` - Database schema and data access layer
+- `02-api-endpoints` - REST/GraphQL API implementation
+- `03-frontend-components` - UI components and views
+- `04-authentication` - Auth integration
+- `05-testing-and-qa` - Comprehensive test suites
+- `06-documentation` - User and developer docs
+
+### Execution Order for Sub-Specs
+
+When executing sub-specifications:
+1. **Execute in dependency order** as defined in Master Specification
+2. **Complete each sub-spec fully** before moving to dependent sub-specs
+3. **Parallel execution** is allowed for sub-specs with no dependencies on each other
+4. **Integration testing** after each phase completion
+5. **Update master task list** progress tracker after each sub-spec

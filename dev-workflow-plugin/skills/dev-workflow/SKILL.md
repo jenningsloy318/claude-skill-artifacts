@@ -314,6 +314,27 @@ Task(
 - `[index]-implementation-plan.md`
 - `[index]-task-list.md`
 
+**Sub-Specifications (Large Features):**
+
+For large, complex features (4+ functional areas, 15+ tasks, 2+ days effort), the spec-writer will create sub-specifications:
+
+```
+specification/[index]-[feature-name]/
+├── 00-master-specification.md      # Root specification with overview
+├── 00-master-implementation-plan.md # Master plan referencing all sub-specs
+├── 00-master-task-list.md          # Master task list with phases
+├── 01-[sub-spec-name]/             # First sub-specification
+│   ├── 01-specification.md
+│   ├── 01-implementation-plan.md
+│   └── 01-task-list.md
+├── 02-[sub-spec-name]/             # Second sub-specification
+│   └── ...
+└── 03-[sub-spec-name]/             # Additional sub-specifications
+    └── ...
+```
+
+Sub-specifications are executed in dependency order as defined in the master specification.
+
 ---
 
 ## Phase 7: Specification Review
