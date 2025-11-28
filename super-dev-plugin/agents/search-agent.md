@@ -15,43 +15,43 @@ Use wrapper scripts via Bash instead of direct MCP tool calls.
 ### Exa (Web & Code Search)
 ```bash
 # Web search
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
 
 # Code context search
-python3 super-dev-plugin/scripts/exa/exa_code.py --query "[query]" --tokens 5000
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.py --query "[query]" --tokens 5000
 ```
 
 ### DeepWiki (GitHub Repo Documentation)
 ```bash
 # Get repo docs structure
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
 
 # Get repo docs contents
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
 
 # Ask questions about a repo
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
 ```
 
 ### Context7 (Library Documentation)
 ```bash
 # Resolve library ID
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library-name]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "[library-name]"
 
 # Get library documentation
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
 ```
 
 ### GitHub (Code & Repo Search)
 ```bash
 # Search code across repos
-python3 super-dev-plugin/scripts/github/github_search_code.py --query "[query]" --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.py --query "[query]" --per-page 10
 
 # Search repositories
-python3 super-dev-plugin/scripts/github/github_search_repos.py --query "[query]" --sort stars
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.py --query "[query]" --sort stars
 
 # Get file/directory contents
-python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
 ```
 
 ## Core Capabilities
@@ -96,64 +96,64 @@ Original: "React state management"
 **Code Mode:**
 ```bash
 # Exa code context
-python3 super-dev-plugin/scripts/exa/exa_code.py --query "[query]" --tokens 10000
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.py --query "[query]" --tokens 10000
 
 # GitHub code search
-python3 super-dev-plugin/scripts/github/github_search_code.py --query "[query] language:[lang]" --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.py --query "[query] language:[lang]" --per-page 10
 
 # Context7 library docs
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library]"
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[id]" --mode code --topic "[topic]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "[library]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "[id]" --mode code --topic "[topic]"
 
 # DeepWiki repo Q&A
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
 ```
 
 **Docs Mode:**
 ```bash
 # Context7 for library documentation
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library]"
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[id]" --mode info
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "[library]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "[id]" --mode info
 
 # DeepWiki for repo documentation
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
 
 # Exa web search (filtered to docs)
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query] site:docs" --type deep --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query] site:docs" --type deep --results 10
 ```
 
 **Academic Mode:**
 ```bash
 # Exa for academic papers
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query] arxiv OR paper" --type deep --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query] arxiv OR paper" --type deep --results 10
 ```
 
 **Web Mode:**
 ```bash
 # Exa web search
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
 ```
 
 **Social/Community Mode:**
 ```bash
 # Reddit discussions
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query] site:reddit.com" --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query] site:reddit.com" --results 10
 
 # Twitter/X discussions
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query] site:x.com OR site:twitter.com" --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query] site:x.com OR site:twitter.com" --results 10
 
 # YouTube tutorials
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query] site:youtube.com" --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query] site:youtube.com" --results 10
 ```
 
 **GitHub Mode:**
 ```bash
 # Search repositories
-python3 super-dev-plugin/scripts/github/github_search_repos.py --query "[query]" --sort stars --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.py --query "[query]" --sort stars --per-page 10
 
 # Get file contents
-python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
 ```
 
 **All Mode:** Execute scripts for all modes in parallel
@@ -255,7 +255,7 @@ Every search must:
 
 ### Script Location
 
-All scripts are in: `super-dev-plugin/scripts/`
+All scripts are in: `${CLAUDE_PLUGIN_ROOT}/scripts/`
 
 ### Output Format
 
@@ -273,4 +273,4 @@ All scripts return consistent JSON:
 }
 ```
 
-See `research-agent.md` and `super-dev-plugin/scripts/README.md` for full documentation.
+See `research-agent.md` and `${CLAUDE_PLUGIN_ROOT}/scripts/README.md` for full documentation.

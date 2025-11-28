@@ -15,43 +15,43 @@ Use wrapper scripts via Bash instead of direct MCP tool calls.
 ### Exa (Web & Code Search)
 ```bash
 # Web search
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
 
 # Code context search
-python3 super-dev-plugin/scripts/exa/exa_code.py --query "[query]" --tokens 5000
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.py --query "[query]" --tokens 5000
 ```
 
 ### DeepWiki (GitHub Repo Documentation)
 ```bash
 # Get repo docs structure
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
 
 # Get repo docs contents
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
 
 # Ask questions about a repo
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
 ```
 
 ### Context7 (Library Documentation)
 ```bash
 # Resolve library ID
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library-name]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "[library-name]"
 
 # Get library documentation
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
 ```
 
 ### GitHub (Code & Repo Search)
 ```bash
 # Search code across repos
-python3 super-dev-plugin/scripts/github/github_search_code.py --query "[query]" --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.py --query "[query]" --per-page 10
 
 # Search repositories
-python3 super-dev-plugin/scripts/github/github_search_repos.py --query "[query]" --sort stars
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.py --query "[query]" --sort stars
 
 # Get file/directory contents
-python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
 ```
 
 ## Core Capabilities
@@ -319,7 +319,7 @@ Every research report must:
 
 #### Web Search
 ```bash
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[search query]" --type auto --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[search query]" --type auto --results 10
 ```
 
 **Parameters:**
@@ -330,7 +330,7 @@ python3 super-dev-plugin/scripts/exa/exa_search.py --query "[search query]" --ty
 
 #### Code Context
 ```bash
-python3 super-dev-plugin/scripts/exa/exa_code.py --query "[code query]" --tokens 5000
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.py --query "[code query]" --tokens 5000
 ```
 
 **Parameters:**
@@ -343,7 +343,7 @@ python3 super-dev-plugin/scripts/exa/exa_code.py --query "[code query]" --tokens
 
 #### Get Repo Documentation Structure
 ```bash
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "owner/repo"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_structure.py --repo "owner/repo"
 ```
 
 **Parameters:**
@@ -351,7 +351,7 @@ python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "owner/re
 
 #### Get Repo Documentation Contents
 ```bash
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "owner/repo"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_contents.py --repo "owner/repo"
 ```
 
 **Parameters:**
@@ -359,7 +359,7 @@ python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "owner/rep
 
 #### Ask Questions About a Repo
 ```bash
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "owner/repo" --question "How does X work?"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.py --repo "owner/repo" --question "How does X work?"
 ```
 
 **Parameters:**
@@ -372,7 +372,7 @@ python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "owner/repo" --
 
 #### Resolve Library ID
 ```bash
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "library-name"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "library-name"
 ```
 
 **Parameters:**
@@ -380,7 +380,7 @@ python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "library
 
 #### Get Library Documentation
 ```bash
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "/org/project" --mode code --topic "routing"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "/org/project" --mode code --topic "routing"
 ```
 
 **Parameters:**
@@ -395,7 +395,7 @@ python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "/org/pr
 
 #### Search Code
 ```bash
-python3 super-dev-plugin/scripts/github/github_search_code.py --query "HttpConnector language:python" --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.py --query "HttpConnector language:python" --per-page 10
 ```
 
 **Parameters:**
@@ -407,7 +407,7 @@ python3 super-dev-plugin/scripts/github/github_search_code.py --query "HttpConne
 
 #### Search Repositories
 ```bash
-python3 super-dev-plugin/scripts/github/github_search_repos.py --query "topic:mcp stars:>100" --sort stars
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.py --query "topic:mcp stars:>100" --sort stars
 ```
 
 **Parameters:**
@@ -419,7 +419,7 @@ python3 super-dev-plugin/scripts/github/github_search_repos.py --query "topic:mc
 
 #### Get File Contents
 ```bash
-python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "owner" --repo "repo" --path "src/"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "owner" --repo "repo" --path "src/"
 ```
 
 **Parameters:**

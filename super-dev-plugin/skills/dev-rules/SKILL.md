@@ -37,43 +37,43 @@ Use wrapper scripts via Bash instead of direct MCP tool calls.
 ### Exa (Web & Code Search)
 ```bash
 # Web search
-python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
 
 # Code context search
-python3 super-dev-plugin/scripts/exa/exa_code.py --query "[query]" --tokens 5000
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.py --query "[query]" --tokens 5000
 ```
 
 ### DeepWiki (GitHub Repo Documentation)
 ```bash
 # Get repo docs structure
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
 
 # Get repo docs contents
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
 
 # Ask questions about a repo
-python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
 ```
 
 ### Context7 (Library Documentation)
 ```bash
 # Resolve library ID
-python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library-name]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.py --library "[library-name]"
 
 # Get library documentation
-python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
 ```
 
 ### GitHub (Code & Repo Search)
 ```bash
 # Search code across repos
-python3 super-dev-plugin/scripts/github/github_search_code.py --query "[query]" --per-page 10
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.py --query "[query]" --per-page 10
 
 # Search repositories
-python3 super-dev-plugin/scripts/github/github_search_repos.py --query "[query]" --sort stars
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.py --query "[query]" --sort stars
 
 # Get file/directory contents
-python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
 ```
 
 ### Why Scripts?
@@ -82,7 +82,7 @@ python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]
 - Automatic MCP config resolution
 - Better error handling
 
-**See `super-dev-plugin/scripts/README.md` for full documentation.**
+**See `${CLAUDE_PLUGIN_ROOT}/scripts/README.md` for full documentation.**
 
 ## Time MCP Rules (MUST follow)
 
