@@ -13,20 +13,59 @@ A Claude Code plugin marketplace for context persistence and productivity tools.
 
 ## Getting Started
 
+### Step 1: Install uv
+
+If you don't have `uv` installed, install it first:
+
 ```bash
-# 1. Add the marketplace
+# Install uv using pipx (recommended)
+pipx install uv
+
+# Or install using curl
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Step 2: Create Virtual Environment
+
+Navigate to the project root and create a virtual environment with `uv`:
+
+```bash
+cd ~/.claude/plugins/marketplaces/super-skill-claude-artifacts/
+
+# Create virtual environment with seed
+uv venv --seed
+
+# Activate the virtual environment
+# On Linux/macOS:
+source .venv/bin/activate
+
+# On Windows:
+.venv\\Scripts\\activate
+```
+
+### 3. Plugin Installation
+
+```bash
+# Add the marketplace
 claude plugin marketplace add jenningsloy318/super-skill-claude-artifacts
 
-# 2. Install plugins
+# Install plugins
 claude plugin install context-keeper@super-skill-claude-artifacts
 claude plugin install dev-workflow@super-skill-claude-artifacts
+```
 
-# 3. (Optional) Configure LLM-based summaries in context-keeper
+### 4. (Optional) Configure LLM-based summaries in context-keeper
+
+```bash
 export CLAUDE_SUMMARY_API_KEY="your-api-key"
-# Optional: Custom API URL (for proxy or regional endpoints)
 export CLAUDE_SUMMARY_API_URL="https://api.anthropic.com"
+```
 
-# 4. Use Claude Code normally - plugins are active!
+### 5. Use Claude Code normally - plugins are active!
+
+**Important**: Always activate the virtual environment before running claude code:
+```bash
+source .venv/bin/activate
 ```
 
 ## Marketplace Management
@@ -63,7 +102,6 @@ Automatically saves context summaries before compaction and restores context on 
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `CLAUDE_SUMMARY_API_KEY` | API key for Claude LLM summarization | No (has fallback) |
-| `ANTHROPIC_API_KEY` | Fallback API key | No |
 | `CLAUDE_SUMMARY_API_URL` | Custom API base URL | No |
 
 See [context-keeper-plugin/README.md](./context-keeper-plugin/README.md) for full documentation.
@@ -108,18 +146,18 @@ A comprehensive 11-phase development workflow for implementing features, fixing 
 **Skills:**
 | Skill | Purpose |
 |-------|---------|
-| `dev-workflow` | Complete development workflow orchestration |
+| `super-dev` | Complete development workflow orchestration |
 | `dev-rules` | Core development rules and philosophy |
 
 **Commands:**
 | Command | Purpose |
 |---------|---------|
-| `/fix-impl` | Quick task execution for fixes and implementations |
+| `/super-dev:run` | Quick task execution for fixes and implementations |
 
 **Usage:**
 ```bash
-/dev-workflow:fix-impl Fix the login button not responding on mobile
-/dev-workflow:fix-impl Implement user profile page with avatar upload
+/super-dev:run Fix the login button not responding on mobile
+/super-dev:run Implement user profile page with avatar upload
 ```
 
 See [dev-workflow-plugin/README.md](./dev-workflow-plugin/README.md) for full documentation.
@@ -138,7 +176,7 @@ claude-artifacts/
 │   ├── commands/
 │   ├── skills/
 │   └── README.md
-├── dev-workflow-plugin/           # Development workflow plugin
+├── super-dev-plugin/           # Development workflow plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/                    # Specialized workflow agents

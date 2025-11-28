@@ -3,13 +3,21 @@
   "description": "Automatically summarize and persist conversation context before compaction, with automatic context restoration on resume",
   "version": "1.0.0",
   "author": {
-    "name": "Jennings L",
-    "email": "jennings@example.com"
+    "name": "Jennings Liu",
+    "email": "jenningsloy318@gmail.com"
   },
   "homepage": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
   "repository": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
   "license": "MIT",
-  "keywords": ["context", "keeper", "persistence", "memory", "compaction", "summary", "continuity"],
+  "keywords": [
+    "context",
+    "keeper",
+    "persistence",
+    "memory",
+    "compaction",
+    "summary",
+    "continuity"
+  ],
   "hooks": {
     "PreCompact": [
       {

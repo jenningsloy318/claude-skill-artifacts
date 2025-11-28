@@ -12,18 +12,6 @@ This plugin provides a systematic 12-phase development workflow orchestrated by 
 - Manages build queue (Rust/Go serialization)
 - Ensures parallel execution during implementation (dev + qa + docs)
 
-## Installation
-
-Add to your Claude Code settings:
-
-```json
-{
-  "plugins": [
-    "https://github.com/jenningsloy318/super-skill-claude-artifacts/tree/main/super-dev-plugin"
-  ]
-}
-```
-
 ## Usage
 
 ### Command

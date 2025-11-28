@@ -92,19 +92,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[o
 
 When searching the local codebase for code patterns, structures, or specific constructs:
 
-1. **Prefer ast-grep** for structural code search (AST-based pattern matching)
-2. **Use the ast-grep skill** (`Skill(skill: "ast-grep")`) for guidance on writing rules
-3. **If ast-grep is not installed**, ask the user to install it:
-   ```bash
-   # macOS
-   brew install ast-grep
-
-   # cargo (Rust)
-   cargo install ast-grep --locked
-
-   # npm
-   npm install -g @ast-grep/cli
-   ```
+1. **Prefer ast-grep** for structural code search (AST-based pattern matching), using **ast-grep skill** to invoke it
 
 ### When to Use ast-grep
 - Finding specific code patterns (e.g., all `useState` hooks, all API calls)
@@ -112,20 +100,6 @@ When searching the local codebase for code patterns, structures, or specific con
 - Refactoring patterns across multiple files
 - Finding anti-patterns or deprecated API usage
 
-### Basic Usage
-```bash
-# Search for pattern in current directory
-ast-grep --pattern '[pattern]' .
-
-# Search specific file types
-ast-grep --pattern '[pattern]' --lang typescript src/
-
-# Interactive mode
-ast-grep --interactive --pattern '[pattern]' .
-```
-
-### Fallback
-If ast-grep is unavailable and user declines to install, use Grep tool for text-based search.
 
 ## Git Rules (MUST follow)
 

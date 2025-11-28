@@ -3,11 +3,20 @@
   "description": "Coordinator-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
   "version": "2.0.0",
   "author": {
-    "name": "Jennings L",
-    "email": "jennings@example.com"
+    "name": "Jennings Liu",
+    "email": "jenningsloy318@gmail.com"
   },
   "homepage": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
   "repository": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
   "license": "MIT",
-  "keywords": ["development", "workflow", "debugging", "implementation", "refactoring", "specification", "coordinator", "parallel"]
+  "keywords": [
+    "development",
+    "workflow",
+    "debugging",
+    "implementation",
+    "refactoring",
+    "specification",
+    "coordinator",
+    "parallel"
+  ]
 }
