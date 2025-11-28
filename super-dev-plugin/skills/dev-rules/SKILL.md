@@ -28,27 +28,53 @@ When implementing designs from Figma:
 - Strive for 1:1 visual parity with Figma design
 - Validate final UI against Figma screenshot for both look and behavior
 
-## ⛔ MCP Script Enforcement (MUST follow)
+## MCP Script Usage (MUST follow)
 
-**Direct MCP tool calls are FORBIDDEN.** Always use wrapper scripts via Bash instead.
+Use wrapper scripts via Bash instead of direct MCP tool calls.
 
-### Forbidden Tools → Required Scripts
+**Exception:** `mcp__time-mcp__current_time` is allowed (no script available)
 
-| MCP Tool | Use Script Instead |
-|----------|-------------------|
-| `mcp__exa__web_search_exa` | `python3 super-dev-plugin/scripts/exa/exa_search.py --query "..."` |
-| `mcp__exa__get_code_context_exa` | `python3 super-dev-plugin/scripts/exa/exa_code.py --query "..."` |
-| `mcp__deepwiki__read_wiki_structure` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "owner/repo"` |
-| `mcp__deepwiki__read_wiki_contents` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "owner/repo"` |
-| `mcp__deepwiki__ask_question` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "owner/repo" --question "..."` |
-| `mcp__context7__resolve-library-id` | `python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "..."` |
-| `mcp__context7__get-library-docs` | `python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "..."` |
-| `mcp__github__search_code` | `python3 super-dev-plugin/scripts/github/github_search_code.py --query "..."` |
-| `mcp__github__search_repositories` | `python3 super-dev-plugin/scripts/github/github_search_repos.py --query "..."` |
-| `mcp__github__get_file_contents` | `python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "..." --repo "..." --path "..."` |
+### Exa (Web & Code Search)
+```bash
+# Web search
+python3 super-dev-plugin/scripts/exa/exa_search.py --query "[query]" --type auto --results 10
 
-### Allowed Exception
-- `mcp__time-mcp__current_time` - No script wrapper available, direct call permitted
+# Code context search
+python3 super-dev-plugin/scripts/exa/exa_code.py --query "[query]" --tokens 5000
+```
+
+### DeepWiki (GitHub Repo Documentation)
+```bash
+# Get repo docs structure
+python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "[owner/repo]"
+
+# Get repo docs contents
+python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "[owner/repo]"
+
+# Ask questions about a repo
+python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "[owner/repo]" --question "[question]"
+```
+
+### Context7 (Library Documentation)
+```bash
+# Resolve library ID
+python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "[library-name]"
+
+# Get library documentation
+python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "[/org/project]" --mode code --topic "[topic]"
+```
+
+### GitHub (Code & Repo Search)
+```bash
+# Search code across repos
+python3 super-dev-plugin/scripts/github/github_search_code.py --query "[query]" --per-page 10
+
+# Search repositories
+python3 super-dev-plugin/scripts/github/github_search_repos.py --query "[query]" --sort stars
+
+# Get file/directory contents
+python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "[owner]" --repo "[repo]" --path "[path]"
+```
 
 ### Why Scripts?
 - Token-efficient output formatting
