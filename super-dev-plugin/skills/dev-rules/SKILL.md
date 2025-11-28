@@ -28,6 +28,39 @@ When implementing designs from Figma:
 - Strive for 1:1 visual parity with Figma design
 - Validate final UI against Figma screenshot for both look and behavior
 
+## ⛔ MCP Script Enforcement (MUST follow)
+
+**Direct MCP tool calls are FORBIDDEN.** Always use wrapper scripts via Bash instead.
+
+### Forbidden Tools → Required Scripts
+
+| MCP Tool | Use Script Instead |
+|----------|-------------------|
+| `mcp__exa__web_search_exa` | `python3 super-dev-plugin/scripts/exa/exa_search.py --query "..."` |
+| `mcp__exa__get_code_context_exa` | `python3 super-dev-plugin/scripts/exa/exa_code.py --query "..."` |
+| `mcp__deepwiki__read_wiki_structure` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py --repo "owner/repo"` |
+| `mcp__deepwiki__read_wiki_contents` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py --repo "owner/repo"` |
+| `mcp__deepwiki__ask_question` | `python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py --repo "owner/repo" --question "..."` |
+| `mcp__context7__resolve-library-id` | `python3 super-dev-plugin/scripts/context7/context7_resolve.py --library "..."` |
+| `mcp__context7__get-library-docs` | `python3 super-dev-plugin/scripts/context7/context7_docs.py --library-id "..."` |
+| `mcp__github__search_code` | `python3 super-dev-plugin/scripts/github/github_search_code.py --query "..."` |
+| `mcp__github__search_repositories` | `python3 super-dev-plugin/scripts/github/github_search_repos.py --query "..."` |
+| `mcp__github__get_file_contents` | `python3 super-dev-plugin/scripts/github/github_file_contents.py --owner "..." --repo "..." --path "..."` |
+
+### Allowed Exception
+- `mcp__time-mcp__current_time` - No script wrapper available, direct call permitted
+
+### Why Scripts?
+- Token-efficient output formatting
+- Consistent JSON response structure
+- Automatic MCP config resolution
+- Better error handling
+
+### Enforcement
+A PreToolUse hook (`super-dev-plugin/hooks/block_direct_mcp.py`) intercepts and blocks direct MCP calls, providing the exact script command to run instead.
+
+**See `super-dev-plugin/scripts/README.md` for full documentation.**
+
 ## Time MCP Rules (MUST follow)
 
 - In every prompt, add the current date and time as extra context
