@@ -184,9 +184,11 @@ git checkout -- <file>            # Restore file from last commit
 
 ### Each spec directory under specification must be indexed
 
-All features, bug fixes, error fixes, improvements, and code refactoring should create a spec directory under `specification/`
+All features, bug fixes, error fixes, improvements, and code refactoring should have a spec directory under `specification/`
 
-1. Spec directory under `specification/` must be created with the pattern `[index]-[feature-name or fix-name]`
+1. **Reuse Existing Specs**: If there are existing specifications related to the current requirement, use the most relevant one. If multiple specs are related, choose the closest match or ask the user to confirm which to use.
+2. **Spec Directory Pattern**: Create specification directories under `specification/` using the pattern `[index]-[feature-name or fix-name]`.
+3. **Incremental Indexing**: When adding new specification directories under `specification/`, increment the index by one each time.
 
 ### Keep Spec Documents Current (MANDATORY)
 All specification documents MUST be updated as work progresses:
