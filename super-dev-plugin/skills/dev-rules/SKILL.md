@@ -56,9 +56,6 @@ When implementing designs from Figma:
 - Automatic MCP config resolution
 - Better error handling
 
-### Enforcement
-A PreToolUse hook (`super-dev-plugin/hooks/block_direct_mcp.py`) intercepts and blocks direct MCP calls, providing the exact script command to run instead.
-
 **See `super-dev-plugin/scripts/README.md` for full documentation.**
 
 ## Time MCP Rules (MUST follow)
