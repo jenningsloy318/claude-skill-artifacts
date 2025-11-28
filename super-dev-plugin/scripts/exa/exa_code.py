@@ -2,8 +2,8 @@
 """
 Exa Code Context Script: Get code context using Exa MCP server.
 
-This script connects to the Exa MCP server configured in Claude Code settings
-and calls the get_code_context_exa tool via mcp-use client.
+Uses mcp-use to automatically discover and connect to Exa MCP server
+from Claude Code configuration.
 
 Usage:
     python3 exa_code.py --query "search query" [--tokens 5000]
@@ -15,7 +15,6 @@ Output:
 import argparse
 import asyncio
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
@@ -42,44 +41,27 @@ def ensure_mcp_use_installed():
             return False
 
 
-def load_mcp_config() -> dict | None:
-    """Load MCP server configuration from Claude Code settings."""
+def find_claude_config() -> Path | None:
+    """Find Claude Code config file."""
     config_paths = [
         Path.home() / ".claude.json",
         Path.home() / ".claude" / "settings.json",
         Path.home() / ".claude" / "settings.local.json",
         Path.cwd() / ".claude" / "settings.json",
         Path.cwd() / ".claude" / "settings.local.json",
-        Path.cwd() / ".claude.json",
     ]
-
-    for config_path in config_paths:
-        if config_path.exists():
-            try:
-                config = json.loads(config_path.read_text())
-                mcp_servers = config.get("mcpServers", {})
-
-                # Look for exa server config
-                if "exa" in mcp_servers:
-                    return {"mcpServers": {"exa": mcp_servers["exa"]}}
-
-                # Also check for @anthropic/mcp-server-exa or similar names
-                for name, server_config in mcp_servers.items():
-                    if "exa" in name.lower():
-                        return {"mcpServers": {name: server_config}}
-
-            except (json.JSONDecodeError, KeyError, TypeError):
-                continue
-
+    for path in config_paths:
+        if path.exists():
+            return path
     return None
 
 
 async def get_code_context(query: str, tokens: int) -> dict:
-    """Get code context using mcp-use client connection to Exa server."""
+    """Get code context using mcp-use client."""
     if not ensure_mcp_use_installed():
         return {
             "success": False,
-            "error": "Failed to install mcp-use package. Run manually: pip install mcp-use",
+            "error": "Failed to install mcp-use package",
             "error_type": "DependencyError"
         }
 
@@ -88,36 +70,63 @@ async def get_code_context(query: str, tokens: int) -> dict:
     except ImportError:
         return {
             "success": False,
-            "error": "mcp-use package import failed after installation. Please restart and try again.",
+            "error": "mcp-use import failed",
             "error_type": "DependencyError"
         }
 
-    # Load MCP config from Claude Code settings
-    mcp_config = load_mcp_config()
-    if not mcp_config:
+    # Find Claude config file
+    config_path = find_claude_config()
+    if not config_path:
         return {
             "success": False,
-            "error": "Exa MCP server not found in Claude Code config. Please configure it in ~/.claude.json or project settings.",
+            "error": "Claude Code config not found",
             "error_type": "ConfigurationError"
         }
 
-    client = MCPClient.from_dict(mcp_config)
-    server_name = list(mcp_config["mcpServers"].keys())[0]
-
     try:
+        # Load client from Claude Code config
+        client = MCPClient.from_config_file(str(config_path))
         await client.create_all_sessions()
-        session = client.get_session(server_name)
 
-        if not session:
+        # Find Exa server
+        exa_session = None
+        exa_server_name = None
+
+        for name in client.sessions.keys():
+            if "exa" in name.lower():
+                exa_session = client.get_session(name)
+                exa_server_name = name
+                break
+
+        if not exa_session:
+            available = list(client.sessions.keys()) if client.sessions else []
             return {
                 "success": False,
-                "error": f"Failed to create session for {server_name}",
-                "error_type": "ConnectionError"
+                "error": f"Exa server not found. Available servers: {available}",
+                "error_type": "ConfigurationError"
             }
 
-        # Call the get_code_context_exa tool
-        result = await session.call_tool(
-            name="get_code_context_exa",
+        # List tools to find the code context tool
+        tools = await exa_session.list_tools()
+        tool_names = [t.name for t in tools]
+
+        # Find code context tool
+        code_tool = None
+        for name in ["get_code_context_exa", "code_context", "get_code_context"]:
+            if name in tool_names:
+                code_tool = name
+                break
+
+        if not code_tool:
+            return {
+                "success": False,
+                "error": f"Code context tool not found. Available tools: {tool_names}",
+                "error_type": "ToolError"
+            }
+
+        # Call the tool
+        result = await exa_session.call_tool(
+            name=code_tool,
             arguments={
                 "query": query,
                 "tokensNum": tokens
@@ -133,28 +142,18 @@ async def get_code_context(query: str, tokens: int) -> dict:
 
         if result.content:
             content_text = result.content[0].text if hasattr(result.content[0], 'text') else str(result.content[0])
-
             return {
                 "success": True,
                 "query": query,
                 "context": content_text,
                 "metadata": {
-                    "tool": "get_code_context_exa",
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
-                    "requested_tokens": tokens
+                    "tool": code_tool,
+                    "server": exa_server_name,
+                    "timestamp": datetime.utcnow().isoformat() + "Z"
                 }
             }
 
-        return {
-            "success": True,
-            "query": query,
-            "context": "",
-            "metadata": {
-                "tool": "get_code_context_exa",
-                "timestamp": datetime.utcnow().isoformat() + "Z",
-                "note": "No context returned"
-            }
-        }
+        return {"success": True, "query": query, "context": ""}
 
     except Exception as e:
         return {
@@ -168,39 +167,18 @@ async def get_code_context(query: str, tokens: int) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Get code context using Exa MCP server (reads config from Claude Code settings)",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-    python3 exa_code.py --query "React useState hook examples"
-    python3 exa_code.py -q "Next.js 15 server components" --tokens 8000
-
-Configuration:
-    Reads Exa MCP server config from Claude Code settings:
-    - ~/.claude.json
-    - ~/.claude/settings.json
-    - .claude/settings.local.json (project)
-        """
+        description="Get code context using Exa MCP server (auto-discovers from Claude Code config)"
     )
     parser.add_argument("--query", "-q", required=True, help="Code-related search query")
-    parser.add_argument("--tokens", "-t", type=int, default=5000,
-                        help="Number of tokens to return (default: 5000, range: 1000-50000)")
+    parser.add_argument("--tokens", "-t", type=int, default=5000, help="Tokens (1000-50000)")
 
     args = parser.parse_args()
 
     if args.tokens < 1000 or args.tokens > 50000:
-        print(json.dumps({
-            "success": False,
-            "error": "tokens must be between 1000 and 50000",
-            "error_type": "ValidationError"
-        }, indent=2))
+        print(json.dumps({"success": False, "error": "tokens must be 1000-50000"}))
         sys.exit(1)
 
-    result = asyncio.run(get_code_context(
-        query=args.query,
-        tokens=args.tokens
-    ))
-
+    result = asyncio.run(get_code_context(args.query, args.tokens))
     print(json.dumps(result, indent=2))
     sys.exit(0 if result.get("success") else 1)
 

@@ -2,8 +2,8 @@
 """
 Exa Web Search Script: Execute web searches using Exa MCP server.
 
-This script connects to the Exa MCP server configured in Claude Code settings
-and calls the web_search_exa tool via mcp-use client.
+Uses mcp-use to automatically discover and connect to Exa MCP server
+from Claude Code configuration.
 
 Usage:
     python3 exa_search.py --query "search terms" [--type auto|fast|deep] [--results 8]
@@ -15,7 +15,6 @@ Output:
 import argparse
 import asyncio
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
@@ -42,44 +41,27 @@ def ensure_mcp_use_installed():
             return False
 
 
-def load_mcp_config() -> dict | None:
-    """Load MCP server configuration from Claude Code settings."""
+def find_claude_config() -> Path | None:
+    """Find Claude Code config file."""
     config_paths = [
         Path.home() / ".claude.json",
         Path.home() / ".claude" / "settings.json",
         Path.home() / ".claude" / "settings.local.json",
         Path.cwd() / ".claude" / "settings.json",
         Path.cwd() / ".claude" / "settings.local.json",
-        Path.cwd() / ".claude.json",
     ]
-
-    for config_path in config_paths:
-        if config_path.exists():
-            try:
-                config = json.loads(config_path.read_text())
-                mcp_servers = config.get("mcpServers", {})
-
-                # Look for exa server config
-                if "exa" in mcp_servers:
-                    return {"mcpServers": {"exa": mcp_servers["exa"]}}
-
-                # Also check for @anthropic/mcp-server-exa or similar names
-                for name, server_config in mcp_servers.items():
-                    if "exa" in name.lower():
-                        return {"mcpServers": {name: server_config}}
-
-            except (json.JSONDecodeError, KeyError, TypeError):
-                continue
-
+    for path in config_paths:
+        if path.exists():
+            return path
     return None
 
 
 async def search_with_mcp(query: str, search_type: str, num_results: int, context_chars: int) -> dict:
-    """Execute search using mcp-use client connection to Exa server."""
+    """Execute search using mcp-use client."""
     if not ensure_mcp_use_installed():
         return {
             "success": False,
-            "error": "Failed to install mcp-use package. Run manually: pip install mcp-use",
+            "error": "Failed to install mcp-use package",
             "error_type": "DependencyError"
         }
 
@@ -88,36 +70,64 @@ async def search_with_mcp(query: str, search_type: str, num_results: int, contex
     except ImportError:
         return {
             "success": False,
-            "error": "mcp-use package import failed after installation. Please restart and try again.",
+            "error": "mcp-use import failed",
             "error_type": "DependencyError"
         }
 
-    # Load MCP config from Claude Code settings
-    mcp_config = load_mcp_config()
-    if not mcp_config:
+    # Find Claude config file
+    config_path = find_claude_config()
+    if not config_path:
         return {
             "success": False,
-            "error": "Exa MCP server not found in Claude Code config. Please configure it in ~/.claude.json or project settings.",
+            "error": "Claude Code config not found",
             "error_type": "ConfigurationError"
         }
 
-    client = MCPClient.from_dict(mcp_config)
-    server_name = list(mcp_config["mcpServers"].keys())[0]
-
     try:
+        # Load client from Claude Code config
+        client = MCPClient.from_config_file(str(config_path))
         await client.create_all_sessions()
-        session = client.get_session(server_name)
 
-        if not session:
+        # Find Exa server and its tools
+        exa_session = None
+        exa_server_name = None
+
+        for name in client.sessions.keys():
+            if "exa" in name.lower():
+                exa_session = client.get_session(name)
+                exa_server_name = name
+                break
+
+        if not exa_session:
+            # List available servers for error message
+            available = list(client.sessions.keys()) if client.sessions else []
             return {
                 "success": False,
-                "error": f"Failed to create session for {server_name}",
-                "error_type": "ConnectionError"
+                "error": f"Exa server not found. Available servers: {available}",
+                "error_type": "ConfigurationError"
             }
 
-        # Call the web_search_exa tool
-        result = await session.call_tool(
-            name="web_search_exa",
+        # List tools to find the search tool
+        tools = await exa_session.list_tools()
+        tool_names = [t.name for t in tools]
+
+        # Find web search tool
+        search_tool = None
+        for name in ["web_search_exa", "search", "web_search"]:
+            if name in tool_names:
+                search_tool = name
+                break
+
+        if not search_tool:
+            return {
+                "success": False,
+                "error": f"Search tool not found. Available tools: {tool_names}",
+                "error_type": "ToolError"
+            }
+
+        # Call the search tool
+        result = await exa_session.call_tool(
+            name=search_tool,
             arguments={
                 "query": query,
                 "type": search_type,
@@ -135,34 +145,23 @@ async def search_with_mcp(query: str, search_type: str, num_results: int, contex
 
         if result.content:
             content_text = result.content[0].text if hasattr(result.content[0], 'text') else str(result.content[0])
-
             try:
-                parsed_results = json.loads(content_text)
+                parsed = json.loads(content_text)
             except json.JSONDecodeError:
-                parsed_results = content_text
+                parsed = content_text
 
             return {
                 "success": True,
                 "query": query,
-                "results": parsed_results,
+                "results": parsed,
                 "metadata": {
-                    "tool": "web_search_exa",
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
-                    "search_type": search_type,
-                    "requested_results": num_results
+                    "tool": search_tool,
+                    "server": exa_server_name,
+                    "timestamp": datetime.utcnow().isoformat() + "Z"
                 }
             }
 
-        return {
-            "success": True,
-            "query": query,
-            "results": [],
-            "metadata": {
-                "tool": "web_search_exa",
-                "timestamp": datetime.utcnow().isoformat() + "Z",
-                "note": "No results returned"
-            }
-        }
+        return {"success": True, "query": query, "results": []}
 
     except Exception as e:
         return {
@@ -176,35 +175,15 @@ async def search_with_mcp(query: str, search_type: str, num_results: int, contex
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Execute web searches using Exa MCP server (reads config from Claude Code settings)",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-    python3 exa_search.py --query "React hooks best practices 2025"
-    python3 exa_search.py -q "Python async patterns" --type deep --results 15
-
-Configuration:
-    Reads Exa MCP server config from Claude Code settings:
-    - ~/.claude.json
-    - ~/.claude/settings.json
-    - .claude/settings.local.json (project)
-        """
+        description="Web search using Exa MCP server (auto-discovers from Claude Code config)"
     )
-    parser.add_argument("--query", "-q", required=True, help="Search query string")
-    parser.add_argument("--type", "-t", choices=["auto", "fast", "deep"], default="auto",
-                        help="Search type: auto (balanced), fast (quick), deep (comprehensive)")
-    parser.add_argument("--results", "-r", type=int, default=8, help="Number of results (default: 8)")
-    parser.add_argument("--context-chars", "-c", type=int, default=10000, help="Max context characters (default: 10000)")
+    parser.add_argument("--query", "-q", required=True, help="Search query")
+    parser.add_argument("--type", "-t", choices=["auto", "fast", "deep"], default="auto")
+    parser.add_argument("--results", "-r", type=int, default=8)
+    parser.add_argument("--context-chars", "-c", type=int, default=10000)
 
     args = parser.parse_args()
-
-    result = asyncio.run(search_with_mcp(
-        query=args.query,
-        search_type=args.type,
-        num_results=args.results,
-        context_chars=args.context_chars
-    ))
-
+    result = asyncio.run(search_with_mcp(args.query, args.type, args.results, args.context_chars))
     print(json.dumps(result, indent=2))
     sys.exit(0 if result.get("success") else 1)
 
