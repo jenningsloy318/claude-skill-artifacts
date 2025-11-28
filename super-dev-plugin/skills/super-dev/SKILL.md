@@ -5,6 +5,34 @@ description: Coordinator-driven development workflow with parallel agent executi
 
 # Super Dev Workflow
 
+## ⛔ FORBIDDEN - Direct MCP Tool Calls
+
+**CRITICAL ENFORCEMENT:** This skill and ALL agents in this workflow MUST NOT call MCP tools directly. Always use the wrapper scripts via Bash.
+
+**NEVER use these direct MCP tool calls:**
+- ❌ `mcp__exa__web_search_exa` - Use `python3 super-dev-plugin/scripts/exa/exa_search.py` instead
+- ❌ `mcp__exa__get_code_context_exa` - Use `python3 super-dev-plugin/scripts/exa/exa_code.py` instead
+- ❌ `mcp__deepwiki__read_wiki_structure` - Use `python3 super-dev-plugin/scripts/deepwiki/deepwiki_structure.py` instead
+- ❌ `mcp__deepwiki__read_wiki_contents` - Use `python3 super-dev-plugin/scripts/deepwiki/deepwiki_contents.py` instead
+- ❌ `mcp__deepwiki__ask_question` - Use `python3 super-dev-plugin/scripts/deepwiki/deepwiki_ask.py` instead
+- ❌ `mcp__context7__resolve-library-id` - Use `python3 super-dev-plugin/scripts/context7/context7_resolve.py` instead
+- ❌ `mcp__context7__get-library-docs` - Use `python3 super-dev-plugin/scripts/context7/context7_docs.py` instead
+- ❌ `mcp__github__search_code` - Use `python3 super-dev-plugin/scripts/github/github_search_code.py` instead
+- ❌ `mcp__github__search_repositories` - Use `python3 super-dev-plugin/scripts/github/github_search_repos.py` instead
+- ❌ `mcp__github__get_file_contents` - Use `python3 super-dev-plugin/scripts/github/github_file_contents.py` instead
+
+**EXCEPTION:** `mcp__time-mcp__current_time` is allowed (no script wrapper available)
+
+**WHY:** Scripts provide:
+- Token-efficient output formatting
+- Consistent JSON response structure
+- Automatic MCP config resolution
+- Better error handling
+
+**See `super-dev-plugin/scripts/README.md` for full script documentation.**
+
+---
+
 A coordinator-driven development system with parallel agent execution for all development tasks including bug fixes, new features, performance improvements, and refactoring.
 
 **Announce at start:** "I'm using the super-dev skill to systematically implement this task with coordinator-driven orchestration."
