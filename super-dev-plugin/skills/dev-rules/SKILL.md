@@ -11,7 +11,7 @@ These rules define coding standards and practices that MUST be followed for all 
 
 When implementing designs from Figma:
 
-### Required Flow (do not skip)
+### Required Flow (MUST follow)
 1. Run `get_design_context` first to fetch the structured representation for the exact node(s)
 2. If response is too large or truncated, run `get_metadata` to get the high-level node map, then re-fetch only required node(s)
 3. Run `get_screenshot` for a visual reference of the node variant being implemented
@@ -180,7 +180,13 @@ git reflog                        # Find lost commits
 git checkout -- <file>            # Restore file from last commit
 ```
 
-## Documentation Update Rules (CRITICAL)
+## Documentation Update Rules (MUST follow)
+
+### Each spec directory under specification must be indexed
+
+All features, bug fixes, error fixes, improvements, and code refactoring should create a spec directory under `specification/`
+
+1. Spec directory under `specification/` must be created with the pattern `[index]-[feature-name or fix-name]`
 
 ### Keep Spec Documents Current (MANDATORY)
 All specification documents MUST be updated as work progresses:
