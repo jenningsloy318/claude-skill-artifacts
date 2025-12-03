@@ -239,7 +239,7 @@ Coordinator reviews all documents for alignment and completeness.
 
 **Agents:**
 - `super-dev:dev-executor` - Implements code, invokes specialist developers
-- `super-dev:qa-executor` - Writes tests, verifies builds
+- `super-dev:qa-agent` - Testing and verification (merged planning + execution)
 - `super-dev:docs-executor` - Updates documentation in real-time
 
 **Build Policy (Rust/Go):**
@@ -306,7 +306,7 @@ Coordinator verifies:
 | Agent | Purpose | Invoke Via |
 |-------|---------|------------|
 | `dev-executor` | Development implementation | `super-dev:dev-executor` |
-| `qa-executor` | Testing and verification | `super-dev:qa-executor` |
+| `qa-agent` | Testing and verification (merged) | `super-dev:qa-agent` |
 | `docs-executor` | Documentation updates | `super-dev:docs-executor` |
 
 ### Workflow Agents
