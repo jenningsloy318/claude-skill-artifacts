@@ -609,6 +609,8 @@ Run `coderabbit --prompt-only` in background. Pass any errors and issues found t
 
 ## MCP Tools Reference
 
+Enforcement: Use MCP test frameworks for all web and UI testing. Default to Playwright MCP for browser automation, Chrome DevTools MCP for performance/console/network traces, and axe-core for accessibility audits.
+
 ### Playwright MCP Tools
 
 | Tool | Purpose |
@@ -715,6 +717,7 @@ Run `coderabbit --prompt-only` in background. Pass any errors and issues found t
 Every QA execution must verify:
 
 - [ ] CodeRabbit CLI review passed (no critical/high issues)
+- [ ] MCP test frameworks enforced (Playwright MCP, Chrome DevTools MCP, axe-core where applicable)
 - [ ] All test plans generated from requirements
 - [ ] Oracle strategies defined for each test case
 - [ ] Sandbox/isolated execution environment used
