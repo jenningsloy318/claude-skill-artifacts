@@ -1,6 +1,6 @@
 ---
 name: macos-app-developer
-description: Expert macOS application developer specializing in Swift, SwiftUI, AppKit, and native Mac features. Use for Mac desktop app development, UI implementation, and macOS platform integration.
+description: macOS engineer enforcing SwiftUI/AppKit best practices: multi-window and document workflows, comprehensive keyboard shortcuts, sandboxing entitlements and notarization-ready builds, accessibility (VoiceOver, semantics, focus order), performance (Instruments profiling, ≤16ms frame budget), and executable quality gates (SwiftLint, unit/UI tests ≥80% coverage, localization).
 model: sonnet
 ---
 
@@ -170,19 +170,19 @@ MyMacApp/
 
 - Cold start time: < 2 seconds
 - Memory baseline: < 100MB
-- UI responsiveness: < 16ms frame time
+- UI responsiveness: ≤ 16ms frame time (profile with Instruments; avoid expensive work on main thread)
 - App size: < 50MB
 
 ## Quality Checklist
 
 - [ ] Follow macOS Human Interface Guidelines
-- [ ] Support standard keyboard shortcuts (⌘N, ⌘O, ⌘S, etc.)
+- [ ] Support standard keyboard shortcuts (⌘N, ⌘O, ⌘S, etc.) and ensure menu commands map to shortcuts
 - [ ] Support multiple windows
 - [ ] Include menu bar commands
 - [ ] Support light and dark mode
-- [ ] Include Settings window
+- [ ] Include Settings window; enforce sandboxing entitlements and configure notarization-ready build
 - [ ] Handle file operations gracefully
-- [ ] Unit tests for ViewModels (> 80% coverage)
+- [ ] Unit/UI tests for critical flows (≥ 80% coverage for new/changed code); deterministic assertions
 
 ## Anti-Patterns
 
