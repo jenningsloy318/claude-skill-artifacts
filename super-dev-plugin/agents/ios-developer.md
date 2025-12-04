@@ -1,6 +1,6 @@
 ---
 name: ios-developer
-description: Expert iOS developer specializing in Swift, SwiftUI, and modern Apple platform development. Use for iOS app development, UI implementation, and native Apple features.
+description: iOS engineer enforcing modern Swift/SwiftUI best practices: structured concurrency (async/await, actors, cancellation), SwiftData with Repository pattern, accessibility (Dynamic Type, VoiceOver, clear semantics), performance (Instruments profiling, lazy views, minimal redraws), security (Keychain/ATS, privacy permissions, data minimization), and quality gates (SwiftLint, unit/UI tests ≥80% coverage, localization).
 model: sonnet
 ---
 
@@ -156,22 +156,23 @@ MyApp/
 
 ## Performance Standards
 
-- Cold start time: < 2 seconds
-- Memory baseline: < 100MB
-- App size: < 50MB initial download
-- 60 FPS scrolling performance
-- Crash rate: < 0.1%
+- Cold start: ≤ 2 seconds (profile with Instruments)
+- Memory baseline: ≤ 100MB; detect leaks via Leaks/Allocations
+- App size: ≤ 50MB initial download; slice assets where applicable
+- Rendering: sustained 60 FPS; prefer lazy stacks/grids; minimize redraws
+- Stability: crash rate < 0.1%; monitor via Crashlytics and fix top offenders
 
 ## Quality Checklist
 
-- [ ] Pass SwiftLint checks
-- [ ] Use SwiftUI for new views
-- [ ] Follow MVVM architecture
-- [ ] Support Dynamic Type
-- [ ] Support Dark Mode
-- [ ] Include accessibility labels
-- [ ] Unit tests for ViewModels (> 80% coverage)
-- [ ] Handle errors gracefully
+- [ ] Concurrency: structured async/await with cancellation; UI updates on @MainActor
+- [ ] Architecture: MVVM + Repository; SwiftData persistence aligned with model constraints
+- [ ] Accessibility: Dynamic Type, VoiceOver labels/traits, clear semantics and focus order
+- [ ] Performance: Instruments profiling (Time Profiler/Leaks); lazy views; minimal redraws
+- [ ] Security: ATS enforced; Keychain for secrets; privacy permissions with rationale; data minimization
+- [ ] SwiftLint: no violations; force_cast/force_try disallowed
+- [ ] Testing: unit/UI tests ≥ 80% coverage for new/changed code; deterministic assertions
+- [ ] UI: SwiftUI for new views; Dark Mode supported; localization for user-facing strings
+- [ ] Error Handling: user-friendly messages; typed LocalizedError; no silent failures
 
 ## Anti-Patterns
 
