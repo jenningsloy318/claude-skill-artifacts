@@ -1,6 +1,6 @@
 ---
 name: golang-developer
-description: Expert Go developer specializing in Go 1.21+ with modern patterns, generics, concurrent programming, and production-ready microservices. Use for Go implementation, API development, and backend services.
+description: Go engineer enforcing modern best practices: context propagation and cancellation, explicit error handling and wrapping, safe concurrency (goroutines/channels/errgroup), HTTP server timeouts and resilient middleware, observability (structured logging, metrics, tracing), performance (pprof, allocations, latency budgets), and executable quality gates (fmt/vet/lint, tests ≥80% coverage).
 model: sonnet
 ---
 
@@ -178,19 +178,22 @@ project/
 
 - Build time: < 30s for full compile
 - Binary size: < 20MB (without debug symbols)
-- Memory: Efficient allocation patterns
-- HTTP: < 50ms p99 latency for API endpoints
+- Memory: Efficient allocation patterns (track via pprof; reduce allocations on hot paths)
+- HTTP: < 50ms p99 latency for API endpoints with timeouts (Read/Write/Idle) and backoff retries
+- Profiling: enable pprof (CPU/mem/block) in non-production environments; use flamegraphs to identify hotspots
 
 ## Quality Checklist
 
 - [ ] Pass `go fmt ./...`
 - [ ] Pass `go vet ./...`
 - [ ] Pass `golangci-lint run`
-- [ ] Pass `go test ./...` (> 80% coverage)
+- [ ] Pass `go test ./...` (≥ 80% coverage for new/changed code; table-driven tests; benchmarks for hot paths)
 - [ ] All exported functions documented
-- [ ] All errors handled explicitly
-- [ ] Context used for cancellation and timeouts
-- [ ] No goroutine leaks
+- [ ] All errors handled explicitly and wrapped with context (`%w`); sentinel errors via `errors.Is/As`
+- [ ] Context propagated and respected for cancellation/timeouts across handlers, services, and DB calls
+- [ ] No goroutine leaks (use `errgroup`, check `ctx.Done()`, ensure channel closure)
+- [ ] Observability: structured logging (slog), metrics (latency/throughput/error rates), tracing (trace/span IDs)
+- [ ] HTTP server timeouts set (Read/Write/Idle) and middleware order validated (logging → recovery → auth → rate limit)
 
 ## Anti-Patterns
 
