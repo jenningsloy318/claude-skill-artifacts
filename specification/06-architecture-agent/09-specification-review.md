@@ -32,7 +32,7 @@ All specification documents have been thoroughly reviewed and validated. The enh
 
 ### 2. Research Document Review
 
-**File:** `05-modular-decomposition-research.md`
+**File:** `06-modular-decomposition-research.md`
 **Status:** ✅ APPROVED
 
 **Validation Results:**
@@ -51,7 +51,7 @@ All specification documents have been thoroughly reviewed and validated. The enh
 
 ### 3. Assessment Document Review
 
-**File:** `05-modular-decomposition-assessment.md`
+**File:** `07-modular-decomposition-assessment.md`
 **Status:** ✅ APPROVED
 
 **Validation Results:**
@@ -70,7 +70,7 @@ All specification documents have been thoroughly reviewed and validated. The enh
 
 ### 4. Specification Document Review
 
-**File:** `05-enhanced-modular-decomposition-specification.md`
+**File:** `08-enhanced-modular-decomposition-specification.md`
 **Status:** ✅ APPROVED
 
 **Validation Results:**
