@@ -1332,7 +1332,7 @@ Every architecture must:
 
 ## Integration
 
-**Triggered by:** dev-workflow Phase 4.5
+**Triggered by:** dev-workflow Phase 5.3
 
 **Inputs:**
 - `[index]-requirements.md` (required)

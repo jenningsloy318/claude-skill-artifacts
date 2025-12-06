@@ -27,10 +27,12 @@ When invoked, this command activates the `super-dev:coordinator` agent which orc
 8. **Phase 5.5: UI/UX Design** - For features with UI (optional)
 9. **Phase 6: Specification Writing** - Create tech spec, plan, tasks
 10. **Phase 7: Specification Review** - Validate all documents
-11. **Phase 8-9: Execution** - PARALLEL agents (dev + qa + docs)
-12. **Phase 9.5: Quality Assurance** - Modality-specific testing
-13. **Phase 10-11: Cleanup & Commit** - Remove temp files, commit changes
-14. **Phase 12: Final Verification** - Coordinator verifies all complete
+11. **Phase 8: Execution & QA** - PARALLEL agents (dev + qa)
+12. **Phase 9: Code Review** - Specification-aware code review
+13. **Phase 10: Documentation Update** - Sequential docs update
+14. **Phase 11: Cleanup** - Remove temp files
+15. **Phase 12: Commit & Push** - Commit all changes
+16. **Phase 13: Final Verification** - Coordinator verifies all complete
 
 ## Instructions
 
@@ -39,8 +41,9 @@ When this command is invoked:
 1. **Invoke Coordinator**: Use `super-dev:coordinator` agent
 2. **Apply dev rules**: Coordinator applies `super-dev:dev-rules` at Phase 0
 3. **Coordinator orchestrates** all phases automatically
-4. **Parallel execution** during Phases 8-9 (dev, qa, docs agents)
-5. **Track progress** with TodoWrite tool
+4. **Parallel execution** during Phase 8 (dev, qa agents)
+5. **Sequential documentation** in Phase 10 (docs agent)
+6. **Track progress** with TodoWrite tool
 
 ## Arguments
 
@@ -62,7 +65,7 @@ When this command is invoked:
 ## Notes
 
 - The Coordinator Agent is the central authority that orchestrates ALL phases
-- Parallel execution (dev + qa + docs) maximizes efficiency
+- Parallel execution (dev + qa) maximizes efficiency
 - Build queue policy: For Rust/Go, only ONE build at a time
 - All documents are created in `specification/[index]-[name]/` directory
 - Final verification ensures no missing code or documents

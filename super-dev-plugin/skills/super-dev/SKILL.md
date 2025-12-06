@@ -59,12 +59,13 @@ Development Workflow Progress:
 - [ ] Phase 5.5: UI/UX Design (for features with UI - optional)
 - [ ] Phase 6: Specification Writing (tech spec, plan, tasks)
 - [ ] Phase 7: Specification Review (validate against requirements)
-- [ ] Phase 8: Execution & QA (PARALLEL: dev + qa + docs executors)
+- [ ] Phase 8: Execution & QA (PARALLEL: dev + qa executors)
 - [ ] Phase 9: Code Review (spec-aware review using super-dev:code-reviewer)
 - [ ] Iteration Rule: Loop Phase 8 and Phase 9 until no blocking issues remain (no Critical/High/Medium findings; all acceptance criteria met)
-- [ ] Phase 10: Cleanup (remove temp files, unused code)
-- [ ] Phase 11: Commit & Push (descriptive message)
-- [ ] Phase 12: Final Verification (Coordinator verifies all complete)
+- [ ] Phase 10: Documentation Update (docs-executor sequential)
+- [ ] Phase 11: Cleanup (remove temp files, unused code)
+- [ ] Phase 12: Commit & Push (descriptive message)
+- [ ] Phase 13: Final Verification (Coordinator verifies all complete)
 ```
 
 **CHECKPOINT RULE:** Coordinator ensures commits at each phase boundary.
@@ -215,19 +216,19 @@ Coordinator reviews all documents for alignment and completeness.
 
 ## Phase 8: Execution & QA (PARALLEL Agents)
 
-**CRITICAL CHANGE:** The Coordinator invokes THREE agents in PARALLEL:
+**CRITICAL CHANGE:** The Coordinator invokes TWO agents in PARALLEL:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                PARALLEL EXECUTION & QA                      │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │dev-executor │  │   qa-agent  │  │docs-executor│         │
-│  │             │  │             │  │             │         │
-│  │ Implements  │  │ Plans & runs│  │ Updates     │         │
-│  │ code        │  │ tests       │  │ task-list   │         │
-│  │             │  │             │  │ impl-summary│         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
+│  ┌─────────────┐  ┌─────────────┐                           │
+│  │dev-executor │  │   qa-agent  │                           │
+│  │             │  │             │                           │
+│  │ Implements  │  │ Plans & runs│                           │
+│  │ code        │  │ tests       │                           │
+│  │             │  │             │                           │
+│  └─────────────┘  └─────────────┘                           │
 │                          │                                   │
 │                   BUILD QUEUE                                │
 │              (Rust/Go: one at a time)                       │
@@ -237,14 +238,13 @@ Coordinator reviews all documents for alignment and completeness.
 **Agents:**
 - `super-dev:dev-executor` - Implements code, invokes specialist developers
 - `super-dev:qa-agent` - Modality-specific testing and verification (merged planning + execution)
-- `super-dev:docs-executor` - Updates documentation in real-time
 
 **Build Policy (Rust/Go):**
 - Only ONE build at a time
 - Coordinator manages build queue
 - Prevents resource conflicts
 
-**Output:** Code, tests, and `[index]-implementation-summary.md`
+**Output:** Code, tests, and progress tracking
 
 ---
 
@@ -263,7 +263,27 @@ Run specification-aware code review focused on correctness, security, performanc
 
 ---
 
-## Phase 10-11: Cleanup & Commit
+## Phase 10: Documentation Update (Sequential)
+
+**AGENT:** Invoke `super-dev:docs-executor`
+
+After code review is complete and approved, update all documentation:
+- Task list completion status
+- Implementation summary with all changes
+- Specification updates for any deviations
+- Review findings integration
+
+**Execution Model:** Sequential batch processing
+- Runs after Phase 9 approval
+- Processes all accumulated changes from Phases 8-9
+- Single pass to update all documents
+- Coordinates commit with code changes
+
+**Output:** Updated `[index]-task-list.md`, `[index]-implementation-summary.md`, and `[index]-specification.md`
+
+---
+
+## Phase 11-12: Cleanup & Commit
 
 Coordinator ensures:
 1. No temp files remain
@@ -272,7 +292,7 @@ Coordinator ensures:
 
 ---
 
-## Phase 12: Final Verification
+## Phase 13: Final Verification
 
 Coordinator verifies:
 - [ ] All specification documents created
@@ -303,13 +323,13 @@ Coordinator verifies:
 |-------|---------|------------|
 | `coordinator` | Central orchestrator for all phases | `super-dev:coordinator` |
 
-### Executor Agents (NEW - Parallel Execution)
+### Executor Agents (NEW - Parallel & Sequential Execution)
 
-| Agent | Purpose | Invoke Via |
-|-------|---------|------------|
-| `dev-executor` | Development implementation | `super-dev:dev-executor` |
-| `qa-agent` | Testing and verification (merged) | `super-dev:qa-agent` |
-| `docs-executor` | Documentation updates | `super-dev:docs-executor` |
+| Agent | Purpose | Execution Mode | Invoke Via |
+|-------|---------|----------------|------------|
+| `dev-executor` | Development implementation | Parallel (Phase 8) | `super-dev:dev-executor` |
+| `qa-agent` | Testing and verification (merged) | Parallel (Phase 8) | `super-dev:qa-agent` |
+| `docs-executor` | Documentation updates | Sequential (Phase 10) | `super-dev:docs-executor` |
 
 ### Workflow Agents
 
@@ -348,11 +368,12 @@ Coordinator verifies:
 ## Key Differences from Previous Version
 
 1. **Coordinator Agent**: Central authority orchestrates all phases
-2. **Parallel Execution**: dev/qa/docs executors run simultaneously
-3. **Build Queue**: Rust/Go builds serialized (one at a time)
-4. **Time MCP**: Research agent uses current timestamp
-5. **grep/ast-grep**: Assessment/debug agents use code search skills
-6. **Final Verification**: Coordinator verifies all artifacts complete
+2. **Parallel Execution**: dev/qa executors run simultaneously in Phase 8
+3. **Sequential Documentation**: docs-executor runs in Phase 10 after code review approval
+4. **Build Queue**: Rust/Go builds serialized (one at a time)
+5. **Time MCP**: Research agent uses current timestamp
+6. **grep/ast-grep**: Assessment/debug agents use code search skills
+7. **Final Verification**: Coordinator verifies all artifacts complete
 
 ## Notes
 

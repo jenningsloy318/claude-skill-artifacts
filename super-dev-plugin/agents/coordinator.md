@@ -11,7 +11,7 @@ The Coordinator MUST create and maintain a JSON tracking file at workflow start.
 - File: `[spec-directory]/workflow-tracking.json`
 - Created at: Phase 0 (immediately after dev rules are applied)
 - Updated at: Every phase boundary and task completion
-- Completion rule: Workflow cannot proceed to Final Verification (Phase 12) “done” status unless the tracking file indicates all phases and tasks are complete
+- Completion rule: Workflow cannot proceed to Final Verification (Phase 13) "done" status unless the tracking file indicates all phases and tasks are complete
 
 JSON Schema (example):
 ```/dev/null/workflow-tracking.json#L1-40
@@ -43,7 +43,7 @@ Coordinator Responsibilities:
 - On each task completion: set task.status = complete and update timestamps/files
 - On each phase completion: set phase.status = complete with timestamps
 - On each Code Review loop: increment `iteration.loops` and update `iteration.lastReviewVerdict`
-- Before Phase 12 completion: verify
+- Before Phase 13 completion: verify
   - `status.allPhasesComplete == true`
   - `status.allTasksComplete == true`
   - Set `status.workflowDone = true` only when both are true
@@ -72,11 +72,12 @@ Phase 5.3: Architecture (complex)   → Task(subagent_type: "super-dev:architect
 Phase 5.5: UI/UX (with UI)          → Task(subagent_type: "super-dev:ui-ux-designer")
 Phase 6:  Specification Writing     → Task(subagent_type: "super-dev:spec-writer")
 Phase 7:  Specification Review      → Manual review
-Phase 8: Execution & QA (PARALLEL)  → super-dev:dev-executor, super-dev:qa-agent, super-dev:docs-executor
+Phase 8: Execution & QA (PARALLEL)  → super-dev:dev-executor, super-dev:qa-agent
 Phase 9: Code Review                → Task(subagent_type: "super-dev:code-reviewer")
-Phase 10: Cleanup                   → Manual cleanup
-Phase 11: Commit & Push             → Git operations
-Phase 12: Final Verification        → Verification checklist
+Phase 10: Documentation Update      → Task(subagent_type: "super-dev:docs-executor")
+Phase 11: Cleanup                   → Manual cleanup
+Phase 12: Commit & Push             → Git operations
+Phase 13: Final Verification        → Verification checklist
 ```
 
 ## Iteration Rule: Phase 8/9 Loop
@@ -104,13 +105,12 @@ Explicit triggers and coordination:
     - Invoke Phase 8 agents in parallel:
       - dev-executor: implement fixes for findings
       - qa-agent: update/execute tests for fixed areas
-      - docs-executor: update implementation summary and spec deviations
     - Re-run Phase 9: Invoke super-dev:code-reviewer on the changed scope
   - Else:
-    - Proceed to Phase 10 (Cleanup) and subsequent phases
+    - Proceed to Phase 10 (Documentation Update) and subsequent phases
 
 Checkpoint rule:
-- The Coordinator enforces this loop and MUST NOT proceed to Phase 10 until blocking criteria are cleared.
+- The Coordinator enforces this loop and MUST NOT proceed to Phase 10 (Documentation Update) until blocking criteria are cleared.
 
 ## Skip Conditions
 
@@ -160,7 +160,7 @@ Task(
 ### Phase 8: Execution & QA Agents (PARALLEL)
 
 ```
-# Run these THREE agents IN PARALLEL:
+# Run these TWO agents IN PARALLEL:
 
 Task(
   prompt: "Execute development tasks for: [feature/fix]",
@@ -180,13 +180,35 @@ Task(
   },
   subagent_type: "super-dev:qa-agent"
 )
+```
+
+### Phase 10: Documentation Update (Sequential)
+
+```
+# Run after Phase 9 (Code Review) approval:
 
 Task(
-  prompt: "Update documentation for: [feature/fix]",
+  prompt: "Update all documentation for completed: [feature/fix]",
   context: {
+    execution_results: {
+      completed_tasks: [...],
+      files_changed: {...},
+      technical_decisions: [...],
+      challenges_resolved: [...]
+    },
+    qa_results: {
+      tests_run: [...],
+      coverage: "...",
+      quality_status: "..."
+    },
+    code_review: {
+      verdict: "Approved",
+      findings: [...],
+      spec_updates_needed: [...]
+    },
     task_list_path: "[path]",
     impl_summary_path: "[path]",
-    completed_tasks: [...]
+    spec_path: "[path]"
   },
   subagent_type: "super-dev:docs-executor"
 )
@@ -239,14 +261,15 @@ Task(
 | → Phase 6 | assessment.md exists (+ debug-analysis.md if bug) |
 | → Phase 7 | specification.md, implementation-plan.md, task-list.md exist |
 | → Phase 8 | All spec documents reviewed |
-| → Phase 10 | Build passes, tests pass, docs updated |
-| → Phase 11 | No temp files, clean code |
-| → Phase 12 | All changes committed |
+| → Phase 10 | Code review approved |
+| → Phase 11 | Documentation updated |
+| → Phase 12 | No temp files, clean code |
+| → Phase 13 | All changes committed |
 | Complete | Git status clean, all pushed |
 
 ### Build/Test Verification
 
-Before marking execution complete:
+Before marking Phase 8 complete:
 ```bash
 # Verify build
 [project build command]  # Must pass
@@ -254,9 +277,7 @@ Before marking execution complete:
 # Verify tests
 [project test command]   # Must pass
 
-# Verify docs
-ls [spec-directory]/*-task-list.md      # Must show completed tasks
-ls [spec-directory]/*-implementation-summary.md  # Must exist
+# Note: Documentation will be updated in Phase 10
 ```
 
 ## Build Queue (Rust/Go)
@@ -373,7 +394,7 @@ Only stop execution for:
 3. Permission denied for required operation
 4. User explicitly requests stop
 
-## Final Verification (Phase 12)
+## Final Verification (Phase 13)
 
 ### Verification Checklist
 
@@ -428,7 +449,7 @@ At completion, generate:
 # Workflow Complete: [Feature/Fix Name]
 
 ## Summary
-- Total phases completed: [X/12]
+- Total phases completed: [X/13]
 - Total tasks completed: [X/Y]
 - Duration: [time]
 
