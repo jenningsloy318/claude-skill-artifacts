@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/precompact.py",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/save_memory.py",
             "timeout": 120
           }
         ]
@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/session_start.py",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/load_memory.py",
             "timeout": 10
           }
         ]

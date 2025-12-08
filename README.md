@@ -91,11 +91,11 @@ claude plugin marketplace remove super-skill-claude-artifacts
 Automatically saves context summaries before compaction and restores context on resume.
 
 **Features:**
-- PreCompact hook for automatic context summarization
-- SessionStart hook for context restoration
+- PreCompact script for automatic context memory generation
+- SessionStart script for context restoration
 - `/load-memory` command for manual loading
 - Context management skill for natural language queries
-- LLM-based or structured extraction summaries
+- LLM-based or structured extraction memories
 
 **Environment Variables:**
 
@@ -172,7 +172,7 @@ claude-artifacts/
 ├── context-keeper-plugin/         # Context persistence plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   ├── hooks/
+│   ├── scripts/
 │   ├── commands/
 │   ├── skills/
 │   └── README.md

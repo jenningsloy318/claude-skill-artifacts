@@ -86,14 +86,14 @@ export CLAUDE_SUMMARY_API_KEY="your-api-key-here"
 
 ### On Resume (SessionStart Hook)
 
-1. Hook receives context metadata
+1. Script receives context metadata
 2. Checks for existing memories in project
 3. Loads most recent memory (within 24 hours)
 4. Outputs context to stdout (injected into Claude's context)
 
 ## Storage Structure
 
-Summaries are stored per-project:
+Memories are stored per-project:
 
 ```
 {PROJECT}/.claude/memories/
@@ -110,8 +110,8 @@ Summaries are stored per-project:
 ### Automatic (After Compaction)
 
 Just use Claude Code normally. When compaction occurs:
-1. PreCompact hook automatically saves context memory
-2. SessionStart hook automatically reloads context
+1. PreCompact script automatically saves context memory
+2. SessionStart script automatically reloads context
 
 ### Manual Loading
 

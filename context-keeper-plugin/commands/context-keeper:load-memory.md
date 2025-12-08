@@ -25,21 +25,38 @@ This script uses `jq` for efficient JSON extraction. Running the script is REQUI
 ## Usage Examples
 
 ```
-/context-keeper:load-context
+/load-memory
 # Loads the most recent context memory
 
-/context-keeper:load-context abc123
+/load-memory abc123
 # Loads memory for session starting with abc123
 
-/context-keeper:load-context 20251123_190448
+/load-memory 20231101_143022
 # Loads memory from specific timestamp
+```
+
+## Script Behavior
+
+The `load_memory.py` script automatically detects its mode:
+
+1. **Automatic Hook Mode**: When triggered by SessionStart hook (with JSON input via stdin)
+   - Loads recent memory silently
+   - Outputs formatted context directly to Claude's system context
+   - Only runs on resume/compact, not on fresh startup
+
+2. **Manual Command Mode**: When invoked by user with no stdin data
+   - Displays memory content in the chat
+   - Asks for user confirmation before using the context
+   - Can accept optional session ID or timestamp parameter
+
+
 ```
 
 ## Output Format
 
 When loading a context:
 ```
-## Context Summary Loaded
+## Context Memory Loaded
 
 **Session ID:** abc123...
 **Created:** 2025-11-23 19:04:48

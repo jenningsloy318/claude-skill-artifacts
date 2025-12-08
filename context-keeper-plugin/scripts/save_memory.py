@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-PreCompact Hook: Summarizes and persists Claude Code sessions before compaction.
+Save Memory Script: Summarizes and persists Claude Code sessions before compaction.
 
-This hook triggers before context compaction (manual /compact or automatic).
+This script triggers before context compaction (manual /compact or automatic).
 It reads the full transcript, generates a memory, and saves it locally.
 
 Input (stdin): JSON with session metadata
