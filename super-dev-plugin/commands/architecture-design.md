@@ -10,7 +10,7 @@ Design comprehensive architecture and create Architecture Decision Records (ADRs
 ## Usage
 
 ```
-/super-dev:phase-5.3 [feature requirements and context]
+/super-dev:architecture-design [feature requirements and context]
 ```
 
 ## What This Command Does

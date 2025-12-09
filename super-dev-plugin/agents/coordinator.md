@@ -248,7 +248,7 @@ Task(
 | Task skipped | Invoke again with specific task to complete |
 | Incomplete output | Request completion of missing items |
 | Build failure | Request dev-executor to fix and rebuild |
-| Test failure | Coordinate between dev-executor and qa-executor |
+| Test failure | Coordinate between dev-executor and qa-agent |
 
 ## Quality Gates
 
@@ -317,7 +317,7 @@ dev-executor: "Requesting build for Rust project"
 Coordinator: IF build_queue == IDLE → "Proceed with build"
              ELSE → "Build queued, wait for current"
 
-qa-executor: "Requesting test run"
+qa-agent: "Requesting test run"
 Coordinator: IF build_queue == IDLE → "Proceed with tests"
              ELSE → "Queued after current build"
 ```

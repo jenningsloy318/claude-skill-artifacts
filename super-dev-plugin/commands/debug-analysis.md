@@ -10,7 +10,7 @@ Execute systematic root cause analysis with evidence collection and reproducible
 ## Usage
 
 ```
-/super-dev:phase-4 [bug description or error details]
+/super-dev:debug-analysis [bug description or error details]
 ```
 
 ## What This Command Does
@@ -71,9 +71,9 @@ Creates `[index]-debug-analysis.md` with:
 ## Examples
 
 ```
-/super-dev:phase-4 TypeError: Cannot read property 'user' of undefined
-/super-dev:phase-4 Memory usage grows continuously with large files
-/super-dev:phase-4 Build fails on production but not development
+/super-dev:debug-analysis TypeError: Cannot read property 'user' of undefined
+/super-dev:debug-analysis Memory usage grows continuously with large files
+/super-dev:debug-analysis Build fails on production but not development
 ```
 
 ## Tools Used

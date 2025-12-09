@@ -10,7 +10,7 @@ Research best practices, documentation, and patterns with Time MCP integration f
 ## Usage
 
 ```
-/super-dev:phase-3 [research topic]
+/super-dev:research [research topic]
 ```
 
 ## What This Command Does
@@ -75,9 +75,9 @@ Creates `[index]-research-report.md` with:
 ## Examples
 
 ```
-/super-dev:phase-3 React hooks best practices
-/super-dev:phase-3 Rust async programming patterns
-/super-dev:phase-3 GraphQL schema design
+/super-dev:research React hooks best practices
+/super-dev:research Rust async programming patterns
+/super-dev:research GraphQL schema design
 ```
 
 ## Notes

@@ -10,7 +10,7 @@ Update all documentation sequentially after successful code review and implement
 ## Usage
 
 ```
-/super-dev:phase-10 [specification directory path]
+/super-dev:documentation [specification directory path]
 ```
 
 ## What This Command Does
@@ -86,8 +86,8 @@ Updates/creates:
 ## Examples
 
 ```
-/super-dev:phase-10 specification/12-user-authentication
-/super-dev:phase-10 ./specs/payment-processing --focus user-docs
+/super-dev:documentation specification/12-user-authentication
+/super-dev:documentation ./specs/payment-processing --focus user-docs
 ```
 
 ## Notes

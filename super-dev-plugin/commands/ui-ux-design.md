@@ -10,7 +10,7 @@ Create comprehensive UI/UX design specifications for features requiring user int
 ## Usage
 
 ```
-/super-dev:phase-5.5 [UI requirements and user context]
+/super-dev:ui-ux-design [UI requirements and user context]
 ```
 
 ## What This Command Does
@@ -85,9 +85,9 @@ Creates `[index]-design-spec.md` with:
 ## Examples
 
 ```
-/super-dev:phase-5.5 User dashboard with analytics charts
-/super-dev:phase-5.5 Mobile checkout flow
-/super-dev:phase-5.5 Settings page redesign
+/super-dev:ui-ux-design User dashboard with analytics charts
+/super-dev:ui-ux-design Mobile checkout flow
+/super-dev:ui-ux-design Settings page redesign
 ```
 
 ## Notes

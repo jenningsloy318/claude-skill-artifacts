@@ -110,7 +110,7 @@ For granular control, you can invoke individual phases using slash commands:
 | 5.5 | `/super-dev:ui-ux-design [UI requirements]` | UI/UX Design - design specifications (UI features) |
 | 8 | `/super-dev:execute [spec path]` | Execution & QA - implement code with parallel testing |
 | 9 | `/super-dev:code-review [changes]` | Code Review - spec-aware review using super-dev:code-reviewer |
-| 10 | `/super-dev:update-documentation [spec path]` | Documentation Update - update all documentation |
+| 10 | `/super-dev:documentation [spec path]` | Documentation Update - update all documentation |
 
 **When to use individual phases:**
 - When you need granular control over the workflow
@@ -350,37 +350,37 @@ Coordinator verifies:
 
 | Agent | Purpose | Execution Mode | Invoke Via |
 |-------|---------|----------------|------------|
-| `dev-executor` | Development implementation | Parallel (Phase 8) | `super-dev:dev-executor` |
-| `qa-agent` | Testing and verification (merged) | Parallel (Phase 8) | `super-dev:qa-agent` |
-| `docs-executor` | Documentation updates | Sequential (Phase 10) | `super-dev:docs-executor` |
+| `super-dev:dev-executor` | Development implementation | Parallel (Phase 8) | `super-dev:dev-executor` |
+| `super-dev:qa-agent` | Testing and verification (merged) | Parallel (Phase 8) | `super-dev:qa-agent` |
+| `super-dev:docs-executor` | Documentation updates | Sequential (Phase 10) | `super-dev:docs-executor` |
 
 ### Workflow Agents
 
 | Agent | Purpose | Invoke Via |
 |-------|---------|------------|
-| `requirements-clarifier` | Gather requirements | `super-dev:requirements-clarifier` |
-| `research-agent` | Research with Time MCP | `super-dev:research-agent` |
-| `search-agent` | Multi-source search | `super-dev:search-agent` |
-| `debug-analyzer` | Root cause analysis (grep/ast-grep) | `super-dev:debug-analyzer` |
-| `code-assessor` | Assess codebase (grep/ast-grep) | `super-dev:code-assessor` |
-| `code-reviewer` | Specification-aware code review | `super-dev:code-reviewer` |
-| `architecture-agent` | Design architecture and create ADRs | `super-dev:architecture-agent` |
-| `ui-ux-designer` | Create UI/UX design specifications | `super-dev:ui-ux-designer` |
-| `spec-writer` | Write specifications | `super-dev:spec-writer` |
-| `qa-agent` | Modality-specific QA testing | `super-dev:qa-agent` |
+| `super-dev:requirements-clarifier` | Gather requirements | `super-dev:requirements-clarifier` |
+| `super-dev:research-agent` | Research with Time MCP | `super-dev:research-agent` |
+| `super-dev:search-agent` | Multi-source search | `super-dev:search-agent` |
+| `super-dev:debug-analyzer` | Root cause analysis (grep/ast-grep) | `super-dev:debug-analyzer` |
+| `super-dev:code-assessor` | Assess codebase (grep/ast-grep) | `super-dev:code-assessor` |
+| `super-dev:code-reviewer` | Specification-aware code review | `super-dev:code-reviewer` |
+| `super-dev:architecture-agent` | Design architecture and create ADRs | `super-dev:architecture-agent` |
+| `super-dev:ui-ux-designer` | Create UI/UX design specifications | `super-dev:ui-ux-designer` |
+| `super-dev:spec-writer` | Write specifications | `super-dev:spec-writer` |
+| `super-dev:qa-agent` | Modality-specific QA testing | `super-dev:qa-agent` |
 
 ### Developer Agents (Specialists)
 
 | Agent | Purpose | Languages/Frameworks |
 |-------|---------|---------------------|
-| `rust-developer` | Rust systems programming | Rust 1.75+, Tokio, axum |
-| `golang-developer` | Go backend development | Go 1.21+, stdlib, gin, chi |
-| `frontend-developer` | Web frontend development | React 19, Next.js 15, TypeScript, Tailwind v4 |
-| `backend-developer` | Backend/API development | Node.js/TS, Python, FastAPI, databases |
-| `android-developer` | Android app development | Kotlin, Jetpack Compose, MVVM |
-| `ios-developer` | iOS app development | Swift, SwiftUI, async/await |
-| `windows-app-developer` | Windows desktop development | C#/.NET 8+, WinUI 3, WPF |
-| `macos-app-developer` | macOS desktop development | Swift, SwiftUI, AppKit |
+| `super-dev:rust-developer` | Rust systems programming | Rust 1.75+, Tokio, axum |
+| `super-dev:golang-developer` | Go backend development | Go 1.21+, stdlib, gin, chi |
+| `super-dev:frontend-developer` | Web frontend development | React 19, Next.js 15, TypeScript, Tailwind v4 |
+| `super-dev:backend-developer` | Backend/API development | Node.js/TS, Python, FastAPI, databases |
+| `super-dev:android-developer` | Android app development | Kotlin, Jetpack Compose, MVVM |
+| `super-dev:ios-developer` | iOS app development | Swift, SwiftUI, async/await |
+| `super-dev:windows-app-developer` | Windows desktop development | C#/.NET 8+, WinUI 3, WPF |
+| `super-dev:macos-app-developer` | macOS desktop development | Swift, SwiftUI, AppKit |
 
 ## Skills Reference
 

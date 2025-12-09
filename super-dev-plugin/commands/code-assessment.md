@@ -10,7 +10,7 @@ Execute comprehensive assessment of existing code architecture, standards compli
 ## Usage
 
 ```
-/super-dev:phase-5 [feature/area to assess]
+/super-dev:code-assessment [feature/area to assess]
 ```
 
 ## What This Command Does
@@ -77,9 +77,9 @@ Creates `[index]-assessment.md` with:
 ## Examples
 
 ```
-/super-dev:phase-5 User authentication system
-/super-dev:phase-5 Payment processing module
-/super-dev:phase-5 API endpoint for user data
+/super-dev:code-assessment User authentication system
+/super-dev:code-assessment Payment processing module
+/super-dev:code-assessment API endpoint for user data
 ```
 
 ## Notes
