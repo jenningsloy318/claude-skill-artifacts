@@ -33,11 +33,23 @@
     ],
     "SessionStart": [
       {
-        "matcher": "startup|resume|compact|clear",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/load_memory.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/save_thread.py",
             "timeout": 10
           }
         ]
