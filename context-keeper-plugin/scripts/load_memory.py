@@ -22,13 +22,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-def read_hook_input() -> dict:
-    """Read JSON input from stdin (for automatic hook mode)."""
-    try:
-        input_data = sys.stdin.read()
-        return json.loads(input_data) if input_data.strip() else {}
-    except json.JSONDecodeError:
-        return {}
+
 
 
 def get_memories_dir(project_path: str = None) -> Path:
@@ -236,7 +230,7 @@ def automatic_mode():
 
     try:
         # Read input from Claude Code
-        hook_input = read_hook_input()
+        hook_input = json.loads(sys.stdin.read())
 
         # Extract session information (all available fields)
         session_id = hook_input.get("session_id", "")

@@ -866,20 +866,7 @@ def main():
 
     try:
         # Read input from Claude Code
-        raw_input = sys.stdin.read()
-        
-        if not raw_input.strip():
-            logging.error("No input received (stdin is empty)")
-            print("=" * 60 + "\n", file=sys.stderr)
-            sys.exit(1)
-            
-        try:
-            hook_input = json.loads(raw_input)
-        except json.JSONDecodeError as e:
-            logging.error(f"Invalid JSON input: {e}")
-            logging.debug(f"Raw input snippet: {raw_input[:200]}")
-            sys.exit(1)
-
+        hook_input = json.loads(sys.stdin.read())
         # Extract session information (all available fields)
         session_id = hook_input.get("session_id", "unknown")
         transcript_path = hook_input.get("transcript_path", "")

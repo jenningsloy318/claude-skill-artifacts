@@ -213,16 +213,7 @@ def main():
 
     try:
         # 1. Try to read from stdin (Hook mode)
-        hook_input = {}
-        if not sys.stdin.isatty():
-            try:
-                raw_input = sys.stdin.read()
-                if raw_input.strip():
-                    hook_input = json.loads(raw_input)
-                    logging.debug("Read input from stdin")
-            except Exception as e:
-                logging.warning(f"Failed to read stdin: {e}")
-
+        hook_input = json.loads(sys.stdin.read())
         # 2. Parse args (CLI mode overrides)
         args = parse_arguments()
 
