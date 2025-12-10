@@ -213,14 +213,17 @@ def extract_conversation_content(messages: list[dict]) -> dict:
 # Summary Generation
 # ============================================================================
 
-def get_claude_env() -> dict:
-    """Read env section from ~/.claude.json."""
-    config_path = Path.home() / ".claude.json"
-    logging.debug(f"Reading Claude config from: {config_path}")
+def get_summary_config() -> tuple[str | None, str | None, str | None]:
+    """
+    Get summary API configuration from ~/.claude/settings.json.
+    Returns: (api_key, api_url, model_name)
+    """
+    config_path = Path.home() / ".claude" / "settings.json"
+    logging.debug(f"Reading summary config from: {config_path}")
 
     if not config_path.exists():
         logging.debug(f"Config file not found: {config_path}")
-        return {}
+        return None, None, None
 
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -228,63 +231,42 @@ def get_claude_env() -> dict:
         
         env = config.get("env", {})
         logging.debug(f"Loaded env keys: {list(env.keys())}")
-        return env
-    except Exception as e:
-        logging.error(f"Failed to read ~/.claude.json: {e}")
-        return {}
-
-
-def get_api_key() -> Optional[str]:
-    """Get CLAUDE_SUMMARY_API_KEY from ~/.claude.json."""
-    env = get_claude_env()
-    key = env.get("CLAUDE_SUMMARY_API_KEY")
-    
-    if key:
-        masked = key[:4] + "..." + key[-4:] if len(key) > 10 else "***"
-        logging.debug(f"Found CLAUDE_SUMMARY_API_KEY in config: {masked}")
-        return key
-    
-    logging.debug("CLAUDE_SUMMARY_API_KEY not found in config")
-    return None
-
-
-def get_api_url() -> Optional[str]:
-    """Get CLAUDE_SUMMARY_API_URL from ~/.claude.json."""
-    env = get_claude_env()
-    url = env.get("CLAUDE_SUMMARY_API_URL")
-    
-    if url:
-        logging.debug(f"Found CLAUDE_SUMMARY_API_URL in config: {url}")
-        return url
         
-    logging.debug("CLAUDE_SUMMARY_API_URL not found in config")
-    return None
+        api_key = env.get("CLAUDE_SUMMARY_API_KEY")
+        api_url = env.get("CLAUDE_SUMMARY_API_URL")
+        model = env.get("CLAUDE_SUMMARY_MODEL")
+        
+        # Log masked key for debugging
+        if api_key:
+            masked = api_key[:4] + "..." + api_key[-4:] if len(api_key) > 10 else "***"
+            logging.debug(f"Found API key: {masked}")
+        else:
+            logging.debug("API key not found")
+            
+        logging.debug(f"Found URL: {api_url}")
+        logging.debug(f"Found model: {model}")
+        
+        return api_key, api_url, model
+        
+    except Exception as e:
+        logging.warning(f"Failed to read {config_path}: {e}")
+        return None, None, None
 
 
-def get_model_name() -> str:
-    """Get model name from ~/.claude.json or default."""
-    env = get_claude_env()
-    
-    # 1. User specified summary model
-    model = env.get("CLAUDE_SUMMARY_MODEL")
-    if model:
-        logging.debug(f"Using CLAUDE_SUMMARY_MODEL: {model}")
-        return model
-    
-    logging.debug("CLAUDE_SUMMARY_MODEL not found in config")
-    return None
+def ensure_list(value):
+    return value if isinstance(value, list) else []
 
 
 def generate_memory_with_llm(content: dict, session_info: dict) -> Optional[str]:
     """Generate comprehensive memory using Claude API."""
-    logging.debug("=== generate_memory_with_llm() START ===")
-
-    api_key = get_api_key()
+    api_key, api_url, model_name = get_summary_config()
+    
     if not api_key:
         logging.info("No API key found (set CLAUDE_SUMMARY_API_KEY)")
         logging.debug("=== generate_memory_with_llm() END (no API key) ===")
         return None
 
+    logging.debug("=== generate_memory_with_llm() START ===")
     logging.debug(f"API key obtained, length: {len(api_key)} chars")
 
     # Prepare content for summarization (truncate to avoid token limits)
@@ -297,37 +279,20 @@ def generate_memory_with_llm(content: dict, session_info: dict) -> Optional[str]
     tool_calls_list = content.get('tool_calls', [])
     files_modified_list = content.get('files_modified', [])
 
-    # Debug the types we got
-    logging.debug(f"[DEBUG] user_msgs_list type: {type(user_msgs_list)}, value (first 100): {str(user_msgs_list)[:100]}")
-    logging.debug(f"[DEBUG] assistant_msgs_list type: {type(assistant_msgs_list)}, value (first 100): {str(assistant_msgs_list)[:100]}")
-    logging.debug(f"[DEBUG] tool_calls_list type: {type(tool_calls_list)}, value (first 100): {str(tool_calls_list)[:100]}")
-    logging.debug(f"[DEBUG] files_modified_list type: {type(files_modified_list)}, value (first 100): {str(files_modified_list)[:100]}")
+    # Ensure lists (safety)
+    user_msgs_list = ensure_list(user_msgs_list)
+    assistant_msgs_list = ensure_list(assistant_msgs_list)
+    tool_calls_list = ensure_list(tool_calls_list)
+    files_modified_list = ensure_list(files_modified_list)
 
-    # Ensure they are actually lists
-    if not isinstance(user_msgs_list, list):
-        logging.debug(f"[DEBUG] Converting user_msgs_list from {type(user_msgs_list)} to list")
-        user_msgs_list = []
-    if not isinstance(assistant_msgs_list, list):
-        logging.debug(f"[DEBUG] Converting assistant_msgs_list from {type(assistant_msgs_list)} to list")
-        assistant_msgs_list = []
-    if not isinstance(tool_calls_list, list):
-        logging.debug(f"[DEBUG] Converting tool_calls_list from {type(tool_calls_list)} to list")
-        tool_calls_list = []
-    if not isinstance(files_modified_list, list):
-        logging.debug(f"[DEBUG] Converting files_modified_list from {type(files_modified_list)} to list")
-        files_modified_list = []
-
-    # Debug: Check the content of the lists before slicing
-    logging.debug(f"[DEBUG] About to slice user_msgs_list (len: {len(user_msgs_list) if isinstance(user_msgs_list, list) else 'not list'})")
-    logging.debug(f"[DEBUG] About to slice assistant_msgs_list (len: {len(assistant_msgs_list) if isinstance(assistant_msgs_list, list) else 'not list'})")
-    logging.debug(f"[DEBUG] About to slice tool_calls_list (len: {len(tool_calls_list) if isinstance(tool_calls_list, list) else 'not list'})")
-
-    user_msgs = user_msgs_list[:20]  # Last 20 user messages
-    assistant_msgs = assistant_msgs_list[:20]
-    tool_calls = tool_calls_list[:50]
+    # Slice appropriately for the context window
+    user_msgs = user_msgs_list[-20:]
+    assistant_msgs = assistant_msgs_list[-20:] 
+    tool_calls = tool_calls_list[-50:]
     files_modified = files_modified_list
 
-    # Debug: Check variables before building prompt
+
+    # Debug the types we got
     logging.debug(f"[DEBUG] user_msgs type: {type(user_msgs)}, len: {len(user_msgs) if isinstance(user_msgs, list) else 'not list'}")
     logging.debug(f"[DEBUG] assistant_msgs type: {type(assistant_msgs)}, len: {len(assistant_msgs) if isinstance(assistant_msgs, list) else 'not list'}")
     logging.debug(f"[DEBUG] tool_calls type: {type(tool_calls)}, len: {len(tool_calls) if isinstance(tool_calls, list) else 'not list'}")
@@ -449,8 +414,15 @@ Create a memory with these sections:
 Be comprehensive but concise. Focus on the essential context that would help resume this work later."""
     logging.debug("[DEBUG] Prompt string built successfully, about to call API...")
     try:
+        # Get configuration
+        api_key, api_url, model_name = get_summary_config()
+        
+        if not api_key:
+            logging.error("No summary API key found in ~/.claude/settings.json")
+            print("❌ [context-keeper] Missing API Key: Ensure CLAUDE_SUMMARY_API_KEY is set in ~/.claude/settings.json", file=sys.stderr)
+            return None
+
         # Build client with optional custom base URL
-        api_url = get_api_url()
         logging.debug(f"API URL obtained: {api_url if api_url else 'None (using default)'}")
 
         if api_url:
@@ -461,7 +433,10 @@ Be comprehensive but concise. Focus on the essential context that would help res
             logging.debug("Creating Anthropic client with default base_url")
             client = anthropic.Anthropic(api_key=api_key)
 
-        model_name = get_model_name()
+        if not model_name:
+            # Fallback default if not in config
+            model_name = "claude-3-haiku-20240307" 
+            
         logging.debug(f"Calling LLM with model: {model_name}, max_tokens: {MAX_TOKENS}")
         response = client.messages.create(
             model=model_name,
@@ -487,6 +462,7 @@ Be comprehensive but concise. Focus on the essential context that would help res
         return None
     except Exception as e:
         logging.error(f"LLM summarization failed: {e}")
+        print(f"❌ [context-keeper] LLM Generation Failed: {e}", file=sys.stderr)
         logging.debug(f"Exception type: {type(e).__name__}")
         logging.debug("=== generate_memory_with_llm() END (exception) ===")
         return None
@@ -802,7 +778,9 @@ Full Session Memory:
                 results["memory"] = True
                 logging.info("Memory persisted to nowledge")
             except Exception as e:
-                logging.debug(f"memory_add failed: {e}")
+                logging.error(f"memory_add failed: {e}")
+                print(f"❌ [context-keeper] Failed to save to Nowledge: {e}", file=sys.stderr)
+
 
         # Note: Thread persistence is handled by save_thread.py at session end
 
@@ -849,7 +827,8 @@ def persist_to_nowledge(memory: str, metadata: dict, content: dict) -> bool:
         return success
 
     except Exception as e:
-        logging.debug(f"persist_to_nowledge error: {e}")
+        logging.error(f"persist_to_nowledge error: {e}")
+        print(f"❌ [context-keeper] Nowledge Connection Failed: {e}", file=sys.stderr)
         logging.debug("=== persist_to_nowledge() END (exception) ===")
         return False
 
