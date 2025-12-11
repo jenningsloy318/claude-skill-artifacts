@@ -17,15 +17,20 @@ Environment variables:
   CLAUDE_SUMMARY_MODEL - model used to summerize the memeory
 """
 
+import argparse
 import json
+import logging
 import os
 import re
 import sys
+import traceback
+import urllib.request
+import urllib.error
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 import anthropic
-from mcp_use.client.connectors import HttpConnector
+
 
 
 
@@ -74,10 +79,10 @@ import logging
 # Configure logging
 logging.basicConfig(
     level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)s: %(message)s',
+    format='[%(asctime)s] [%(funcName)s] %(levelname)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
-    #    logging.FileHandler('/tmp/context-keeper-debug.log'),
+        logging.FileHandler('/tmp/context-keeper-memory-debug.log'),
         logging.StreamHandler(sys.stdout),
         logging.StreamHandler(sys.stderr)
     ]
@@ -447,16 +452,22 @@ def generate_memory_with_llm(content: dict, session_info: dict) -> Optional[str]
 
     Be comprehensive but concise. Focus on the essential context that would help resume this work later.
 
-    IMPORTANT: You must return a VALID JSON object with exactly two fields:
-    1. "nowledge_summary": A detailed and comprehensive summary for retrieval (MAXIMUM 1750 characters). 
-    - Focus on: High-level purpose, Key decisions, Critical outcomes, and Next steps.
-    - Foucus most recent content if it will reach the limit
-    - Do NOT list modified files (this is added automatically).
-    - FILL the available space (aim for ~1700 chars). Be dense and informative.
-    - Purpose: To provide a rich context summary.
+    IMPORTANT: You must return a VALID JSON object with exactly two fields. Use the EXACT key names provided below:
+    1. "nowledge_summary": (NOTE THE SPELLING 'nowledge'). A detailed and comprehensive summary for retrieval (MAXIMUM 1750 characters). 
+       - Focus on: High-level purpose, Key decisions, Critical outcomes, and Next steps.
+       - Focus most recent content if it will reach the limit.
+       - Do NOT list modified files (this is added automatically).
+       - FILL the available space (aim for ~1700 chars). Be dense and informative.
+       - Purpose: To provide a rich context summary.
     2. "full_memory": The detailed markdown report following the structure above (Topics, Architecture, etc.).
 
-    Return ONLY the raw JSON object. Do not wrap in markdown code blocks."""  # This closes the prompt string
+    Example Output Structure:
+    {{
+      "nowledge_summary": "## Topics Discussed\\n- Authentication\\n- JWT Migration\\n\\n## Architecture Changes\\n- Updated auth middleware...",
+      "full_memory": "## Topics Discussed\\n- Authentication\\n- JWT Migration\\n\\n## Architecture Changes\\n- Updated auth middleware..."
+    }}
+
+    Return ONLY the raw JSON object. Do not wrap in markdown code blocks or add any other text."""  # This closes the prompt string
     # nowledge-mem memory_add has content Lengthlength <= 1792 limit
 
     logging.debug("[DEBUG] Prompt string built successfully, about to call API...")
@@ -517,14 +528,48 @@ def generate_memory_with_llm(content: dict, session_info: dict) -> Optional[str]
                         logging.debug("=== generate_memory_with_llm() END (success) ===")
                         return data
                     else:
-                        logging.warning("Missing required keys in JSON response, falling back to raw text if possible")
-                        # Fallback: if structure is wrong but we have text, try to use it?
-                        # No, strict structure required now.
+                        logging.warning(f"Missing required keys in JSON response. Found: {list(data.keys())}")
                         return None
 
                 except json.JSONDecodeError as e:
                     logging.error(f"Failed to parse JSON response: {e}")
                     logging.debug(f"Raw response: {response_text[:500]}...")
+                    
+                    # FALLBACK: Try regex extraction if JSON is malformed/truncated
+                    logging.info("Attempting regex fallback extraction...")
+                    try:
+                        extracted_data = {}
+                        
+                        # 1. Extract nowledge_summary/knowledge_summary
+                        # Match: "key": "value", (non-greedy)
+                        ns_match = re.search(r'"(?:k|n)owledge_summary"\s*:\s*"(.*?)"\s*,\s*"\w+', response_text, re.DOTALL)
+                        if not ns_match:
+                             # Try matching up to end of string if truncated inside the next key
+                             ns_match = re.search(r'"(?:k|n)owledge_summary"\s*:\s*"(.*)', response_text, re.DOTALL)
+                        
+                        if ns_match:
+                            summary_text = ns_match.group(1)
+                            # Cleanup unescaped quotes if valid JSON failed, though raw text might be messy
+                            # Simple fix for basic escaped quotes
+                            summary_text = summary_text.replace('\\"', '"').replace('\\n', '\n')
+                            extracted_data["nowledge_summary"] = summary_text
+                        
+                        # 2. Extract full_memory
+                        fm_match = re.search(r'"full_memory"\s*:\s*"(.*)', response_text, re.DOTALL)
+                        if fm_match:
+                            fm_text = fm_match.group(1)
+                            # Remove trailing " or } if present at the very end
+                            fm_text = re.sub(r'"\s*}\s*$', '', fm_text)
+                            fm_text = fm_text.replace('\\"', '"').replace('\\n', '\n')
+                            extracted_data["full_memory"] = fm_text
+                        
+                        if "nowledge_summary" in extracted_data:
+                            logging.info("Regex fallback successful")
+                            return extracted_data
+                            
+                    except Exception as regex_e:
+                        logging.error(f"Regex fallback failed: {regex_e}")
+
                     return None
             else:
                 logging.error(f"Content block missing 'text' attribute, type: {type(content_block)}")
@@ -542,65 +587,7 @@ def generate_memory_with_llm(content: dict, session_info: dict) -> Optional[str]
         return None
 
 
-def generate_memory_structured(content: dict, session_info: dict) -> str:
-    """Generate structured memory without LLM (fallback)."""
-    files_modified = content.get('files_modified', [])
-    tool_calls = content.get('tool_calls', [])
-    user_messages = content.get('user_messages', [])
 
-    # Ensure they are actually lists
-    if not isinstance(files_modified, list):
-        files_modified = []
-    if not isinstance(tool_calls, list):
-        tool_calls = []
-    if not isinstance(user_messages, list):
-        user_messages = []
-
-    # Extract topics from user messages (simple keyword extraction)
-    # Extract topics from user messages (simple keyword extraction)
-    topics = set()
-    for msg in user_messages[:20]:
-        # Extract words that look like topics
-        words = re.findall(r'\b[a-zA-Z]{4,}\b', msg.lower())
-        topics.update(words[:5])
-
-    # Include custom instructions if provided
-    custom_instructions = session_info.get('custom_instructions', '')
-    custom_section = ""
-    if custom_instructions:
-        custom_section = f"""
-## Custom Instructions
-{custom_instructions}
-"""
-
-    memory = f"""# Session Summary (Structured Extraction)
-
-        ## Metadata
-        - **Session ID:** {session_info.get('session_id', 'unknown')}
-        - **Project:** {session_info.get('cwd', 'unknown')}
-        - **Trigger:** {session_info.get('trigger', 'unknown')}
-        - **Permission Mode:** {session_info.get('permission_mode', 'default')}
-        - **Hook Event:** {session_info.get('hook_event_name', 'PreCompact')}
-        - **Timestamp:** {session_info.get('timestamp', 'unknown')}
-        - **Total Messages:** {content.get('message_count', 0)}
-        {custom_section}
-
-        ## Topics Detected
-        {', '.join(list(topics)[:15]) if topics else 'None extracted'}
-
-        ## Files Modified
-        {chr(10).join(f'- `{f}`' for f in files_modified) if files_modified else '- None tracked'}
-
-        ## Sample User Requests
-        {chr(10).join(f'- {msg[:200]}...' if len(msg) > 200 else f'- {msg}' for msg in user_messages[:5]) if user_messages else '- None captured'}
-
-        ## Keywords
-        {', '.join(list(topics)[:15]) if topics else 'None extracted'}
-
-        ---
-        *Note: This is a structured extraction. LLM-based memory unavailable (no API key or error).*
-        """
-    return memory
 
 
 def generate_memory(content: dict, session_info: dict) -> dict | str:
@@ -609,10 +596,10 @@ def generate_memory(content: dict, session_info: dict) -> dict | str:
     llm_memory = generate_memory_with_llm(content, session_info)
     if llm_memory:
         return llm_memory
-
-    # Fall back to structured extraction
-    logging.info("Using structured extraction (LLM unavailable)")
-    return generate_memory_structured(content, session_info)
+    
+    # User requested to remove fallback as it is meaningless without LLM
+    logging.warning("LLM memory generation failed and fallback is disabled.")
+    return None
 
 
 # ============================================================================
@@ -778,182 +765,15 @@ def extract_topics_from_memory(memory: dict | str) -> list[str]:
 
 
 # ============================================================================
-# Nowledge MCP Integration (HttpConnector)
-# Follows pattern from: specification/11-mcp-http-connector/template_connector.py
+# Nowledge REST API Integration
 # ============================================================================
-
-# Server pattern to match in Claude Code config (lowercase)
-NOWLEDGE_SERVER_PATTERN = "nowledge-mem"
-
-
-def find_mcp_config(server_pattern: str) -> dict | None:
-    """Find MCP server config from Claude Code settings.
-
-    This function follows the standard MCP HTTP Connector pattern but
-    exclusively checks ~/.claude.json as per user configuration.
-
-    Args:
-        server_pattern: Lowercase pattern to match server name
-
-    Returns:
-        Dict with name, url, headers if found, None otherwise
-    """
-    # Only check the main configuration file
-    config_path = Path.home() / ".claude.json"
-    
-    logging.debug(f"Checking for MCP config in: {config_path}")
-
-    if config_path.exists():
-        try:
-            with open(config_path, 'r', encoding='utf-8') as f:
-                config = json.load(f)
-
-            mcp_servers = config.get("mcpServers", {})
-            logging.debug(f"Found mcpServers: {list(mcp_servers.keys())}")
-
-            for name, server_config in mcp_servers.items():
-                # Check if pattern matches
-                if server_pattern in name.lower():
-                    logging.debug(f"Found matching server: {name}")
-                    
-                    # Accept http or streamableHttp types for HTTP-based servers
-                    # Also accept missing type if url is present (common in some configs)
-                    server_type = server_config.get("type", "unknown")
-                    url = server_config.get("url")
-                    
-                    if url and (server_type in ("http", "streamableHttp") or server_type == "unknown"):
-                        return {
-                            "name": name,
-                            "url": url,
-                            "headers": server_config.get("headers", {})
-                        }
-                    else:
-                        logging.debug(f"Server {name} skipped: type={server_type}, has_url={bool(url)}")
-                        
-        except (json.JSONDecodeError, IOError) as e:
-            logging.error(f"Failed to read config: {e}")
-
-    return None
-
-
-async def call_nowledge_tools(mcp_config: dict, memory: str, metadata: dict) -> dict:
-    """Call nowledge MCP tools via HttpConnector.
-
-    This function follows the standard MCP HTTP Connector pattern from
-    specification/11-mcp-http-connector/template_connector.py
-
-    Args:
-        mcp_config: Dict with name, url, headers from find_mcp_config()
-        memory: Session memory to persist
-        metadata: Session metadata
-
-    Returns:
-        Dict with success status for each tool
-    """
-    
-    # Check if mcp-use is available (handled by top-level import now, 
-    # capturing ImportWarning/Error if module missing might be done at module level or here if we want to be safe)
-    # But user requested top level import.
-    
-    url = mcp_config.get("url")
-    headers = mcp_config.get("headers", {})
-    results = {"memory": False}
-
-    if not url:
-        logging.debug("MCP server URL not found in config")
-        return results
-
-    connector = None
-    try:
-        # Create HttpConnector and connect
-        logging.debug(f"Creating HttpConnector to {url}")
-        connector = HttpConnector(base_url=url, headers=headers)
-        await connector.connect()
-
-        # List available tools (useful for debugging)
-        tools = await connector.list_tools()
-        tool_names = [t.name for t in tools]
-        logging.debug(f"Available tools: {tool_names}")
-
-        # Ensure we have lists for metadata
-        topics = metadata.get("topics", [])
-        if not isinstance(topics, list):
-            topics = []
-
-        files_modified = metadata.get("files_modified", [])
-        if not isinstance(files_modified, list):
-            files_modified = []
-
-        # 1. Add memory with distilled insights
-        if "memory_add" in tool_names:
-            logging.debug("Calling memory_add...")
-            try:
-                session_id = metadata.get("session_id", "unknown")
-                project = metadata.get("cwd", "unknown")
-
-                # The memory passed here is now the specific summary for Nowledge
-                memory_content = memory
-                
-                # Extract project basename for label
-                project_name = os.path.basename(project) if project != "unknown" else "unknown-project"
-                
-                result = await connector.call_tool(
-                    name="memory_add",
-                    arguments={
-                        "content": memory_content,
-                        "title": f"Session {session_id}: {', '.join(topics[:3]) if topics else 'Update'}",
-                        "importance": 0.7,
-                        "labels": ",".join(filter(None, ["claude-context", "session-summary", project_name] + (topics[:5]))),
-                        "event_start": metadata.get("event_start"),
-                        "event_end": metadata.get("event_end")
-                    }
-                )
-                logging.debug(f"memory_add result: {result}")
-                
-                # Check for tool errors
-                if hasattr(result, 'isError') and result.isError:
-                     error_msg = "Unknown tool error"
-                     if hasattr(result, 'content') and result.content:
-                         error_msg = str(result.content)
-                     logging.error(f"memory_add tool returned error: {error_msg}")
-                     print(f"❌ [context-keeper] Nowledge Error: {error_msg}", file=sys.stderr)
-                     results["memory"] = False
-                else:
-                    results["memory"] = True
-                    logging.info("Memory persisted to nowledge")
-
-            except Exception as e:
-                logging.error(f"memory_add failed: {e}")
-                print(f"❌ [context-keeper] Failed to save to Nowledge: {e}", file=sys.stderr)
-
-
-        # Note: Thread persistence is handled by save_thread.py at session end
-
-        return results
-
-    except Exception as e:
-        logging.debug(f"HttpConnector error: {e}")
-        return results
-    finally:
-        if connector:
-            try:
-                await connector.disconnect()
-            except Exception:
-                pass
-
-
 
 def persist_to_nowledge(memory: dict | str, metadata: dict, content: dict) -> bool:
     """
-    Persist memory and thread to nowledge MCP server using HttpConnector.
-
-    Uses mcp-use HttpConnector to connect to existing HTTP MCP server.
-    Follows pattern from: specification/11-mcp-http-connector/
-
-    Returns True if successful, False otherwise.
-    Non-blocking - failures don't affect local memory storage.
+    Persist memory to Nowledge via direct REST API call.
+    Target: http://127.0.0.1:14242/memories
     """
-    logging.debug("=== persist_to_nowledge() START ===")
+    logging.debug("=== persist_to_nowledge() START (REST API) ===")
 
     # Determine content to send
     if isinstance(memory, dict):
@@ -965,28 +785,55 @@ def persist_to_nowledge(memory: dict | str, metadata: dict, content: dict) -> bo
     else:
         memory_content_to_send = memory
 
-    # Find server config using standard pattern
-    mcp_config = find_mcp_config(NOWLEDGE_SERVER_PATTERN)
-    if not mcp_config:
-        logging.debug(f"HTTP MCP server matching '{NOWLEDGE_SERVER_PATTERN}' not found in Claude Code settings")
-        logging.debug("=== persist_to_nowledge() END (no config) ===")
-        return False
+    url = "http://127.0.0.1:14242/memories"
+    
+    # Prepare data for payload
+    session_id = metadata.get("session_id", "unknown")
+    project = metadata.get("cwd", "unknown")
+    project_name = os.path.basename(project) if project != "unknown" else "unknown-project"
+    
+    # Ensure lists
+    topics = metadata.get("topics", [])
+    if not isinstance(topics, list):
+        topics = []
+        
+    # Construct labels as list (REST API usually expects array)
+    labels = list(filter(None, ["claude-context", "session-summary", project_name] + (topics[:5])))
+    
+    # Construct payload
+    payload = {
+        "content": memory_content_to_send,
+        "title": f"Session {session_id}: {', '.join(topics[:3]) if topics else 'Update'}",
+        "importance": 0.7,
+        "confidence": 1.0, # High confidence as this is a direct record
+        "labels": labels,  # Sending as list/array
+        "event_start": metadata.get("event_start"),
+        "event_end": metadata.get("event_end"),
+        "metadata": metadata
+    }
 
-    logging.debug(f"Found config: {mcp_config['name']} at {mcp_config['url']}")
-    # Run async tool calls
     try:
-        import asyncio
-        logging.debug("Calling nowledge tools...")
-        # Note: We pass the specific summary string here, not the full dict
-        results = asyncio.run(call_nowledge_tools(mcp_config, memory_content_to_send, metadata))
-        success = results.get("memory", False)
-        logging.debug(f"=== persist_to_nowledge() END (success={success}) ===")
-        return success
+        import urllib.request
+        import urllib.error
 
+        data = json.dumps(payload).encode('utf-8')
+        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+        
+        logging.debug(f"Sending POST to {url}")
+        
+        with urllib.request.urlopen(req, timeout=5) as response:
+            if 200 <= response.status < 300:
+                logging.info(f"Successfully created memory via REST API. Status: {response.status}")
+                logging.debug("=== persist_to_nowledge() END (success) ===")
+                return True
+            else:
+                logging.error(f"Failed to create memory. Status: {response.status}")
+                return False
+                
     except Exception as e:
-        logging.error(f"persist_to_nowledge error: {e}")
+        logging.error(f"persist_to_nowledge failed: {e}")
+        # Only print specific error if it's connection related to avoid noise
         print(f"❌ [context-keeper] Nowledge Connection Failed: {e}", file=sys.stderr)
-        logging.debug("=== persist_to_nowledge() END (exception) ===")
         return False
 
 
@@ -994,45 +841,71 @@ def persist_to_nowledge(memory: dict | str, metadata: dict, content: dict) -> bo
 # Main Execution
 # ============================================================================
 
+def parse_arguments():
+    """Parse command line arguments (optional overrides)."""
+    parser = argparse.ArgumentParser(
+        description="Save Claude Code session memory"
+    )
+    parser.add_argument("--session-id", help="Session ID")
+    parser.add_argument("--project-path", help="Project path (cwd)")
+    parser.add_argument("--transcript-path", help="Path to transcript file")
+    return parser.parse_known_args()  # Using parse_known_args to be safe against extra flags
+
 def main():
-    # Print visible banner to stderr
-    print("\n" + "=" * 60, file=sys.stderr)
-    print("🔄 [context-keeper] PreCompact Hook Running...", file=sys.stderr)
-    print("=" * 60, file=sys.stderr)
+    # Print visible banner to stderr (using logging now)
+    logging.info("\n" + "=" * 60)
+    logging.info("[context-keeper] PreCompact Hook Running...")
+    logging.info("=" * 60)
 
     try:
-        # Read input from Claude Code
-        hook_input = json.loads(sys.stdin.read())
+        # 1. Try to read from stdin (Hook mode)
+        hook_input = {}
+        try:
+             # Check if stdin has data
+             if not sys.stdin.isatty():
+                 stdin_content = sys.stdin.read()
+                 hook_input = json.loads(stdin_content) if stdin_content else {}
+             else:
+                 hook_input = {}
+        except Exception:
+             hook_input = {}
+
+        # 2. Parse args (CLI mode overrides)
+        args, unknown = parse_arguments()
+
+        # 3. Resolve final values (Args > Stdin)
         # Extract session information (all available fields)
-        session_id = hook_input.get("session_id", "unknown")
-        transcript_path = hook_input.get("transcript_path", "")
+        session_id = args.session_id or hook_input.get("session_id", "unknown")
+        transcript_path = args.transcript_path or hook_input.get("transcript_path", "")
+        # For project path, prefer args.project_path, then hook cwd, then os.getcwd()
+        cwd = args.project_path or hook_input.get("cwd", os.getcwd())
+        
         trigger = hook_input.get("trigger", "unknown")
-        cwd = hook_input.get("cwd", os.getcwd())
         permission_mode = hook_input.get("permission_mode", "default")
         hook_event_name = hook_input.get("hook_event_name", "PreCompact")
         custom_instructions = hook_input.get("custom_instructions", "")
 
-        print(f"📋 [context-keeper] Processing session {session_id[:8]}... (trigger: {trigger})", file=sys.stderr)
+        logging.info(f"[context-keeper] Processing session {session_id[:8]}... (trigger: {trigger})")
 
         # Parse transcript
         if not transcript_path:
             logging.error("No transcript path provided")
-            print("=" * 60 + "\n", file=sys.stderr)
+            logging.info("=" * 60 + "\n")
             sys.exit(1)
 
-        print("📖 [context-keeper] Parsing transcript...", file=sys.stderr)
+        logging.info("[context-keeper] Parsing transcript...")
         messages = parse_transcript(transcript_path)
         if not messages:
-            print("ℹ️  [context-keeper] No messages in transcript, skipping", file=sys.stderr)
-            print("=" * 60 + "\n", file=sys.stderr)
+            logging.info("[context-keeper] No messages in transcript, skipping")
+            logging.info("=" * 60 + "\n")
             sys.exit(0)
 
-        print(f"📊 [context-keeper] Found {len(messages)} messages", file=sys.stderr)
+        logging.info(f"[context-keeper] Found {len(messages)} messages")
 
         # Get last compaction time (incremental update)
         last_compact_time = get_last_compact_time(session_id, cwd, transcript_path)
         if last_compact_time:
-            print(f"🔄 [context-keeper] Incremental summary starting from {last_compact_time}", file=sys.stderr)
+            logging.info(f"[context-keeper] Incremental summary starting from {last_compact_time}")
         
         # Extract content
         logging.debug("[DEBUG] Starting extract_conversation_content...")
@@ -1053,11 +926,15 @@ def main():
 
         # Show custom instructions if provided
         if custom_instructions:
-            print(f"📝 [context-keeper] Custom instructions: {custom_instructions[:50]}{'...' if len(custom_instructions) > 50 else ''}", file=sys.stderr)
+            logging.info(f"[context-keeper] Custom instructions: {custom_instructions[:50]}{'...' if len(custom_instructions) > 50 else ''}")
 
         # Generate memory
-        print("🤖 [context-keeper] Generating memory with AI...", file=sys.stderr)
+        logging.info("[context-keeper] Generating memory with AI...")
         memory = generate_memory(content, session_info)
+        
+        if not memory:
+            logging.warning("Failed to generate memory (LLM likely failed). Exiting.")
+            sys.exit(0)
 
         # Prepare metadata
         metadata = {
@@ -1071,7 +948,7 @@ def main():
         }
 
         # Save to project directory
-        print("💾 [context-keeper] Saving memory...", file=sys.stderr)
+        logging.info("[context-keeper] Saving memory...")
         memory_path = save_memory(session_id, memory, metadata, cwd)
         
         logging.info(f"Summary saved: {memory_path}")
@@ -1082,18 +959,19 @@ def main():
         try:
             nowledge_success = persist_to_nowledge(memory, metadata, content)
             if nowledge_success:
-                print("☁️  [context-keeper] Persisted to nowledge", file=sys.stderr)
+                logging.info("[context-keeper] Persisted to nowledge")
         except Exception:
             pass  # Non-blocking
 
         # Print visible completion message
-        print("✅ [context-keeper] Session context saved successfully!", file=sys.stderr)
-        print("=" * 60 + "\n", file=sys.stderr)
+        logging.info("[context-keeper] Session context saved successfully!")
+        logging.info("=" * 60 + "\n")
         sys.exit(0)
 
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
-        print("=" * 60 + "\n", file=sys.stderr)
+        logging.error(traceback.format_exc())
+        logging.info("=" * 60 + "\n")
         sys.exit(1)
 
 
