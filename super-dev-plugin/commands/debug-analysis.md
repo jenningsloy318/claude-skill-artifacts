@@ -22,7 +22,7 @@ When invoked, this command activates the `super-dev:debug-analyzer` to:
 3. **Identifies root causes**: Finds the underlying problem
 4. **Creates reproduction steps**: Documents how to reproduce the issue
 5. **Proposes solutions**: Recommends specific fixes
-6. **Documents findings**: Creates `[index]-debug-analysis.md`
+6. **Documents findings**: Creates `[phase-index]-debug-analysis.md`
 
 ## Analysis Process
 
@@ -60,7 +60,7 @@ When invoked, this command activates the `super-dev:debug-analyzer` to:
 
 ## Output
 
-Creates `[index]-debug-analysis.md` with:
+Creates `[phase-index]-debug-analysis.md` with:
 - Summary of the issue
 - Evidence collected
 - Root cause analysis

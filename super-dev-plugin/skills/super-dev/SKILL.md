@@ -70,7 +70,16 @@ Development Workflow Progress:
 
 **CHECKPOINT RULE:** Coordinator ensures commits at each phase boundary.
 
----
+Two indices are used throughout this workflow to organize specifications and their associated artifacts:
+
+- Spec Index (spec-index): A numeric sequence that identifies each specification within the `specification/` directory. Naming convention: `[spec-index]-[spec-name]/`. Example: `01-user-auth/`, `02-payment-processing/`.
+
+- Phase Index (phase-index): A numeric sequence used to order and label files produced within a specific spec across workflow phases. These files are stored under the corresponding spec directory and use the phase index in their filenames. Naming convention: `[phase-index]-[document-type].md`. Example within `01-user-auth/`: `02-requirements.md`, `06-specification.md`, `08-implementation-summary.md`.
+
+Summary:
+- Spec Index organizes specs at the directory level (which spec).
+- Phase Index organizes documents within a spec by workflow phase (what was produced when).
+
 
 ## Entry Point: Coordinator Agent
 
@@ -124,24 +133,24 @@ For granular control, you can invoke individual phases using slash commands:
 
 **At every milestone/phase boundary, update these documents:**
 
-### 1. Task List Updates (`[index]-task-list.md`)
+### 1. Task List Updates (`[phase-index]-task-list.md`)
 - [ ] Mark completed tasks with `[x]`
 - [ ] Add any new tasks discovered during implementation
 - [ ] Note any blocked or deferred tasks with reasons
 
-### 2. Implementation Summary Updates (`[index]-implementation-summary.md`)
+### 2. Implementation Summary Updates (`[phase-index]-implementation-summary.md`)
 - [ ] Add completed work to "Code Changes" section
 - [ ] Document any technical decisions made
 - [ ] Record challenges encountered and solutions found
 
-### 3. Specification Updates (`[index]-specification.md`)
+### 3. Specification Updates (`[phase-index]-specification.md`)
 - [ ] Update affected sections with `[UPDATED: date]` marker
 - [ ] Document why the change was necessary
 
 **FORBIDDEN:**
-❌ Completing a milestone without updating task list
-❌ Moving to next phase with outdated implementation summary
-❌ Changing implementation without updating specification
+- ❌ Completing a milestone without updating task list
+- ❌ Moving to next phase with outdated implementation summary
+- ❌ Changing implementation without updating specification
 
 ---
 
@@ -155,7 +164,7 @@ Establishes coding standards, git practices, and quality standards.
 
 ## Phase 1: Specification Setup
 
-Analyze information and identify/create spec directory under `specification/`.
+Analyze information and identify/create spec directory under `specification/` with [spec-index(number)]-[spec name]
 
 ---
 
@@ -163,7 +172,7 @@ Analyze information and identify/create spec directory under `specification/`.
 
 **AGENT:** Invoke `super-dev:requirements-clarifier`
 
-**Output:** `01-requirements.md`
+**Output:** `[phase-index]-requirements.md`
 
 ---
 
@@ -177,7 +186,7 @@ The research-agent:
 - Filters by recency
 - Flags deprecated information
 
-**Output:** `02-research-report.md` with freshness scores
+**Output:** `[phase-index]-research-report.md` with freshness scores
 
 ---
 
@@ -190,7 +199,7 @@ The debug-analyzer:
 - Uses ast-grep for structural analysis
 - Tracks file coverage for debugging scope
 
-**Output:** `03-debug-analysis.md`
+**Output:** `[phase-index]-debug-analysis.md`
 
 ---
 
@@ -203,7 +212,7 @@ The code-assessor:
 - Uses ast-grep for structural analysis
 - Tracks file coverage percentage
 
-**Output:** `04-assessment.md`
+**Output:** `[phase-index]-assessment.md`
 
 ---
 
@@ -211,7 +220,7 @@ The code-assessor:
 
 **AGENT:** Invoke `super-dev:architecture-agent`
 
-**Output:** `05-architecture.md` and ADRs
+**Output:** `[phase-index]-architecture.md` and ADRs
 
 ---
 
@@ -219,7 +228,7 @@ The code-assessor:
 
 **AGENT:** Invoke `super-dev:ui-ux-designer`
 
-**Output:** `05-design-spec.md`
+**Output:** `[phase-index]-design-spec.md`
 
 ---
 
@@ -228,9 +237,9 @@ The code-assessor:
 **AGENT:** Invoke `super-dev:spec-writer`
 
 **Output:** Three files (or sub-specifications for large features)
-- `06-specification.md` - Technical specification
-- `07-implementation-plan.md` - Implementation plan
-- `08-task-list.md` - Task list
+- `[phase-index]-specification.md` - Technical specification
+- `[phase-index]-implementation-plan.md` - Implementation plan
+- `[phase-index]-task-list.md` - Task list
 (Or sub-specifications for large features)
 
 ---
@@ -287,6 +296,7 @@ Run specification-aware code review focused on correctness, security, performanc
 - Only proceed beyond Phase 9 when verdict is Approved or Approved with Comments (Low/Info only) and all acceptance criteria are met
 
 **Output:** Code review report with severity, evidence, and verdict
+- `[phase-index]-code-review.md`
 
 ---
 
@@ -306,7 +316,10 @@ After code review is complete and approved, update all documentation:
 - Single pass to update all documents
 - Coordinates commit with code changes
 
-**Output:** Updated `08-task-list.md`, `09-implementation-summary.md`, and `06-specification.md`
+**Output:** Updated
+- `[phase-index]-task-list.md`
+- `[phase-index]-implementation-summary.md`
+- `[phase-index]-specification.md`
 
 ---
 

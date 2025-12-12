@@ -66,7 +66,7 @@ When invoked, this command activates the `super-dev:code-assessor` to:
 
 ## Output
 
-Creates `[index]-assessment.md` with:
+Creates `[phase-index]-assessment.md` with:
 - Architecture overview
 - Standards compliance findings
 - Framework inventory

@@ -67,5 +67,5 @@ When this command is invoked:
 - The Coordinator Agent is the central authority that orchestrates ALL phases
 - Parallel execution (dev + qa) maximizes efficiency
 - Build queue policy: For Rust/Go, only ONE build at a time
-- All documents are created in `specification/[index]-[name]/` directory
+- All documents are created in `specification/[spec-index]-[spec-name]/` directory
 - Final verification ensures no missing code or documents

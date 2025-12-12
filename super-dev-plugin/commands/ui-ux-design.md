@@ -22,7 +22,7 @@ When invoked, this command activates the `super-dev:ui-ux-designer` to:
 3. **Defines interactions**: Specifies user flows and interactions
 4. **Establishes design tokens**: Creates consistent design system
 5. **Plans responsive design**: Ensures cross-device compatibility
-6. **Creates design spec**: Generates `[index]-design-spec.md`
+6. **Creates design spec**: Generates `[phase-index]-design-spec.md`
 
 ## Design Process
 
