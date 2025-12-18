@@ -39,6 +39,7 @@ These rules define how to translate Figma inputs into code for this project and 
 - Emphasize modular design; use design patterns where appropriate.
 - Minimize changes; avoid modifying unrelated module code.
 - Occam's Razor (do not add code unless necessary)
+- **No backward compatibility** - Break old formats freely
 
 ### New Requirements Process (MUST follow)
 1. **Do not rush into coding during initial communication**: When the user proposes a new requirement, first conduct a solution discussion.
