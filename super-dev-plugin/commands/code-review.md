@@ -24,7 +24,7 @@ When invoked, this command activates the `super-dev:code-reviewer` agent to:
 5. **Maintainability check**: Ensures code follows best practices
 6. **Generates review report**: Provides actionable feedback
 
-### Output: Creates `[phase-index]-code-review.md`
+### Output: Creates `[doc-index]-code-review.md`
 
 ## Review Focus Areas
 

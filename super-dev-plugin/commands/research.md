@@ -63,7 +63,7 @@ When invoked, this command activates the `super-dev:research-agent` to:
 
 ## Output
 
-Creates `[phase-index]-research-report.md` with:
+Creates `[doc-index]-research-report.md` with:
 - Summary of findings
 - Deprecation warnings
 - Best practices and anti-patterns

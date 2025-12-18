@@ -58,7 +58,7 @@ For Rust and Go projects:
 ## Execution Process
 
 ### Dev Executor
-- Reads `[phase-index]-task-list.md` for tasks
+- Reads `[doc-index]-task-list.md` for tasks
 - Implements features according to specifications
 - Invokes specialist agents (rust-developer, frontend-developer, etc.)
 - Follows established code patterns

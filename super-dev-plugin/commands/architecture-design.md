@@ -22,7 +22,7 @@ When invoked, this command activates the `super-dev:architecture-agent` to:
 3. **Creates ADRs**: Documents key architectural decisions
 4. **Defines interfaces**: Specifies component boundaries and contracts
 5. **Plans integration**: Maps how new architecture fits with existing
-6. **Creates architecture spec**: Generates `[phase-index]-architecture.md`
+6. **Creates architecture spec**: Generates `[doc-index]-architecture.md`
 
 ## Architecture Design Process
 
@@ -89,7 +89,7 @@ When invoked, this command activates the `super-dev:architecture-agent` to:
 ## Output
 
 Creates:
-- `[phase-index]-architecture.md` - Main architecture document
+- `[doc-index]-architecture.md` - Main architecture document
 - ADRs in `adrs/` subdirectory
 - Component diagrams and interface specifications
 - Integration strategy document

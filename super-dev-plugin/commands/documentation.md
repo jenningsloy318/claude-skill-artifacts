@@ -26,20 +26,20 @@ When invoked, this command activates the `super-dev:docs-executor` to:
 
 ## Documentation Updates
 
-### 1. Task List (`[phase-index]-task-list.md`)
+### 1. Task List (`[doc-index]-task-list.md`)
 - Mark completed tasks with `[x]`
 - Add any new tasks discovered during implementation
 - Update task status and progress
 - Note any blocked or deferred tasks
 
-### 2. Implementation Summary (`[phase-index]-implementation-summary.md`)
+### 2. Implementation Summary (`[doc-index]-implementation-summary.md`)
 - Add completed work to "Code Changes" section
 - Document technical decisions made
 - Record challenges and solutions
 - Note any deviations from plan
 - Update status at milestone boundaries
 
-### 3. Specification (`[phase-index]-specification.md`)
+### 3. Specification (`[doc-index]-specification.md`)
 - Update sections with `[UPDATED: YYYY-MM-DD]` marker
 - Document implementation differences
 - Explain why changes were necessary
@@ -77,9 +77,9 @@ Before completing this phase, ensure:
 ## Output
 
 Updates/creates:
-- Updated `[phase-index]-task-list.md`
-- Updated `[phase-index]-implementation-summary.md`
-- Updated `[phase-index]-specification.md`
+- Updated `[doc-index]-task-list.md`
+- Updated `[doc-index]-implementation-summary.md`
+- Updated `[doc-index]-specification.md`
 - User documentation files
 - Developer documentation files
 

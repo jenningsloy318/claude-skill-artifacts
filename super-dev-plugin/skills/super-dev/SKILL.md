@@ -74,7 +74,7 @@ Two indices are used throughout this workflow to organize specifications and the
 
 - Spec Index (spec-index): A numeric sequence that identifies each specification within the `specification/` directory. Naming convention: `[spec-index]-[spec-name]/`. Example: `01-user-auth/`, `02-payment-processing/`.
 
-- Phase Index (phase-index): A numeric sequence used to order and label files produced within a specific spec across workflow phases. These files are stored under the corresponding spec directory and use the phase index in their filenames. Naming convention: `[phase-index]-[document-type].md`. Example within `01-user-auth/`: `02-requirements.md`, `06-specification.md`, `08-implementation-summary.md`.
+- doc Index (doc-index): A numeric sequence used to order and label files produced within a specific spec across workflow phases. These files are stored under the corresponding spec directory and use the doc index in their filenames. Naming convention: `[doc-index]-[document-type].md`. Example within `01-research-report.md`: `02-requirements.md`, `03-specification.md`.
 
 Summary:
 - Spec Index organizes specs at the directory level (which spec).
@@ -133,17 +133,17 @@ For granular control, you can invoke individual phases using slash commands:
 
 **At every milestone/phase boundary, update these documents:**
 
-### 1. Task List Updates (`[phase-index]-task-list.md`)
+### 1. Task List Updates (`[doc-index]-task-list.md`)
 - [ ] Mark completed tasks with `[x]`
 - [ ] Add any new tasks discovered during implementation
 - [ ] Note any blocked or deferred tasks with reasons
 
-### 2. Implementation Summary Updates (`[phase-index]-implementation-summary.md`)
+### 2. Implementation Summary Updates (`[doc-index]-implementation-summary.md`)
 - [ ] Add completed work to "Code Changes" section
 - [ ] Document any technical decisions made
 - [ ] Record challenges encountered and solutions found
 
-### 3. Specification Updates (`[phase-index]-specification.md`)
+### 3. Specification Updates (`[doc-index]-specification.md`)
 - [ ] Update affected sections with `[UPDATED: date]` marker
 - [ ] Document why the change was necessary
 
@@ -172,7 +172,7 @@ Analyze information and identify/create spec directory under `specification/` wi
 
 **AGENT:** Invoke `super-dev:requirements-clarifier`
 
-**Output:** `[phase-index]-requirements.md`
+**Output:** `[doc-index]-requirements.md`
 
 ---
 
@@ -186,7 +186,7 @@ The research-agent:
 - Filters by recency
 - Flags deprecated information
 
-**Output:** `[phase-index]-research-report.md` with freshness scores
+**Output:** `[doc-index]-research-report.md` with freshness scores
 
 ---
 
@@ -199,7 +199,7 @@ The debug-analyzer:
 - Uses ast-grep for structural analysis
 - Tracks file coverage for debugging scope
 
-**Output:** `[phase-index]-debug-analysis.md`
+**Output:** `[doc-index]-debug-analysis.md`
 
 ---
 
@@ -212,7 +212,7 @@ The code-assessor:
 - Uses ast-grep for structural analysis
 - Tracks file coverage percentage
 
-**Output:** `[phase-index]-assessment.md`
+**Output:** `[doc-index]-assessment.md`
 
 ---
 
@@ -220,7 +220,7 @@ The code-assessor:
 
 **AGENT:** Invoke `super-dev:architecture-agent`
 
-**Output:** `[phase-index]-architecture.md` and ADRs
+**Output:** `[doc-index]-architecture.md` and ADRs
 
 ---
 
@@ -228,7 +228,7 @@ The code-assessor:
 
 **AGENT:** Invoke `super-dev:ui-ux-designer`
 
-**Output:** `[phase-index]-design-spec.md`
+**Output:** `[doc-index]-design-spec.md`
 
 ---
 
@@ -237,9 +237,9 @@ The code-assessor:
 **AGENT:** Invoke `super-dev:spec-writer`
 
 **Output:** Three files (or sub-specifications for large features)
-- `[phase-index]-specification.md` - Technical specification
-- `[phase-index]-implementation-plan.md` - Implementation plan
-- `[phase-index]-task-list.md` - Task list
+- `[doc-index]-specification.md` - Technical specification
+- `[doc-index]-implementation-plan.md` - Implementation plan
+- `[doc-index]-task-list.md` - Task list
 (Or sub-specifications for large features)
 
 ---
@@ -296,7 +296,7 @@ Run specification-aware code review focused on correctness, security, performanc
 - Only proceed beyond Phase 9 when verdict is Approved or Approved with Comments (Low/Info only) and all acceptance criteria are met
 
 **Output:** Code review report with severity, evidence, and verdict
-- `[phase-index]-code-review.md`
+- `[doc-index]-code-review.md`
 
 ---
 
@@ -317,9 +317,9 @@ After code review is complete and approved, update all documentation:
 - Coordinates commit with code changes
 
 **Output:** Updated
-- `[phase-index]-task-list.md`
-- `[phase-index]-implementation-summary.md`
-- `[phase-index]-specification.md`
+- `[doc-index]-task-list.md`
+- `[doc-index]-implementation-summary.md`
+- `[doc-index]-specification.md`
 
 ---
 

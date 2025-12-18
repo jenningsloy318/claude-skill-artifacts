@@ -55,6 +55,7 @@ These rules define how to translate Figma inputs into code for this project and 
 8. for api implementation, always use version api endpoints like `/api/v1/xxx`
 9. In Next.js, do not use deprecated or global middleware for request proxying. Prefer implementing a proxy via Route Handlers (e.g., /app/api/proxy/route.ts) or a dedicated proxy.ts/js helper, and use next.config.js rewrites/redirects when appropriate.
 10. If the project includes both frontend and backend, split them into two directories (e.g., /frontend and /backend) and maintain separate build/test pipelines for each.
+
 ### Quality Standards (MUST follow)
 - Each commit must compile successfully
 - Pass all existing tests
