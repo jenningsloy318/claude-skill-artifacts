@@ -52,11 +52,11 @@ Development Workflow Progress:
 - [ ] Phase 0: Apply Dev Rules (establish coding standards)
 - [ ] Phase 1: Specification Setup (identify/create spec directory)
 - [ ] Phase 2: Requirements Clarification (gather requirements)
-- [ ] Phase 3: Research (best practices, docs, patterns) [Time MCP]
+- [ ] Phase 3: Research (best practices, docs, patterns) [Time MCP + Option Presentation]
 - [ ] Phase 4: Debug Analysis (for bugs only) [grep/ast-grep]
 - [ ] Phase 5: Code Assessment (architecture, style, frameworks) [grep/ast-grep]
-- [ ] Phase 5.3: Architecture Design (for complex features - optional)
-- [ ] Phase 5.5: UI/UX Design (for features with UI - optional)
+- [ ] Phase 5.3: Architecture Design (for complex features - optional) [Option Presentation]
+- [ ] Phase 5.5: UI/UX Design (for features with UI - optional) [Option Presentation]
 - [ ] Phase 6: Specification Writing (tech spec, plan, tasks)
 - [ ] Phase 7: Specification Review (validate against requirements)
 - [ ] Phase 8: Execution & QA (PARALLEL: dev + qa executors)
@@ -67,6 +67,79 @@ Development Workflow Progress:
 - [ ] Phase 12: Commit & Push (descriptive message)
 - [ ] Phase 13: Final Verification (Coordinator verifies all complete)
 ```
+
+## Option Presentation Rule (MANDATORY)
+
+**CRITICAL WORKFLOW RULE:** The super-dev workflow MUST present 3-5 options with detailed comparisons at key decision points. This is NOT optional - it is the DEFAULT and EXPECTED behavior.
+
+### Phases Requiring Option Presentation
+
+The following phases MUST present options to the user for selection:
+
+| Phase | Agent | What Requires Options |
+|-------|-------|---------------------|
+| Phase 3 | `super-dev:research-agent` | Technology choices, libraries, frameworks, implementation approaches |
+| Phase 5.3 | `super-dev:architecture-agent` | Architecture patterns, module decomposition, data access, communication patterns |
+| Phase 5.5 | `super-dev:ui-ux-designer` | Layout patterns, navigation, components, interactions, visual design |
+
+### Option Presentation Workflow
+
+```
+User Request
+     │
+     ▼
+┌─────────────────┐
+│   Coordinator   │
+│     Agent       │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│     Research/Architecture/Design     │
+│         Agent Generates              │
+│           3-5 Options                │
+└────────┬────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│   Present Options to User:          │
+│   - Detailed descriptions            │
+│   - Comparison matrix                │
+│   - Strengths/Weaknesses             │
+│   - Recommendation                   │
+└────────┬────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│     User Selects Option             │
+│   (or requests modifications)        │
+└────────┬────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│   Coordinator Proceeds with         │
+│      Selected Option                │
+└─────────────────────────────────────┘
+```
+
+### Coordinator Responsibilities
+
+The Coordinator Agent MUST:
+1. **Ensure options are generated** - Verify that the relevant agent (research/architecture/design) has presented 3-5 options
+2. **Wait for user selection** - Do NOT proceed to next phase until user has selected an option
+3. **Document the decision** - Record the selected option in the specification
+4. **Handle edge cases** - If user requests modifications, work with the agent to refine options
+
+### Exception Handling
+
+**Single answer is acceptable ONLY when:**
+- Looking up specific API documentation
+- Finding exact configuration values
+- Retrieving specific error messages
+- User explicitly requests "just give me the best option"
+- Following established patterns without variation
+
+**All other cases MUST present options.**
 
 **CHECKPOINT RULE:** Coordinator ensures commits at each phase boundary.
 

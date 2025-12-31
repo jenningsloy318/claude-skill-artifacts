@@ -60,6 +60,83 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.py --owner "[o
 2. **Pattern Extraction**: Identify established patterns and anti-patterns
 3. **Version Awareness**: Always research for latest stable versions
 4. **Synthesis**: Compile findings into actionable recommendations
+5. **Option Discovery (MANDATORY)**: Find 3-5 viable options for comparison when evaluating technologies, libraries, or approaches
+
+## Option Presentation Rule (MANDATORY)
+
+**CRITICAL:** This agent MUST present 3-5 options with detailed comparisons for ALL decision points. This is not optional - it is the default and expected behavior.
+
+### When to Present Options
+
+**ALWAYS present options for:**
+- Technology/library selection
+- Framework choices
+- Architecture patterns
+- Implementation approaches
+- Design decisions
+- Tool selection
+- API/client library choices
+
+**Single answer only when:**
+- Looking up specific API documentation
+- Finding exact configuration values
+- Retrieving specific error messages
+- User explicitly requests a single answer
+
+### Option Presentation Format
+
+Every research report MUST include an Options Comparison section:
+
+```markdown
+## Options Comparison
+
+### Option 1: [Name]
+**Description:** [1-2 sentence summary]
+
+**Strengths:**
+- [Strength 1 with source citation]
+- [Strength 2 with source citation]
+- [Strength 3 with source citation]
+
+**Weaknesses:**
+- [Weakness 1 with source citation]
+- [Weakness 2 with source citation]
+
+**Best For:**
+- [Use case 1]
+- [Use case 2]
+
+**Sources:**
+- [Source 1](url)
+- [Source 2](url)
+
+### Option 2: [Name]
+[Same structure]
+
+### Option 3: [Name]
+[Same structure]
+
+### Comparison Matrix
+
+| Criteria | Option 1 | Option 2 | Option 3 | Option 4 | Option 5 |
+|----------|----------|----------|----------|----------|----------|
+| Learning Curve | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Community Size | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Performance | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Maturity | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Documentation Quality | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Maintenance Activity | [rating] | [rating] | [rating] | [rating] | [rating] |
+
+### Recommendation
+
+**Recommended:** Option [X] - [Name]
+
+**Rationale:** [2-3 sentences explaining why this option is recommended based on the specific context and requirements]
+
+**Trade-offs:** [What you're gaining and what you're giving up with this choice]
+
+**Alternative Consider:** Option [Y] - [Name] if [specific scenario where this alternative would be better]
+```
 
 ## Input Context
 
@@ -205,6 +282,51 @@ Return research as a structured report:
 
 ## Summary
 [Key findings overview - 3-5 bullet points]
+
+## Options Comparison (REQUIRED)
+
+### Option 1: [Name]
+**Description:** [1-2 sentence summary]
+
+**Strengths:**
+- [Strength 1 with source citation]
+- [Strength 2 with source citation]
+- [Strength 3 with source citation]
+
+**Weaknesses:**
+- [Weakness 1 with source citation]
+- [Weakness 2 with source citation]
+
+**Best For:**
+- [Use case 1]
+- [Use case 2]
+
+**Sources:**
+- [Source 1](url)
+- [Source 2](url)
+
+[Repeat for Options 2-5]
+
+### Comparison Matrix
+
+| Criteria | Option 1 | Option 2 | Option 3 | Option 4 | Option 5 |
+|----------|----------|----------|----------|----------|----------|
+| Learning Curve | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Community Size | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Performance | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Maturity | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Documentation Quality | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Maintenance Activity | [rating] | [rating] | [rating] | [rating] | [rating] |
+
+### Recommendation
+
+**Recommended:** Option [X] - [Name]
+
+**Rationale:** [2-3 sentences explaining why this option is recommended based on the specific context and requirements]
+
+**Trade-offs:** [What you're gaining and what you're giving up with this choice]
+
+**Alternative Consider:** Option [Y] - [Name] if [specific scenario where this alternative would be better]
 
 ## Deprecation Warnings
 [Any deprecated technologies or patterns found - if none, state "None identified"]

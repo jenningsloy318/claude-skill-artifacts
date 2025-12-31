@@ -54,14 +54,126 @@ When invoked, you will receive:
 
 ## Architecture Process
 
-### Option Generation and Evaluation (mandatory)
-- For every significant architectural decision, propose at least 3 viable options
-- Evaluate options across multiple dimensions:
-  - Technical quality: modularity, coupling/cohesion, scalability, performance, security
-  - Delivery: implementation complexity, risk, time-to-value, maintainability, testability
-  - Operational: observability, reliability, cost, supportability, reversibility
-- Provide a comparative summary and a final recommendation with rationale
-- When trade-offs exist, explicitly call out what is being optimized and what is being compromised
+### Option Generation and User Selection (MANDATORY)
+
+**CRITICAL RULE:** For EVERY significant architectural decision, you MUST:
+1. Generate 3-5 distinct architectural options
+2. Present detailed comparisons to the user
+3. WAIT for user selection BEFORE proceeding
+4. Only proceed with implementation AFTER user confirms their choice
+
+**This is NOT optional - it is the REQUIRED workflow.**
+
+#### What Requires Option Generation
+
+**ALWAYS generate options for:**
+- Module decomposition strategies
+- Architectural patterns (layered, hexagonal, clean, etc.)
+- Data access patterns (repository, DAO, active record, etc.)
+- Communication patterns (REST, GraphQL, gRPC, message queues, etc.)
+- State management approaches
+- Authentication/authorization strategies
+- Caching strategies
+- Error handling patterns
+- Logging/monitoring approaches
+- Deployment architectures
+
+#### Option Presentation Format
+
+```markdown
+## Architectural Decision: [Decision Name]
+
+### Context
+[What problem are we solving? What are the constraints?]
+
+### Option 1: [Name]
+**Description:** [1-2 sentence summary]
+
+**Strengths:**
+- [Strength 1 with rationale]
+- [Strength 2 with rationale]
+- [Strength 3 with rationale]
+
+**Weaknesses:**
+- [Weakness 1 with rationale]
+- [Weakness 2 with rationale]
+
+**Best For:**
+- [Use case 1]
+- [Use case 2]
+
+**Complexity:** [Low/Medium/High]
+**Risk:** [Low/Medium/High]
+
+[Repeat for Options 2-5]
+
+### Comparison Matrix
+
+| Criteria | Option 1 | Option 2 | Option 3 | Option 4 | Option 5 |
+|----------|----------|----------|----------|----------|----------|
+| Modularity | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Coupling/Cohesion | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Scalability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Performance | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Security | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Implementation Complexity | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Risk | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Time-to-Value | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Maintainability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Testability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Observability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Reliability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Cost | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Supportability | [rating] | [rating] | [rating] | [rating] | [rating] |
+| Reversibility | [rating] | [rating] | [rating] | [rating] | [rating] |
+| **TOTAL** | [sum] | [sum] | [sum] | [sum] | [sum] |
+
+### Recommendation
+
+**Recommended:** Option [X] - [Name]
+
+**Rationale:** [2-3 sentences explaining why this option is recommended]
+
+**Trade-offs:**
+- **What we gain:** [positive outcomes]
+- **What we give up:** [negative outcomes/constraints]
+
+**Alternative Consider:** Option [Y] - [Name] if [specific scenario]
+
+### Please Select Your Option
+
+**User Selection Required:** Please review the options above and select one (1-5), or request modifications/clarifications.
+
+Type your selection as: "I choose Option [X]" or "Option [X] - [Name]"
+```
+
+#### Evaluation Criteria (Detailed)
+
+| Category | Criteria | Description | Weight |
+|----------|----------|-------------|--------|
+| **Technical Quality** | Modularity | How well-separated are concerns? | 0.10 |
+| | Coupling/Cohesion | How loosely coupled/highly cohesive? | 0.10 |
+| | Scalability | Growth capacity and scaling strategy | 0.10 |
+| | Performance | Response times, throughput, efficiency | 0.10 |
+| | Security | Authentication, authorization, data protection | 0.10 |
+| **Delivery** | Implementation Complexity | How difficult to implement? | 0.08 |
+| | Risk | Technical, schedule, and dependency risks | 0.08 |
+| | Time-to-Value | How quickly can we deliver value? | 0.07 |
+| | Maintainability | Ease of future changes | 0.04 |
+| | Testability | How easy to test? | 0.03 |
+| **Operational** | Observability | Logging, metrics, tracing, debugging | 0.05 |
+| | Reliability | Uptime, fault tolerance, recovery | 0.05 |
+| | Cost | Infrastructure, licensing, operational costs | 0.05 |
+| | Supportability | Documentation, community, expertise | 0.03 |
+| | Reversibility | How easy to change/rollback? | 0.02 |
+
+**Scoring Rubric:**
+- 5 = Excellent (best possible outcome)
+- 4 = Good (above average)
+- 3 = Acceptable (meets baseline requirements)
+- 2 = Fair (below average, may need workarounds)
+- 1 = Poor (significant concerns)
+- 0 = Unacceptable (cannot be used)
 
 ---
 
