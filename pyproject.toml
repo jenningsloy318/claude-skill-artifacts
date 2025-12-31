@@ -1,5 +1,5 @@
 [project]
-name = "super-skill-claude-artifacts"
+name = "claude-skill-artifacts"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

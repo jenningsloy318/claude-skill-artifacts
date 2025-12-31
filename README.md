@@ -2,7 +2,7 @@
 
 A Claude Code plugin marketplace for context persistence and productivity tools.
 
-**Repository**: https://github.com/jenningsloy318/super-skill-claude-artifacts
+**Repository**: https://github.com/jenningsloy318/claude-skill-artifacts
 
 ## Plugins
 
@@ -30,7 +30,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Navigate to the project root and create a virtual environment with `uv`:
 
 ```bash
-cd ~/.claude/plugins/marketplaces/super-skill-claude-artifacts/
+cd ~/.claude/plugins/marketplaces/claude-skill-artifacts/
 
 # Create virtual environment with seed
 uv venv --seed
@@ -47,11 +47,11 @@ source .venv/bin/activate
 
 ```bash
 # Add the marketplace
-claude plugin marketplace add jenningsloy318/super-skill-claude-artifacts
+claude plugin marketplace add jenningsloy318/claude-skill-artifacts
 
 # Install plugins
-claude plugin install context-keeper@super-skill-claude-artifacts
-claude plugin install dev-workflow@super-skill-claude-artifacts
+claude plugin install context-keeper@claude-skill-artifacts
+claude plugin install super-dev@claude-skill-artifacts
 ```
 
 ### 4. (Optional) Configure LLM-based summaries in context-keeper
@@ -72,16 +72,16 @@ source .venv/bin/activate
 
 ```bash
 # Add this marketplace
-claude plugin marketplace add jenningsloy318/super-skill-claude-artifacts
+claude plugin marketplace add jenningsloy318/claude-skill-artifacts
 
 # List all marketplaces
 claude plugin marketplace list
 
 # Update marketplace (fetch latest plugins)
-claude plugin marketplace update super-skill-claude-artifacts
+claude plugin marketplace update claude-skill-artifacts
 
 # Remove marketplace
-claude plugin marketplace remove super-skill-claude-artifacts
+claude plugin marketplace remove claude-skill-artifacts
 ```
 
 ## Plugins Overview
@@ -194,7 +194,7 @@ claude-artifacts/
 3. Make your changes
 4. Submit a pull request
 
-**Issues**: https://github.com/jenningsloy318/super-skill-claude-artifacts/issues
+**Issues**: https://github.com/jenningsloy318/claude-skill-artifacts/issues
 
 ## License
 

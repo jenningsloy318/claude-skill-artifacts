@@ -1,8 +1,8 @@
 {
-  "name": "super-skill-claude-artifacts",
+  "name": "claude-skill-artifacts",
   "owner": {
-    "name": "Jennings L",
-    "email": "jennings@example.com",
+    "name": "Jennings Liu",
+    "email": "jennings@gmail.com",
     "url": "https://github.com/jenningsloy318"
   },
   "metadata": {
@@ -16,11 +16,11 @@
       "description": "Automatically summarize and persist conversation context before compaction, with automatic context restoration on resume",
       "version": "1.0.0",
       "author": {
-        "name": "Jennings L",
+        "name": "Jennings Liu",
         "url": "https://github.com/jenningsloy318"
       },
-      "homepage": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
-      "repository": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
+      "homepage": "https://github.com/jenningsloy318/claude-skill-artifacts",
+      "repository": "https://github.com/jenningsloy318/claude-skill-artifacts",
       "license": "MIT",
       "keywords": [
         "context",
@@ -40,11 +40,11 @@
       "description": "Coordinator-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
       "version": "2.0.0",
       "author": {
-        "name": "Jennings L",
+        "name": "Jennings Liu",
         "url": "https://github.com/jenningsloy318"
       },
-      "homepage": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
-      "repository": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
+      "homepage": "https://github.com/jenningsloy318/claude-skill-artifacts",
+      "repository": "https://github.com/jenningsloy318/claude-skill-artifacts",
       "license": "MIT",
       "keywords": [
         "development",
