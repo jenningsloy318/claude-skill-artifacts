@@ -601,9 +601,169 @@ Web App Test Execution Template (concise):
 
 ---
 
-# STATIC CODE ANALYSIS: CODERABBIT CLI
+# STATIC CODE ANALYSIS: CODERABBIT CLI (PROACTIVE - MANDATORY)
 
-Run `coderabbit --prompt-only` in background. Pass any errors and issues found to the current development agent (frontend-developer, backend-developer, rust-developer, etc.) to fix. Re-run CodeRabbit to verify fixes are applied.
+## Proactive Code Review During Implementation
+
+**CRITICAL:** Run `coderabbit --prompt-only` **proactively in the background** starting as soon as the dev agent begins implementation. Do NOT wait for implementation to complete.
+
+### When to Run CodeRabbit
+
+**ALWAYS run CodeRabbit in background for:**
+- All new feature implementations
+- All bug fixes
+- All refactoring work
+- Any code changes beyond trivial modifications
+
+**Run as soon as:**
+- Dev agent signals "starting implementation"
+- First files are created/modified
+- Initial code structure is in place
+
+### CodeRabbit Execution Flow
+
+```mermaid
+graph TD
+    A[Dev Agent Starts Implementation] --> B[QA Agent Starts CodeRabbit --prompt-only]
+    B --> C{CodeRabbit Running}
+    C --> D[Monitor Output in Background]
+    D --> E{Issues Found?}
+    E -->|Yes| F[Report Issues to Dev Agent]
+    F --> G[Dev Agent Fixes Issues]
+    G --> H[Re-run CodeRabbit]
+    H --> C
+    E -->|No| I[Dev Agent Completes]
+    I --> J[Final CodeRabbit Review]
+    J --> K[QA Complete]
+```
+
+### Execution Commands
+
+**Start CodeRabbit in background:**
+```bash
+# Start CodeRabbit in background with output logging
+coderabbit --prompt-only > coderabbit-output.log 2>&1 &
+CODERABBIT_PID=$!
+
+# Monitor the background process
+tail -f coderabbit-output.log &
+```
+
+**Check CodeRabbit status:**
+```bash
+# Check if CodeRabbit is still running
+ps -p $CODERABBIT_PID > /dev/null && echo "Running" || echo "Completed"
+
+# Check output for issues
+grep -E "error|warning|issue|problem" coderabbit-output.log
+```
+
+**Stop CodeRabbit if needed:**
+```bash
+# Stop the background process
+kill $CODERABBIT_PID 2>/dev/null
+```
+
+### Issue Handling Workflow
+
+**When CodeRabbit finds issues:**
+
+1. **Parse Issues from Output**
+   - Extract severity (Critical/High/Medium/Low)
+   - Extract file paths and line numbers
+   - Extract issue descriptions
+
+2. **Report to Dev Agent**
+   ```
+   CodeRabbit found [count] issues during implementation:
+
+   ## Critical Issues
+   - [file:line] [issue description]
+
+   ## High Issues
+   - [file:line] [issue description]
+
+   Please address these issues before completing implementation.
+   ```
+
+3. **Verify Fixes**
+   - After dev agent fixes issues, re-run `coderabbit --prompt-only`
+   - Verify all previously reported issues are resolved
+   - Check for no new issues introduced
+
+4. **Report Final Status**
+   ```
+   CodeRabbit Review: PASSED
+   - All [count] issues resolved
+   - No new issues introduced
+   ```
+
+### Integration with Parallel Execution
+
+**During Phase 8 (Execution & QA):**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                PARALLEL EXECUTION & QA                      │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌──────────────────┐    │
+│  │dev-executor │  │   qa-agent  │  │   CodeRabbit     │    │
+│  │             │  │             │  │   (Background)   │    │
+│  │ Implements  │  │ Plans & runs│  │   Reviews code   │    │
+│  │ code        │  │ tests       │  │   proactively    │    │
+│  │             │  │             │  │                   │    │
+│  │             │  │             │  │  → Report issues │    │
+│  │             │  │             │  │     to dev       │    │
+│  │             │  │             │  │                   │    │
+│  └─────────────┘  └─────────────┘  └──────────────────┘    │
+│                          │                                   │
+│                   BUILD QUEUE                                │
+│              (Rust/Go: one at a time)                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### CodeRabbit Quality Gates
+
+**Before marking QA complete:**
+- [ ] CodeRabbit ran proactively in background during implementation
+- [ ] All Critical issues resolved
+- [ ] All High issues resolved
+- [ ] Medium issues reviewed and accepted or resolved
+- [ ] Final CodeRabbit review shows no new issues
+- [ ] CodeRabbit output logged and archived
+
+### Output Format
+
+**Report CodeRabbit status in QA report:**
+
+```markdown
+## CodeRabbit Review (Proactive)
+
+**Started:** [timestamp when dev agent began implementation]
+**Completed:** [timestamp of final review]
+**Duration:** [time elapsed]
+
+### Issues Found During Implementation
+
+| Severity | Count | Resolved |
+|----------|-------|----------|
+| Critical | [n] | ✓ |
+| High | [n] | ✓ |
+| Medium | [n] | ✓/✗ |
+| Low | [n] | ✓/✗ |
+
+### Final Status
+**Result:** PASSED / FAILED
+
+[If PASSED]
+- All critical/high issues resolved
+- Medium issues: [summary of accepted issues]
+- No new issues introduced in fixes
+
+[If FAILED]
+- Blocking issues: [list]
+- Recommended actions: [list]
+```
 
 ---
 

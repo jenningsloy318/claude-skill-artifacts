@@ -325,19 +325,23 @@ Coordinator reviews all documents for alignment and completeness.
 
 ## Phase 8: Execution & QA (PARALLEL Agents)
 
-**CRITICAL CHANGE:** The Coordinator invokes TWO agents in PARALLEL:
+**CRITICAL CHANGE:** The Coordinator invokes TWO agents in PARALLEL, with CodeRabbit running proactively:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                PARALLEL EXECUTION & QA                      │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐                           │
-│  │dev-executor │  │   qa-agent  │                           │
-│  │             │  │             │                           │
-│  │ Implements  │  │ Plans & runs│                           │
-│  │ code        │  │ tests       │                           │
-│  │             │  │             │                           │
-│  └─────────────┘  └─────────────┘                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌──────────────────┐    │
+│  │dev-executor │  │   qa-agent  │  │   CodeRabbit     │    │
+│  │             │  │             │  │   (Background)   │    │
+│  │ Implements  │  │ Plans & runs│  │   Reviews code   │    │
+│  │ code        │  │ tests       │  │   proactively    │    │
+│  │             │  │             │  │                   │    │
+│  │             │  │             │  │  → Report issues │    │
+│  │             │  │             │  │     to dev       │    │
+│  │             │  │             │  │  → Verify fixes  │    │
+│  │             │  │             │  │                   │    │
+│  └─────────────┘  └─────────────┘  └──────────────────┘    │
 │                          │                                   │
 │                   BUILD QUEUE                                │
 │              (Rust/Go: one at a time)                       │
@@ -347,6 +351,19 @@ Coordinator reviews all documents for alignment and completeness.
 **Agents:**
 - `super-dev:dev-executor` - Implements code, invokes specialist developers
 - `super-dev:qa-agent` - Modality-specific testing and verification (merged planning + execution)
+- **CodeRabbit CLI (Background)** - Proactive code review starting immediately when dev begins implementation
+
+**CodeRabbit Proactive Execution:**
+- Starts: As soon as dev agent signals implementation begins
+- Mode: Background process with `--prompt-only` flag
+- Purpose: Find issues early during implementation, not after completion
+- Workflow:
+  1. QA agent starts `coderabbit --prompt-only > coderabbit-output.log 2>&1 &`
+  2. Monitors output for issues in real-time
+  3. Reports issues to dev agent as they are found
+  4. Dev agent fixes issues during implementation
+  5. QA agent re-runs CodeRabbit to verify fixes
+  6. Final CodeRabbit review before marking QA complete
 
 **Build Policy (Rust/Go):**
 - Only ONE build at a time
