@@ -154,6 +154,45 @@ Detection Logic (common linters/SAST):
 **Rationale:** Generic names reduce code readability and maintainability
 ```
 
+5.6) Rust Workspace Structure Check (MANDATORY for Rust projects - BLOCKING)
+- **CRITICAL**: For Rust projects, workspace structure is MANDATORY and blocks approval if violated
+
+**Workspace Structure Requirements:**
+- Check for workspace structure in root `Cargo.toml`:
+  - Must have `[workspace]` section
+  - Must define `members` pointing to `crates/*` or explicit list
+  - Example: `[workspace.members] = ["core", "api", "database", "auth", "utils"]`
+
+**Module Separation (MANDATORY):**
+- Verify `crates/` directory exists with separate crates for each major function
+- Each crate should have its own `Cargo.toml` in `crates/xxx/Cargo.toml`
+- Common pattern: `crates/core`, `crates/api`, `crates/database`, `crates/auth`, `crates/utils`
+
+**Prohibited Structure (BLOCKING):**
+- Monolithic single-crate structure with all code in root `src/`
+- Missing workspace configuration in `Cargo.toml`
+- All code in one place without workspace separation
+
+**Verification Steps:**
+- [ ] Check root `Cargo.toml` for `[workspace]` section
+- [ ] Verify `crates/` directory exists with member crates
+- [ ] Check each crate has proper `package.name` in its `Cargo.toml`
+- [ ] Verify workspace members are listed in root `[workspace.members]`
+- [ ] Run `cargo workspace list` to confirm structure
+
+**Severity:**
+- Any workspace structure violation → **BLOCKING** finding (Critical severity)
+- Monolithic single-crate structure → **BLOCKING** finding
+- Must be fixed before code review can be approved
+
+**Evidence Format:**
+```
+**F-XXX** | Rust Workspace | `Cargo.toml:1`
+**Issue:** Missing workspace structure - monolithic single crate
+**Required:** Use Cargo workspace with `crates/` directory: `crates/core`, `crates/api`, etc.
+**Rationale:** Workspace structure enables modularity, compilation isolation, and better code organization
+```
+
 6) Validate Against Spec
 - For each acceptance criterion:
 ```

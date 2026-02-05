@@ -377,6 +377,26 @@ The code-assessor:
 
 **MANDATORY USER REVIEW:** Architecture design MUST be reviewed by user. Never skip this phase when architecture is involved.
 
+### Language-Specific Requirements (MANDATORY)
+
+**Rust Projects - Workspace Structure (MANDATORY):**
+- [ ] **Use Cargo workspaces** to split different functions into separate modules/crates
+- [ ] **Workspace structure**: Root `Cargo.toml` with `[workspace]` section defining members
+- [ ] **Module separation**: Each major function/feature should be a separate workspace member in `crates/` directory
+- [ ] **Example structure**:
+```
+project/
+├── Cargo.toml (workspace root)
+├── crates/
+│   ├── core/           # Core business logic
+│   ├── api/           # API layer (e.g., axum/actix-web server)
+│   ├── database/      # Database access layer
+│   ├── auth/          # Authentication module
+│   └── utils/         # Shared utilities
+```
+- [ ] **Avoid**: Monolithic `src/` directory with all code in a single crate
+- [ ] **Enforcement**: Architecture design MUST specify workspace member structure for Rust projects
+
 **Output:** `[doc-index]-architecture.md` and ADRs
 
 ---
@@ -628,6 +648,15 @@ During implementation, ALL names (files, functions, variables, parameters, class
 - [ ] **Implement all components** - All UI elements from the design must be implemented
 - [ ] **Apple aesthetic compliance** - Ensure light mode, no purple, natural feel
 
+#### Rust Workspace Structure Enforcement (MANDATORY for Rust projects)
+- [ ] **Use Cargo workspaces** with `crates/` directory structure
+- [ ] **Split functions into separate crates** - Each major function/feature in `crates/xxx`
+- [ ] **Workspace root** `Cargo.toml` must define `[workspace.members]`
+- [ ] **Example**: `crates/core`, `crates/api`, `crates/database`, `crates/auth`, `crates/utils`
+- [ ] **Avoid**: Monolithic single-crate structure with all code in root `src/`
+- [ ] **Follow architecture spec** - Must match workspace structure from Phase 5.3 architecture design
+- [ ] **Verify workspace** - Run `cargo workspace list` to confirm structure
+
 **CodeRabbit will flag violations of these standards.**
 
 ### CodeRabbit Proactive Execution
@@ -686,6 +715,20 @@ The code-reviewer agent automatically invokes the external `code-review-expert` 
 - [ ] **Check Apple aesthetic compliance** - Light mode, no purple, natural feel
 - [ ] **Verify all components implemented** - All design elements are present in code
 - [ ] **Screenshot validation** - Use `get_screenshot()` to compare visual output with design
+
+**Rust Workspace Structure Review (MANDATORY for Rust projects):**
+- [ ] **Verify workspace structure** - Check `Cargo.toml` has `[workspace]` with `members` in `crates/` directory
+- [ ] **Check module separation** - Each major function/feature should be in separate `crates/xxx` crate
+- [ ] **Verify against architecture spec** - Must match workspace structure from Phase 5.3
+- [ ] **Block monolithic structure** - Reject if all code is in single root crate without workspace members
+- [ ] **Evidence format**:
+```
+**F-XXX** | Rust Workspace | `Cargo.toml:1`
+**Issue:** Missing workspace structure - all code in single crate
+**Required:** Use Cargo workspace with `crates/` directory structure
+**Rationale:** Workspace structure enables better modularity, compilation isolation, and code organization
+```
+- [ ] **Severity**: Any violation → **BLOCKING** finding (Critical severity)
 
 **Iteration Rule (Coordinator-Enforced):**
 - If verdict is Blocked or Changes Requested, or any Critical/High/Medium findings exist, or any acceptance criteria are Not Met/Partial → RE-ENTER Phase 8
