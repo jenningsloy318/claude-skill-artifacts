@@ -451,15 +451,49 @@ Coordinator reviews all documents for alignment and completeness.
 
 **CRITICAL VALIDATION GATES - Spec Review MUST verify:**
 
-### Naming Convention Requirements (MANDATORY)
-- [ ] **No generic variable names** - All variables use feature-specific prefixes
-  - Prohibited: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`
-  - Required: `[feature][entity][property]` (e.g., `userAuthState`, `orderTotal`)
+### Naming Convention Requirements (MANDATORY - BLOCKING VIOLATIONS)
+
+**⚠️ CRITICAL: ALL names must be meaningful, functional, and purpose-specific. Generic names are FORBIDDEN.**
+
+#### Prohibited Generic Names (BLOCKING)
+- [ ] **Variables**: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`, `info`, `content`, `output`, `input`
+- [ ] **Collections**: `list`, `array`, `map`, `dict`, `items`, `elements`, `entries`, `collection`, `group`, `set`
+- [ ] **Functions**: `handle`, `process`, `parse`, `format`, `validate`, `check`, `get`, `set`, `load`, `save`, `delete`, `update`, `create`
+- [ ] **Parameters**: `params`, `args`, `options`, `config`, `settings`, `props`, `attributes`
+- [ ] **Files**: `utils.ts`, `helpers.js`, `common.py`, `base.js`, `types.ts`, `api.ts`, `constants.ts`, `config.ts`
+
+#### Required Naming Patterns
+
+**Variables:** `[feature][entity][property]` or `[entity][property][context]`
+- ✅ Correct: `userAuthState`, `orderTotal`, `cartItemCount`, `errorMessage`, `paymentMethod`
+- ❌ Wrong: `data`, `val`, `result`, `info`, `content`
+
+**Collections:** `[entity]List`, `[entity]Items`, `[entity]Collection`, `[entity]Array`
+- ✅ Correct: `userList`, `cartItems`, `productCategories`, `orderHistory`
+- ❌ Wrong: `list`, `items`, `array`, `data`, `collection`
+
+**Functions:** `[verb][Entity][Action]` or `[feature][Action][Entity]`
+- ✅ Correct: `fetchUserById`, `calculateOrderTotal`, `validatePaymentMethod`, `renderUserProfile`
+- ❌ Wrong: `process`, `handle`, `get`, `set`, `load`, `parse`
+
+**Parameters:** Descriptive names indicating purpose
+- ✅ Correct: `userCredentials`, `paymentDetails`, `searchFilters`, `formState`
+- ❌ Wrong: `params`, `args`, `options`, `config`, `props`
+
+**Files:** `[feature]-[entity].ext` or `[feature]-[action].ext`
+- ✅ Correct: `user-auth.ts`, `order-calculator.js`, `payment-validator.ts`, `cart-service.ts`
+- ❌ Wrong: `utils.ts`, `helpers.js`, `api.ts`, `types.ts`, `common.ts`
+
+#### Additional Requirements
 - [ ] **No single-letter names** - Except loop indices (i, j, k)
-- [ ] **No abbreviations** - Except well-known ones (id, url, api, http)
-- [ ] **Function names use verb-noun pattern** - `[feature][Action]` or `[verb][Noun]`
-- [ ] **Constants use UPPER_CASE** - `[FEATURE_NAME]_[CONSTANT]`
-- [ ] **Booleans use is/has/should prefix** - `isAuthenticated`, `hasPermission`
+- [ ] **No abbreviations** - Except well-known ones (id, url, api, http, ui, ux, auth, config)
+- [ ] **Function names use verb-noun pattern** - Start with action verb
+- [ ] **Constants use UPPER_CASE** - `[FEATURE_NAME]_[CONSTANT]` (e.g., `MAX_RETRY_COUNT`, `DEFAULT_TIMEOUT_MS`)
+- [ ] **Booleans use is/has/should/can prefix** - `isAuthenticated`, `hasPermission`, `shouldRetry`, `canDelete`
+- [ ] **Class/Interface/Type names use PascalCase** - Descriptive names (e.g., `UserProfile`, `PaymentService`, `OrderValidator`)
+- [ ] **Private members use underscore prefix** - `_privateMethod`, `_internalState`
+
+**REJECT SPEC IF ANY NAMING VIOLATION FOUND** - All names must be specified and follow these rules
 
 ### No Ambiguity Requirements (MANDATORY)
 - [ ] **Single Implementation Guarantee** - Spec must result in exactly ONE valid implementation
@@ -506,6 +540,12 @@ Coordinator reviews all documents for alignment and completeness.
 
 **CONTEXT:** Apply `dev` mode for implementation focus
 
+**⚠️ CRITICAL NAMING CONVENTION WARNING:**
+During implementation, ALL names (files, functions, variables, parameters, classes, etc.) MUST be meaningful, functional, and purpose-specific. Generic names are FORBIDDEN and will BLOCK code review approval.
+- Review Phase 7 Naming Convention Requirements before implementing
+- Code review will reject any generic names (data, item, value, result, temp, obj, val, list, array, handle, process, get, set, utils, helpers, etc.)
+- When in doubt, use descriptive names that clearly indicate the feature, entity, and purpose
+
 **CRITICAL CHANGE:** The Coordinator invokes TWO agents in PARALLEL, with CodeRabbit running proactively:
 
 ```
@@ -545,15 +585,34 @@ Coordinator reviews all documents for alignment and completeness.
 
 **The dev-executor MUST adhere to these standards during Phase 8:**
 
-#### Naming Convention Requirements (MANDATORY)
-- [ ] **No generic variable names** - All variables use feature-specific prefixes
-  - Prohibited: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`
-  - Required: `[feature][entity][property]` (e.g., `userAuthState`, `orderTotal`)
+#### Naming Convention Requirements (MANDATORY - BLOCKING VIOLATIONS)
+
+**⚠️ CRITICAL: ALL names must be meaningful, functional, and purpose-specific. Generic names are FORBIDDEN.**
+
+**Prohibited Generic Names:**
+- **Variables**: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`, `info`, `content`, `output`, `input`
+- **Collections**: `list`, `array`, `map`, `dict`, `items`, `elements`, `entries`, `collection`, `group`, `set`
+- **Functions**: `handle`, `process`, `parse`, `format`, `validate`, `check`, `get`, `set`, `load`, `save`, `delete`, `update`, `create`
+- **Parameters**: `params`, `args`, `options`, `config`, `settings`, `props`, `attributes`
+- **Files**: `utils.ts`, `helpers.js`, `common.py`, `base.js`, `types.ts`, `api.ts`, `constants.ts`, `config.ts`
+
+**Required Patterns:**
+- **Variables**: `[feature][entity][property]` (e.g., `userAuthState`, `orderTotal`, `cartItemCount`)
+- **Collections**: `[entity]List`, `[entity]Items`, `[entity]Collection` (e.g., `userList`, `cartItems`, `productCategories`)
+- **Functions**: `[verb][Entity][Action]` (e.g., `fetchUserById`, `calculateOrderTotal`, `validatePaymentMethod`)
+- **Parameters**: Descriptive names (e.g., `userCredentials`, `paymentDetails`, `searchFilters`)
+- **Files**: `[feature]-[entity].ext` (e.g., `user-auth.ts`, `order-calculator.js`, `payment-validator.ts`)
+
+**Additional Requirements:**
 - [ ] **No single-letter names** - Except loop indices (i, j, k)
-- [ ] **No abbreviations** - Except well-known ones (id, url, api, http)
-- [ ] **Function names use verb-noun pattern** - `[feature][Action]` or `[verb][Noun]`
-- [ ] **Constants use UPPER_CASE** - `[FEATURE_NAME]_[CONSTANT]`
-- [ ] **Booleans use is/has/should prefix** - `isAuthenticated`, `hasPermission`
+- [ ] **No abbreviations** - Except well-known ones (id, url, api, http, ui, ux, auth, config)
+- [ ] **Function names use verb-noun pattern** - Start with action verb
+- [ ] **Constants use UPPER_CASE** - `[FEATURE_NAME]_[CONSTANT]` (e.g., `MAX_RETRY_COUNT`, `DEFAULT_TIMEOUT_MS`)
+- [ ] **Booleans use is/has/should/can prefix** - `isAuthenticated`, `hasPermission`, `shouldRetry`, `canDelete`
+- [ ] **Class/Interface/Type names use PascalCase** - Descriptive names (e.g., `UserProfile`, `PaymentService`)
+- [ ] **Private members use underscore prefix** - `_privateMethod`, `_internalState`
+
+**CodeRabbit will flag violations of these standards.**
 
 #### No Ambiguity Requirements (MANDATORY)
 - [ ] **Follow spec exactly** - Implementation must match specification unambiguously
@@ -604,6 +663,13 @@ Coordinator reviews all documents for alignment and completeness.
 - **security rules**: Mandatory security checks (no hardcoded secrets, input validation, XSS/CSRF protection)
 - **coding-style rules**: Code quality verification (immutability, no deep nesting, proper error handling)
 - **code-review-expert skill (optional)**: Senior engineer review for SOLID violations, architecture smells, and removal candidates
+
+**MANDATORY CHECK: Naming Convention Validation**
+The code-reviewer agent MUST perform a dedicated naming convention check (step 5.5) that:
+- Checks ALL variables, functions, parameters, classes, files for generic names
+- Blocks approval if ANY generic name violations are found (Critical/High severity)
+- Verifies all names follow the required patterns specified in Phase 7
+- Provides specific evidence (file:line) for each naming violation
 
 Run specification-aware code review focused on correctness, security, performance, and maintainability. Scope to changed files and implementation summary; reference acceptance criteria from the spec.
 

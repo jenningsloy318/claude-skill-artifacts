@@ -96,8 +96,9 @@ Detection Logic (common linters/SAST):
   - Input validation, authN/Z, sensitive data, XSS/CSRF, dependency risks
 - Performance (P1)
   - N+1 queries, unnecessary re-renders, memory leaks, expensive loops, blocking I/O, caching
-- Maintainability (P1)
-  - Naming, comments for complex logic, reasonable function length, cyclomatic complexity, dead code, magic numbers
+- Maintainability (P1) - **NAMING CONVENTION CHECK HERE**
+  - **Naming conventions (MANDATORY)**: Check all variables, functions, parameters, files for generic names (see step 5.5 for detailed check)
+  - Comments for complex logic, reasonable function length, cyclomatic complexity, dead code, magic numbers
 - Testability (P1)
   - Dependency injection, isolation of side effects, interfaces over concretes, coverage of new code
 - Error Handling (P1)
@@ -113,6 +114,45 @@ Detection Logic (common linters/SAST):
   - Type casts that bypass correctness (e.g., any)
   - Inconsistent styles with the surrounding file
 - Summarize adjustments in 1–3 sentences
+
+5.5) Naming Convention Check (MANDATORY - BLOCKING VIOLATIONS)
+- **CRITICAL**: This check is MANDATORY and blocks approval if violations are found
+
+**Generic Name Violations (BLOCKING):**
+- Check for prohibited generic names:
+  - Variables: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`, `info`, `content`
+  - Collections: `list`, `array`, `map`, `dict`, `items`, `elements`, `entries`
+  - Functions: `handle`, `process`, `parse`, `format`, `validate`, `check`, `get`, `set`
+  - Parameters: `params`, `args`, `options`, `config`, `settings`
+  - Files: `utils.ts`, `helpers.js`, `common.py`, `base.js`, `types.ts`
+
+**Required Naming Patterns:**
+- Variables: `[feature][entity][property]` (e.g., `userAuthState`, `orderTotal`, `cartItemCount`)
+- Collections: `[entity]List` / `[entity]Items` (e.g., `userList`, `cartItems`, `productCategories`)
+- Functions: `[verb][Entity][Action]` or `[feature][Action][Entity]` (e.g., `fetchUserById`, `calculateOrderTotal`, `validatePaymentMethod`)
+- Parameters: Descriptive names (e.g., `userCredentials`, `paymentDetails`, `searchFilters`)
+- Files: `[feature]-[entity].ext` or `[feature]-[action].ext` (e.g., `user-auth.ts`, `order-calculator.js`, `payment-validator.ts`)
+
+**Additional Checks:**
+- [ ] No single-letter names except loop indices (i, j, k)
+- [ ] No abbreviations except well-known ones (id, url, api, http, ui, ux)
+- [ ] Function names use verb-noun pattern
+- [ ] Constants use UPPER_CASE with feature prefix
+- [ ] Booleans use is/has/should/can/should prefix
+- [ ] Class/Interface/Type names use PascalCase with descriptive names
+- [ ] File names are descriptive and follow feature-entity or feature-action pattern
+
+**Severity:**
+- Any generic name violation → **BLOCKING** finding (Critical or High severity)
+- Must be fixed before code review can be approved
+
+**Evidence Format:**
+```
+**F-XXX** | Naming Convention | `file:line`
+**Issue:** Generic variable name "data" used
+**Required:** Use descriptive name e.g., "userProfileData" or "orderRequest"
+**Rationale:** Generic names reduce code readability and maintainability
+```
 
 6) Validate Against Spec
 - For each acceptance criterion:
