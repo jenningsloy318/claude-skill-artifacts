@@ -16,18 +16,23 @@ This plugin provides a systematic 12-phase development workflow orchestrated by 
 
 ## Usage
 
-### Main Command
+### Main Entry Point
+
+**Directly invoke the `super-dev` skill:**
 
 ```
-/super-dev:run [description of task]
+Invoke the super-dev skill and describe your task
 ```
+
+The Coordinator Agent will orchestrate all 13 phases automatically.
 
 ### Examples
 
 ```
-/super-dev:run Fix the login button not responding on mobile
-/super-dev:run Implement user profile page with avatar upload
-/super-dev:run Refactor the authentication module for better testability
+"Fix the login button not responding on mobile"
+"Implement user profile page with avatar upload"
+"Refactor the authentication module for better testability"
+"Improve API response time for product listing"
 ```
 
 ### Additional Commands
@@ -108,9 +113,8 @@ super-dev-plugin/
 │   ├── macos-app-developer.md
 │   └── windows-app-developer.md
 │
-├── commands/                   # Slash commands (18 total)
+├── commands/                   # Slash commands (17 total)
 │   # super-dev commands:
-│   ├── run.md                     # Main entry point
 │   ├── architecture-design.md
 │   ├── code-assessment.md
 │   ├── code-review.md
