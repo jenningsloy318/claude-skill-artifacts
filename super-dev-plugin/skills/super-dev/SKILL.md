@@ -590,8 +590,16 @@ Coordinator reviews all documents for alignment and completeness.
 - **security-review skill**: Comprehensive security checklist validation
 - **security rules**: Mandatory security checks (no hardcoded secrets, input validation, XSS/CSRF protection)
 - **coding-style rules**: Code quality verification (immutability, no deep nesting, proper error handling)
+- **code-review-expert skill (optional)**: Senior engineer review for SOLID violations, architecture smells, and removal candidates
 
 Run specification-aware code review focused on correctness, security, performance, and maintainability. Scope to changed files and implementation summary; reference acceptance criteria from the spec.
+
+**Dual Review Enhancement:**
+The code-reviewer agent automatically invokes the external `code-review-expert` skill (if installed) for a comprehensive dual review:
+- **Primary Review**: Specification-first validation (acceptance criteria, API contracts, implementation correctness)
+- **Secondary Review**: Senior engineer lens (SOLID principles, architecture health, removal candidates)
+- **Finding Merging**: Deduplicates and prioritizes findings from both reviewers
+- **Fallback**: If `code-review-expert` is not installed, proceeds with specification-first review only
 
 **UI/UX Design Review (when applicable):**
 - [ ] **Open .pen design file** - Use Pencil MCP to open `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name].pen`
@@ -607,6 +615,7 @@ Run specification-aware code review focused on correctness, security, performanc
 
 **Output:** Code review report with severity, evidence, and verdict
 - `[doc-index]-code-review.md`
+- **Includes**: Both specification-first and senior engineer review findings (if code-review-expert skill is available)
 
 ---
 
