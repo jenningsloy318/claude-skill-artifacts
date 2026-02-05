@@ -404,11 +404,12 @@ The code-assessor:
 3. Save the design to: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name].pen`
 4. Generate design spec documentation
 
-**Enhanced Design Intelligence (Optional):**
+**Enhanced Design Intelligence (MANDATORY if installed):**
 The ui-ux-designer agent automatically invokes the external `ui-ux-pro-max` skill (if installed) for comprehensive design guidance:
 - **Design Styles**: 50 curated UI/UX styles for inspiration
 - **Color Palettes**: 21 professional color palette combinations
 - **Font Pairings**: 50 typography pairings for visual hierarchy
+- **MANDATORY**: If `ui-ux-pro-max` skill is installed, it MUST be invoked before creating the .pen design file
 - **Fallback**: If `ui-ux-pro-max` is not installed, proceeds with standard Pencil MCP design only
 
 **MANDATORY USER REVIEW:** UI/UX design MUST be reviewed by user. Never skip this phase when UI is involved.

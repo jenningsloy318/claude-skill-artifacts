@@ -179,13 +179,13 @@ This agent implements enhanced design guidance when the external `ui-ux-pro-max`
 - **Integration**: Use ui-ux-pro-max guidance to inform design decisions in Pencil MCP
 
 ### Integration Workflow
-- If `ui-ux-pro-max` skill is installed → Invoke for design guidance before creating .pen file
+- **MANDATORY**: If `ui-ux-pro-max` skill is installed → MUST invoke for design guidance before creating .pen file
 - Use suggested styles, palettes, and typography as input for Pencil MCP design
 - If not available → Proceed with Pencil MCP design only
 - No manual intervention required
 
 ### Availability Handling
-- If `ui-ux-pro-max` skill is installed → Automatic enhanced design guidance
+- **MANDATORY**: If `ui-ux-pro-max` skill is installed → MUST use enhanced design guidance before Pencil MCP design
 - If not available → Proceed with standard Pencil MCP design workflow
 - Design always created using Pencil MCP regardless of ui-ux-pro-max availability
 
@@ -224,9 +224,9 @@ When invoked, you receive:
    - Identify established design conventions
    - Review similar features already implemented
 
-4. **Enhanced Design Intelligence (Optional)**
-   - Check if external `ui-ux-pro-max` skill is available
-   - If available, invoke for design guidance:
+4. **Enhanced Design Intelligence (MANDATORY if installed)**
+   - **Check if external `ui-ux-pro-max` skill is available**
+   - **MANDATORY**: If available, MUST invoke for design guidance:
 ```
 Skill(skill: "ui-ux-pro-max")
 ```
@@ -234,6 +234,7 @@ Skill(skill: "ui-ux-pro-max")
    - Focus: Design inspiration that aligns with Apple aesthetic (light mode, no purple, natural feel)
    - Integration: Use ui-ux-pro-max suggestions to inform subsequent Pencil MCP design
    - If skill unavailable, proceed to Phase 2 with standard design approach
+   - **DO NOT SKIP** ui-ux-pro-max invocation if the skill is installed
 
 **Output:** Context summary documenting:
 - Tech stack and design system
