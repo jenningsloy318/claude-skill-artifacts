@@ -51,6 +51,13 @@ Ensure assessment coverage is intentional and complete:
 - Module boundaries and coupling
 - Data flow clarity
 - Error handling consistency
+- **Rust Workspace Structure (MANDATORY for Rust projects):**
+  - [ ] Check for workspace structure in root `Cargo.toml` (`[workspace]` section)
+  - [ ] Verify `crates/` directory exists with separate crates for each major function
+  - [ ] Check workspace member structure: `crates/core`, `crates/api`, `crates/database`, `crates/auth`, `crates/utils`
+  - [ ] **BLOCKING**: Flag monolithic single-crate structure (all code in root `src/`)
+  - [ ] Verify each crate has its own `Cargo.toml` with proper `package.name`
+  - [ ] Run `cargo workspace list` to confirm structure
 - Questions: Does current architecture support planned changes? What patterns should be followed? Any architectural debt?
 
 ### 2) Code Standards (rules and configs)

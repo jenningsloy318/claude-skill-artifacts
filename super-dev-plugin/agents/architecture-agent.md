@@ -1408,6 +1408,52 @@ function compareOptions(options, weights) {
 
 ---
 
+## Language-Specific Architecture Requirements (MANDATORY)
+
+### Rust Projects - Workspace Structure (MANDATORY)
+
+**For Rust projects, the following architecture requirements are MANDATORY:**
+
+- [ ] **Use Cargo workspaces** with `crates/` directory structure
+- [ ] **Split functions into separate workspace members** - Each major function/feature must be in `crates/xxx`
+- [ ] **Workspace configuration** in root `Cargo.toml`:
+```toml
+[workspace]
+members = [
+    "core",
+    "api",
+    "database",
+    "auth",
+    "utils",
+]
+```
+- [ ] **Standard crate structure**:
+```
+project/
+├── Cargo.toml (workspace root)
+├── crates/
+│   ├── core/      # Core business logic & domain models
+│   ├── api/       # API layer (axum/actix-web server)
+│   ├── database/  # Database access layer & repositories
+│   ├── auth/      # Authentication & authorization
+│   └── utils/     # Shared utilities & helpers
+```
+- [ ] **Each crate has its own Cargo.toml** with `package.name` and proper dependencies
+- [ ] **Verify with `cargo workspace list`** to confirm structure
+- [ ] **ADR must document workspace structure** decisions
+
+**Prohibited:**
+- ❌ Monolithic single-crate structure with all code in root `src/`
+- ❌ Missing workspace configuration
+- ❌ All code in one place without proper module separation
+
+**Enforcement:**
+- Architecture document MUST specify workspace member structure
+- Each major function/feature MUST map to a workspace member
+- Code review will BLOCK approval if workspace structure is not implemented
+
+---
+
 ## Output Format
 
 ### Primary Output: `05-architecture.md`

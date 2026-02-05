@@ -146,23 +146,67 @@ module and crate names follow community conventions;
 - Test roundtrip properties (encode/decode)
 - Test mathematical properties
 
-## Project Structure
+## Project Structure (MANDATORY - Workspace Pattern)
+
+**⚠️ CRITICAL: Rust projects MUST use Cargo workspaces with `crates/` directory structure.**
 
 ```
 project/
-├── Cargo.toml
+├── Cargo.toml (workspace root)
 ├── rustfmt.toml
-├── src/
-│   ├── main.rs / lib.rs
-│   ├── config.rs
-│   ├── error.rs
-│   ├── domain/
-│   ├── infrastructure/
-│   └── api/
-├── tests/
-├── benches/
-└── examples/
+├── crates/
+│   ├── core/           # Core business logic & domain models
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       └── lib.rs
+│   ├── api/            # API layer (axum/actix-web server)
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       └── main.rs
+│   ├── database/       # Database access layer & repositories
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       └── lib.rs
+│   ├── auth/           # Authentication & authorization
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       └── lib.rs
+│   └── utils/          # Shared utilities & helpers
+│       ├── Cargo.toml
+│       └── src/
+│           └── lib.rs
+├── tests/              # Integration tests (workspace root)
+├── benches/            # Benchmarks
+└── examples/           # Examples
 ```
+
+**Workspace Root Cargo.toml:**
+```toml
+[workspace]
+members = [
+    "core",
+    "api",
+    "database",
+    "auth",
+    "utils",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+
+[workspace.dependencies]
+# Shared dependencies go here
+```
+
+**Quality Checklist - Workspace:**
+- [ ] Verify workspace structure: `cargo workspace list`
+- [ ] Each crate has proper `package.name` in its `Cargo.toml`
+- [ ] Workspace members defined in root `[workspace.members]`
+- [ ] Use `workspace-dependencies` in member crates
+- [ ] NO monolithic single-crate structure with all code in root `src/`
 
 ## Cargo.toml Rules
 
