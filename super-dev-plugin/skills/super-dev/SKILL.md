@@ -389,6 +389,9 @@ The code-assessor:
 
 **REFERENCE:** `templates/reference/ui-ux-patterns` - UI/UX patterns, wireframes, accessibility guidelines
 
+**Integrated Skills:**
+- **ui-ux-pro-max skill (optional)**: UI/UX design intelligence with 50 styles, 21 palettes, 50 font pairs for enhanced design guidance
+
 **Design Guidelines:**
 - **Apple Design Aesthetic**: Follow Apple Human Interface Guidelines patterns
 - **No Dark Mode**: Design for light mode only
@@ -397,14 +400,23 @@ The code-assessor:
 
 **Design Process:**
 1. Prompt Pencil MCP to create the UI/UX design
-2. Save the design to: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name].pen`
-3. Generate design spec documentation
+2. Optionally invoke `ui-ux-pro-max` skill for enhanced design intelligence (styles, palettes, typography guidance)
+3. Save the design to: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name].pen`
+4. Generate design spec documentation
+
+**Enhanced Design Intelligence (Optional):**
+The ui-ux-designer agent automatically invokes the external `ui-ux-pro-max` skill (if installed) for comprehensive design guidance:
+- **Design Styles**: 50 curated UI/UX styles for inspiration
+- **Color Palettes**: 21 professional color palette combinations
+- **Font Pairings**: 50 typography pairings for visual hierarchy
+- **Fallback**: If `ui-ux-pro-max` is not installed, proceeds with standard Pencil MCP design only
 
 **MANDATORY USER REVIEW:** UI/UX design MUST be reviewed by user. Never skip this phase when UI is involved.
 
 **Output:**
 - `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name].pen` - Pencil design file
 - `[doc-index]-design-spec.md` - Design specification
+- **Includes**: Enhanced design guidance from ui-ux-pro-max (if available)
 
 **Enforcement Rule:** In all subsequent phases (Implementation, Code Review), if UI/UX work is involved, the implementation MUST follow the `[spec-index]-[spec-name].pen` design file.
 
