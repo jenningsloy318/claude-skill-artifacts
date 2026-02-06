@@ -72,45 +72,45 @@ The Coordinator will automatically orchestrate all workflow phases.
 
 These agents are spawned by the Coordinator during the workflow:
 
-| Agent | Phase | Purpose | Invocation |
-|-------|-------|---------|------------|
-| `requirements-clarifier` | 2 | Gather and document complete requirements | Load skill `super-dev/requirements-clarifier` |
-| `research-agent` | 3 | Research best practices and present options | Load skill `super-dev/research-agent` |
-| `debug-analyzer` | 4 | Root cause analysis for bugs | Load skill `super-dev/debug-analyzer` |
-| `code-assessor` | 5 | Evaluate existing codebase patterns | Load skill `super-dev/code-assessor` |
-| `architecture-agent` | 5.3 | Design architecture and create ADRs | Load skill `super-dev/architecture-agent` |
-| `ui-ux-designer` | 5.5 | Create UI/UX design specifications | Load skill `super-dev/ui-ux-designer` |
-| `spec-writer` | 6 | Write technical specifications and plans | Load skill `super-dev/spec-writer` |
-| `dev-executor` | 8 | Implement code changes | Load skill `super-dev/dev-executor` |
-| `qa-agent` | 8, 9.5 | Plan and run tests | Load skill `super-dev/qa-agent` |
-| `code-reviewer` | 9 | Specification-aware code review | Load skill `super-dev/code-reviewer` |
-| `docs-executor` | 10 | Update documentation | Load skill `super-dev/docs-executor` |
+| Agent | Phase | Purpose | Spawn Command |
+|-------|-------|---------|---------------|
+| `requirements-clarifier` | 2 | Gather and document complete requirements | Spawn agent: requirements-clarifier |
+| `research-agent` | 3 | Research best practices and present options | Spawn agent: research-agent |
+| `debug-analyzer` | 4 | Root cause analysis for bugs | Spawn agent: debug-analyzer |
+| `code-assessor` | 5 | Evaluate existing codebase patterns | Spawn agent: code-assessor |
+| `architecture-agent` | 5.3 | Design architecture and create ADRs | Spawn agent: architecture-agent |
+| `ui-ux-designer` | 5.5 | Create UI/UX design specifications | Spawn agent: ui-ux-designer |
+| `spec-writer` | 6 | Write technical specifications and plans | Spawn agent: spec-writer |
+| `dev-executor` | 8 | Implement code changes | Spawn agent: dev-executor |
+| `qa-agent` | 8, 9.5 | Plan and run tests | Spawn agent: qa-agent |
+| `code-reviewer` | 9 | Specification-aware code review | Spawn agent: code-reviewer |
+| `docs-executor` | 10 | Update documentation | Spawn agent: docs-executor |
 
 ### Developer Specialist Agents
 
-| Agent | Purpose | Invocation |
-|-------|---------|------------|
-| `rust-developer` | Rust systems programming | Load skill `super-dev/rust-developer` |
-| `golang-developer` | Go backend development | Load skill `super-dev/golang-developer` |
-| `frontend-developer` | React/Next.js/TypeScript development | Load skill `super-dev/frontend-developer` |
-| `backend-developer` | Node.js/Python backend development | Load skill `super-dev/backend-developer` |
-| `android-developer` | Kotlin/Jetpack Compose development | Load skill `super-dev/android-developer` |
-| `ios-developer` | Swift/SwiftUI development | Load skill `super-dev/ios-developer` |
-| `macos-app-developer` | Swift/SwiftUI/AppKit development | Load skill `super-dev/macos-app-developer` |
-| `windows-app-developer` | C#/.NET/WinUI development | Load skill `super-dev/windows-app-developer` |
+| Agent | Purpose | Spawn Command |
+|-------|---------|---------------|
+| `rust-developer` | Rust systems programming | Spawn agent: rust-developer |
+| `golang-developer` | Go backend development | Spawn agent: golang-developer |
+| `frontend-developer` | React/Next.js/TypeScript development | Spawn agent: frontend-developer |
+| `backend-developer` | Node.js/Python backend development | Spawn agent: backend-developer |
+| `android-developer` | Kotlin/Jetpack Compose development | Spawn agent: android-developer |
+| `ios-developer` | Swift/SwiftUI development | Spawn agent: ios-developer |
+| `macos-app-developer` | Swift/SwiftUI/AppKit development | Spawn agent: macos-app-developer |
+| `windows-app-developer` | C#/.NET/WinUI development | Spawn agent: windows-app-developer |
 
 ### Utility Agents
 
-| Agent | Purpose | Invocation |
-|-------|---------|------------|
-| `planner` | Implementation planning | Load skill `super-dev/planner` |
-| `tdd-guide` | Test-driven development workflow | Load skill `super-dev/tdd-guide` |
-| `security-reviewer` | Security analysis and review | Load skill `super-dev/security-reviewer` |
-| `build-error-resolver` | Fix build and type errors | Load skill `super-dev/build-error-resolver` |
-| `refactor-cleaner` | Dead code cleanup | Load skill `super-dev/refactor-cleaner` |
-| `doc-updater` | Documentation updates | Load skill `super-dev/doc-updater` |
-| `e2e-runner` | Playwright E2E testing | Load skill `super-dev/e2e-runner` |
-| `search-agent` | Multi-source search | Load skill `super-dev/search-agent` |
+| Agent | Purpose | Spawn Command |
+|-------|---------|---------------|
+| `planner` | Implementation planning | Spawn agent: planner |
+| `tdd-guide` | Test-driven development workflow | Spawn agent: tdd-guide |
+| `security-reviewer` | Security analysis and review | Spawn agent: security-reviewer |
+| `build-error-resolver` | Fix build and type errors | Spawn agent: build-error-resolver |
+| `refactor-cleaner` | Dead code cleanup | Spawn agent: refactor-cleaner |
+| `doc-updater` | Documentation updates | Spawn agent: doc-updater |
+| `e2e-runner` | Playwright E2E testing | Spawn agent: e2e-runner |
+| `search-agent` | Multi-source search | Spawn agent: search-agent |
 
 ## Direct Commands
 
@@ -167,11 +167,93 @@ You can also invoke specific capabilities directly:
 
 ### Phase 0: Apply Dev Rules
 
-Load the dev-rules skill to establish coding standards:
+**Establish coding standards and guidelines at the start of any development task:**
 
-```
-Load skill: super-dev/dev-rules
-```
+## Time MCP Rules (MUST follow)
+- In every prompt, add the current date and time as extra context
+
+## Git Rules (MUST follow)
+- Never create GitHub Actions when creating new projects or updating code
+- If GitHub Actions already exist, don't add to git cache, don't commit, don't push
+- When committing, only commit files you edited - ignore files not created/edited by you in this session
+- Don't use `git add -A` - use `git add file1 file2` (only files you edited/created/deleted)
+- Before committing, **ALWAYS** generate proper commit messages
+
+## Rust Project Rules (MUST follow)
+
+### Workspace Structure
+- **Always use Rust workspace** with multiple crates for any Rust project
+- Never create single-crate Rust projects
+- Workspace structure:
+  ```
+  project/
+  ├── Cargo.toml          # Workspace manifest
+  ├── Cargo.lock          # Lockfile (committed)
+  ├── crates/
+  │   ├── crate-a/       # Main application
+  │   │   └── Cargo.toml
+  │   ├── crate-b/       # Library
+  │   │   └── Cargo.toml
+  │   └── crate-c/       # Binary
+  │       └── Cargo.toml
+  └── ...
+  ```
+
+### Crate Organization
+- **Library crates** in `crates/[name]/` with `Cargo.toml`
+- **Binary crates** in `crates/[name]/` with `Cargo.toml` and `src/main.rs`
+- Use `members` in workspace `Cargo.toml` to include all crates
+- Share dependencies in workspace `Cargo.toml` when appropriate
+
+### Key Principles
+- Each crate should have a single, clear responsibility
+- Use workspace `Cargo.toml` for shared configuration
+- Keep `Cargo.lock` committed for binaries
+- Use `cargo check --workspace` for validation
+- Use `cargo test --workspace` for testing
+
+## Development Philosophy
+
+### Core Principles
+- **First Principles Analysis**: For complex features and bug fixes, break down to fundamental truths and build up from there
+- **Incremental Development**: Small commits, each must compile and pass tests
+- **Learn from Existing Code**: Research and plan before implementing
+- **Pragmatic over Dogmatic**: Adapt to project's actual situation
+- **Clear Intent over Clever Code**: Choose simple, clear solutions
+- Avoid over-engineering - keep code simple, easy to understand, practical
+- Watch cyclomatic complexity - maximize code reuse
+- Focus on modular design - use design patterns where appropriate
+- Minimize changes - avoid modifying code in other modules
+
+### New Requirements Process
+1. **Don't rush to code**: When user proposes new requirements, discuss the solution first
+2. **Use ASCII diagrams**: When necessary, draw comparison diagrams for multiple solutions, let user choose
+3. **Confirm before developing**: Only start development after user explicitly confirms the solution
+
+### Implementation Process
+1. **Understand existing patterns**: Study 3 similar features/components in the codebase
+2. **Identify common patterns**: Find project conventions and patterns
+3. **Follow existing standards**: Use same libraries/tools, follow existing test patterns
+4. **Implement in phases**: Break complex work into 3-5 phases
+
+### Quality Standards
+- Every commit must compile successfully
+- Pass all existing tests
+- Include tests for new functionality
+- Follow project formatting/linting rules
+
+### Decision Framework Priority
+1. **Testability** - Is it easy to test?
+2. **Readability** - Will it be understandable in 6 months?
+3. **Consistency** - Does it match project patterns?
+4. **Simplicity** - Is it the simplest viable solution?
+5. **Reversibility** - How hard to modify later?
+
+### Error Handling & When Stuck
+- Stop after maximum 3 attempts
+- Record failure reasons and specific error messages
+- Research 2-3 alternative implementation approaches
+- Question basic assumptions: Is it over-abstracted? Can it be decomposed?
 
 ### Phase 1: Specification Setup
 
@@ -190,9 +272,8 @@ Load skill: super-dev/dev-rules
 **Agent:** `requirements-clarifier`
 
 ```
-Load skill: super-dev/requirements-clarifier
 Task: Gather and document complete requirements for [feature/bug]
-Output: specification/[spec-index]-[spec-name]/[spec-index]-requirements.md
+Output: specification/[spec-index]-[spec-name]/[doc-index]-requirements.md
 ```
 
 #### Requirements Clarifier Methodology
@@ -260,9 +341,8 @@ Define measurable quality gates:
 **Agent:** `research-agent`
 
 ```
-Load skill: super-dev/research-agent
-Task: Research best practices for [technology/pattern]
-Output: specification/[spec-index]-[spec-name]/[spec-index]-research-report.md with 3-5 options
+Task: Research best practices for [feature/technology]
+Output: specification/[spec-index]-[spec-name]/[doc-index]-research-report.md with 3-5 options
 ```
 
 **Coordinator presents options to user for selection.**
@@ -358,9 +438,8 @@ Include a comparison matrix:
 **Agent:** `debug-analyzer`
 
 ```
-Load skill: super-dev/debug-analyzer
-Task: Perform root cause analysis for [bug description]
-Output: specification/[spec-index]-[spec-name]/[spec-index]-debug-analysis.md
+Task: Perform root cause analysis for [bug]
+Output: specification/[spec-index]-[spec-name]/[doc-index]-debug-analysis.md
 ```
 
 #### Debugging Methodology
@@ -472,9 +551,8 @@ ast-grep --pattern 'try { $$$ } catch($$$) { $$$ }' --lang python
 **Agent:** `code-assessor`
 
 ```
-Load skill: super-dev/code-assessor
-Task: Assess existing codebase architecture, patterns, and frameworks
-Output: specification/[spec-index]-[spec-name]/[spec-index]-assessment.md
+Task: Assess existing codebase for [feature/area]
+Output: specification/[spec-index]-[spec-name]/[doc-index]-assessment.md
 ```
 
 #### Code Assessment Areas
@@ -581,10 +659,11 @@ Review representative samples:
 **Agent:** `architecture-agent`
 
 ```
-Load skill: super-dev/architecture-agent
-Task: Design architecture for [feature] with 3-5 options
-Output: specification/[spec-index]-[spec-name]/[spec-index]-architecture.md
+Task: Design architecture for [feature]
+Output: specification/[spec-index]-[spec-name]/[doc-index]-architecture.md
 ```
+
+**Rust Project Reminder:** Ensure architecture considers workspace structure with multiple crates if applicable.
 
 #### Architecture Design Process
 
@@ -676,9 +755,18 @@ Cons: Complexity, eventual consistency, debugging difficulty
 **Agent:** `ui-ux-designer`
 
 ```
-Load skill: super-dev/ui-ux-designer
-Task: Create UI/UX design with 3-5 options
-Output: specification/[spec-index]-[spec-name]/[spec-index]-design-spec.md
+Task: Create UI/UX design specifications for [feature]
+Output: specification/[spec-index]-[spec-name]/[doc-index]-design-spec.md
+```
+
+**Agent:** `spec-writer`
+
+```
+Task: Write technical specification for [feature]
+Output:
+  - specification/[spec-index]-[spec-name]/[doc-index]-specification.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-implementation-plan.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-task-list.md
 ```
 
 ### Phase 6: Specification Writing
@@ -686,13 +774,15 @@ Output: specification/[spec-index]-[spec-name]/[spec-index]-design-spec.md
 **Agent:** `spec-writer`
 
 ```
-Load skill: super-dev/spec-writer
 Task: Create comprehensive technical specification
 Inputs: requirements.md, research-report.md, assessment.md, [architecture.md], [design-spec.md]
-Output: specification/[spec-index]-[spec-name]/[spec-index]-specification.md
-Output: specification/[spec-index]-[spec-name]/[spec-index]-implementation-plan.md
-Output: specification/[spec-index]-[spec-name]/[spec-index]-task-list.md
+Output:
+  - specification/[spec-index]-[spec-name]/[doc-index]-specification.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-implementation-plan.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-task-list.md
 ```
+
+**Rust Project Reminder:** Ensure specification includes Cargo.toml workspace structure and crate dependencies.
 
 #### Specification Writing Process
 
@@ -996,24 +1086,21 @@ Validate all specification documents are complete and consistent.
 **Agents:** `dev-executor` + `qa-agent` (run simultaneously)
 
 ```
-Load skill: super-dev/dev-executor
 Task: Implement code according to specification
 Parallel with:
-Load skill: super-dev/qa-agent
 Task: Plan and execute tests
 ```
 
 **Build Policy (Rust/Go):** Only ONE build at a time to prevent resource conflicts.
+
+**Rust Project Reminder:** Use `cargo build` or `cargo check` from workspace root. Run tests with `cargo test --workspace`.
 
 ### Phase 9: Code Review
 
 **Agent:** `code-reviewer`
 
 ```
-Load skill: super-dev/code-reviewer
-Task: Specification-aware code review
-Inputs: specification.md, implementation
-Output: Review report with findings (Critical/High/Medium/Low)
+Task: Review implementation against specification
 ```
 
 **Iteration:** If issues found, return to Phase 8.
@@ -1160,12 +1247,12 @@ Flag:
 
 ### Phase 9.5: Quality Assurance
 
+### Phase 9.5: Quality Assurance
+
 **Agent:** `qa-agent`
 
 ```
-Load skill: super-dev/qa-agent
-Task: Modality-specific testing (unit, integration, E2E)
-Output: QA report with coverage metrics
+Task: Execute comprehensive testing for [feature]
 ```
 
 ### Phase 10: Documentation Update
@@ -1173,9 +1260,7 @@ Output: QA report with coverage metrics
 **Agent:** `docs-executor`
 
 ```
-Load skill: super-dev/docs-executor
-Task: Update documentation (README, CHANGELOG, inline docs)
-Output: Updated documentation files
+Task: Update documentation for [feature]
 ```
 
 ### Phase 11: Cleanup
@@ -1191,9 +1276,11 @@ Output: Updated documentation files
 **Executed by:** Coordinator
 
 ```bash
-# Commit all changes
-git add .
-git commit -m "feat: [spec-index]-[spec-name] - [description]"
+# Stage only the files that were modified/created
+git add file1 file2 file3
+
+# Commit with descriptive message
+git commit -m "feat: [description]"
 
 # Merge to main
 git checkout main

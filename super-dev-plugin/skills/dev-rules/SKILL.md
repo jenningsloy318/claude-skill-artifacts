@@ -367,6 +367,98 @@ Rules are automatically referenced by:
 
 **Always follow applicable rules during development.**
 
+## Rust Project Rules (MUST follow)
+
+### Rust Workspace Requirements
+
+For all Rust projects, ALWAYS use a workspace structure:
+
+1. **Workspace Structure**: Create/use a `Cargo.toml` workspace at the project root
+2. **Multiple Crates**: Organize code into multiple crates (binaries and libraries) when appropriate
+3. **Crate Dependencies**: Define dependencies at the crate level, not globally unless shared
+
+### Workspace Configuration
+
+**Example workspace `Cargo.toml`:**
+```toml
+[workspace]
+members = [
+    "crate1",
+    "crate2",
+    "binaries/my-binary",
+]
+```
+
+**Crate-level `Cargo.toml`:**
+```toml
+[package]
+name = "crate-name"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Crate-specific dependencies
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+# Test-only dependencies
+```
+
+### Build & Test Commands
+
+**Always run from workspace root:**
+```bash
+# Check code (faster than build)
+cargo check
+
+# Build the entire workspace
+cargo build
+
+# Build a specific crate
+cargo build -p crate-name
+
+# Run tests for entire workspace
+cargo test --workspace
+
+# Run tests for specific crate
+cargo test -p crate-name
+
+# Run tests with output
+cargo test --workspace -- --nocapture
+
+# Check formatting
+cargo fmt
+
+# Run linter
+cargo clippy
+
+# Update dependencies
+cargo update
+```
+
+### Rust-Specific Guidelines
+
+1. **Error Handling**: Use `thiserror` for error types and `anyhow` for context
+2. **Async**: Use `tokio` runtime, avoid `spawn_blocking` unless necessary
+3. **Testing**: Use `#[test]` attributes, organize tests in `tests/` directory
+4. **Documentation**: Use `///` doc comments, run `cargo doc` to verify
+5. **Logging**: Use `tracing` for structured logging with spans
+6. **No `unsafe`**: Avoid `unsafe` code unless absolutely necessary and documented
+
+### Common Crate Patterns
+
+| Use Case | Recommended Crates |
+|----------|-------------------|
+| Async runtime | `tokio` |
+| Error handling | `thiserror`, `anyhow` |
+| Serialization | `serde`, `serde_json` |
+| HTTP client | `reqwest` |
+| HTTP server | `axum` |
+| CLI | `clap` |
+| Logging | `tracing`, `tracing-subscriber` |
+| Configuration | `config`, `serde_yaml` |
+
 ## Using This Skill
 
 Announce at the start of any development task:
