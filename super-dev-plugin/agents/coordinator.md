@@ -35,8 +35,7 @@ description: Team Lead Agent for orchestrating agent team development workflow. 
 ```
 
 **Coordinator Responsibilities:**
-- Phase 0: Apply dev rules
-- Phase 1: Execute in exact order → Define specDirectory, Create worktree, Create spec dir IN worktree, Initialize workflow JSON, **Create agent team**
+- **Phase 0 and Phase 1:** Documented in `skills/super-dev/SKILL.md` (apply dev rules, setup spec/worktree/branch with consistent naming, create agent team)
 - On task completion: Update task status, update timestamps/files
 - On phase completion: Update phase status, update timestamps
 - On Code Review loop: Increment iteration.loops, update lastReviewVerdict
@@ -45,6 +44,8 @@ description: Team Lead Agent for orchestrating agent team development workflow. 
 - **Monitor shared task list** for team progress
 - Before Phase 13: Verify allPhasesComplete && allTasksComplete, set workflowDone = true, **Shut down all teammates**
 
+**PHASE 0 AND PHASE 1 ARE DOCUMENTED IN THE SKILL FILE** - These phases establish dev rules and ensure consistent spec/worktree/branch naming. Reference `skills/super-dev/SKILL.md` for detailed setup instructions.
+
 **OPERATE IN DELEGATE MODE:**
 - ✅ Spawn teammates, create tasks, message teammates, monitor status, coordinate phases, commit/merge, clean up team
 - ❌ Edit files directly, run commands directly, perform research directly, skip teammate communication, take over teammate tasks
@@ -52,8 +53,8 @@ description: Team Lead Agent for orchestrating agent team development workflow. 
 ## Phase Flow
 
 ```
-Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules")
-Phase 1:  Specification Setup       → Create worktree + Create agent team
+Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See SKILL.md]
+Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
 Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate
 Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
@@ -71,6 +72,13 @@ Phase 12: Commit & Merge to Main    → Team Lead executes git operations
 Phase 13: Final Verification        → Verification + **Team cleanup**
 ```
 
+**Phase 0 and Phase 1 Details:** See `skills/super-dev/SKILL.md` for:
+- Dev rules application
+- Spec directory naming convention
+- Worktree creation with branch name = worktree name
+- Workflow tracking JSON initialization
+- Agent team creation
+
 ## Iteration Rule: Phase 8/9 Loop
 
 **Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, Verdict=Approved
@@ -83,31 +91,6 @@ Phase 13: Final Verification        → Verification + **Team cleanup**
 **On Phase 9 completion:**
 - If triggered: Create remediation tasks in shared task list → Re-spawn dev-executor + qa-agent → Re-run code-reviewer
 - Else: Proceed to Phase 10
-
-## Phase 1: Specification Setup (MANDATORY)
-
-**Execute in EXACT order. Spec dir MUST be created INSIDE worktree.**
-
-**MANDATORY BRANCH NAME RULE:** Git branch name MUST match worktree name.
-
-```
-1. specDirectory="specification/[spec-index]-[spec-name]"
-2. git worktree add .worktree/[spec-index]-[spec-name] -b [spec-index]-[spec-name]
-3. cd .worktree/[spec-index]-[spec-name]
-4. git branch --show-current  # MUST output: [spec-index]-[spec-name]
-5. mkdir -p .worktree/[spec-index]-[spec-name]/specification/[spec-index]-[spec-name]
-6. Create workflow JSON at: .worktree/[spec-index]-[spec-name]/specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json
-7. Create agent team: "Create an agent team named 'super-dev-[spec-index]-[spec-name]' with me as Team Lead"
-```
-
-**Verification before Phase 2:**
-- [ ] specDirectory set
-- [ ] worktreePath set
-- [ ] Git worktree exists
-- [ ] Branch name matches worktree name (`git branch --show-current` == `[spec-index]-[spec-name]`)
-- [ ] Spec dir exists IN worktree
-- [ ] Workflow JSON exists in worktree
-- [ ] Agent team created with Team Lead
 
 ## Skip Conditions
 
@@ -162,6 +145,7 @@ Your role is to [brief role description]. Output: [expected output]"
 ## Quality Gates
 
 **Phase Transitions:**
+| → Phase 0-1 | See SKILL.md - Dev rules applied, worktree created with branch=name match, spec dir setup, agent team created |
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
 | → Phase 3 | 01-requirements.md exists |
 | → Phase 5 | 02-research-report.md exists |
