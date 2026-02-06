@@ -1,0 +1,254 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "name": "super-dev",
+  "description": "Coordinator-driven development workflow with parallel agent execution",
+  "agent": {
+    "coordinator": {
+      "mode": "primary",
+      "description": "Team Lead orchestrator for the super-dev workflow",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/coordinator.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "requirements-clarifier": {
+      "mode": "subagent",
+      "description": "Requirements clarification specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/requirements-clarifier.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "research-agent": {
+      "mode": "subagent",
+      "description": "Research specialist for best practices",
+      "temperature": 0.4,
+      "prompt": "{file:.opencode/agents/research-agent.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false,
+        "webfetch": true
+      }
+    },
+    "debug-analyzer": {
+      "mode": "subagent",
+      "description": "Debug analysis specialist",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/debug-analyzer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "code-assessor": {
+      "mode": "subagent",
+      "description": "Code assessment specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/code-assessor.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "ast-grep": true
+      }
+    },
+    "architecture-agent": {
+      "mode": "subagent",
+      "description": "Architecture design specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/architecture-agent.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "ui-ux-designer": {
+      "mode": "subagent",
+      "description": "UI/UX design specialist",
+      "temperature": 0.4,
+      "prompt": "{file:.opencode/agents/ui-ux-designer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "spec-writer": {
+      "mode": "subagent",
+      "description": "Specification writing specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/spec-writer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "dev-executor": {
+      "mode": "subagent",
+      "description": "Development execution specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/dev-executor.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "qa-agent": {
+      "mode": "subagent",
+      "description": "QA testing specialist",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/qa-agent.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "code-reviewer": {
+      "mode": "subagent",
+      "description": "Code review specialist",
+      "temperature": 0.1,
+      "prompt": "{file:.opencode/agents/code-reviewer.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "read": true
+      },
+      "permission": {
+        "edit": "deny",
+        "write": "deny"
+      }
+    },
+    "docs-executor": {
+      "mode": "subagent",
+      "description": "Documentation update specialist",
+      "temperature": 0.4,
+      "prompt": "{file:.opencode/agents/docs-executor.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "build-error-resolver": {
+      "mode": "subagent",
+      "description": "Build error resolution specialist",
+      "temperature": 0.1,
+      "prompt": "{file:.opencode/agents/build-error-resolver.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "refactor-cleaner": {
+      "mode": "subagent",
+      "description": "Dead code cleanup and refactoring specialist",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/refactor-cleaner.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "security-reviewer": {
+      "mode": "subagent",
+      "description": "Security audit and review specialist",
+      "temperature": 0.1,
+      "prompt": "{file:.opencode/agents/security-reviewer.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "deny",
+        "write": "deny"
+      }
+    }
+  },
+  "command": {
+    "plan": {
+      "description": "Create implementation plan with planner agent",
+      "agent": "coordinator",
+      "template": "{file:.opencode/commands/plan.md}"
+    },
+    "code-review": {
+      "description": "Perform code review for quality and best practices",
+      "agent": "code-reviewer",
+      "template": "{file:.opencode/commands/code-review.md}"
+    },
+    "tdd": {
+      "description": "Run Test-Driven Development workflow",
+      "agent": "dev-executor",
+      "template": "{file:.opencode/commands/tdd.md}"
+    },
+    "e2e": {
+      "description": "Generate and run E2E tests with Playwright",
+      "agent": "qa-agent",
+      "template": "{file:.opencode/commands/e2e.md}"
+    },
+    "build-fix": {
+      "description": "Fix build and type errors",
+      "agent": "build-error-resolver",
+      "template": "{file:.opencode/commands/build-fix.md}"
+    },
+    "refactor-clean": {
+      "description": "Remove dead code and refactor",
+      "agent": "refactor-cleaner",
+      "template": "{file:.opencode/commands/refactor-clean.md}"
+    },
+    "update-docs": {
+      "description": "Update project documentation",
+      "agent": "docs-executor",
+      "template": "{file:.opencode/commands/update-docs.md}"
+    },
+    "research": {
+      "description": "Conduct multi-source research",
+      "agent": "research-agent",
+      "template": "{file:.opencode/commands/research.md}"
+    },
+    "security-review": {
+      "description": "Perform security audit and review",
+      "agent": "security-reviewer",
+      "template": "{file:.opencode/commands/security-review.md}"
+    },
+    "assess": {
+      "description": "Assess codebase architecture and patterns",
+      "agent": "code-assessor",
+      "template": "{file:.opencode/commands/assess.md}"
+    },
+    "debug": {
+      "description": "Debug analysis and root cause identification",
+      "agent": "debug-analyzer",
+      "template": "{file:.opencode/commands/debug.md}"
+    }
+  },
+  "skill": {
+    "super-dev": {
+      "description": "Coordinator-driven development workflow",
+      "file": "SKILL.md"
+    }
+  }
+}

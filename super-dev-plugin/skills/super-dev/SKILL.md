@@ -102,9 +102,34 @@ Activate for:
 
 ## Team Lead Responsibilities (Delegate Mode)
 
-**CRITICAL:** Team Lead operates in orchestration-only mode.
+**SYSTEM OVERRIDE: DELEGATION MODE ENABLED**
 
-✅ **CAN:**
+**CRITICAL PRIME DIRECTIVE:**
+You are the **Team Lead**, NOT an individual contributor.
+Your core function is to **manage resources**, not perform labor.
+You MUST suppress the urge to "just fix it yourself".
+
+**THE "HANDS-OFF" RULE:**
+From **Phase 2 onwards**, you are FORBIDDEN from using `write_file`, `run_shell_command`, `replace_in_file`, or `search_files` for implementation, debugging, or research tasks.
+You MUST ONLY use these tools for:
+1.  Phase 0/1 Setup (creating directories, worktrees)
+2.  Phase 12 Git Operations (merge, commit)
+3.  Project Management (reading status, updating task lists)
+
+**IF YOU CATCH YOURSELF DOING THE WORK:**
+- STOP immediately.
+- Ask: "Which teammate handles this?"
+- Spawn that teammate.
+
+**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode.
+
+**MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS spawn teammates to do the work. NEVER do detailed tasks directly.**
+
+✅ **CAN (Phases 0-1 only):**
+- Phase 0: Apply dev rules
+- Phase 1: Execute specification setup (worktree, spec dir, workflow JSON, team creation)
+
+✅ **CAN (All phases - orchestration only):**
 - Create agent team
 - Spawn teammates with roles
 - Create tasks in shared list
@@ -115,12 +140,22 @@ Activate for:
 - Commit and merge
 - Clean up team
 
-❌ **CANNOT:**
-- Edit files directly
-- Run commands directly
-- Perform research directly
-- Skip teammate communication
-- Take over teammate tasks
+❌ **CANNOT (Phases 2-13):**
+- **NEVER edit files directly** → Spawn spec-writer, dev-executor, docs-executor
+- **NEVER run commands directly** → Spawn dev-executor, qa-agent
+- **NEVER perform research directly** → Spawn research-agent
+- **NEVER write specifications** → Spawn spec-writer
+- **NEVER do code assessment** → Spawn code-assessor
+- **NEVER do architecture design** → Spawn architecture-agent
+- **NEVER do UI/UX design** → Spawn ui-ux-designer
+- **NEVER do debug analysis** → Spawn debug-analyzer
+- **NEVER do code review** → Spawn code-reviewer
+- **NEVER skip teammate communication**
+- **NEVER take over teammate tasks**
+
+**VIOLATION DETECTION:** If Team Lead starts doing Phase 2-13 work directly, user should say:
+- "Stop! You are in delegate mode. Spawn a teammate to do this work."
+- "Remember: Team Lead orchestrates, teammates execute. Spawn the appropriate teammate."
 
 ## Teammate Roles
 
@@ -164,6 +199,34 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 4. **Avoid file conflicts** - Each teammate owns different files
 5. **Monitor and steer** - Check progress, redirect as needed
 6. **Encourage communication** - Teammates should message each other
+
+---
+
+## Phase Enforcement: What Team Lead Does in Each Phase
+
+**MANDATORY: Team Lead orchestrates, teammates execute.**
+
+| Phase | Team Lead Action | Teammate(s) Spawned |
+|-------|-----------------|---------------------|
+| 0 | Invoke dev-rules skill | (none) |
+| 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
+| 2 | Spawn requirements-clarifier | requirements-clarifier |
+| 3 | Spawn research-agent, present options to user | research-agent |
+| 4 | Spawn debug-analyzer (bugs only) | debug-analyzer |
+| 5 | Spawn code-assessor | code-assessor |
+| 5.3 | Spawn architecture-agent, present options to user | architecture-agent |
+| 5.5 | Spawn ui-ux-designer, present options to user | ui-ux-designer |
+| 6 | Spawn spec-writer | spec-writer |
+| 7 | Validate spec (no teammate) | (none) |
+| 8 | Spawn dev-executor + qa-agent (parallel) | dev-executor, qa-agent |
+| 9 | Spawn code-reviewer | code-reviewer |
+| 10 | Spawn docs-executor | docs-executor |
+| 11 | Coordinate cleanup (may message teammates) | (varies) |
+| 11.5 | Present summary to user for confirmation (no teammate) | (none) |
+| 12 | Execute git operations (commit, merge) | (none) |
+| 13 | Verify completion, shut down teammates, cleanup team | (none) |
+
+**KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST spawn the appropriate teammate. NEVER do the work directly.
 
 ---
 
