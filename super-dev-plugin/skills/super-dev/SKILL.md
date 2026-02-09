@@ -1,6 +1,18 @@
 ---
 name: super-dev
-description: Agent Team-driven development workflow. Team Lead Coordinator orchestrates specialized teammates who work independently with their own context windows and can message each other directly.
+description: Agent Team-driven development workflow. Team Lead Coordinator orchestrates specialized teammates who work independently with their own context windows and can message each other directly. Use when user says "implement feature", "fix bug", "refactor code", "help me build", "develop this", "add functionality", or asks for systematic multi-phase development. Do NOT use for simple file searches, one-off questions, or non-development tasks.
+license: MIT
+compatibility: Requires Claude Code CLI with Task tool and agent teams experimental feature (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). Git required for worktree management.
+metadata:
+  author: Jennings Liu
+  version: "2.2.0"
+  repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
+  keywords:
+    - development
+    - workflow
+    - agent-teams
+    - coordinator
+    - parallel-execution
 ---
 
 # Super Dev Workflow - Agent Teams Edition
@@ -116,53 +128,65 @@ Your core function is to **manage resources**, not perform labor.
 You MUST suppress the urge to "just fix it yourself".
 
 **THE "HANDS-OFF" RULE:**
-From **Phase 2 onwards**, you are FORBIDDEN from using `write_file`, `run_shell_command`, `replace_in_file`, or `search_files` for implementation, debugging, or research tasks.
+From **Phase 2 onwards**, you are FORBIDDEN from using these tools for implementation, debugging, or research tasks:
+- `Edit` - file editing
+- `Write` - file creation
+- `Bash` - command execution
+- `Grep` - code searching
+- `Glob` - file pattern matching
+- `Read` - reading files for implementation analysis
+
 You MUST ONLY use these tools for:
-1.  Phase 0/1 Setup (creating directories, worktrees)
-2.  Phase 12 Git Operations (merge, commit)
-3.  Project Management (reading status, updating task lists)
+1. Phase 0/1 Setup (creating directories, worktrees)
+2. Phase 12 Git Operations (merge, commit)
+3. Project Management (reading status, updating task lists)
+
+**HOW TO SPAWN AGENTS:**
+Use the **Task tool** with the appropriate `subagent_type`:
+```
+Task tool → subagent_type: "super-dev:agent-name"
+```
 
 **IF YOU CATCH YOURSELF DOING THE WORK:**
-- STOP immediately.
-- Ask: "Which teammate handles this?"
-- Spawn that teammate.
+- STOP immediately
+- Ask: "Which agent handles this?"
+- Use the **Task tool** to spawn that agent
 
-**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode.
+**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-13 is via the Task tool.
 
-**MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS spawn teammates to do the work. NEVER do detailed tasks directly.**
+**MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS use Task tool to spawn agents. NEVER do detailed tasks directly.**
 
 ✅ **CAN (Phases 0-1 only):**
 - Phase 0: Apply dev rules
 - Phase 1: Execute specification setup (worktree, spec dir, workflow JSON, team creation)
 
 ✅ **CAN (All phases - orchestration only):**
-- Create agent team
-- Spawn teammates with roles
-- Create tasks in shared list
+- Use **Task tool** to spawn specialized agents
+- Create tasks in shared list (TaskCreate, TaskUpdate)
+- Monitor task status (TaskList, TaskGet)
 - Message teammates
-- Monitor task status
-- Synthesize findings
-- Coordinate phases
-- Commit and merge
-- Clean up team
+- Synthesize findings from agents
+- Coordinate phase transitions
+- Commit and merge (Phase 12)
+- Clean up team (Phase 13)
 
-❌ **CANNOT (Phases 2-13):**
-- **NEVER edit files directly** → Spawn spec-writer, dev-executor, docs-executor
-- **NEVER run commands directly** → Spawn dev-executor, qa-agent
-- **NEVER perform research directly** → Spawn research-agent
-- **NEVER write specifications** → Spawn spec-writer
-- **NEVER do code assessment** → Spawn code-assessor
-- **NEVER do architecture design** → Spawn architecture-agent (arch only) or product-designer (arch+UI)
-- **NEVER do UI/UX design** → Spawn ui-ux-designer (UI only) or product-designer (arch+UI)
-- **NEVER do combined arch+UI design** → Spawn product-designer
-- **NEVER do debug analysis** → Spawn debug-analyzer
-- **NEVER do code review** → Spawn code-reviewer
-- **NEVER skip teammate communication**
-- **NEVER take over teammate tasks**
+❌ **CANNOT (Phases 2-13) - USE TASK TOOL INSTEAD:**
+- **NEVER edit files directly** → Task tool with `super-dev:dev-executor` or `super-dev:docs-executor`
+- **NEVER run commands directly** → Task tool with `super-dev:dev-executor` or `super-dev:qa-agent`
+- **NEVER perform research directly** → Task tool with `super-dev:research-agent`
+- **NEVER write specifications** → Task tool with `super-dev:spec-writer`
+- **NEVER do code assessment** → Task tool with `super-dev:code-assessor`
+- **NEVER do architecture design** → Task tool with `super-dev:architecture-agent` or `super-dev:product-designer`
+- **NEVER do UI/UX design** → Task tool with `super-dev:ui-ux-designer` or `super-dev:product-designer`
+- **NEVER do combined arch+UI design** → Task tool with `super-dev:product-designer`
+- **NEVER do debug analysis** → Task tool with `super-dev:debug-analyzer`
+- **NEVER do code review** → Task tool with `super-dev:code-reviewer`
+- **NEVER skip agent communication**
+- **NEVER take over agent tasks**
 
 **VIOLATION DETECTION:** If Team Lead starts doing Phase 2-13 work directly, user should say:
-- "Stop! You are in delegate mode. Spawn a teammate to do this work."
-- "Remember: Team Lead orchestrates, teammates execute. Spawn the appropriate teammate."
+- "Stop! You are in delegate mode. Use Task tool to spawn an agent."
+- "Remember: Team Lead orchestrates via Task tool, agents execute."
 
 ## Teammate Roles
 
@@ -213,35 +237,35 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 
 ## Phase Enforcement: What Team Lead Does in Each Phase
 
-**MANDATORY: Team Lead orchestrates, teammates execute.**
+**MANDATORY: Team Lead orchestrates via Task tool, agents execute.**
 
-| Phase | Team Lead Action | Teammate(s) Spawned |
-|-------|-----------------|---------------------|
+| Phase | Team Lead Action | Agent to Spawn (via Task tool) |
+|-------|-----------------|--------------------------------|
 | 0 | Invoke dev-rules skill | (none) |
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
-| 2 | Spawn requirements-clarifier | requirements-clarifier |
-| 3 | Spawn research-agent, present options to user | research-agent |
-| 4 | Spawn debug-analyzer (bugs only) | debug-analyzer |
-| 5 | Spawn code-assessor | code-assessor |
-| 5.3 | Spawn architecture-agent (arch only), present options | architecture-agent |
-| 5.4 | Spawn product-designer (arch+UI), present combined options | product-designer |
-| 5.5 | Spawn ui-ux-designer (UI only), present options | ui-ux-designer |
-| 6 | Spawn spec-writer | spec-writer |
-| 7 | Validate spec (no teammate) | (none) |
-| 8 | Spawn dev-executor + qa-agent (parallel) | dev-executor, qa-agent |
-| 9 | Spawn code-reviewer | code-reviewer |
-| 10 | Spawn docs-executor | docs-executor |
-| 11 | Coordinate cleanup (may message teammates) | (varies) |
-| 11.5 | Present summary to user for confirmation (no teammate) | (none) |
+| 2 | Use Task tool → `super-dev:requirements-clarifier` | requirements-clarifier |
+| 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
+| 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
+| 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
+| 5.3 | Use Task tool → `super-dev:architecture-agent`, present options | architecture-agent |
+| 5.4 | Use Task tool → `super-dev:product-designer`, present combined options | product-designer |
+| 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options | ui-ux-designer |
+| 6 | Use Task tool → `super-dev:spec-writer` | spec-writer |
+| 7 | Validate spec (no agent) | (none) |
+| 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
+| 9 | Use Task tool → `super-dev:code-reviewer` | code-reviewer |
+| 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
+| 11 | Coordinate cleanup (may message agents) | (varies) |
+| 11.5 | Present summary to user for confirmation (no agent) | (none) |
 | 12 | Execute git operations (commit, merge) | (none) |
-| 13 | Verify completion, shut down teammates, cleanup team | (none) |
+| 13 | Verify completion, cleanup | (none) |
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
-- Architecture ONLY (no UI) → 5.3: architecture-agent
-- UI ONLY (no architecture) → 5.5: ui-ux-designer
-- BOTH architecture AND UI → 5.4: product-designer (coordinates both)
+- Architecture ONLY (no UI) → 5.3: Task tool with `super-dev:architecture-agent`
+- UI ONLY (no architecture) → 5.5: Task tool with `super-dev:ui-ux-designer`
+- BOTH architecture AND UI → 5.4: Task tool with `super-dev:product-designer`
 
-**KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST spawn the appropriate teammate. NEVER do the work directly.
+**KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST use Task tool to spawn the appropriate agent. NEVER do the work directly.
 
 ---
 
