@@ -80,6 +80,7 @@ These agents are spawned by the Coordinator during the workflow:
 | `code-assessor` | 5 | Evaluate existing codebase patterns | Spawn agent: code-assessor |
 | `architecture-agent` | 5.3 | Design architecture and create ADRs | Spawn agent: architecture-agent |
 | `ui-ux-designer` | 5.5 | Create UI/UX design specifications | Spawn agent: ui-ux-designer |
+| `product-designer` | 5.3/5.5 | Orchestrate architecture + UI/UX for holistic design | Spawn agent: product-designer |
 | `spec-writer` | 6 | Write technical specifications and plans | Spawn agent: spec-writer |
 | `dev-executor` | 8 | Implement code changes | Spawn agent: dev-executor |
 | `qa-agent` | 8, 9.5 | Plan and run tests | Spawn agent: qa-agent |
@@ -158,6 +159,7 @@ You can also invoke specific capabilities directly:
 │ - Requirements│   │ - Assessment  │   │ - QA          │
 │ - Architecture│   │ - Code Review │   │ - Docs        │
 │ - UI/UX       │   │               │   │               │
+│ - Product Des.│   │               │   │               │
 └───────────────┘   └───────────────┘   └───────────────┘
         Own context         Own context         Own context
         Direct msg          Direct msg          Direct msg
@@ -758,6 +760,28 @@ Cons: Complexity, eventual consistency, debugging difficulty
 Task: Create UI/UX design specifications for [feature]
 Output: specification/[spec-index]-[spec-name]/[doc-index]-design-spec.md
 ```
+
+### Phase 5.3/5.5 Combined: Product Design (Full-Stack Features)
+
+**Agent:** `product-designer`
+
+When a feature requires BOTH architecture design AND UI/UX design, use the `product-designer` agent to orchestrate both:
+
+```
+Task: Coordinate architecture and UI/UX design for [feature]
+Output:
+  - specification/[spec-index]-[spec-name]/[doc-index]-architecture.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-design-spec.md
+  - specification/[spec-index]-[spec-name]/[doc-index]-product-design-summary.md
+```
+
+The product-designer:
+1. Classifies scope (ARCHITECTURE_ONLY, UI_ONLY, or FULL_STACK)
+2. Invokes architecture-agent for technical design options
+3. Invokes ui-ux-designer with architecture constraints
+4. Presents unified architecture+UI options to user
+5. Finalizes both documents after user selection
+6. Creates cross-reference document with API→UI contracts
 
 **Agent:** `spec-writer`
 
@@ -1399,10 +1423,11 @@ All documents created in `specification/[index]-[name]/`:
 4. `[index]-assessment.md` - Code assessment
 5. `[index]-architecture.md` - Architecture design (complex features)
 6. `[index]-design-spec.md` - UI/UX design (UI features)
-7. `[index]-specification.md` - Technical specification
-8. `[index]-implementation-plan.md` - Implementation plan
-9. `[index]-task-list.md` - Detailed task list
-10. `[index]-implementation-summary.md` - Final summary
+7. `[index]-product-design-summary.md` - Cross-reference for architecture+UI (full-stack features)
+8. `[index]-specification.md` - Technical specification
+9. `[index]-implementation-plan.md` - Implementation plan
+10. `[index]-task-list.md` - Detailed task list
+11. `[index]-implementation-summary.md` - Final summary
 
 ## Troubleshooting
 

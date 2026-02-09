@@ -77,8 +77,9 @@ Activate for:
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
-- [ ] Phase 5.3: Architecture Design (complex features)
-- [ ] Phase 5.5: UI/UX Design (UI features)
+- [ ] Phase 5.3: Architecture Design (arch only)
+- [ ] Phase 5.4: Product Design (arch + UI together) ← NEW: replaces 5.3+5.5 when both needed
+- [ ] Phase 5.5: UI/UX Design (UI only)
 - [ ] Phase 6:  Specification Writing
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
@@ -88,6 +89,11 @@ Activate for:
 - [ ] Phase 12: Commit & Merge to Main
 - [ ] Phase 13: Final Verification & Team Cleanup
 ```
+
+**Phase 5.3/5.4/5.5 Selection:**
+- Architecture ONLY → Phase 5.3 (architecture-agent)
+- UI ONLY → Phase 5.5 (ui-ux-designer)
+- BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
 **Iteration Rule:** Loop Phase 8/9 until Critical=0, High=0, Medium=0, all acceptance criteria met.
 
@@ -146,8 +152,9 @@ You MUST ONLY use these tools for:
 - **NEVER perform research directly** → Spawn research-agent
 - **NEVER write specifications** → Spawn spec-writer
 - **NEVER do code assessment** → Spawn code-assessor
-- **NEVER do architecture design** → Spawn architecture-agent
-- **NEVER do UI/UX design** → Spawn ui-ux-designer
+- **NEVER do architecture design** → Spawn architecture-agent (arch only) or product-designer (arch+UI)
+- **NEVER do UI/UX design** → Spawn ui-ux-designer (UI only) or product-designer (arch+UI)
+- **NEVER do combined arch+UI design** → Spawn product-designer
 - **NEVER do debug analysis** → Spawn debug-analyzer
 - **NEVER do code review** → Spawn code-reviewer
 - **NEVER skip teammate communication**
@@ -165,8 +172,9 @@ You MUST ONLY use these tools for:
 | 3 | research-agent | Research best practices, present 3-5 options |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
 | 5 | code-assessor | Assess architecture, style, frameworks |
-| 5.3 | architecture-agent | Design architecture, present 3-5 options |
-| 5.5 | ui-ux-designer | Create UI/UX design, present 3-5 options |
+| 5.3 | architecture-agent | Design architecture (arch only), present 3-5 options |
+| 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
+| 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
 | 6 | spec-writer | Write spec, plan, task list |
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
@@ -186,7 +194,8 @@ You MUST ONLY use these tools for:
 - Example: dev-executor ↔ qa-agent coordination
 
 ### Option Presentation
-Phases 3, 5.3, 5.5 require presenting 3-5 options to user for selection.
+Phases 3, 5.3, 5.4, 5.5 require presenting 3-5 options to user for selection.
+Phase 5.4 (product-designer) presents COMBINED architecture+UI options.
 
 ### Branch Name Rule
 Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
@@ -214,8 +223,9 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 | 3 | Spawn research-agent, present options to user | research-agent |
 | 4 | Spawn debug-analyzer (bugs only) | debug-analyzer |
 | 5 | Spawn code-assessor | code-assessor |
-| 5.3 | Spawn architecture-agent, present options to user | architecture-agent |
-| 5.5 | Spawn ui-ux-designer, present options to user | ui-ux-designer |
+| 5.3 | Spawn architecture-agent (arch only), present options | architecture-agent |
+| 5.4 | Spawn product-designer (arch+UI), present combined options | product-designer |
+| 5.5 | Spawn ui-ux-designer (UI only), present options | ui-ux-designer |
 | 6 | Spawn spec-writer | spec-writer |
 | 7 | Validate spec (no teammate) | (none) |
 | 8 | Spawn dev-executor + qa-agent (parallel) | dev-executor, qa-agent |
@@ -225,6 +235,11 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 | 11.5 | Present summary to user for confirmation (no teammate) | (none) |
 | 12 | Execute git operations (commit, merge) | (none) |
 | 13 | Verify completion, shut down teammates, cleanup team | (none) |
+
+**Phase 5.3/5.4/5.5 Selection Logic:**
+- Architecture ONLY (no UI) → 5.3: architecture-agent
+- UI ONLY (no architecture) → 5.5: ui-ux-designer
+- BOTH architecture AND UI → 5.4: product-designer (coordinates both)
 
 **KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST spawn the appropriate teammate. NEVER do the work directly.
 

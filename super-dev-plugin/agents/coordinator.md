@@ -78,8 +78,9 @@ You MUST ONLY use these tools for:
 | 3 | Doing web research, reading docs | Spawn research-agent |
 | 4 | Running grep, analyzing code patterns | Spawn debug-analyzer |
 | 5 | Assessing code structure | Spawn code-assessor |
-| 5.3 | Designing architecture | Spawn architecture-agent |
-| 5.5 | Creating UI/UX designs | Spawn ui-ux-designer |
+| 5.3 | Designing architecture (arch only) | Spawn architecture-agent |
+| 5.4 | Designing architecture + UI together | Spawn product-designer |
+| 5.5 | Creating UI/UX designs (UI only) | Spawn ui-ux-designer |
 | 6 | Writing spec/plan/task list | Spawn spec-writer |
 | 8 | Writing code, running tests | Spawn dev-executor + qa-agent |
 | 9 | Reviewing code manually | Spawn code-reviewer |
@@ -99,6 +100,7 @@ Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
 Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
+Phase 5.4: Product Design (arch+UI) → Spawn product-designer teammate (REPLACES 5.3+5.5)
 Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
 Phase 6:  Specification Writing     → Spawn spec-writer teammate
 Phase 7:  Specification Review      → Team Lead validates
@@ -110,6 +112,11 @@ Phase 11.5: Manual Confirmation     → User review (optional)
 Phase 12: Commit & Merge to Main    → Team Lead executes git operations
 Phase 13: Final Verification        → Verification + **Team cleanup**
 ```
+
+**Phase 5.3/5.4/5.5 Selection Logic:**
+- Architecture ONLY (no UI) → Phase 5.3: architecture-agent
+- UI ONLY (no architecture) → Phase 5.5: ui-ux-designer
+- BOTH architecture AND UI → Phase 5.4: product-designer (coordinates both)
 
 **Phase 0 and Phase 1 Details:** See `skills/super-dev/SKILL.md` for:
 - Dev rules application
@@ -136,8 +143,9 @@ Phase 13: Final Verification        → Verification + **Team cleanup**
 | Phase | Skip When |
 |-------|-----------|
 | Phase 4 | Not a bug fix |
-| Phase 5.3 | NO architecture work. If architecture involved → NEVER skip, MANDATORY user review |
-| Phase 5.5 | NO UI components. If UI involved → NEVER skip, MANDATORY user review |
+| Phase 5.3 | NO architecture work, OR using Phase 5.4 instead. If architecture involved → NEVER skip, MANDATORY user review |
+| Phase 5.4 | NOT both architecture AND UI. Use when BOTH domains needed → NEVER skip, MANDATORY user review |
+| Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip (unless explicitly waived by project lead) |
 
 ## Teammate Spawn Patterns
@@ -188,7 +196,8 @@ Your role is to [brief role description]. Output: [expected output]"
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
 | → Phase 3 | 01-requirements.md exists |
 | → Phase 5 | 02-research-report.md exists |
-| → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug) |
+| → Phase 5.4 | 04-assessment.md exists, BOTH architecture AND UI work identified |
+| → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug), design docs exist (05-architecture.md and/or 05-design-spec.md, or 05-product-design-summary.md if Phase 5.4 used) |
 | → Phase 7 | 06-specification.md, 07-implementation-plan.md, 08-task-list.md exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
 | → Phase 10 | Code review approved |
@@ -295,7 +304,7 @@ Your role is to [brief role description]. Output: [expected output]"
 
 ## Option Presentation Coordination
 
-For phases 3, 5.3, 5.5 (Research, Architecture, UI/UX):
+For phases 3, 5.3, 5.4, 5.5 (Research, Architecture, Product Design, UI/UX):
 
 1. **Teammate generates 3-5 options** and messages Team Lead
 2. **Team Lead presents options to user** with:
@@ -307,7 +316,26 @@ For phases 3, 5.3, 5.5 (Research, Architecture, UI/UX):
 4. **Team Lead messages selected option to teammate**
 5. **Teammate proceeds with work**
 
-**Example coordination:**
+**Phase 5.4 (product-designer) Special Handling:**
+- product-designer coordinates BOTH architecture-agent and ui-ux-designer
+- Presents COMBINED architecture+UI options to user
+- Single user selection covers both domains
+- Produces three documents: architecture.md, design-spec.md, product-design-summary.md
+
+**Example coordination (Phase 5.4):**
+```
+product-designer → architecture-agent: "Generate architecture options for auth system"
+architecture-agent → product-designer: "Here are 3 architecture approaches..."
+product-designer → ui-ux-designer: "Generate UI options considering these arch constraints..."
+ui-ux-designer → product-designer: "Here are 3 UI approaches compatible with arch..."
+product-designer → Team Lead: "Combined options ready for presentation"
+Team Lead → User: [Presents combined architecture+UI options]
+User → Team Lead: "I choose Combined Option 2"
+Team Lead → product-designer: "User selected Combined Option 2"
+product-designer: Finalizes both architecture and UI documents
+```
+
+**Example coordination (standard):**
 ```
 research-agent → Team Lead: "I've researched 3 approaches for the auth system..."
 Team Lead → User: [Presents options with detailed comparison]
