@@ -2,13 +2,41 @@
 
 ## Commit Message Format
 
+### Full Super-Dev Workflow (with spec/worktree)
+When working within a specification workflow:
+```
+spec-[spec-index]-[spec-name] <type>: <description>
+
+<optional body>
+```
+
+Example:
+```
+spec-01-user-auth feat: implement JWT token validation
+
+- Add token validation middleware
+- Create refresh token endpoint
+- Add unit tests for auth flow
+```
+
+### Direct Changes (no spec workflow)
+When making direct changes without a specification:
 ```
 <type>: <description>
 
 <optional body>
 ```
 
-Types: feat, fix, refactor, docs, test, chore, perf, ci
+Example:
+```
+fix: resolve null pointer in login handler
+
+- Add null check before accessing user object
+- Update error message for clarity
+```
+
+### Types
+feat, fix, refactor, docs, test, chore, perf, ci
 
 Note: Attribution disabled globally via ~/.claude/settings.json.
 

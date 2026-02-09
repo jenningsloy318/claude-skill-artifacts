@@ -331,16 +331,24 @@ Task: Update documentation for [feature]
 
 **Executed by:** Coordinator
 
+### Commit Message Format (Full Workflow)
+When working within a spec workflow, use: `spec-[spec-index]-[spec-name] <type>: <description>`
+
 ```bash
 # Stage only the files that were modified/created
 git add file1 file2 file3
 
-# Commit with descriptive message
-git commit -m "feat: [description]"
+# Commit with spec-prefixed message
+git commit -m "spec-[spec-index]-[spec-name] feat: [description]"
 
 # Merge to main
 git checkout main
 git merge [spec-index]-[spec-name]
+```
+
+Example:
+```bash
+git commit -m "spec-01-user-auth feat: implement JWT authentication"
 ```
 
 ---

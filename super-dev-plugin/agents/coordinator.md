@@ -244,7 +244,7 @@ Your role is to [brief role description]. Output: [expected output]"
    git add specification/[spec-index]-[spec-name]-workflow-tracking.json
    git add [code-files]
    ```
-3. Generate commit message: Use `generating-commit-messages` skill, prefix with `[spec-XX]`
+3. Generate commit message: Format `spec-[spec-index]-[spec-name] <type>: <description>` (e.g., `spec-01-user-auth feat: implement authentication`)
 4. Commit: `git commit -m "<message>"`
 5. Switch to main: `git checkout main`
 6. Merge: `git merge [spec-index]-[spec-name]`
