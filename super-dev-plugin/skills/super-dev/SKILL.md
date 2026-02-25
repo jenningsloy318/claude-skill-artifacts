@@ -426,6 +426,92 @@ Set in `settings.json`:
 }
 ```
 
+## Super Dev Agent Team Definition
+
+**Team Name:** `super-dev-agent-team`
+
+This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 to have all teammates ready.
+
+### Team Creation Command
+
+```
+Create an agent team named "super-dev-agent-team" with these teammates:
+- super-dev:coordinator (Team Lead)
+- super-dev:requirements-clarifier
+- super-dev:research-agent
+- super-dev:debug-analyzer
+- super-dev:code-assessor
+- super-dev:architecture-agent
+- super-dev:ui-ux-designer
+- super-dev:product-designer
+- super-dev:spec-writer
+- super-dev:dev-executor
+- super-dev:qa-agent
+- super-dev:code-reviewer
+- super-dev:docs-executor
+```
+
+### Teammate Roles by Category
+
+| Category | Teammate | Role | Spawn Command |
+|----------|----------|------|---------------|
+| **Team Lead** | coordinator | Orchestrates all phases, manages task list | Team Lead (always active) |
+| **Planning** | requirements-clarifier | Gather requirements, output requirements.md | `super-dev:requirements-clarifier` |
+| **Planning** | research-agent | Research best practices, present options | `super-dev:research-agent` |
+| **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |
+| **Analysis** | code-assessor | Assess architecture, style, frameworks | `super-dev:code-assessor` |
+| **Design** | architecture-agent | Design architecture (arch only) | `super-dev:architecture-agent` |
+| **Design** | ui-ux-designer | Create UI/UX design (UI only) | `super-dev:ui-ux-designer` |
+| **Design** | product-designer | Coordinate architecture + UI together | `super-dev:product-designer` |
+| **Spec** | spec-writer | Write spec, plan, task list | `super-dev:spec-writer` |
+| **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
+| **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
+| **Review** | code-reviewer | Spec-aware code review | `super-dev:code-reviewer` |
+| **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
+
+### Team Creation at Phase 1
+
+When creating the agent team in Phase 1, use this pattern:
+
+```
+Create an agent team for this development workflow:
+- Team name: "super-dev-[spec-index]-[spec-name]"
+- Include all teammates from super-dev-agent-team definition
+
+Teammates to include:
+1. super-dev:coordinator (Team Lead - this session)
+2. super-dev:requirements-clarifier
+3. super-dev:research-agent
+4. super-dev:debug-analyzer
+5. super-dev:code-assessor
+6. super-dev:architecture-agent
+7. super-dev:ui-ux-designer
+8. super-dev:product-designer
+9. super-dev:spec-writer
+10. super-dev:dev-executor
+11. super-dev:qa-agent
+12. super-dev:code-reviewer
+13. super-dev:docs-executor
+```
+
+### When to Spawn Each Teammate
+
+| Phase | Spawn These Teammates |
+|-------|----------------------|
+| 2 | requirements-clarifier |
+| 3 | research-agent |
+| 4 | debug-analyzer (bugs only) |
+| 5 | code-assessor |
+| 5.3 | architecture-agent |
+| 5.4 | product-designer |
+| 5.5 | ui-ux-designer |
+| 6 | spec-writer |
+| 8 | dev-executor + qa-agent (parallel) |
+| 9 | code-reviewer |
+| 10 | docs-executor |
+
+**Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
+
 ## Troubleshooting
 
 | Issue | Solution |

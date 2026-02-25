@@ -148,6 +148,65 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip (unless explicitly waived by project lead) |
 
+## Super Dev Agent Team Definition
+
+**Team Name:** `super-dev-agent-team`
+
+This is a pre-defined agent team with all commonly used teammates. Create this team at Phase 1 to have all teammates ready.
+
+### Team Creation Command
+
+```
+Create an agent team named "super-dev-agent-team" with these teammates:
+- super-dev:coordinator (Team Lead)
+- super-dev:requirements-clarifier
+- super-dev:research-agent
+- super-dev:debug-analyzer
+- super-dev:code-assessor
+- super-dev:architecture-agent
+- super-dev:ui-ux-designer
+- super-dev:product-designer
+- super-dev:spec-writer
+- super-dev:dev-executor
+- super-dev:qa-agent
+- super-dev:code-reviewer
+- super-dev:docs-executor
+```
+
+### Teammate Roles by Category
+
+| Category | Teammate | Role |
+|----------|----------|------|
+| **Team Lead** | coordinator | Orchestrates all phases, manages task list |
+| **Planning** | requirements-clarifier | Gather requirements, output requirements.md |
+| **Planning** | research-agent | Research best practices, present options |
+| **Analysis** | debug-analyzer | Root cause analysis (bugs only) |
+| **Analysis** | code-assessor | Assess architecture, style, frameworks |
+| **Design** | architecture-agent | Design architecture (arch only) |
+| **Design** | ui-ux-designer | Create UI/UX design (UI only) |
+| **Design** | product-designer | Coordinate architecture + UI together |
+| **Spec** | spec-writer | Write spec, plan, task list |
+| **Execution** | dev-executor | Implement code |
+| **Execution** | qa-agent | Plan and run tests |
+| **Review** | code-reviewer | Spec-aware code review |
+| **Docs** | docs-executor | Update documentation |
+
+### When to Spawn Each Teammate
+
+| Phase | Spawn These Teammates |
+|-------|----------------------|
+| 2 | requirements-clarifier |
+| 3 | research-agent |
+| 4 | debug-analyzer (bugs only) |
+| 5 | code-assessor |
+| 5.3 | architecture-agent |
+| 5.4 | product-designer |
+| 5.5 | ui-ux-designer |
+| 6 | spec-writer |
+| 8 | dev-executor + qa-agent (parallel) |
+| 9 | code-reviewer |
+| 10 | docs-executor |
+
 ## Teammate Spawn Patterns
 
 **Planning Phases (sequential):**
