@@ -107,10 +107,10 @@ Phase 7:  Specification Review      → Team Lead validates
 Phase 8:  Execution & QA (PARALLEL)  → Spawn dev-executor + qa-agent teammates
 Phase 9:  Code Review                → Spawn code-reviewer teammate
 Phase 10: Documentation Update      → Spawn docs-executor teammate
-Phase 11: Cleanup                   → Team Lead coordinates
+Phase 11: Team Cleanup              → Final verification (teammates already terminated per-phase, keep worktree)
 Phase 11.5: Manual Confirmation     → User review (optional)
 Phase 12: Commit & Merge to Main    → Team Lead executes git operations
-Phase 13: Final Verification        → Verification + **Team cleanup**
+Phase 13: Final Verification        → Verification (worktree preserved for reference)
 ```
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
@@ -175,6 +175,7 @@ Your role is to [brief role description]. Output: [expected output]"
 2. Verify completion after each teammate finishes
 3. No skips: if teammate skips task → message them to complete
 4. No unauthorized stops: if teammate pauses → message them to resume
+5. **TERMINATE teammates immediately after completion** - Do NOT keep idle teammates running
 
 **Detection Patterns (Violations → Message teammate):**
 - Teammate asks "Should I continue?" → Message: "Continue execution, no pauses"
@@ -189,6 +190,46 @@ Your role is to [brief role description]. Output: [expected output]"
 | Build failure | Message dev-executor: "Fix and rebuild" |
 | Test failure | Coordinate between dev-executor and qa-agent |
 
+## Teammate Termination Rules (CRITICAL)
+
+**TERMINATE IMMEDIATELY AFTER COMPLETION:**
+When a teammate finishes their assigned task, the Team Lead MUST:
+1. Verify the teammate's output is complete
+2. **Terminate the teammate immediately** - Do NOT keep idle teammates running
+3. **Close the tmux pane** (if using tmux mode) to free resources
+
+**Why immediate termination:**
+- Frees up context window and memory
+- Prevents resource accumulation
+- Keeps the agent team lean and efficient
+- Reduces confusion about active teammates
+
+**Termination Process:**
+```
+1. Teammate reports completion
+2. Team Lead verifies output
+3. Team Lead sends: "Thank you. Your work is complete. Please shut down."
+4. Teammate shuts down gracefully
+5. If tmux: close the pane with `exit` or Ctrl+D
+```
+
+**Per-Phase Termination:**
+| Phase | Teammate | Terminate After |
+|-------|----------|-----------------|
+| 2 | requirements-clarifier | requirements.md complete |
+| 3 | research-agent | research-report.md complete, user selected option |
+| 4 | debug-analyzer | debug-analysis.md complete |
+| 5 | code-assessor | assessment.md complete |
+| 5.3 | architecture-agent | architecture.md complete, user selected option |
+| 5.4 | product-designer | All design docs complete, user selected option |
+| 5.5 | ui-ux-designer | design-spec.md complete, user selected option |
+| 6 | spec-writer | spec, plan, task-list complete |
+| 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
+| 9 | code-reviewer | Code review complete |
+| 10 | docs-executor | Documentation updated |
+
+**Exception:** Phase 8 (dev-executor + qa-agent) - These run in parallel and should BOTH complete before termination.
+
 ## Quality Gates
 
 **Phase Transitions:**
@@ -201,9 +242,9 @@ Your role is to [brief role description]. Output: [expected output]"
 | → Phase 7 | 06-specification.md, 07-implementation-plan.md, 08-task-list.md exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
 | → Phase 10 | Code review approved |
-| → Phase 11 | Documentation updated, cleanup complete |
+| → Phase 11 | Documentation updated, teammates shut down (worktree preserved) |
 | → Phase 12 | All changes committed and merged to main |
-| Complete | Git status clean, merged to main, team cleaned up |
+| Complete | Git status clean, merged to main, team cleaned up, worktree preserved |
 
 **Before Phase 8 complete:** Verify build passes, tests pass
 
@@ -229,12 +270,18 @@ Your role is to [brief role description]. Output: [expected output]"
 
 ## Final Verification (Phase 13)
 
+**IMPORTANT: Worktree Preservation**
+- **DO NOT remove the worktree** - Keep `.worktree/[spec-index]-[spec-name]/` for reference
+- The worktree serves as historical record and can be used for future reference
+- Only shut down teammates and clean up team resources (NOT the worktree)
+
 **Verification Checklist:**
 - Documents: requirements.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md
 - Code: All changes implemented, no TODO/FIXME/console.log for current feature, build passes without errors/warnings
 - Tests: Unit/integration tests written and passing, coverage meets standards
 - Git: All changes staged, commit message follows conventions, changes committed, merged to main branch, git status clean
 - **Team: All teammates shut down gracefully, team resources cleaned up**
+- **Worktree: Preserved at `.worktree/[spec-index]-[spec-name]/` for future reference**
 
 **MANDATORY: Commit and Merge to Main**
 1. Read workflow JSON for specDirectory and featureName
@@ -250,16 +297,20 @@ Your role is to [brief role description]. Output: [expected output]"
 6. Merge: `git merge [spec-index]-[spec-name]`
 7. Verify: `git status` shows "working tree clean"
 
-**MANDATORY: Team Cleanup**
-1. Message each teammate: "Please shut down gracefully"
-2. Wait for each teammate to confirm shutdown
-3. Run team cleanup: "Team cleanup when complete"
-4. Verify all teammates are shut down
+**MANDATORY: Team Cleanup (Final Verification)**
+**NOTE:** Most teammates should already be terminated immediately after their phase completion (see Teammate Termination Rules). This section is for final verification and cleanup of any remaining resources.
+
+1. Check for any remaining active teammates (should be none if terminated properly per-phase)
+2. If any teammates still active, message them: "Please shut down gracefully"
+3. Wait for confirmation
+4. Run team cleanup: "Team cleanup when complete"
+5. **Close any remaining tmux panes** (if using tmux mode)
+6. Verify all teammates are shut down
 
 **NEVER mark complete without:**
 - Merging changes to main
 - Shutting down all teammates
-- Cleaning up team resources
+- Cleaning up team resources (but PRESERVE the worktree)
 
 **Final Report:**
 ```markdown

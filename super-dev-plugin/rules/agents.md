@@ -39,6 +39,32 @@ Launch 3 agents in parallel:
 First agent 1, then agent 2, then agent 3
 ```
 
+## Agent Termination Rules (CRITICAL)
+
+**TERMINATE IMMEDIATELY AFTER COMPLETION:**
+
+When an agent/subagent/teammate finishes their assigned task:
+1. Verify the agent's output is complete
+2. **Terminate the agent immediately** - Do NOT keep idle agents running
+3. **Close the tmux pane** (if using tmux mode) to free resources
+
+**Why immediate termination:**
+- Frees up context window and memory
+- Prevents resource accumulation
+- Keeps the system lean and efficient
+- Reduces confusion about active agents
+
+**Termination Process:**
+```
+1. Agent reports completion
+2. Verify output is complete
+3. Send: "Thank you. Your work is complete. Please shut down."
+4. Agent shuts down gracefully
+5. If tmux: close the pane with `exit` or Ctrl+D
+```
+
+**Exception:** Parallel agents (e.g., dev-executor + qa-agent) - Wait for ALL to complete before terminating.
+
 ## Multi-Perspective Analysis
 
 For complex problems, use split role sub-agents:

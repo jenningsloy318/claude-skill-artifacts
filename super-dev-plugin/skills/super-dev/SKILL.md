@@ -97,9 +97,9 @@ Activate for:
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
 - [ ] Phase 9:  Code Review
 - [ ] Phase 10: Documentation Update
-- [ ] Phase 11: Cleanup
+- [ ] Phase 11: Team Cleanup (keep worktree)
 - [ ] Phase 12: Commit & Merge to Main
-- [ ] Phase 13: Final Verification & Team Cleanup
+- [ ] Phase 13: Final Verification (worktree preserved)
 ```
 
 **Phase 5.3/5.4/5.5 Selection:**
@@ -224,6 +224,31 @@ Phase 5.4 (product-designer) presents COMBINED architecture+UI options.
 ### Branch Name Rule
 Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 
+## Teammate Termination Rules (CRITICAL)
+
+**TERMINATE IMMEDIATELY AFTER COMPLETION:**
+When a teammate finishes their assigned task, the Team Lead MUST:
+1. Verify the teammate's output is complete
+2. **Terminate the teammate immediately** - Do NOT keep idle teammates running
+3. **Close the tmux pane** (if using tmux mode) to free resources
+
+**Why immediate termination:**
+- Frees up context window and memory
+- Prevents resource accumulation
+- Keeps the agent team lean and efficient
+- Reduces confusion about active teammates
+
+**Termination Process:**
+```
+1. Teammate reports completion
+2. Team Lead verifies output
+3. Team Lead sends: "Thank you. Your work is complete. Please shut down."
+4. Teammate shuts down gracefully
+5. If tmux: close the pane with `exit` or Ctrl+D
+```
+
+**Exception:** Phase 8 (dev-executor + qa-agent) - These run in parallel and should both complete before termination.
+
 ## Best Practices
 
 1. **Give teammates context** - Include task details in spawn prompts
@@ -232,6 +257,7 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 4. **Avoid file conflicts** - Each teammate owns different files
 5. **Monitor and steer** - Check progress, redirect as needed
 6. **Encourage communication** - Teammates should message each other
+7. **Terminate after completion** - Shut down teammates immediately after their work is done
 
 ---
 
@@ -255,10 +281,10 @@ Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
 | 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` | code-reviewer |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
-| 11 | Coordinate cleanup (may message agents) | (varies) |
+| 11 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
 | 11.5 | Present summary to user for confirmation (no agent) | (none) |
 | 12 | Execute git operations (commit, merge) | (none) |
-| 13 | Verify completion, cleanup | (none) |
+| 13 | Verify completion (worktree preserved for reference) | (none) |
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
 - Architecture ONLY (no UI) → 5.3: Task tool with `super-dev:architecture-agent`
