@@ -258,6 +258,14 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 5. **Monitor and steer** - Check progress, redirect as needed
 6. **Encourage communication** - Teammates should message each other
 7. **Terminate after completion** - Shut down teammates immediately after their work is done
+8. **Clean build artifacts during final cleanup** (based on project type):
+   - **Rust**: `cargo clean`
+   - **Go**: `go clean -cache -i -r`
+   - **Node.js**: Delete `node_modules/.cache` or rebuild
+   - **Python**: `find . -type d -name "__pycache__" -exec rm -rf {} +`
+   - **Maven (Java)**: `mvn clean`
+   - **Gradle (Java/Kotlin)**: `gradle clean`
+   - **.NET/C#**: `dotnet clean`
 
 ---
 

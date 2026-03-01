@@ -365,6 +365,14 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 4. Run team cleanup: "Team cleanup when complete"
 5. **Close any remaining tmux panes** (if using tmux mode)
 6. Verify all teammates are shut down
+7. **Clean build artifacts** (based on project type):
+   - **Rust**: `cargo clean`
+   - **Go**: `go clean -cache -i -r`
+   - **Node.js**: Delete `node_modules/.cache` or rebuild
+   - **Python**: `find . -type d -name "__pycache__" -exec rm -rf {} +`
+   - **Maven (Java)**: `mvn clean`
+   - **Gradle (Java/Kotlin)**: `gradle clean`
+   - **.NET/C#**: `dotnet clean`
 
 **NEVER mark complete without:**
 - Merging changes to main
