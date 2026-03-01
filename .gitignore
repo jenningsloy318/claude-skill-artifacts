@@ -2,3 +2,5 @@
 .claude
 .python-version
 workflow-tracking.json
+.worktree/
+.history/
