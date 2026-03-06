@@ -1,11 +1,20 @@
 ---
 name: super-dev
-description: Agent Team-driven development workflow. Team Lead Coordinator orchestrates specialized teammates who work independently with their own context windows and can message each other directly. Use when user says "implement feature", "fix bug", "refactor code", "help me build", "develop this", "add functionality", or asks for systematic multi-phase development. Do NOT use for simple file searches, one-off questions, or non-development tasks.
+description: >
+    Use when implementing features, fixing bugs, refactoring code, optimizing performance,
+    resolving deprecations, or any multi-step development task requiring planning, implementation,
+    testing, and review. Orchestrates specialized agent teammates through research, architecture,
+    coding, QA, code review, and documentation phases. Triggers on: "implement", "build",
+    "fix bug", "refactor", "add feature", "develop this", "help me build", "add functionality",
+    "optimize performance", "resolve deprecation", "systematic development".
+    Do NOT trigger on: simple questions ("what does this code do?"), file searches
+    ("where is the auth function?"), one-off commands ("run the tests"), code explanations,
+    quick edits, or non-development tasks.
 license: MIT
 compatibility: Requires Claude Code CLI with Task tool and agent teams experimental feature (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). Git required for worktree management.
 metadata:
   author: Jennings Liu
-  version: "2.2.0"
+  version: "2.3.0"
   repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
   keywords:
     - development
@@ -19,7 +28,7 @@ metadata:
 
 A team-based development system where the Coordinator acts as Team Lead, orchestrating specialized teammate agents who work independently with their own context windows, communicate directly, and share a task list for self-coordination.
 
-**Announce at start:** "I'm using the super-dev skill with agent teams to systematically implement this task."
+**Announce at start:** YOU MUST say "I'm using the super-dev skill with agent teams to systematically implement this task." at the beginning of every run.
 
 ## Prerequisites
 
@@ -73,12 +82,43 @@ Or add to `settings.json`:
 
 ## When to Use
 
-Activate for:
+**ACTIVATE for** (multi-step development requiring planning + implementation):
 - Bug fixes, build warnings/errors
 - New features, improvements
 - Performance optimization
 - Deprecation resolution
-- Refactoring
+- Refactoring large codebases
+
+**DO NOT ACTIVATE for** (these are too simple for a full workflow):
+- "What does this code do?" → Simple explanation, no dev workflow needed
+- "Where is the auth function?" → File search, use Grep/Glob directly
+- "Run the tests" → Single command, use Bash directly
+- "Fix this typo" → Trivial edit, use Edit directly
+- "Explain this error" → Q&A, no workflow needed
+- "Search for the config file" → Research task, not development
+
+## Success Criteria
+
+Grade each completed workflow run against these three dimensions:
+
+### Outcome (Baseline — if this fails, nothing else matters)
+- Feature/fix implemented correctly and works as intended
+- All existing tests pass; new tests cover new functionality
+- Code review resolves all Critical, High, and Medium issues to zero
+- Documentation updated to reflect changes
+
+### Efficiency (Undervalued — two correct runs can differ 3x in cost)
+- Phase iteration loops < 3 (Phase 8/9 loop)
+- Teammates terminated immediately after their work completes
+- Team Lead NEVER performs agent work directly (delegation enforcement)
+- No redundant phase execution or unnecessary retries
+
+### Style & Instructions (Conventions followed)
+- Git worktree created with branch name matching worktree name
+- Spec directory structure followed inside worktree
+- Workflow tracking JSON maintained and updated per phase
+- Commit messages follow project conventions
+- All work done inside the worktree, never in main repo
 
 ## Workflow Phases
 
@@ -107,7 +147,7 @@ Activate for:
 - UI ONLY → Phase 5.5 (ui-ux-designer)
 - BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
-**Iteration Rule:** Loop Phase 8/9 until Critical=0, High=0, Medium=0, all acceptance criteria met.
+**Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, and ALL acceptance criteria are met. NEVER proceed to Phase 10 with unresolved issues.
 
 ## Entry Point: Team Lead Coordinator
 
@@ -218,11 +258,11 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Example: dev-executor ↔ qa-agent coordination
 
 ### Option Presentation
-Phases 3, 5.3, 5.4, 5.5 require presenting 3-5 options to user for selection.
-Phase 5.4 (product-designer) presents COMBINED architecture+UI options.
+YOU MUST present 3-5 options to the user in Phases 3, 5.3, 5.4, 5.5. NEVER skip option presentation.
+In Phase 5.4, ALWAYS present COMBINED architecture+UI options together.
 
 ### Branch Name Rule
-Git branch name MUST match worktree name: `[spec-index]-[spec-name]`
+YOU MUST ensure the git branch name matches the worktree name exactly: `[spec-index]-[spec-name]`. NEVER create a branch with a different name than the worktree.
 
 ## Teammate Termination Rules (CRITICAL)
 
@@ -247,18 +287,18 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 5. If tmux: close the pane with `exit` or Ctrl+D
 ```
 
-**Exception:** Phase 8 (dev-executor + qa-agent) - These run in parallel and should both complete before termination.
+**Exception:** In Phase 8, dev-executor and qa-agent run in parallel — YOU MUST wait for BOTH to complete before terminating either one.
 
 ## Best Practices
 
-1. **Give teammates context** - Include task details in spawn prompts
-2. **Size tasks appropriately** - Self-contained units with clear deliverables
-3. **Wait for teammates** - Team Lead should NOT implement directly
-4. **Avoid file conflicts** - Each teammate owns different files
-5. **Monitor and steer** - Check progress, redirect as needed
-6. **Encourage communication** - Teammates should message each other
-7. **Terminate after completion** - Shut down teammates immediately after their work is done
-8. **Clean build artifacts during final cleanup** (based on project type):
+1. **Always give teammates full context** — Include task details, file paths, and acceptance criteria in every spawn prompt
+2. **Size tasks as self-contained units** — Each teammate MUST have clear deliverables and boundaries
+3. **NEVER implement directly as Team Lead** — Always wait for teammates to complete their work
+4. **Assign file ownership** — Each teammate MUST own different files to prevent conflicts
+5. **Monitor and redirect actively** — Check teammate progress and course-correct immediately when needed
+6. **Require inter-teammate communication** — Teammates MUST message each other for coordination (e.g., dev-executor ↔ qa-agent)
+7. **Terminate teammates immediately after completion** — NEVER keep idle teammates running
+8. **Clean build artifacts during final cleanup** (run the appropriate command for the project type):
    - **Rust**: `cargo clean`
    - **Go**: `go clean -cache -i -r`
    - **Node.js**: Delete `node_modules/.cache` or rebuild
@@ -307,7 +347,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **SKILL:** Invoke `super-dev:dev-rules`
 
-Establishes coding standards, git practices, and quality standards for the development session.
+YOU MUST load coding standards, git practices, and quality standards at the start of every super-dev session. NEVER skip this phase.
 
 **Why in skill:** Ensures dev rules are loaded consistently at the start of every super-dev session.
 
