@@ -14,7 +14,7 @@ license: MIT
 compatibility: Requires Claude Code CLI with Task tool and agent teams experimental feature (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). Git required for worktree management.
 metadata:
   author: Jennings Liu
-  version: "2.3.0"
+  version: "2.4.0"
   repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
   keywords:
     - development
@@ -108,7 +108,7 @@ Grade each completed workflow run against these three dimensions:
 - Documentation updated to reflect changes
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
-- Phase iteration loops < 3 (Phase 8/9 loop)
+- Phase iteration loops < 3 (Phase 8/9/10 loop)
 - Teammates terminated immediately after their work completes
 - Team Lead NEVER performs agent work directly (delegation enforcement)
 - No redundant phase execution or unnecessary retries
@@ -130,16 +130,17 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
 - [ ] Phase 5.3: Architecture Design (arch only)
-- [ ] Phase 5.4: Product Design (arch + UI together) ← NEW: replaces 5.3+5.5 when both needed
+- [ ] Phase 5.4: Product Design (arch + UI together)
 - [ ] Phase 5.5: UI/UX Design (UI only)
 - [ ] Phase 6:  Specification Writing
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
 - [ ] Phase 9:  Code Review
-- [ ] Phase 10: Documentation Update
-- [ ] Phase 11: Team Cleanup (keep worktree)
-- [ ] Phase 12: Commit & Merge to Main
-- [ ] Phase 13: Final Verification (worktree preserved)
+- [ ] Phase 10: Adversarial Review (multi-lens challenge)
+- [ ] Phase 11: Documentation Update
+- [ ] Phase 12: Team Cleanup (keep worktree)
+- [ ] Phase 13: Commit & Merge to Main
+- [ ] Phase 14: Final Verification (worktree preserved)
 ```
 
 **Phase 5.3/5.4/5.5 Selection:**
@@ -147,7 +148,7 @@ Grade each completed workflow run against these three dimensions:
 - UI ONLY → Phase 5.5 (ui-ux-designer)
 - BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
-**Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, and ALL acceptance criteria are met. NEVER proceed to Phase 10 with unresolved issues.
+**Iteration Rule:** YOU MUST loop Phase 8/9/10 until Critical=0, High=0, Medium=0, adversarial verdict is PASS, and ALL acceptance criteria are met. NEVER proceed to Phase 11 with unresolved issues or a REJECT/CONTESTED verdict.
 
 ## Entry Point: Team Lead Coordinator
 
@@ -178,7 +179,7 @@ From **Phase 2 onwards**, you are FORBIDDEN from using these tools for implement
 
 You MUST ONLY use these tools for:
 1. Phase 0/1 Setup (creating directories, worktrees)
-2. Phase 12 Git Operations (merge, commit)
+2. Phase 13 Git Operations (merge, commit)
 3. Project Management (reading status, updating task lists)
 
 **HOW TO SPAWN AGENTS:**
@@ -192,7 +193,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Ask: "Which agent handles this?"
 - Use the **Task tool** to spawn that agent
 
-**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-13 is via the Task tool.
+**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-14 is via the Task tool.
 
 **MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS use Task tool to spawn agents. NEVER do detailed tasks directly.**
 
@@ -207,10 +208,10 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Message teammates
 - Synthesize findings from agents
 - Coordinate phase transitions
-- Commit and merge (Phase 12)
-- Clean up team (Phase 13)
+- Commit and merge (Phase 13)
+- Clean up team (Phase 14)
 
-❌ **CANNOT (Phases 2-13) - USE TASK TOOL INSTEAD:**
+❌ **CANNOT (Phases 2-14) - USE TASK TOOL INSTEAD:**
 - **NEVER edit files directly** → Task tool with `super-dev:dev-executor` or `super-dev:docs-executor`
 - **NEVER run commands directly** → Task tool with `super-dev:dev-executor` or `super-dev:qa-agent`
 - **NEVER perform research directly** → Task tool with `super-dev:research-agent`
@@ -221,6 +222,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 - **NEVER do combined arch+UI design** → Task tool with `super-dev:product-designer`
 - **NEVER do debug analysis** → Task tool with `super-dev:debug-analyzer`
 - **NEVER do code review** → Task tool with `super-dev:code-reviewer`
+- **NEVER do adversarial review** → Task tool with `super-dev:adversarial-reviewer`
 - **NEVER skip agent communication**
 - **NEVER take over agent tasks**
 
@@ -243,7 +245,8 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
 | 9 | code-reviewer | Spec-aware code review |
-| 10 | docs-executor | Update documentation |
+| 10 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) |
+| 11 | docs-executor | Update documentation |
 
 ## Key Concepts
 
@@ -328,18 +331,19 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 7 | Validate spec (no agent) | (none) |
 | 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` | code-reviewer |
-| 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
-| 11 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
-| 11.5 | Present summary to user for confirmation (no agent) | (none) |
-| 12 | Execute git operations (commit, merge) | (none) |
-| 13 | Verify completion (worktree preserved for reference) | (none) |
+| 10 | Use Task tool → `super-dev:adversarial-reviewer` | adversarial-reviewer |
+| 11 | Use Task tool → `super-dev:docs-executor` | docs-executor |
+| 12 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
+| 12.5 | Present summary to user for confirmation (no agent) | (none) |
+| 13 | Execute git operations (commit, merge) | (none) |
+| 14 | Verify completion (worktree preserved for reference) | (none) |
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
 - Architecture ONLY (no UI) → 5.3: Task tool with `super-dev:architecture-agent`
 - UI ONLY (no architecture) → 5.5: Task tool with `super-dev:ui-ux-designer`
 - BOTH architecture AND UI → 5.4: Task tool with `super-dev:product-designer`
 
-**KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST use Task tool to spawn the appropriate agent. NEVER do the work directly.
+**KEY RULE:** If a phase requires work (Phase 2-11), Team Lead MUST use Task tool to spawn the appropriate agent. NEVER do the work directly.
 
 ---
 
@@ -462,6 +466,28 @@ Before proceeding to Phase 2:
 
 ---
 
+## Phase 10: Adversarial Review
+
+**Executed by:** `super-dev:adversarial-reviewer` (spawned via Task tool)
+
+**Purpose:** Multi-lens adversarial challenge of the implementation. Produces a verdict (PASS/CONTESTED/REJECT), NOT code changes.
+
+**Output:** `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md`
+
+**Reviewer lenses** (count based on diff size):
+- **Skeptic** — correctness and completeness (always)
+- **Architect** — structural fitness (50+ lines)
+- **Minimalist** — necessity and complexity (200+ lines)
+
+**Verdict logic:**
+- **PASS** → proceed to Phase 11
+- **CONTESTED** → Team Lead decides: accept or loop back to Phase 8
+- **REJECT** → YOU MUST loop back to Phase 8 with findings as input
+
+**Full reference:** The `super-dev:adversarial-reviewer` agent contains lens definitions, verdict format, and output template.
+
+---
+
 ## Display Modes
 
 - **In-Process** (default): All in main terminal, use Shift+Up/Down to navigate
@@ -496,6 +522,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:dev-executor
 - super-dev:qa-agent
 - super-dev:code-reviewer
+- super-dev:adversarial-reviewer
 - super-dev:docs-executor
 ```
 
@@ -515,6 +542,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
 | **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
 | **Review** | code-reviewer | Spec-aware code review | `super-dev:code-reviewer` |
+| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 
 ### Team Creation at Phase 1
@@ -539,7 +567,8 @@ Teammates to include:
 10. super-dev:dev-executor
 11. super-dev:qa-agent
 12. super-dev:code-reviewer
-13. super-dev:docs-executor
+13. super-dev:adversarial-reviewer
+14. super-dev:docs-executor
 ```
 
 ### When to Spawn Each Teammate
@@ -556,7 +585,8 @@ Teammates to include:
 | 6 | spec-writer |
 | 8 | dev-executor + qa-agent (parallel) |
 | 9 | code-reviewer |
-| 10 | docs-executor |
+| 10 | adversarial-reviewer |
+| 11 | docs-executor |
 
 **Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
 
