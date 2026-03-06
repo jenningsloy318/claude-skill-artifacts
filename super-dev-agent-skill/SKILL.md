@@ -1,11 +1,20 @@
 ---
 name: super-dev
-description: Coordinator-driven development workflow with parallel agent execution. Use when user says "implement feature", "fix this bug", "refactor code", "help me build", "develop this", "add functionality", "create new feature", "debug this issue", or asks to systematically create, modify, or improve code. Activates specialized agents for requirements, research, debugging, assessment, architecture, UI/UX, specification, implementation, QA, code review, and documentation. Do NOT use for simple file searches, one-off questions, or non-development tasks.
+description: >
+    Use when implementing features, fixing bugs, refactoring code, optimizing performance,
+    resolving deprecations, or any multi-step development task requiring planning, implementation,
+    testing, and review. Orchestrates specialized agent teammates through research, architecture,
+    coding, QA, code review, adversarial review, and documentation phases. Triggers on: "implement",
+    "build", "fix bug", "refactor", "add feature", "develop this", "help me build",
+    "add functionality", "optimize performance", "resolve deprecation", "systematic development".
+    Do NOT trigger on: simple questions ("what does this code do?"), file searches
+    ("where is the auth function?"), one-off commands ("run the tests"), code explanations,
+    quick edits, or non-development tasks.
 license: MIT
 compatibility: Requires Claude Code CLI with Task tool support. Git required for worktree management. Agent teams experimental feature recommended.
 metadata:
   author: Jennings Liu
-  version: "2.2.0"
+  version: "2.4.0"
   homepage: https://github.com/jenningsloy318/super-skill-claude-artifacts
   repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
   keywords:
@@ -26,7 +35,7 @@ A team-based development system where the Coordinator acts as Team Lead, orchest
 
 ## When to Use
 
-**Activate super-dev for:**
+**ACTIVATE for** (multi-step development requiring planning + implementation):
 - Bug fixes, build warnings/errors
 - New features, improvements
 - Performance optimization
@@ -34,11 +43,13 @@ A team-based development system where the Coordinator acts as Team Lead, orchest
 - Refactoring
 - Complex development tasks requiring multiple specialists
 
-**Do NOT use for:**
-- Simple file searches or exploration
-- One-off questions about code
-- Non-development tasks (writing, research without implementation)
-- Tasks that don't require code changes
+**DO NOT ACTIVATE for** (these are too simple for a full workflow):
+- "What does this code do?" → Simple explanation, no dev workflow needed
+- "Where is the auth function?" → File search, use Grep/Glob directly
+- "Run the tests" → Single command, use Bash directly
+- "Fix this typo" → Trivial edit, use Edit directly
+- "Explain this error" → Q&A, no workflow needed
+- "Search for the config file" → Research task, not development
 
 ## Quick Start
 
@@ -48,12 +59,28 @@ I'm using super-dev to implement: [describe your task]
 
 The Coordinator will automatically orchestrate all workflow phases.
 
-## Performance Notes
+## Success Criteria
 
-- Take your time to do this thoroughly
-- Quality is more important than speed
-- Do not skip validation steps
-- Complete all phases before marking done
+Grade each completed workflow run against these three dimensions:
+
+### Outcome (Baseline — if this fails, nothing else matters)
+- Feature/fix implemented correctly and works as intended
+- All existing tests pass; new tests cover new functionality
+- Code review resolves all Critical, High, and Medium issues to zero
+- Adversarial review verdict is PASS
+- Documentation updated to reflect changes
+
+### Efficiency (Undervalued — two correct runs can differ 3x in cost)
+- Phase iteration loops < 3 (Phase 8/9/10 loop)
+- Agents terminated immediately after their work completes
+- Team Lead NEVER performs agent work directly (delegation enforcement)
+- No redundant phase execution or unnecessary retries
+
+### Style & Instructions (Conventions followed)
+- Git worktree created with branch name matching worktree name
+- Spec directory structure followed inside worktree
+- Workflow tracking JSON maintained and updated per phase
+- Commit messages follow project conventions
 
 ## Workflow Phases Overview
 
@@ -70,13 +97,14 @@ The Coordinator will automatically orchestrate all workflow phases.
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL agents)
 - [ ] Phase 9:  Code Review
-- [ ] Phase 10: Documentation Update
-- [ ] Phase 11: Cleanup
-- [ ] Phase 12: Commit & Merge to Main
-- [ ] Phase 13: Final Verification & Team Cleanup
+- [ ] Phase 10: Adversarial Review (multi-lens challenge)
+- [ ] Phase 11: Documentation Update
+- [ ] Phase 12: Cleanup
+- [ ] Phase 13: Commit & Merge to Main
+- [ ] Phase 14: Final Verification & Team Cleanup
 ```
 
-**Iteration Rule:** Loop Phase 8/9 until Critical=0, High=0, Medium=0, all acceptance criteria met.
+**Iteration Rule:** YOU MUST loop Phase 8/9/10 until Critical=0, High=0, Medium=0, adversarial verdict is PASS, and ALL acceptance criteria are met. NEVER proceed to Phase 11 with unresolved issues or a REJECT/CONTESTED verdict.
 
 For detailed phase instructions, see `references/workflow-phases.md`.
 
@@ -121,7 +149,8 @@ For detailed phase instructions, see `references/workflow-phases.md`.
 | `dev-executor` | 8 | Implement code changes |
 | `qa-agent` | 8, 9.5 | Plan and run tests |
 | `code-reviewer` | 9 | Specification-aware code review |
-| `docs-executor` | 10 | Update documentation |
+| `adversarial-reviewer` | 10 | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) |
+| `docs-executor` | 11 | Update documentation |
 
 ### Developer Specialist Agents
 
@@ -187,7 +216,7 @@ From **Phase 2 onwards**, you are FORBIDDEN from using `Edit`, `Write`, `Bash`, 
 
 You MUST ONLY use these tools for:
 1. Phase 0/1 Setup (creating directories, worktrees)
-2. Phase 12 Git Operations (merge, commit)
+2. Phase 13 Git Operations (merge, commit)
 3. Project Management (reading status, updating task lists)
 
 **IF YOU CATCH YOURSELF DOING THE WORK:**
@@ -209,9 +238,9 @@ You MUST ONLY use these tools for:
 - Monitor task status (TaskList, TaskGet)
 - Synthesize findings from agents
 - Coordinate phase transitions
-- Commit and merge (Phase 12)
+- Commit and merge (Phase 13)
 
-❌ **CANNOT (Phases 2-13):**
+❌ **CANNOT (Phases 2-14):**
 - **NEVER edit files directly** → Use Task tool with `super-dev:dev-executor` or `super-dev:docs-executor`
 - **NEVER run commands directly** → Use Task tool with `super-dev:dev-executor` or `super-dev:qa-agent`
 - **NEVER perform research directly** → Use Task tool with `super-dev:research-agent`
@@ -221,8 +250,9 @@ You MUST ONLY use these tools for:
 - **NEVER do UI/UX design** → Use Task tool with `super-dev:ui-ux-designer`
 - **NEVER do debug analysis** → Use Task tool with `super-dev:debug-analyzer`
 - **NEVER do code review** → Use Task tool with `super-dev:code-reviewer`
+- **NEVER do adversarial review** → Use Task tool with `super-dev:adversarial-reviewer`
 
-**VIOLATION DETECTION:** If Team Lead starts doing Phase 2-13 work directly, user should say:
+**VIOLATION DETECTION:** If Team Lead starts doing Phase 2-14 work directly, user should say:
 - "Stop! You are in delegate mode. Use Task tool to spawn an agent."
 - "Remember: Team Lead orchestrates, agents execute."
 
@@ -244,12 +274,13 @@ You MUST ONLY use these tools for:
 | 7 | Validate spec (no agent) | (none) |
 | 8 | Spawn dev-executor + qa-agent (parallel) | `super-dev:dev-executor`, `super-dev:qa-agent` |
 | 9 | Spawn code-reviewer | `super-dev:code-reviewer` |
-| 10 | Spawn docs-executor | `super-dev:docs-executor` |
-| 11 | Coordinate cleanup | (varies) |
-| 12 | Execute git operations (commit, merge) | (none) |
-| 13 | Verify completion | (none) |
+| 10 | Spawn adversarial-reviewer | `super-dev:adversarial-reviewer` |
+| 11 | Spawn docs-executor | `super-dev:docs-executor` |
+| 12 | Coordinate cleanup | (varies) |
+| 13 | Execute git operations (commit, merge) | (none) |
+| 14 | Verify completion | (none) |
 
-**KEY RULE:** If a phase requires work (Phase 2-10), Team Lead MUST use Task tool to spawn the appropriate agent. NEVER do the work directly.
+**KEY RULE:** If a phase requires work (Phase 2-11), Team Lead MUST use Task tool to spawn the appropriate agent. NEVER do the work directly.
 
 For detailed coordinator methodology, see `references/coordinator-methodology.md`.
 
@@ -281,6 +312,7 @@ All documents created in `specification/[index]-[name]/`:
 | `[index]-specification.md` | Technical specification |
 | `[index]-implementation-plan.md` | Implementation plan |
 | `[index]-task-list.md` | Detailed task list |
+| `[index]-adversarial-review-report.md` | Adversarial review verdict and findings |
 | `[index]-implementation-summary.md` | Final summary |
 
 ## Troubleshooting

@@ -307,7 +307,64 @@ Task: Execute comprehensive testing for [feature]
 
 ---
 
-## Phase 10: Documentation Update
+## Phase 10: Adversarial Review
+
+**Agent:** `adversarial-reviewer`
+
+```
+Task: Challenge implementation from distinct critical lenses
+Output: specification/[spec-index]-[spec-name]/[doc-index]-adversarial-review-report.md
+```
+
+**Hard constraint:** The adversarial review MUST produce a verdict, NOT code modifications.
+
+### Step 1 — Determine Scope and Intent
+
+Identify what to review from the Phase 8/9 output (recent diffs, implementation files, spec).
+
+State the **intent** explicitly — what the author is trying to achieve. Reviewers challenge whether the work *achieves the intent well*, not whether the intent is correct.
+
+Assess change size to determine reviewer count:
+
+| Size | Threshold | Reviewers |
+|------|-----------|-----------|
+| Small | < 50 lines, 1-2 files | 1 (Skeptic) |
+| Medium | 50-200 lines, 3-5 files | 2 (Skeptic + Architect) |
+| Large | 200+ lines or 5+ files | 3 (Skeptic + Architect + Minimalist) |
+
+### Step 2 — Apply Reviewer Lenses
+
+Each reviewer adopts one lens exclusively:
+
+**Skeptic — Challenge correctness and completeness:**
+- What inputs, states, or sequences will break this?
+- What error paths are unhandled or silently swallowed?
+- What race conditions or ordering dependencies exist?
+- What does the author believe is true that isn't proven?
+
+**Architect — Challenge structural fitness:**
+- Does the design actually serve the stated goal, or a goal the author assumed?
+- Where are the coupling points that will hurt when requirements shift?
+- What boundary violations exist? Where does responsibility leak between components?
+
+**Minimalist — Challenge necessity and complexity:**
+- What can be deleted without losing the stated goal?
+- Where is the author solving problems they don't have yet?
+- What abstractions exist for a single call site?
+- Is this the simplest possible path to the outcome?
+
+### Step 3 — Synthesize Verdict
+
+**Verdict logic:**
+- **PASS** — no high-severity findings → proceed to Phase 11
+- **CONTESTED** — high-severity findings but reviewers disagree → Team Lead decides
+- **REJECT** — high-severity findings with reviewer consensus → loop back to Phase 8
+
+**Iteration:** If REJECT, YOU MUST return to Phase 8 with findings as input for dev-executor to fix.
+
+---
+
+## Phase 11: Documentation Update
 
 **Agent:** `docs-executor`
 
@@ -317,7 +374,7 @@ Task: Update documentation for [feature]
 
 ---
 
-## Phase 11: Cleanup
+## Phase 12: Cleanup
 
 **Executed by:** Coordinator
 
@@ -327,7 +384,7 @@ Task: Update documentation for [feature]
 
 ---
 
-## Phase 12: Commit & Merge
+## Phase 13: Commit & Merge
 
 **Executed by:** Coordinator
 
@@ -353,7 +410,7 @@ git commit -m "spec-01-user-auth feat: implement JWT authentication"
 
 ---
 
-## Phase 13: Final Verification
+## Phase 14: Final Verification
 
 **Executed by:** Coordinator
 
