@@ -245,7 +245,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
 | 9 | code-reviewer | Spec-aware code review |
-| 10 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) |
+| 10 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate |
 | 11 | docs-executor | Update documentation |
 
 ## Key Concepts
@@ -479,12 +479,18 @@ Before proceeding to Phase 2:
 - **Architect** — structural fitness (50+ lines)
 - **Minimalist** — necessity and complexity (200+ lines)
 
+Each lens applies structured attack vector sub-checklists (V1-V7) for systematic probing of false assumptions, edge cases, failure modes, adversarial inputs, safety compliance, grounding accuracy, and dependency fitness.
+
+**Destructive Action Gate:** An always-on checkpoint that scans every diff for irreversible operations (data destruction, irreversible state changes, production impact, permission escalation, secret operations). HALT findings from the gate cannot be downgraded and force the verdict upward.
+
 **Verdict logic:**
 - **PASS** → proceed to Phase 11
 - **CONTESTED** → Team Lead decides: accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with findings as input
+- **HALT from gate** → Single HALT forces CONTESTED minimum; multiple HALTs force REJECT
+- **Gate BLOCKED** → Forces loop back to Phase 8
 
-**Full reference:** The `super-dev:adversarial-reviewer` agent contains lens definitions, verdict format, and output template.
+**Full reference:** The `super-dev:adversarial-reviewer` agent contains lens definitions, vector sub-checklists, gate specification, verdict format, and output template.
 
 ---
 
@@ -542,7 +548,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
 | **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
 | **Review** | code-reviewer | Spec-aware code review | `super-dev:code-reviewer` |
-| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) | `super-dev:adversarial-reviewer` |
+| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 
 ### Team Creation at Phase 1
