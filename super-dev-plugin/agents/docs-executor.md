@@ -222,13 +222,30 @@ Context received from Coordinator:
 ### Commit Coordination
 
 ```
-# After updating all docs
-"DOCS_PHASE_10_COMPLETE: [documents_updated]"
+# After updating all docs, signal Coordinator with EXPLICIT file list:
+"DOCS_PHASE_10_COMPLETE: Updated specification/[spec-index]-[spec-name]/ files:
+  - specification/[spec-index]-[spec-name]/01-task-list.md
+  - specification/[spec-index]-[spec-name]/06-implementation-summary.md
+  - specification/[spec-index]-[spec-name]/03-specification.md (if deviations)
+  - specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json"
 
-# Coordinator will coordinate final commit:
-git add [code_files] [doc_files]
+# Coordinator stages the ENTIRE spec directory in Phase 13:
+git add specification/[spec-index]-[spec-name]/
+git add [code_files]
 git commit -m "[message including documentation updates]"
 ```
+
+**Spec Directory Files (full list for reference):**
+Files that may exist in `specification/[spec-index]-[spec-name]/`:
+- `01-task-list.md` — Task tracking
+- `02-research-report.md` — Research findings (if created)
+- `03-specification.md` — Technical specification
+- `04-assessment.md` — Code assessment (if created)
+- `05-implementation-plan.md` — Implementation plan (if created)
+- `06-implementation-summary.md` — Implementation summary
+- `*-code-review.md` — Code review reports (if created)
+- `*-adversarial-review-report.md` — Adversarial review reports (if created)
+- `*-workflow-tracking.json` — Workflow tracking state
 
 ## Output Format
 

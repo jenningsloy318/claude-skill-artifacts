@@ -344,17 +344,37 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **MANDATORY: Commit and Merge to Main**
 1. Read workflow JSON for specDirectory and featureName
-2. Stage ALL files:
+2. Stage ALL files (code AND specification directory):
    ```bash
+   # Stage ALL specification directory files (team-wide artifacts created by multiple agents)
+   # This MUST always be included — spec files are NOT single-agent ownership
    git add specification/[spec-index]-[spec-name]/
-   git add specification/[spec-index]-[spec-name]-workflow-tracking.json
+
+   # Stage all code/plugin files modified during this workflow
    git add [code-files]
    ```
-3. Generate commit message: Format `spec-[spec-index]-[spec-name] <type>: <description>` (e.g., `spec-01-user-auth feat: implement authentication`)
-4. Commit: `git commit -m "<message>"`
-5. Switch to main: `git checkout main`
-6. Merge: `git merge [spec-index]-[spec-name]`
-7. Verify: `git status` shows "working tree clean"
+3. **Pre-Commit Verification Gate (MANDATORY — do NOT skip):**
+   ```bash
+   # Verify spec files are staged
+   git diff --cached --name-only | grep "specification/"
+   # If NO spec files appear: STOP and investigate. The spec directory MUST be committed.
+
+   # Verify code files are staged
+   git diff --cached --name-only | grep -v "specification/"
+   # Review the full list of staged files
+   git diff --cached --name-only
+   ```
+   **Checklist before committing:**
+   - [ ] `specification/[spec-index]-[spec-name]/` files appear in staged list
+   - [ ] Workflow tracking JSON is staged
+   - [ ] Task list (`01-task-list.md`) is staged and up to date
+   - [ ] All modified code/plugin files are staged
+   - [ ] No unintended files are staged
+4. Generate commit message: Format `<type> spec-[spec-index]-[spec-name]: <description>` (e.g., `feat spec-01-user-auth: implement authentication`)
+5. Commit: `git commit -m "<message>"`
+6. Switch to main: `git checkout main`
+7. Merge: `git merge [spec-index]-[spec-name]`
+8. Verify: `git status` shows "working tree clean"
 
 **MANDATORY: Team Cleanup (Final Verification)**
 **NOTE:** Most teammates should already be terminated immediately after their phase completion (see Teammate Termination Rules). This section is for final verification and cleanup of any remaining resources.

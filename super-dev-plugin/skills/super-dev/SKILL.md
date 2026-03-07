@@ -335,7 +335,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 11 | Use Task tool → `super-dev:docs-executor` | docs-executor |
 | 12 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
 | 12.5 | Present summary to user for confirmation (no agent) | (none) |
-| 13 | Execute git operations (commit, merge) | (none) |
+| 13 | Execute git operations (commit, merge) — **MUST include spec directory** | (none) |
 | 14 | Verify completion (worktree preserved for reference) | (none) |
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
@@ -491,6 +491,32 @@ Each lens applies structured attack vector sub-checklists (V1-V7) for systematic
 - **Gate BLOCKED** → Forces loop back to Phase 8
 
 **Full reference:** The `super-dev:adversarial-reviewer` agent contains lens definitions, vector sub-checklists, gate specification, verdict format, and output template.
+
+---
+
+## Phase 13: Commit & Merge to Main
+
+**Executed by:** Team Lead (direct git operations)
+
+**CRITICAL — Specification Directory Commit Rule:**
+The `specification/[spec-index]-[spec-name]/` directory contains team-wide workflow artifacts created by multiple agents across all phases. These files MUST always be committed regardless of which agent created or edited them.
+
+**Mandatory staging:**
+```bash
+# Stage the ENTIRE spec directory (includes all artifacts from all phases)
+git add specification/[spec-index]-[spec-name]/
+
+# Stage code/plugin files
+git add [code-files]
+```
+
+**Pre-commit verification:**
+```bash
+# Verify spec files appear in staged list — if missing, STOP and fix
+git diff --cached --name-only | grep "specification/"
+```
+
+**Full commit procedure:** See `agents/coordinator.md` Phase 13 for detailed steps and verification checklist.
 
 ---
 

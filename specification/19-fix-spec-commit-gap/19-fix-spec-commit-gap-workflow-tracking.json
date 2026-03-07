@@ -1,0 +1,16 @@
+{
+  "featureName": "Fix Spec Directory Commit Gap",
+  "specDirectory": "specification/19-fix-spec-commit-gap",
+  "worktreePath": ".worktree/19-fix-spec-commit-gap",
+  "startedAt": "2026-03-07T21:52:36+08:00",
+  "phases": [
+    { "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "2026-03-07T21:52:00+08:00", "completedAt": "2026-03-07T21:52:36+08:00" },
+    { "id": 1, "name": "Specification Setup", "status": "complete", "startedAt": "2026-03-07T21:52:36+08:00", "completedAt": "2026-03-07T21:53:00+08:00" },
+    { "id": 8, "name": "Execution", "status": "complete", "startedAt": "2026-03-07T21:55:00+08:00", "completedAt": "2026-03-07T22:10:00+08:00" },
+    { "id": 13, "name": "Commit & Merge", "status": "in_progress", "startedAt": "2026-03-07T22:10:00+08:00" }
+  ],
+  "tasks": [],
+  "iteration": { "loops": 0, "lastReviewVerdict": null },
+  "team": { "name": "super-dev-19-fix-spec-commit-gap", "teammates": [], "messages": [] },
+  "status": { "allPhasesComplete": false, "allTasksComplete": true, "workflowDone": false }
+}
