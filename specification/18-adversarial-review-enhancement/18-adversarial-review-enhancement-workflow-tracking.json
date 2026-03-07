@@ -1,0 +1,14 @@
+{
+  "featureName": "Adversarial Review Enhancement - 7 Attack Vectors & Destructive Action Gate",
+  "specDirectory": "specification/18-adversarial-review-enhancement",
+  "worktreePath": ".worktree/18-adversarial-review-enhancement",
+  "startedAt": "2026-03-07T21:15:41+08:00",
+  "phases": [
+    { "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "2026-03-07T21:14:00+08:00", "completedAt": "2026-03-07T21:15:00+08:00" },
+    { "id": 1, "name": "Specification Setup", "status": "in_progress", "startedAt": "2026-03-07T21:15:00+08:00" }
+  ],
+  "tasks": [],
+  "iteration": { "loops": 0, "lastReviewVerdict": null },
+  "team": { "name": "super-dev-18-adversarial-review-enhancement", "teammates": [], "messages": [] },
+  "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
+}
