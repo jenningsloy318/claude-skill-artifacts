@@ -61,7 +61,7 @@ You MUST ONLY use these tools for:
 - **Spawn teammates** for each phase with appropriate context
 - **Message teammates** to coordinate work
 - **Monitor shared task list** for team progress
-- Before Phase 13: Verify allPhasesComplete && allTasksComplete, set workflowDone = true, **Shut down all teammates**
+- Before Phase 12: Verify allPhasesComplete && allTasksComplete, set workflowDone = true, **Shut down all teammates**
 
 **PHASE 0 AND PHASE 1 ARE DOCUMENTED IN THE SKILL FILE** - These phases establish dev rules and ensure consistent spec/worktree/branch naming. Reference `skills/super-dev/SKILL.md` for detailed setup instructions.
 
@@ -83,7 +83,7 @@ You MUST ONLY use these tools for:
 | 5.5 | Creating UI/UX designs (UI only) | Spawn ui-ux-designer |
 | 6 | Writing spec/plan/task list | Spawn spec-writer |
 | 8 | Writing code, running tests | Spawn dev-executor + qa-agent |
-| 9 | Reviewing code manually | Spawn code-reviewer |
+| 9 | Reviewing code manually | Spawn code-reviewer + adversarial-reviewer |
 | 10 | Updating documentation | Spawn docs-executor |
 
 **USER ENFORCEMENT:** If you see Team Lead doing Phase 2-13 work directly, say:
@@ -105,7 +105,7 @@ Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
 Phase 6:  Specification Writing     → Spawn spec-writer teammate
 Phase 7:  Specification Review      → Team Lead validates
 Phase 8:  Execution & QA (PARALLEL)  → Spawn dev-executor + qa-agent teammates
-Phase 9:  Code Review                → Spawn code-reviewer teammate
+Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + adversarial-reviewer teammates
 Phase 10: Documentation Update      → Spawn docs-executor teammate
 Phase 11: Team Cleanup              → Final verification (teammates already terminated per-phase, keep worktree)
 Phase 11.5: Manual Confirmation     → User review (optional)
@@ -127,15 +127,16 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 
 ## Iteration Rule: Phase 8/9 Loop
 
-**Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, Verdict=Approved
+**Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, CodeReviewVerdict=Approved, AdversarialVerdict=PASS
 
 **Triggers (re-enter Phase 8 if):**
-- Any findings with severity Critical/High/Medium
+- Any findings with severity Critical/High/Medium (from either review)
 - Any Acceptance Criteria Not Met/Partial
-- Verdict is "Blocked" or "Changes Requested"
+- Code Review verdict is "Blocked" or "Changes Requested"
+- Adversarial Review verdict is "REJECT" or "CONTESTED" (Team Lead decides on CONTESTED)
 
-**On Phase 9 completion:**
-- If triggered: Create remediation tasks in shared task list → Re-spawn dev-executor + qa-agent → Re-run code-reviewer
+**On Phase 9 completion (BOTH reviewers done):**
+- If triggered: Create remediation tasks in shared task list → Re-spawn dev-executor + qa-agent → Re-run code-reviewer + adversarial-reviewer (parallel)
 - Else: Proceed to Phase 10
 
 ## Skip Conditions
@@ -146,7 +147,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.3 | NO architecture work, OR using Phase 5.4 instead. If architecture involved → NEVER skip, MANDATORY user review |
 | Phase 5.4 | NOT both architecture AND UI. Use when BOTH domains needed → NEVER skip, MANDATORY user review |
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
-| Phase 9 | Never skip (unless explicitly waived by project lead) |
+| Phase 9 | Never skip — both code review and adversarial review are mandatory (unless explicitly waived by project lead) |
 
 ## Super Dev Agent Team Definition
 
@@ -170,6 +171,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:dev-executor
 - super-dev:qa-agent
 - super-dev:code-reviewer
+- super-dev:adversarial-reviewer
 - super-dev:docs-executor
 ```
 
@@ -189,6 +191,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Execution** | dev-executor | Implement code |
 | **Execution** | qa-agent | Plan and run tests |
 | **Review** | code-reviewer | Spec-aware code review |
+| **Review** | adversarial-reviewer | Multi-lens adversarial challenge |
 | **Docs** | docs-executor | Update documentation |
 
 ### When to Spawn Each Teammate
@@ -204,7 +207,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | 5.5 | ui-ux-designer |
 | 6 | spec-writer |
 | 8 | dev-executor + qa-agent (parallel) |
-| 9 | code-reviewer |
+| 9 | code-reviewer + adversarial-reviewer (parallel) |
 | 10 | docs-executor |
 
 ## Teammate Spawn Patterns
@@ -225,6 +228,13 @@ Your role is to [brief role description]. Output: [expected output]"
 "Spawn a dev-executor teammate with this context: ..."
 
 "Spawn a qa-agent teammate with this context: ..."
+```
+
+**Phase 9 (PARALLEL):**
+```
+"Spawn a code-reviewer teammate with this context: ..."
+
+"Spawn an adversarial-reviewer teammate with this context: ..."
 ```
 
 ## Monitoring & Oversight
@@ -284,10 +294,10 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 5.5 | ui-ux-designer | design-spec.md complete, user selected option |
 | 6 | spec-writer | spec, plan, task-list complete |
 | 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
-| 9 | code-reviewer | Code review complete |
+| 9 | code-reviewer + adversarial-reviewer | **BOTH complete** (parallel), then terminate both |
 | 10 | docs-executor | Documentation updated |
 
-**Exception:** Phase 8 (dev-executor + qa-agent) - These run in parallel and should BOTH complete before termination.
+**Exception:** Phase 8 (dev-executor + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer) - These run in parallel and should BOTH complete before termination.
 
 ## Quality Gates
 
@@ -300,7 +310,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug), design docs exist (05-architecture.md and/or 05-design-spec.md, or 05-product-design-summary.md if Phase 5.4 used) |
 | → Phase 7 | 06-specification.md, 07-implementation-plan.md, 08-task-list.md exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
-| → Phase 10 | Code review approved |
+| → Phase 10 | Code review approved AND adversarial review PASS |
 | → Phase 11 | Documentation updated, teammates shut down (worktree preserved) |
 | → Phase 12 | All changes committed and merged to main |
 | Complete | Git status clean, merged to main, team cleaned up, worktree preserved |
@@ -327,7 +337,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **Stop only for:** Critical error, external dependency unavailable, permission denied, user explicit request
 
-## Final Verification (Phase 13)
+## Final Verification (Phase 12)
 
 **IMPORTANT: Worktree Preservation**
 - **DO NOT remove the worktree** - Keep `.worktree/[spec-index]-[spec-name]/` for reference
@@ -487,6 +497,7 @@ research-agent: Continues with selected approach
 **Encourage direct messaging between teammates:**
 
 - dev-executor ↔ qa-agent: "Auth module ready for testing" / "Found issue in validation"
+- code-reviewer ↔ adversarial-reviewer: "Found critical security issue" / "Confirmed structural concern"
 - research-agent → requirements-clarifier: "Need clarification on user roles"
 - code-reviewer → dev-executor: "Question about implementation choice"
 

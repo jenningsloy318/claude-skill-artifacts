@@ -3,7 +3,7 @@ name: super-dev:adversarial-review
 description: Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity
 ---
 
-# Phase 10: Adversarial Review
+# Phase 9: Adversarial Review (runs parallel with Code Review)
 
 Perform multi-lens adversarial review that challenges the implementation from distinct critical perspectives.
 
@@ -89,15 +89,15 @@ An always-on checkpoint that scans every diff for irreversible operations, regar
 ## Examples
 
 ```
-/super-dev:adversarial-review Authentication system after code review pass
-/super-dev:adversarial-review Payment processing module - post Phase 9
+/super-dev:adversarial-review Authentication system after execution phase
+/super-dev:adversarial-review Payment processing module - post Phase 8
 ```
 
 ## Notes
 
 - Produces a verdict, NOT code modifications
-- Complements Phase 9 code review with adversarial perspective
-- Part of the Phase 8/9/10 quality loop
+- Complements code review with adversarial perspective (both run in Phase 9 in parallel)
+- Part of the Phase 8/9 quality loop
 - REJECT verdict forces loop back to Phase 8 for fixes
 - Each lens applies structured attack vector sub-checklists (V1-V7) for systematic probing
 - An always-on Destructive Action Gate scans for irreversible operations on every review

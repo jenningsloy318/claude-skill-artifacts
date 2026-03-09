@@ -3,7 +3,7 @@ name: super-dev:code-review
 description: Perform specification-aware code review focused on correctness, security, performance, and maintainability
 ---
 
-# Phase 9: Code Review
+# Phase 9: Code Review (runs parallel with Adversarial Review)
 
 Perform specification-aware code review focused on correctness, security, performance, and maintainability.
 
@@ -77,6 +77,7 @@ Creates a review report with:
 ## Notes
 
 - Specification-aware review using requirements and design docs
+- Runs in parallel with adversarial review in Phase 9
 - Iterative: Loop back to execution if blocking issues found
-- Only proceed when approved or low-impact issues remain
+- Only proceed when both code review approved AND adversarial review PASS
 - Ensures code quality before final documentation

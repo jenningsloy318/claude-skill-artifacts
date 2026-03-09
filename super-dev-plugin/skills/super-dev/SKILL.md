@@ -14,7 +14,7 @@ license: MIT
 compatibility: Requires Claude Code CLI with Task tool and agent teams experimental feature (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). Git required for worktree management.
 metadata:
   author: Jennings Liu
-  version: "2.4.0"
+  version: "2.5.0"
   repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
   keywords:
     - development
@@ -108,7 +108,7 @@ Grade each completed workflow run against these three dimensions:
 - Documentation updated to reflect changes
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
-- Phase iteration loops < 3 (Phase 8/9/10 loop)
+- Phase iteration loops < 3 (Phase 8/9 loop)
 - Teammates terminated immediately after their work completes
 - Team Lead NEVER performs agent work directly (delegation enforcement)
 - No redundant phase execution or unnecessary retries
@@ -135,12 +135,11 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 6:  Specification Writing
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
-- [ ] Phase 9:  Code Review
-- [ ] Phase 10: Adversarial Review (multi-lens challenge)
-- [ ] Phase 11: Documentation Update
-- [ ] Phase 12: Team Cleanup (keep worktree)
-- [ ] Phase 13: Commit & Merge to Main
-- [ ] Phase 14: Final Verification (worktree preserved)
+- [ ] Phase 9:  Code Review + Adversarial Review (PARALLEL teammates)
+- [ ] Phase 10: Documentation Update
+- [ ] Phase 11: Team Cleanup (keep worktree)
+- [ ] Phase 12: Commit & Merge to Main
+- [ ] Phase 13: Final Verification (worktree preserved)
 ```
 
 **Phase 5.3/5.4/5.5 Selection:**
@@ -148,7 +147,7 @@ Grade each completed workflow run against these three dimensions:
 - UI ONLY → Phase 5.5 (ui-ux-designer)
 - BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
-**Iteration Rule:** YOU MUST loop Phase 8/9/10 until Critical=0, High=0, Medium=0, adversarial verdict is PASS, and ALL acceptance criteria are met. NEVER proceed to Phase 11 with unresolved issues or a REJECT/CONTESTED verdict.
+**Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, code review verdict is Approved, adversarial verdict is PASS, and ALL acceptance criteria are met. NEVER proceed to Phase 10 with unresolved issues or a REJECT/CONTESTED verdict.
 
 ## Entry Point: Team Lead Coordinator
 
@@ -179,7 +178,7 @@ From **Phase 2 onwards**, you are FORBIDDEN from using these tools for implement
 
 You MUST ONLY use these tools for:
 1. Phase 0/1 Setup (creating directories, worktrees)
-2. Phase 13 Git Operations (merge, commit)
+2. Phase 12 Git Operations (merge, commit)
 3. Project Management (reading status, updating task lists)
 
 **HOW TO SPAWN AGENTS:**
@@ -193,7 +192,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Ask: "Which agent handles this?"
 - Use the **Task tool** to spawn that agent
 
-**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-14 is via the Task tool.
+**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-13 is via the Task tool.
 
 **MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS use Task tool to spawn agents. NEVER do detailed tasks directly.**
 
@@ -208,10 +207,10 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Message teammates
 - Synthesize findings from agents
 - Coordinate phase transitions
-- Commit and merge (Phase 13)
-- Clean up team (Phase 14)
+- Commit and merge (Phase 12)
+- Clean up team (Phase 13)
 
-❌ **CANNOT (Phases 2-14) - USE TASK TOOL INSTEAD:**
+❌ **CANNOT (Phases 2-13) - USE TASK TOOL INSTEAD:**
 - **NEVER edit files directly** → Task tool with `super-dev:dev-executor` or `super-dev:docs-executor`
 - **NEVER run commands directly** → Task tool with `super-dev:dev-executor` or `super-dev:qa-agent`
 - **NEVER perform research directly** → Task tool with `super-dev:research-agent`
@@ -244,9 +243,9 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 6 | spec-writer | Write spec, plan, task list |
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
-| 9 | code-reviewer | Spec-aware code review |
-| 10 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate |
-| 11 | docs-executor | Update documentation |
+| 9 | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) |
+| 9 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate (parallel with code-reviewer) |
+| 10 | docs-executor | Update documentation |
 
 ## Key Concepts
 
@@ -290,7 +289,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 5. If tmux: close the pane with `exit` or Ctrl+D
 ```
 
-**Exception:** In Phase 8, dev-executor and qa-agent run in parallel — YOU MUST wait for BOTH to complete before terminating either one.
+**Exception:** In Phase 8, dev-executor and qa-agent run in parallel — YOU MUST wait for BOTH to complete before terminating either one. Same applies to Phase 9, where code-reviewer and adversarial-reviewer run in parallel.
 
 ## Best Practices
 
@@ -330,13 +329,12 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 6 | Use Task tool → `super-dev:spec-writer` | spec-writer |
 | 7 | Validate spec (no agent) | (none) |
 | 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
-| 9 | Use Task tool → `super-dev:code-reviewer` | code-reviewer |
-| 10 | Use Task tool → `super-dev:adversarial-reviewer` | adversarial-reviewer |
-| 11 | Use Task tool → `super-dev:docs-executor` | docs-executor |
-| 12 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
-| 12.5 | Present summary to user for confirmation (no agent) | (none) |
-| 13 | Execute git operations (commit, merge) — **MUST include spec directory** | (none) |
-| 14 | Verify completion (worktree preserved for reference) | (none) |
+| 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (parallel) | code-reviewer, adversarial-reviewer |
+| 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
+| 11 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
+| 11.5 | Present summary to user for confirmation (no agent) | (none) |
+| 12 | Execute git operations (commit, merge) — **MUST include spec directory** | (none) |
+| 13 | Verify completion (worktree preserved for reference) | (none) |
 
 **Phase 5.3/5.4/5.5 Selection Logic:**
 - Architecture ONLY (no UI) → 5.3: Task tool with `super-dev:architecture-agent`
@@ -466,13 +464,32 @@ Before proceeding to Phase 2:
 
 ---
 
-## Phase 10: Adversarial Review
+## Phase 9: Code Review + Adversarial Review (PARALLEL)
 
-**Executed by:** `super-dev:adversarial-reviewer` (spawned via Task tool)
+**Executed by:** `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (both spawned via Task tool, run in parallel)
 
-**Purpose:** Multi-lens adversarial challenge of the implementation. Produces a verdict (PASS/CONTESTED/REJECT), NOT code changes.
+**Purpose:** Dual-track review — spec-aware code review and multi-lens adversarial challenge run simultaneously. Both produce independent verdicts that must be satisfied before proceeding.
 
-**Output:** `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md`
+**Outputs:**
+- Code Review: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md`
+- Adversarial Review: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md`
+
+**PARALLEL Execution (like Phase 8):**
+- Spawn BOTH code-reviewer and adversarial-reviewer simultaneously
+- Wait for BOTH to complete before evaluating results
+- Terminate BOTH only after both finish (same rule as dev-executor + qa-agent in Phase 8)
+
+### Code Reviewer
+
+Spec-aware review across 8 dimensions: Correctness, Security, Performance, Maintainability, Testability, Error Handling, Consistency, Accessibility.
+
+**Code Review Verdict:**
+- **Approved** → code review passes
+- **Approved with Comments** → code review passes (minor items noted)
+- **Changes Requested** → loop back to Phase 8
+- **Blocked** → loop back to Phase 8
+
+### Adversarial Reviewer
 
 **Reviewer lenses** (count based on diff size):
 - **Skeptic** — correctness and completeness (always)
@@ -483,18 +500,26 @@ Each lens applies structured attack vector sub-checklists (V1-V7) for systematic
 
 **Destructive Action Gate:** An always-on checkpoint that scans every diff for irreversible operations (data destruction, irreversible state changes, production impact, permission escalation, secret operations). HALT findings from the gate cannot be downgraded and force the verdict upward.
 
-**Verdict logic:**
-- **PASS** → proceed to Phase 11
+**Adversarial Verdict logic:**
+- **PASS** → adversarial review passes
 - **CONTESTED** → Team Lead decides: accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with findings as input
 - **HALT from gate** → Single HALT forces CONTESTED minimum; multiple HALTs force REJECT
 - **Gate BLOCKED** → Forces loop back to Phase 8
 
-**Full reference:** The `super-dev:adversarial-reviewer` agent contains lens definitions, vector sub-checklists, gate specification, verdict format, and output template.
+### Combined Phase 9 Pass Criteria
+
+**BOTH must pass to proceed to Phase 10 (Documentation):**
+- Code Review verdict = Approved (or Approved with Comments)
+- Adversarial Review verdict = PASS
+
+**If either fails:** Loop back to Phase 8 with combined findings from both reviews as input.
+
+**Full references:** See `super-dev:code-reviewer` and `super-dev:adversarial-reviewer` agents for detailed specifications.
 
 ---
 
-## Phase 13: Commit & Merge to Main
+## Phase 12: Commit & Merge to Main
 
 **Executed by:** Team Lead (direct git operations)
 
@@ -516,7 +541,7 @@ git add [code-files]
 git diff --cached --name-only | grep "specification/"
 ```
 
-**Full commit procedure:** See `agents/coordinator.md` Phase 13 for detailed steps and verification checklist.
+**Full commit procedure:** See `agents/coordinator.md` Phase 12 for detailed steps and verification checklist.
 
 ---
 
@@ -573,8 +598,8 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Spec** | spec-writer | Write spec, plan, task list | `super-dev:spec-writer` |
 | **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
 | **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
-| **Review** | code-reviewer | Spec-aware code review | `super-dev:code-reviewer` |
-| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate | `super-dev:adversarial-reviewer` |
+| **Review** | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) | `super-dev:code-reviewer` |
+| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate (parallel with code-reviewer) | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 
 ### Team Creation at Phase 1
@@ -616,9 +641,8 @@ Teammates to include:
 | 5.5 | ui-ux-designer |
 | 6 | spec-writer |
 | 8 | dev-executor + qa-agent (parallel) |
-| 9 | code-reviewer |
-| 10 | adversarial-reviewer |
-| 11 | docs-executor |
+| 9 | code-reviewer + adversarial-reviewer (parallel) |
+| 10 | docs-executor |
 
 **Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
 

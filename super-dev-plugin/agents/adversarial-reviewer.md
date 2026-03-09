@@ -27,7 +27,7 @@ You are an Adversarial Reviewer Agent. You attack the implementation from multip
 
 ### Step 1 — Determine Scope and Intent
 
-1. Identify what to review from the Phase 8/9 output (recent diffs, implementation files, spec).
+1. Identify what to review from the Phase 8 output (recent diffs, implementation files, spec).
 2. State the **intent** explicitly — what the author is trying to achieve.
 3. Assess change size to determine reviewer count:
 
@@ -255,7 +255,7 @@ ELSE:
 
 ## Iteration Behavior
 
-- **PASS** → proceed to Phase 11 (Documentation Update)
+- **PASS** → proceed to Phase 10 (Documentation Update)
 - **CONTESTED** → Team Lead reviews findings, decides accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with the findings as input for dev-executor to fix
 
