@@ -86,6 +86,7 @@ You MUST ONLY use these tools for:
 | 8 | Writing code, running tests | Spawn dev-executor + qa-agent |
 | 9 | Reviewing code manually | Spawn code-reviewer + adversarial-reviewer |
 | 10 | Updating documentation | Spawn docs-executor |
+| 10.5 | Writing handoff document | Spawn handoff-writer |
 
 **USER ENFORCEMENT:** If you see Team Lead doing Phase 2-13 work directly, say:
 - "You're in delegate mode! Spawn the appropriate teammate for this phase."
@@ -109,6 +110,7 @@ Phase 7:  Specification Review      → Team Lead validates
 Phase 8:  Execution & QA (PARALLEL)  → Spawn dev-executor + qa-agent teammates
 Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + adversarial-reviewer teammates
 Phase 10: Documentation Update      → Spawn docs-executor teammate
+Phase 10.5: Handoff Writing          → Spawn handoff-writer teammate (MANDATORY)
 Phase 11: Team Cleanup              → Final verification (teammates already terminated per-phase, keep worktree)
 Phase 11.5: Manual Confirmation     → User review (optional)
 Phase 12: Commit & Merge to Main    → Team Lead executes git operations
@@ -151,6 +153,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip — both code review and adversarial review are mandatory (unless explicitly waived by project lead) |
 | Phase 2.5 | Never skip -- BDD scenarios are mandatory for all features |
+| Phase 10.5 | Never skip — handoff document is mandatory for all workflow runs |
 
 ## Super Dev Agent Team Definition
 
@@ -177,6 +180,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:code-reviewer
 - super-dev:adversarial-reviewer
 - super-dev:docs-executor
+- super-dev:handoff-writer
 ```
 
 ### Teammate Roles by Category
@@ -198,6 +202,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Review** | code-reviewer | Spec-aware code review |
 | **Review** | adversarial-reviewer | Multi-lens adversarial challenge |
 | **Docs** | docs-executor | Update documentation |
+| **Docs** | handoff-writer | Generate session handoff document |
 
 ### When to Spawn Each Teammate
 
@@ -215,6 +220,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | 8 | dev-executor + qa-agent (parallel) |
 | 9 | code-reviewer + adversarial-reviewer (parallel) |
 | 10 | docs-executor |
+| 10.5 | handoff-writer |
 
 ## Teammate Spawn Patterns
 
@@ -253,6 +259,20 @@ mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-
 "Spawn a code-reviewer teammate with this context: ..."
 
 "Spawn an adversarial-reviewer teammate with this context: ..."
+```
+
+**Phase 10.5 (Handoff Writing):**
+```
+"Spawn a handoff-writer teammate with this context:
+- Task: Generate session handoff document
+- Spec directory: specification/[spec-index]-[spec-name]
+- Feature name: [feature name]
+- Workflow JSON: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json
+- All spec artifacts in the spec directory
+- Git diff: run `git diff --stat main..HEAD`
+
+Your role is to synthesize all workflow artifacts into 11-handoff.md following the 7-section template.
+Write FOR the next AI agent. Be specific, concrete, and actionable."
 ```
 
 ## Monitoring & Oversight
@@ -315,6 +335,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
 | 9 | code-reviewer + adversarial-reviewer | **BOTH complete** (parallel), then terminate both |
 | 10 | docs-executor | Documentation updated |
+| 10.5 | handoff-writer | 11-handoff.md complete |
 
 **Exception:** Phase 8 (dev-executor + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer) - These run in parallel and should BOTH complete before termination.
 
@@ -330,7 +351,8 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | → Phase 7 | 06-specification.md, 07-implementation-plan.md, 08-task-list.md exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
 | → Phase 10 | Code review approved AND adversarial review PASS |
-| → Phase 11 | Documentation updated, teammates shut down (worktree preserved) |
+| → Phase 10.5 | Documentation updated |
+| → Phase 11 | 11-handoff.md exists in spec directory, teammates shut down (worktree preserved) |
 | → Phase 12 | All changes committed and merged to main |
 | Complete | Git status clean, merged to main, team cleaned up, worktree preserved |
 
@@ -364,7 +386,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 - Only shut down teammates and clean up team resources (NOT the worktree)
 
 **Verification Checklist:**
-- Documents: requirements.md, behavior-scenarios.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md
+- Documents: requirements.md, behavior-scenarios.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md, handoff.md
 - Code: All changes implemented, no TODO/FIXME/console.log for current feature, build passes without errors/warnings
 - Tests: Unit/integration tests written and passing, coverage meets standards
 - Git: All changes staged, commit message follows conventions, changes committed, merged to main branch, git status clean

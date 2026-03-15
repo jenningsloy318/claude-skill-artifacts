@@ -107,6 +107,7 @@ Grade each completed workflow run against these three dimensions:
 - Code review resolves all Critical, High, and Medium issues to zero
 - BDD scenario coverage: 100% of scenarios have corresponding passing tests
 - Documentation updated to reflect changes
+- Handoff document generated in spec directory (`11-handoff.md`)
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
 - Phase iteration loops < 3 (Phase 8/9 loop)
@@ -139,6 +140,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
 - [ ] Phase 9:  Code Review + Adversarial Review (PARALLEL teammates)
 - [ ] Phase 10: Documentation Update
+- [ ] Phase 10.5: Handoff Writing (MANDATORY)
 - [ ] Phase 11: Team Cleanup (keep worktree)
 - [ ] Phase 12: Commit & Merge to Main
 - [ ] Phase 13: Final Verification (worktree preserved)
@@ -249,6 +251,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 9 | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) |
 | 9 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) |
 | 10 | docs-executor | Update documentation |
+| 10.5 | handoff-writer | Generate session handoff document |
 
 ## Key Concepts
 
@@ -335,6 +338,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (parallel) | code-reviewer, adversarial-reviewer |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
+| 10.5 | Use Task tool → `super-dev:handoff-writer` | handoff-writer |
 | 11 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
 | 11.5 | Present summary to user for confirmation (no agent) | (none) |
 | 12 | Execute git operations (commit, merge) — **MUST include spec directory** | (none) |
@@ -587,6 +591,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:code-reviewer
 - super-dev:adversarial-reviewer
 - super-dev:docs-executor
+- super-dev:handoff-writer
 ```
 
 ### Teammate Roles by Category
@@ -608,6 +613,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Review** | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) | `super-dev:code-reviewer` |
 | **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
+| **Docs** | handoff-writer | Generate session handoff | `super-dev:handoff-writer` |
 
 ### Team Creation at Phase 1
 
@@ -634,6 +640,7 @@ Teammates to include:
 13. super-dev:code-reviewer
 14. super-dev:adversarial-reviewer
 15. super-dev:docs-executor
+16. super-dev:handoff-writer
 ```
 
 ### When to Spawn Each Teammate
@@ -652,6 +659,7 @@ Teammates to include:
 | 8 | dev-executor + qa-agent (parallel) |
 | 9 | code-reviewer + adversarial-reviewer (parallel) |
 | 10 | docs-executor |
+| 10.5 | handoff-writer |
 
 **Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
 
