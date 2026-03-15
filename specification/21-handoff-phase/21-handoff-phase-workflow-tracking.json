@@ -1,0 +1,14 @@
+{
+  "featureName": "Handoff Phase in Super-Dev Workflow",
+  "specDirectory": "specification/21-handoff-phase",
+  "worktreePath": ".worktree/21-handoff-phase",
+  "startedAt": "2026-03-15T09:10:00Z",
+  "phases": [
+    { "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "2026-03-15T09:10:00Z", "completedAt": "2026-03-15T09:10:00Z" },
+    { "id": 1, "name": "Specification Setup", "status": "complete", "startedAt": "2026-03-15T09:10:00Z", "completedAt": "2026-03-15T09:10:00Z" }
+  ],
+  "tasks": [],
+  "iteration": { "loops": 0, "lastReviewVerdict": null },
+  "team": { "name": "super-dev-21-handoff-phase", "teammates": [], "messages": [] },
+  "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
+}

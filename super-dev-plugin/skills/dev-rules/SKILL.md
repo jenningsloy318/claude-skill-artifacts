@@ -7,6 +7,38 @@ description: Core development rules and philosophy. Use at the start of any deve
 
 These rules define coding standards and practices that MUST be followed for all development work.
 
+## Session Continuity: Read Previous Handoff
+
+At the start of every super-dev session, check for context from the previous completed spec.
+
+### Handoff Discovery Process
+
+1. **Scan spec directories**: List all directories in `specification/` and extract the numeric prefix from each directory name (e.g., `20` from `20-bdd-integration`)
+2. **Sort descending**: Order directories by numeric prefix, highest first
+3. **Find the most recent handoff**: Starting from the highest-index directory, check if `11-handoff.md` exists
+   - If found: Read the handoff file — proceed to step 4
+   - If not found: Try the next-highest directory (graceful fallback for pre-handoff specs)
+   - If no handoff found in any directory: Skip silently — this is the first run or all specs predate the handoff phase
+4. **Present prior context**: Display a brief summary to the Team Lead:
+   - What was done in the previous session (from section 2)
+   - Key decisions made (from section 3)
+   - Unfinished items / follow-ups (from section 5)
+   - Risks and warnings (from section 7)
+   - First steps recommended (from "First steps for the next Agent")
+
+### Skip Conditions
+
+- If no prior spec directory exists, or no handoff file is found in any spec directory, skip silently
+- The first run of super-dev in a project has no handoff to read
+- Do NOT fail or warn if no handoff exists — backward compatible with specs that predate the handoff phase
+
+### Context Application
+
+The handoff context from the previous session informs:
+- Phase 2 (Requirements): Awareness of prior decisions and constraints
+- Phase 5 (Code Assessment): Knowledge of recently changed areas and patterns
+- All phases: Avoidance of redundant work, awareness of known risks
+
 ## Figma MCP Integration Rules
 
 When implementing designs from Figma:
