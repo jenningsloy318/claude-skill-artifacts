@@ -128,7 +128,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 0:  Apply Dev Rules
 - [ ] Phase 1:  Specification Setup (worktree + team creation)
 - [ ] Phase 2:  Requirements Clarification
-- [ ] Phase 2.5: BDD Scenario Writing (MANDATORY)
+- [ ] Phase 2.5: BDD Scenario Writing (MANDATORY, user confirmation required)
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
@@ -326,7 +326,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 0 | Invoke dev-rules skill | (none) |
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
 | 2 | Use Task tool → `super-dev:requirements-clarifier` | requirements-clarifier |
-| 2.5 | Use Task tool → `super-dev:bdd-scenario-writer` | bdd-scenario-writer |
+| 2.5 | Use Task tool → `super-dev:bdd-scenario-writer`, **present scenarios to user for confirmation** | bdd-scenario-writer |
 | 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |

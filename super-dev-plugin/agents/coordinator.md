@@ -98,7 +98,7 @@ You MUST ONLY use these tools for:
 Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See SKILL.md]
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
 Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate
-Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer teammate (MANDATORY)
+Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer teammate (MANDATORY, user confirmation required)
 Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
@@ -152,7 +152,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.4 | NOT both architecture AND UI. Use when BOTH domains needed → NEVER skip, MANDATORY user review |
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip — both code review and adversarial review are mandatory (unless explicitly waived by project lead) |
-| Phase 2.5 | Never skip -- BDD scenarios are mandatory for all features |
+| Phase 2.5 | Never skip -- BDD scenarios are mandatory for all features. MANDATORY user confirmation required before proceeding to Phase 3 |
 | Phase 10.5 | Never skip — handoff document is mandatory for all workflow runs |
 
 ## Super Dev Agent Team Definition
@@ -235,7 +235,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 Your role is to [brief role description]. Output: [expected output]"
 ```
 
-**Phase 2.5 (BDD Scenarios):**
+**Phase 2.5 (BDD Scenarios — MANDATORY user confirmation):**
 ```
 "Spawn a bdd-scenario-writer teammate with this context:
 - Task: Generate BDD behavior scenarios from acceptance criteria
@@ -246,6 +246,13 @@ Your role is to [brief role description]. Output: [expected output]"
 Your role is to produce 01.1-behavior-scenarios.md with Given/When/Then scenarios
 mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-Q10 and D1-D8."
 ```
+
+**After bdd-scenario-writer completes:**
+1. Team Lead reads and summarizes the generated BDD scenarios for the user
+2. Present scenario count, AC coverage, and key behavior titles
+3. **WAIT for user confirmation** before proceeding to Phase 3
+4. If user requests changes: message bdd-scenario-writer with feedback, or re-spawn if terminated
+5. Only proceed to Phase 3 AFTER user explicitly confirms the scenarios
 
 **Phase 8 (PARALLEL):**
 ```
@@ -324,7 +331,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | Phase | Teammate | Terminate After |
 |-------|----------|-----------------|
 | 2 | requirements-clarifier | requirements.md complete |
-| 2.5 | bdd-scenario-writer | 01.1-behavior-scenarios.md complete |
+| 2.5 | bdd-scenario-writer | 01.1-behavior-scenarios.md complete AND user confirmed scenarios |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
 | 5 | code-assessor | assessment.md complete |
@@ -344,7 +351,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Phase Transitions:**
 | → Phase 0-1 | See SKILL.md - Dev rules applied, worktree created with branch=name match, spec dir setup, agent team created |
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
-| → Phase 3 | 01-requirements.md exists AND 01.1-behavior-scenarios.md exists |
+| → Phase 3 | 01-requirements.md exists AND 01.1-behavior-scenarios.md exists AND user confirmed BDD scenarios |
 | → Phase 5 | 02-research-report.md exists |
 | → Phase 5.4 | 04-assessment.md exists, BOTH architecture AND UI work identified |
 | → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug), design docs exist (05-architecture.md and/or 05-design-spec.md, or 05-product-design-summary.md if Phase 5.4 used) |
@@ -376,7 +383,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **REQUIRED phrases:** "Phase 1 complete. Proceeding to Phase 2..." / "Teammate [name] finished. Spawning next teammate..."
 
-**Stop only for:** Critical error, external dependency unavailable, permission denied, user explicit request
+**Stop only for:** Critical error, external dependency unavailable, permission denied, user explicit request, **mandatory user confirmation gates (Phase 2.5, 3, 5.3, 5.4, 5.5)**
 
 ## Final Verification (Phase 12)
 
