@@ -28,3 +28,23 @@ MANDATORY workflow:
 
 - **tdd-guide** - Use PROACTIVELY for new features, enforces write-tests-first
 - **e2e-runner** - Playwright E2E testing specialist
+
+## BDD (Behavior-Driven Development)
+
+MANDATORY for all features developed through super-dev workflow:
+
+1. BDD scenarios written BEFORE implementation (Phase 2.5)
+2. All scenarios stored in `01.1-behavior-scenarios.md` in spec directory
+3. Format: Given/When/Then (Gherkin-like markdown, NOT .feature files)
+4. No Scenario Outlines in v1 -- individual scenarios only
+5. Every scenario MUST have a unique SCENARIO-XXX ID
+6. Every acceptance criterion MUST have at least one scenario
+7. Every scenario MUST have at least one corresponding test
+8. Phase 9 gate: 100% scenario coverage required (hard gate, blocks Phase 10)
+9. BDD augments TDD -- does NOT replace unit/integration/E2E testing
+
+Agent Support:
+- **bdd-scenario-writer** -- Generates scenarios from acceptance criteria (Phase 2.5)
+- **qa-agent** -- Maps scenarios to tests, produces coverage report (Phase 8)
+- **code-reviewer** -- Validates scenario coverage gate (Phase 9)
+- **adversarial-reviewer** -- V8 behavior gap detection + D9 document pre-check (Phase 9)

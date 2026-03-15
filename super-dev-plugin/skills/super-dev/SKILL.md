@@ -105,6 +105,7 @@ Grade each completed workflow run against these three dimensions:
 - Feature/fix implemented correctly and works as intended
 - All existing tests pass; new tests cover new functionality
 - Code review resolves all Critical, High, and Medium issues to zero
+- BDD scenario coverage: 100% of scenarios have corresponding passing tests
 - Documentation updated to reflect changes
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
@@ -126,6 +127,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 0:  Apply Dev Rules
 - [ ] Phase 1:  Specification Setup (worktree + team creation)
 - [ ] Phase 2:  Requirements Clarification
+- [ ] Phase 2.5: BDD Scenario Writing (MANDATORY)
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
@@ -147,7 +149,7 @@ Grade each completed workflow run against these three dimensions:
 - UI ONLY → Phase 5.5 (ui-ux-designer)
 - BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
-**Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, code review verdict is Approved, adversarial verdict is PASS, and ALL acceptance criteria are met. NEVER proceed to Phase 10 with unresolved issues or a REJECT/CONTESTED verdict.
+**Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, code review verdict is Approved, adversarial verdict is PASS, ALL acceptance criteria are met, AND BDD scenario coverage is 100%. NEVER proceed to Phase 10 with unresolved issues, a REJECT/CONTESTED verdict, or uncovered scenarios.
 
 ## Entry Point: Team Lead Coordinator
 
@@ -234,6 +236,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 | Phase | Teammate | Role |
 |-------|----------|------|
 | 2 | requirements-clarifier | Gather requirements, output requirements.md |
+| 2.5 | bdd-scenario-writer | Write BDD behavior scenarios from acceptance criteria |
 | 3 | research-agent | Research best practices, present 3-5 options |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
 | 5 | code-assessor | Assess architecture, style, frameworks |
@@ -244,7 +247,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
 | 9 | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) |
-| 9 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate (parallel with code-reviewer) |
+| 9 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) |
 | 10 | docs-executor | Update documentation |
 
 ## Key Concepts
@@ -320,6 +323,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 0 | Invoke dev-rules skill | (none) |
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
 | 2 | Use Task tool → `super-dev:requirements-clarifier` | requirements-clarifier |
+| 2.5 | Use Task tool → `super-dev:bdd-scenario-writer` | bdd-scenario-writer |
 | 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
@@ -496,7 +500,7 @@ Spec-aware review across 8 dimensions: Correctness, Security, Performance, Maint
 - **Architect** — structural fitness (50+ lines)
 - **Minimalist** — necessity and complexity (200+ lines)
 
-Each lens applies structured attack vector sub-checklists (V1-V7) for systematic probing of false assumptions, edge cases, failure modes, adversarial inputs, safety compliance, grounding accuracy, and dependency fitness.
+Each lens applies structured attack vector sub-checklists (V1-V8) for systematic probing of false assumptions, edge cases, failure modes, adversarial inputs, safety compliance, grounding accuracy, and dependency fitness.
 
 **Destructive Action Gate:** An always-on checkpoint that scans every diff for irreversible operations (data destruction, irreversible state changes, production impact, permission escalation, secret operations). HALT findings from the gate cannot be downgraded and force the verdict upward.
 
@@ -509,11 +513,12 @@ Each lens applies structured attack vector sub-checklists (V1-V7) for systematic
 
 ### Combined Phase 9 Pass Criteria
 
-**BOTH must pass to proceed to Phase 10 (Documentation):**
+**ALL must pass to proceed to Phase 10 (Documentation):**
 - Code Review verdict = Approved (or Approved with Comments)
 - Adversarial Review verdict = PASS
+- BDD Scenario Coverage = 100% (all scenarios have corresponding passing tests)
 
-**If either fails:** Loop back to Phase 8 with combined findings from both reviews as input.
+**If any fails:** Loop back to Phase 8 with combined findings from both reviews as input.
 
 **Full references:** See `super-dev:code-reviewer` and `super-dev:adversarial-reviewer` agents for detailed specifications.
 
@@ -569,6 +574,7 @@ This is a pre-defined agent team with all commonly used teammates for implementi
 Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:coordinator (Team Lead)
 - super-dev:requirements-clarifier
+- super-dev:bdd-scenario-writer
 - super-dev:research-agent
 - super-dev:debug-analyzer
 - super-dev:code-assessor
@@ -589,6 +595,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 |----------|----------|------|---------------|
 | **Team Lead** | coordinator | Orchestrates all phases, manages task list | Team Lead (always active) |
 | **Planning** | requirements-clarifier | Gather requirements, output requirements.md | `super-dev:requirements-clarifier` |
+| **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
 | **Planning** | research-agent | Research best practices, present options | `super-dev:research-agent` |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks | `super-dev:code-assessor` |
@@ -599,7 +606,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
 | **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
 | **Review** | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) | `super-dev:code-reviewer` |
-| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V7) and Destructive Action Gate (parallel with code-reviewer) | `super-dev:adversarial-reviewer` |
+| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 
 ### Team Creation at Phase 1
@@ -614,18 +621,19 @@ Create an agent team for this development workflow:
 Teammates to include:
 1. super-dev:coordinator (Team Lead - this session)
 2. super-dev:requirements-clarifier
-3. super-dev:research-agent
-4. super-dev:debug-analyzer
-5. super-dev:code-assessor
-6. super-dev:architecture-agent
-7. super-dev:ui-ux-designer
-8. super-dev:product-designer
-9. super-dev:spec-writer
-10. super-dev:dev-executor
-11. super-dev:qa-agent
-12. super-dev:code-reviewer
-13. super-dev:adversarial-reviewer
-14. super-dev:docs-executor
+3. super-dev:bdd-scenario-writer
+4. super-dev:research-agent
+5. super-dev:debug-analyzer
+6. super-dev:code-assessor
+7. super-dev:architecture-agent
+8. super-dev:ui-ux-designer
+9. super-dev:product-designer
+10. super-dev:spec-writer
+11. super-dev:dev-executor
+12. super-dev:qa-agent
+13. super-dev:code-reviewer
+14. super-dev:adversarial-reviewer
+15. super-dev:docs-executor
 ```
 
 ### When to Spawn Each Teammate
@@ -633,6 +641,7 @@ Teammates to include:
 | Phase | Spawn These Teammates |
 |-------|----------------------|
 | 2 | requirements-clarifier |
+| 2.5 | bdd-scenario-writer |
 | 3 | research-agent |
 | 4 | debug-analyzer (bugs only) |
 | 5 | code-assessor |

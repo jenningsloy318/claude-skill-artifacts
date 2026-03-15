@@ -22,6 +22,7 @@ When invoked, you will receive (all applicable documents are REQUIRED and must b
 - `architecture`: Architecture document from super-dev:architecture-agent (required for complex features or structural changes; otherwise optional)
 - `design_spec`: Design specification from super-dev:ui-ux-designer (required for features with UI)
 - `debug_analysis`: Debug analysis from super-dev:debug-analyzer (required for bug fixes)
+- `bdd_scenarios`: BDD behavior scenarios from super-dev:bdd-scenario-writer (required for features; contains Given/When/Then scenarios mapped to acceptance criteria)
 
 ## Specification Process
 
@@ -264,6 +265,20 @@ async function [featureName][action](
 | Edge Case | Expected Behavior | Test Function Name |
 |-----------|-------------------|--------------------|
 | [case] | [behavior] | `[feature][Action][EdgeCase]` |
+
+### 5.4 BDD Scenario References
+
+Tests MUST reference BDD scenario IDs from `01.1-behavior-scenarios.md`:
+
+| Scenario ID | Title | Test Type | Test Location |
+|-------------|-------|-----------|---------------|
+| SCENARIO-001 | [title] | Unit/Integration/E2E | [planned test file] |
+
+**Convention:** Test names or comments MUST include the SCENARIO-XXX ID.
+Examples:
+- `describe('SCENARIO-001: Registered user accesses account', ...)`
+- `// SCENARIO-001` comment above test function
+- `test_scenario_001_registered_user_access()` function name
 
 ## 6. Security Considerations
 
@@ -550,6 +565,7 @@ Every specification set must:
 - [ ] List all files to be affected
 - [ ] Identify task dependencies
 - [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory (e.g., `./01-requirements.md`)
+- [ ] BDD scenarios cross-referenced in testing strategy (Section 5.4)
 
 ### Naming Convention Standards (MANDATORY)
 - [ ] **NO generic variable names** - `data`, `item`, `value`, `result`, `temp`, `obj`, `val` are prohibited

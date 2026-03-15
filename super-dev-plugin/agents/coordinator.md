@@ -75,6 +75,7 @@ You MUST ONLY use these tools for:
 | Phase | If Team Lead catches themselves doing this... | ...They should stop and spawn this teammate instead: |
 |-------|-------------------------------------------|-----------------------------------------------|
 | 2 | Writing requirements document | Spawn requirements-clarifier |
+| 2.5 | Writing BDD scenarios | Spawn bdd-scenario-writer |
 | 3 | Doing web research, reading docs | Spawn research-agent |
 | 4 | Running grep, analyzing code patterns | Spawn debug-analyzer |
 | 5 | Assessing code structure | Spawn code-assessor |
@@ -96,6 +97,7 @@ You MUST ONLY use these tools for:
 Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See SKILL.md]
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
 Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate
+Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer teammate (MANDATORY)
 Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
@@ -127,7 +129,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 
 ## Iteration Rule: Phase 8/9 Loop
 
-**Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, CodeReviewVerdict=Approved, AdversarialVerdict=PASS
+**Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, ScenarioCoverageMet (100%), CodeReviewVerdict=Approved, AdversarialVerdict=PASS
 
 **Triggers (re-enter Phase 8 if):**
 - Any findings with severity Critical/High/Medium (from either review)
@@ -148,6 +150,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.4 | NOT both architecture AND UI. Use when BOTH domains needed → NEVER skip, MANDATORY user review |
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip — both code review and adversarial review are mandatory (unless explicitly waived by project lead) |
+| Phase 2.5 | Never skip -- BDD scenarios are mandatory for all features |
 
 ## Super Dev Agent Team Definition
 
@@ -161,6 +164,7 @@ This is a pre-defined agent team with all commonly used teammates. Create this t
 Create an agent team named "super-dev-agent-team" with these teammates:
 - super-dev:coordinator (Team Lead)
 - super-dev:requirements-clarifier
+- super-dev:bdd-scenario-writer
 - super-dev:research-agent
 - super-dev:debug-analyzer
 - super-dev:code-assessor
@@ -181,6 +185,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 |----------|----------|------|
 | **Team Lead** | coordinator | Orchestrates all phases, manages task list |
 | **Planning** | requirements-clarifier | Gather requirements, output requirements.md |
+| **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC |
 | **Planning** | research-agent | Research best practices, present options |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks |
@@ -199,6 +204,7 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | Phase | Spawn These Teammates |
 |-------|----------------------|
 | 2 | requirements-clarifier |
+| 2.5 | bdd-scenario-writer |
 | 3 | research-agent |
 | 4 | debug-analyzer (bugs only) |
 | 5 | code-assessor |
@@ -221,6 +227,18 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 - [Additional context as needed]
 
 Your role is to [brief role description]. Output: [expected output]"
+```
+
+**Phase 2.5 (BDD Scenarios):**
+```
+"Spawn a bdd-scenario-writer teammate with this context:
+- Task: Generate BDD behavior scenarios from acceptance criteria
+- Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
+- Spec directory: specification/[spec-index]-[spec-name]
+- Feature name: [feature name]
+
+Your role is to produce 01.1-behavior-scenarios.md with Given/When/Then scenarios
+mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-Q10 and D1-D8."
 ```
 
 **Phase 8 (PARALLEL):**
@@ -286,6 +304,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | Phase | Teammate | Terminate After |
 |-------|----------|-----------------|
 | 2 | requirements-clarifier | requirements.md complete |
+| 2.5 | bdd-scenario-writer | 01.1-behavior-scenarios.md complete |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
 | 5 | code-assessor | assessment.md complete |
@@ -304,7 +323,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Phase Transitions:**
 | → Phase 0-1 | See SKILL.md - Dev rules applied, worktree created with branch=name match, spec dir setup, agent team created |
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
-| → Phase 3 | 01-requirements.md exists |
+| → Phase 3 | 01-requirements.md exists AND 01.1-behavior-scenarios.md exists |
 | → Phase 5 | 02-research-report.md exists |
 | → Phase 5.4 | 04-assessment.md exists, BOTH architecture AND UI work identified |
 | → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug), design docs exist (05-architecture.md and/or 05-design-spec.md, or 05-product-design-summary.md if Phase 5.4 used) |
@@ -345,7 +364,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 - Only shut down teammates and clean up team resources (NOT the worktree)
 
 **Verification Checklist:**
-- Documents: requirements.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md
+- Documents: requirements.md, behavior-scenarios.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md
 - Code: All changes implemented, no TODO/FIXME/console.log for current feature, build passes without errors/warnings
 - Tests: Unit/integration tests written and passing, coverage meets standards
 - Git: All changes staged, commit message follows conventions, changes committed, merged to main branch, git status clean
