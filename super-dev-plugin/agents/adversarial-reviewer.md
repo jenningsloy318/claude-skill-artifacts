@@ -58,6 +58,12 @@ Ask:
 - [ ] **V4 Adversarial Input:** Test parsing with: 10k+ char strings, `<script>`, SQL injection patterns, path traversal (`../`), null bytes
 - [ ] **V5 Safety & Compliance:** Check for: PII in logs, hardcoded secrets, auth bypass paths, missing rate limiting, CORS wildcards
 - [ ] **V6 Grounding Audit:** Verify every API call, config reference, and method signature exists in the actual dependency version used
+- [ ] **V8 Behavior Coverage:** Are all user-facing behaviors covered by BDD scenarios?
+  - Read `01.1-behavior-scenarios.md` from the spec directory
+  - Cross-reference with implementation: are there code paths with business logic that have no corresponding scenario?
+  - Check the qa-agent's scenario coverage report: does it show 100% coverage?
+  - Are there acceptance criteria from `01-requirements.md` that lack corresponding scenarios in the traceability matrix?
+  - If any gaps found: emit finding with High severity
 
 #### Architect — Challenge structural fitness
 
@@ -87,6 +93,18 @@ Ask:
 
 - [ ] **V7 Dependencies:** Is each dependency necessary? Could a simpler alternative or stdlib replace it? Is the dependency scope appropriate (dev vs prod)?
 
+### Step 2.1 -- Document-Level Pre-Check (D9)
+
+Before applying lens reviews, validate that required BDD artifacts exist:
+
+- [ ] **D9 BDD Document Validation:**
+  - Does `01.1-behavior-scenarios.md` exist in the spec directory?
+  - Does it contain a Traceability Matrix section?
+  - Are all ACs from `01-requirements.md` represented in the traceability matrix?
+  - If any check fails: emit finding with High severity (Skeptic/D9)
+
+**D9 is a pre-gate:** If the scenario document is missing or incomplete, this finding is emitted before any V1-V8 analysis begins.
+
 ### Step 2.5 — Apply Attack Vectors
 
 For each active lens, review its **Attack Vector Sub-Checks**:
@@ -96,7 +114,7 @@ For each active lens, review its **Attack Vector Sub-Checks**:
 3. Findings follow the standard AF-XXX format with severity, file:line, and recommendation.
 
 **Vector-to-Lens mapping:**
-- **Skeptic** is primary for V1-V6
+- **Skeptic** is primary for V1-V6, V8
 - **Architect** is primary for V7, secondary for V1, V3, V5
 - **Minimalist** is secondary for V7 only
 
@@ -196,7 +214,7 @@ ELSE:
 | Files changed | X |
 | Size classification | Small/Medium/Large |
 | Reviewers activated | Skeptic [+ Architect] [+ Minimalist] |
-| Attack vectors applied | V1-V6 [+ V7] |
+| Attack vectors applied | V1-V6, V8 [+ V7] |
 
 ## Destructive Action Gate
 
@@ -245,6 +263,7 @@ ELSE:
 | V5: Safety & Compliance | Skeptic | 0 | -- |
 | V6: Grounding Audit | Skeptic | 0 | -- |
 | V7: Dependencies | Architect | 0 | -- |
+| V8: Behavior Coverage | Skeptic | 0 | -- |
 
 ## What Went Well
 <1-3 things the reviewers found no issue with>

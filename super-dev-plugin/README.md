@@ -6,7 +6,7 @@ A comprehensive coordinator-driven development workflow plugin for Claude Code w
 
 ## Overview
 
-This plugin provides a systematic 12-phase development workflow orchestrated by a **Coordinator Agent** that:
+This plugin provides a systematic development workflow orchestrated by a **Coordinator Agent** that:
 
 - Assigns tasks to specialized sub-agents
 - Monitors execution - no unauthorized stops
@@ -77,7 +77,7 @@ The Coordinator Agent will orchestrate all 13 phases automatically.
 
 ```
 super-dev-plugin/
-├── agents/                    # Specialized agents (29 total)
+├── agents/                    # Specialized agents (30 total)
 │   ├── coordinator.md              # Central Coordinator Agent (super-dev unique)
 │   ├── dev-executor.md             # Development Executor
 │   ├── qa-executor.md              # QA Executor
@@ -92,6 +92,8 @@ super-dev-plugin/
 │   ├── requirements-clarifier.md   # Requirements Clarification
 │   ├── search-agent.md             # Multi-Source Search
 │   ├── qa-agent.md                 # QA Testing
+│   ├── adversarial-reviewer.md      # Multi-lens Adversarial Review
+│   ├── bdd-scenario-writer.md       # BDD Scenario Generation (Phase 2.5)
 │   │
 │   # Additional agents:
 │   ├── architect.md                # System Design
@@ -155,6 +157,7 @@ super-dev-plugin/
 │       ├── backend-patterns.md       # API, database, caching patterns
 │       ├── frontend-patterns.md      # React, Next.js patterns
 │       ├── coding-standards.md       # Language best practices
+│       ├── bdd-patterns.md            # BDD scenario writing patterns and reference
 │       └── project-guidelines-example.md
 │
 ├── rules/                      # Always-follow guidelines (NEW - 7 files)
@@ -193,6 +196,7 @@ super-dev-plugin/
 | 0 | Apply Dev Rules | `super-dev:dev-rules` skill | Establish coding standards |
 | 1 | Specification Setup | Coordinator | Find or create spec directory |
 | 2 | Requirements Clarification | `super-dev:requirements-clarifier` | Gather complete requirements |
+| 2.5 | BDD Scenario Writing | `super-dev:bdd-scenario-writer` | Generate Given/When/Then scenarios (MANDATORY) |
 | 3 | Research | `super-dev:research-agent` | Find best practices (Time MCP) |
 | 4 | Debug Analysis | `super-dev:debug-analyzer` | Root cause analysis (grep/ast-grep) |
 | 5 | Code Assessment | `super-dev:code-assessor` | Evaluate codebase (grep/ast-grep) |
@@ -216,6 +220,7 @@ super-dev-plugin/
 5. **Build Queue Management** - Rust/Go serialization for resource safety
 6. **Time MCP Integration** - Freshness-aware research queries
 7. **ast-grep Integration** - Structural code analysis for assessment/debug
+8. **BDD Integration** - Mandatory Phase 2.5 for behavior scenario generation with 100% coverage gate
 
 ### Additional Integrated Features
 
@@ -267,6 +272,7 @@ During Phase 8-9, THREE executors run in PARALLEL:
 | `ui-ux-designer` | Create UI/UX design specifications | `super-dev:ui-ux-designer` |
 | `spec-writer` | Write specifications | `super-dev:spec-writer` |
 | `qa-agent` | Modality-specific QA testing | `super-dev:qa-agent` |
+| `bdd-scenario-writer` | BDD scenario generation (Phase 2.5) | `super-dev:bdd-scenario-writer` |
 | `planner` | Implementation planning | `planner` |
 | `tdd-guide` | Test-driven development | `tdd-guide` |
 | `security-reviewer` | Security analysis | `security-reviewer` |
@@ -348,6 +354,10 @@ CLI, Desktop UI, and Web testing strategies, coverage tracking, and quality gate
 ### coding-standards
 
 Language best practices reference.
+
+### bdd-patterns
+
+BDD scenario writing patterns, Gherkin-like syntax reference, banned words, test reference patterns per language, and quality checklists.
 
 ### backend-patterns
 

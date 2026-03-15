@@ -205,6 +205,17 @@ Evidence: [file:line]
 NG-1: [non-goal] → Not implemented (correct) / Implemented (issue)
 ```
 
+6.1) BDD Scenario Coverage Validation
+- Read `01.1-behavior-scenarios.md` from the spec directory (if it exists)
+- Read the qa-agent's BDD Scenario Coverage Report from QA output
+- For each SCENARIO-XXX in the scenario document:
+  - Verify at least one test references the SCENARIO-ID (in test name or comment)
+  - Verify that test passes (status = PASS in coverage report)
+- If ANY scenario lacks a corresponding passing test:
+  - Emit finding: High severity, Correctness dimension
+  - Include the missing SCENARIO-IDs in finding evidence
+  - Verdict: "Changes Requested" (scenario coverage gap blocks approval)
+
 6.5) External Expert Review (SECONDARY REVIEW - Optional Enhancement)
 - Check if external `code-review-expert` skill is available
 - If available, invoke for senior engineer perspective:
@@ -227,7 +238,7 @@ Skill(skill: "code-review-expert")
 - Determine verdict:
 ```
 If Critical exists → Blocked
-Else if High > 3 or AC not met → Changes Requested
+Else if High > 3 or AC not met or scenario coverage < 100% → Changes Requested
 Else if High/Medium exist → Approved with Comments
 Else → Approved
 ```
@@ -276,6 +287,15 @@ Else → Approved
 ### Non-Goals Check
 - [x] NG-1: [non-goal] - Not implemented (correct)
 - [ ] NG-2: [non-goal] - Implemented (issue - see F-XXX)
+
+## BDD Scenario Coverage
+
+| Scenario ID | Title | Test Reference | Status |
+|-------------|-------|---------------|--------|
+| SCENARIO-001 | [title] | [test file:line or test name] | Covered / Missing |
+
+**Coverage:** [M/N] scenarios covered
+**Gate:** PASS / FAIL
 
 ## Findings
 

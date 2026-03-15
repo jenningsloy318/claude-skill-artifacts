@@ -1,0 +1,37 @@
+{
+  "featureName": "BDD Integration into Super-Dev Process",
+  "specDirectory": "specification/20-bdd-integration",
+  "worktreePath": ".worktree/20-bdd-integration",
+  "startedAt": "2026-03-15T00:00:00Z",
+  "phases": [
+    { "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 1, "name": "Specification Setup", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 2, "name": "Requirements Clarification", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 3, "name": "Research", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 5, "name": "Code Assessment", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 5.3, "name": "Architecture Design", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 6, "name": "Specification Writing", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 7, "name": "Specification Review", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 8, "name": "Execution", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 9, "name": "Code Review + Adversarial Review", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" },
+    { "id": 10, "name": "Documentation", "status": "complete", "startedAt": "2026-03-15T00:00:00Z", "completedAt": "2026-03-15T00:00:00Z" }
+  ],
+  "tasks": [
+    { "id": "T1.1", "phase": 8, "description": "Create bdd-scenario-writer agent", "status": "complete", "files": ["super-dev-plugin/agents/bdd-scenario-writer.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T1.2", "phase": 8, "description": "Create bdd-patterns.md reference template", "status": "complete", "files": ["super-dev-plugin/templates/reference/bdd-patterns.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T2.1", "phase": 8, "description": "Update rules/testing.md with BDD section", "status": "complete", "files": ["super-dev-plugin/rules/testing.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T2.2", "phase": 8, "description": "Update SKILL.md with Phase 2.5", "status": "complete", "files": ["super-dev-plugin/skills/super-dev/SKILL.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T2.3", "phase": 8, "description": "Update coordinator.md with Phase 2.5", "status": "complete", "files": ["super-dev-plugin/agents/coordinator.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T3.1", "phase": 8, "description": "Update spec-writer.md with BDD input", "status": "complete", "files": ["super-dev-plugin/agents/spec-writer.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T3.2", "phase": 8, "description": "Update qa-agent.md with scenario coverage", "status": "complete", "files": ["super-dev-plugin/agents/qa-agent.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T4.1", "phase": 8, "description": "Update code-reviewer.md with scenario gate", "status": "complete", "files": ["super-dev-plugin/agents/code-reviewer.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "T4.2", "phase": 8, "description": "Update adversarial-reviewer.md with V8+D9", "status": "complete", "files": ["super-dev-plugin/agents/adversarial-reviewer.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "TF.1", "phase": 9, "description": "QA verification of all files", "status": "complete", "files": ["specification/20-bdd-integration/07-qa-verification-report.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "TF.2", "phase": 9, "description": "AC verification (10/10 pass)", "status": "complete", "files": ["specification/20-bdd-integration/07-qa-verification-report.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "TF.3", "phase": 9, "description": "Code review + adversarial review", "status": "complete", "files": ["specification/20-bdd-integration/08-code-review.md", "specification/20-bdd-integration/09-adversarial-review.md"], "updatedAt": "2026-03-15T00:00:00Z" },
+    { "id": "TF.4", "phase": 10, "description": "Documentation update and commit", "status": "in_progress", "files": ["specification/20-bdd-integration/10-implementation-summary.md"], "updatedAt": "2026-03-15T00:00:00Z" }
+  ],
+  "iteration": { "loops": 1, "lastReviewVerdict": "Approved with Comments" },
+  "team": { "name": "super-dev-20-bdd-integration", "teammates": [], "messages": [] },
+  "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
+}
