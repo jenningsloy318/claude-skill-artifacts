@@ -82,6 +82,7 @@ Task(
   prompt: "Implement [task description]",
   context: {
     specification: "[path to spec]",
+    bdd_scenarios: "[path to 01.1-behavior-scenarios.md]",
     task_details: "[task from task-list]",
     target_files: ["file1.rs", "file2.rs"],
     existing_patterns: "[patterns from assessment]"
@@ -259,3 +260,4 @@ Every implementation must:
 - [ ] Use consistent naming conventions
 - [ ] Include necessary comments for complex logic
 - [ ] Build successfully
+- [ ] Reference BDD scenarios (SCENARIO-XXX IDs) in code comments for business logic implementing specific behaviors

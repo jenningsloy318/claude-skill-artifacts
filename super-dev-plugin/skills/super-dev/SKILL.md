@@ -272,6 +272,13 @@ In Phase 5.4, ALWAYS present COMBINED architecture+UI options together.
 ### Branch Name Rule
 YOU MUST ensure the git branch name matches the worktree name exactly: `[spec-index]-[spec-name]`. NEVER create a branch with a different name than the worktree.
 
+### BDD Scenario Propagation Rule
+`01.1-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
+- **Design phases (5.3, 5.4, 5.5):** BDD scenarios inform module boundaries, user flows, and interaction patterns
+- **Spec writing (6):** BDD scenarios are cross-referenced in testing strategy
+- **Execution (8):** dev-executor references SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
+- **Review (9):** code-reviewer validates scenario coverage; adversarial-reviewer checks V8 behavior coverage
+
 ## Teammate Termination Rules (CRITICAL)
 
 **TERMINATE IMMEDIATELY AFTER COMPLETION:**
@@ -330,12 +337,12 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
-| 5.3 | Use Task tool → `super-dev:architecture-agent`, present options | architecture-agent |
-| 5.4 | Use Task tool → `super-dev:product-designer`, present combined options | product-designer |
-| 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options | ui-ux-designer |
+| 5.3 | Use Task tool → `super-dev:architecture-agent`, present options (**include BDD scenarios**) | architecture-agent |
+| 5.4 | Use Task tool → `super-dev:product-designer`, present combined options (**include BDD scenarios**) | product-designer |
+| 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options (**include BDD scenarios**) | ui-ux-designer |
 | 6 | Use Task tool → `super-dev:spec-writer` | spec-writer |
 | 7 | Validate spec (no agent) | (none) |
-| 8 | Use Task tool → `super-dev:dev-executor` + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
+| 8 | Use Task tool → `super-dev:dev-executor` (**include BDD scenarios**) + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (parallel) | code-reviewer, adversarial-reviewer |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
 | 10.5 | Use Task tool → `super-dev:handoff-writer` | handoff-writer |

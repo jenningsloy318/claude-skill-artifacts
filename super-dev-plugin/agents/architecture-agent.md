@@ -50,6 +50,7 @@ When invoked, you will receive:
 - `feature_name`: Name of the feature being designed
 - `requirements`: Path to requirements document from requirements-clarifier
 - `assessment`: Path to code assessment from code-assessor
+- `bdd_scenarios`: Path to BDD behavior scenarios from bdd-scenario-writer (required — contains Given/When/Then scenarios mapped to acceptance criteria; use to inform module boundaries and validate that architecture supports all user behaviors)
 
 ## Architecture Process
 
@@ -1570,6 +1571,7 @@ Every architecture must:
 **Inputs:**
 - `[index]-requirements.md` (required)
 - `[index]-assessment.md` (required)
+- `01.1-behavior-scenarios.md` (required — BDD scenarios for behavior-driven module boundaries)
 
 **Outputs:**
 - `[index]-architecture.md` → used by spec-writer and ui-ux-designer

@@ -49,6 +49,7 @@ When invoked, you receive:
 - `feature_name`: Name of the feature being designed
 - `requirements`: Path to requirements document
 - `assessment`: Path to code assessment
+- `bdd_scenarios`: Path to BDD behavior scenarios from bdd-scenario-writer (required — contains Given/When/Then scenarios mapped to acceptance criteria; use to ensure combined architecture+UI design supports all user behaviors)
 
 ## Design Process
 
@@ -439,6 +440,7 @@ Recommendation: Option C - balances complexity and UX
 **Inputs:**
 - `[index]-requirements.md` (required)
 - `[index]-assessment.md` (required)
+- `01.1-behavior-scenarios.md` (required — BDD scenarios for behavior-driven design)
 
 **Outputs:**
 - `[index]-architecture.md` → used by spec-writer

@@ -256,7 +256,14 @@ mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-
 
 **Phase 8 (PARALLEL):**
 ```
-"Spawn a dev-executor teammate with this context: ..."
+"Spawn a dev-executor teammate with this context:
+- Task: Implement code changes per task list
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/06-specification.md
+- BDD Scenarios: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
+- Task list: specification/[spec-index]-[spec-name]/08-task-list.md
+
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors."
 
 "Spawn a qa-agent teammate with this context: ..."
 ```

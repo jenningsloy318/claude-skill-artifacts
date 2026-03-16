@@ -197,6 +197,7 @@ When invoked, you receive:
 - `requirements`: Path to requirements doc
 - `assessment`: Path to code assessment (tech stack, patterns)
 - `feature_name`: Feature name
+- `bdd_scenarios`: Path to BDD behavior scenarios from bdd-scenario-writer (required — contains Given/When/Then scenarios mapped to acceptance criteria; use to inform user flow design, screen states, and interaction patterns)
 
 ## Design Process
 
@@ -760,6 +761,7 @@ Return design specification as a structured markdown document:
 **Inputs:**
 - requirements-{feature}.md (required)
 - assessment-{feature}.md (required)
+- 01.1-behavior-scenarios.md (required — BDD scenarios for behavior-driven UX design)
 - research-report-{feature}.md (optional)
 
 **Output:**
