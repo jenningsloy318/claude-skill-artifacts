@@ -41,3 +41,21 @@
    - Usage statistics tracking
    - State read at Phase 0, written at Phase 12
    - Implemented 2026-03-24
+
+8. ✅ **COMPLETED**: Add session-scoped hook skills (/careful and /freeze).
+   - New skill: `skills/careful/SKILL.md` — blocks destructive commands (rm -rf, DROP TABLE, force-push, etc.)
+   - New skill: `skills/freeze/SKILL.md` — restricts file edits to a specific directory
+   - Both session-scoped: activate on invocation, last until session ends
+   - Implemented 2026-03-24
+
+9. ✅ **COMPLETED**: Add usage analytics PreToolUse hook.
+   - New hook: `hooks/hooks.json` — PreToolUse matcher on Skill|Agent
+   - New script: `scripts/usage-tracker.sh` — logs to ${CLAUDE_PLUGIN_DATA}/usage.log and stats.json
+   - New command: `commands/usage-report.md` — view usage statistics
+   - Implemented 2026-03-24
+
+10. ✅ **COMPLETED**: Add verification skill for output validation.
+    - New skill: `skills/verify/SKILL.md` — drives interactive testing with screenshots and assertions
+    - Playwright MCP detection (primary) with CLI fallback
+    - 5-step verification process: plan → start app → execute checks → report → store evidence
+    - Implemented 2026-03-24
