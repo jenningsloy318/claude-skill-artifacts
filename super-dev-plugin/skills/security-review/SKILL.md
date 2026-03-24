@@ -482,6 +482,17 @@ Before ANY production deployment:
 - [ ] **File Uploads**: Validated (size, type)
 - [ ] **Wallet Signatures**: Verified (if blockchain)
 
+## Gotchas
+
+- **Checking only new code while ignoring existing vulnerabilities in touched files**: When a file is modified, the entire file is in scope for security review. Existing vulnerabilities in touched files are just as exploitable as new ones and must be flagged.
+- **Allowing CORS wildcard (`*`) in production configurations**: A CORS origin of `*` permits any website to make authenticated requests to your API. Always restrict CORS to specific trusted origins in production, even if `*` is convenient during development.
+- **Trusting client-side validation without server-side enforcement**: Client-side validation (HTML attributes, JavaScript checks) is trivially bypassed. Every validation rule must be enforced server-side using schema validation (e.g., Zod) before data reaches business logic or the database.
+- **Logging sensitive data (passwords, tokens) in error handlers**: Error handlers often log the full request or error context, inadvertently including passwords, API keys, or session tokens. Audit all `console.log`, `console.error`, and logging library calls for sensitive data leakage.
+- **Using localStorage for tokens instead of httpOnly cookies**: Tokens stored in localStorage are accessible to any JavaScript running on the page, making them vulnerable to XSS attacks. Always use httpOnly, Secure, SameSite=Strict cookies for authentication tokens.
+- **Not rate-limiting expensive operations (only rate-limiting at API level)**: A global rate limit of 100 requests/minute does not protect against abuse of expensive endpoints like search, file upload, or AI inference. Apply stricter per-endpoint rate limits to computationally expensive operations.
+- **Ignoring Row Level Security when using Supabase**: Without RLS policies enabled, any authenticated user can read or modify any row in any table via the Supabase client. Always enable RLS and define policies for every table that holds user-specific data.
+- **Accepting user-provided file extensions without server-side validation**: Users can rename `malware.exe` to `image.png`. Always validate the file's MIME type and magic bytes on the server side, not just the extension from the upload form.
+
 ## Resources
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)

@@ -1,0 +1,32 @@
+{
+  "$schema": "Super Dev Plugin Configuration",
+  "version": "1.0.0",
+  "setup_complete": false,
+  "project": {
+    "name": "",
+    "primary_language": "",
+    "framework": "",
+    "package_manager": "",
+    "test_runner": ""
+  },
+  "team": {
+    "commit_format": "conventional",
+    "branch_prefix": "",
+    "pr_template": true,
+    "code_review_required": true
+  },
+  "preferences": {
+    "worktree_location": ".worktree",
+    "spec_directory": "specification",
+    "parallel_agents": true,
+    "auto_commit_after_task": true,
+    "preferred_model_for_agents": "sonnet"
+  },
+  "integrations": {
+    "figma": false,
+    "time_mcp": true,
+    "exa_search": true,
+    "deepwiki": true,
+    "context7": true
+  }
+}

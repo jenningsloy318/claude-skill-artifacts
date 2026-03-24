@@ -404,6 +404,17 @@ npm test && npm run lint
 - E2E tests cover critical user flows
 - Tests catch bugs before production
 
+## Gotchas
+
+- **Writing tests AFTER code**: This defeats the entire purpose of TDD. Tests written after implementation tend to verify what the code does rather than what it should do, missing edge cases and encoding existing bugs as expected behavior.
+- **Testing implementation details instead of user-visible behavior**: Asserting on internal state (`component.state.count`) or private method calls creates brittle tests that break on every refactor. Test what the user sees and interacts with instead.
+- **Tests that depend on each other**: Tests that rely on state left by a previous test (e.g., "creates user" followed by "updates same user") break randomly when run in isolation or in a different order. Each test must set up its own data.
+- **Using brittle CSS selectors instead of data-testid or semantic selectors**: Selectors like `.css-class-xyz` or deeply nested DOM paths break whenever styling changes. Use `[data-testid="..."]`, `role` attributes, or text content selectors for resilience.
+- **Not mocking external services**: Tests that make real network calls to databases, APIs, or Redis become flaky due to timeouts, rate limits, and environment differences. Always mock external dependencies in unit and integration tests.
+- **Setting coverage thresholds too low initially then never raising them**: Starting at a low threshold and never revisiting it means coverage silently erodes over time. Set the threshold at 80% from the start and enforce it in CI.
+- **Forgetting to run tests in watch mode during development**: Running the full test suite manually after every change is slow and discourages frequent testing. Use `npm test -- --watch` to get instant feedback on changes.
+- **Using `waitForTimeout` instead of proper Playwright assertions**: `page.waitForTimeout(600)` is a race condition waiting to happen. Use `await expect(locator).toBeVisible()` or `await expect(locator).toHaveCount(n)` which auto-retry until the condition is met or the timeout expires.
+
 ---
 
 **Remember**: Tests are not optional. They are the safety net that enables confident refactoring, rapid development, and production reliability.

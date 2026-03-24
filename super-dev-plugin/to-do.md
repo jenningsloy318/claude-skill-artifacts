@@ -21,3 +21,23 @@
    - `commands/adversarial-review.md:22,45,102`
    - `skills/adversarial-review/SKILL.md:5`
    - Identified during adversarial review (AF-004)
+
+5. ✅ **COMPLETED**: Add Gotchas sections to key skills (Anthropic best practices).
+   - Added to: super-dev, dev-rules, tdd-workflow, adversarial-review, security-review
+   - 39 gotchas total documenting common failure points
+   - Implemented 2026-03-24
+
+6. ✅ **COMPLETED**: Add config.json first-time setup pattern.
+   - New template: `templates/config-template.json`
+   - First-Run Configuration section in super-dev skill
+   - Auto-detection of language, framework, package manager, test runner
+   - `${CLAUDE_PLUGIN_DATA}/config.json` for persistence
+   - Implemented 2026-03-24
+
+7. ✅ **COMPLETED**: Add persistent state via `${CLAUDE_PLUGIN_DATA}`.
+   - New reference: `templates/reference/state-management.md`
+   - Session history log (append-only JSONL)
+   - Pattern learning across sessions
+   - Usage statistics tracking
+   - State read at Phase 0, written at Phase 12
+   - Implemented 2026-03-24

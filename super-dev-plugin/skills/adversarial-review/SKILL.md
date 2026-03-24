@@ -272,6 +272,17 @@ ELSE:
 <1-3 things the reviewers found no issue with>
 ```
 
+## Gotchas
+
+- **Making code changes instead of producing a verdict**: This skill is strictly read-only. The adversarial reviewer must never edit, write, or fix code. Its sole output is a verdict document with findings. If fixes are needed, they go back to Phase 8 via the dev-executor.
+- **Blending reviewer lenses instead of keeping them exclusive**: Each reviewer (Skeptic, Architect, Minimalist) must adopt exactly one lens. Blending concerns (e.g., a Skeptic commenting on unnecessary abstractions) weakens the review by diluting each perspective's focus.
+- **Skipping the Destructive Action Gate**: The gate runs on EVERY review regardless of change size or lens count. It is not optional even for small or seemingly safe changes. A single overlooked `DROP TABLE` or `rm -rf` can cause irreversible damage.
+- **Not scanning ALL files in the diff**: Reviewing only the changed lines instead of all files in the diff misses context-dependent issues like broken callers, removed safety checks elsewhere, or destructive patterns in unchanged code that the change now exposes.
+- **Downgrading HALT findings**: HALT findings from the Destructive Action Gate cannot be downgraded to a lower severity. A single HALT forces the overall verdict to CONTESTED minimum; multiple HALTs force REJECT. Attempting to downgrade them invalidates the entire review.
+- **Missing V8 (Behavior Coverage) checks when BDD scenarios exist**: When `01.1-behavior-scenarios.md` is available, the reviewer must verify that every SCENARIO-XXX has a corresponding passing test. Skipping this check allows behavior gaps to slip through to production.
+- **Producing vague recommendations instead of concrete file:line actions**: Findings like "improve error handling" are useless. Every finding must include a specific file path, line number, and a concrete recommendation that the dev-executor can act on directly.
+- **Not assessing change size to determine correct reviewer count**: Small changes (under 50 lines) need only the Skeptic lens; medium changes add Architect; large changes add Minimalist. Applying all three to a 10-line change wastes effort, while using only Skeptic on a 500-line change misses structural and complexity issues.
+
 ## Verdict Actions
 
 | Verdict | Meaning | What to Do |

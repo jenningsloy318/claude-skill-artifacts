@@ -39,6 +39,16 @@ The handoff context from the previous session informs:
 - Phase 5 (Code Assessment): Knowledge of recently changed areas and patterns
 - All phases: Avoidance of redundant work, awareness of known risks
 
+### State Files
+
+In addition to handoff documents, check `${CLAUDE_PLUGIN_DATA}` for persistent state:
+
+1. **Session history**: `${CLAUDE_PLUGIN_DATA}/session-history.log` — previous workflow summaries
+2. **Learned patterns**: `${CLAUDE_PLUGIN_DATA}/patterns.json` — conventions discovered across sessions
+3. **Usage stats**: `${CLAUDE_PLUGIN_DATA}/stats.json` — track skill/agent usage
+
+If these files exist, read them silently and apply learned patterns. If missing, skip silently (first run or pre-state sessions).
+
 ## Figma MCP Integration Rules
 
 When implementing designs from Figma:
@@ -490,6 +500,16 @@ cargo update
 | CLI | `clap` |
 | Logging | `tracing`, `tracing-subscriber` |
 | Configuration | `config`, `serde_yaml` |
+
+## Gotchas
+
+- **Running `git add -A` instead of selective file staging**: This stages every file in the repository, including untracked files, build artifacts, and files modified by other processes. Always use `git add file1 file2` with only the files you explicitly changed in the current session.
+- **Forgetting git stash before major operations**: Context compaction or unexpected errors can cause loss of uncommitted work. Always run `git stash push -m "checkpoint: [description]"` before starting a new phase or risky operation.
+- **Working in main repo instead of worktree**: All development must happen inside a git worktree (`.worktree/[spec-name]/`). Working directly in the main repo breaks branch isolation and can corrupt the main branch with in-progress changes.
+- **Not checking for existing specs before creating new ones**: Before creating a new spec directory under `specification/`, always search for existing specs that match the current task. Duplicate specs fragment documentation and create confusion about which is authoritative.
+- **Skipping doc updates when committing code changes**: Code and documentation must be committed together. Committing code without updating the task list, implementation summary, or specification leaves docs stale and misleads future sessions.
+- **Ignoring the 3-attempt limit when stuck**: After three failed attempts at a fix or implementation approach, you must stop, record the failure, and investigate alternative approaches. Infinite retry loops waste tokens and rarely succeed.
+- **Creating GitHub Actions files accidentally**: Never create or modify `.github/workflows/` files. If they already exist in the repo, exclude them from staging, commits, and pushes.
 
 ## Using This Skill
 

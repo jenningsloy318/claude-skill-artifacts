@@ -47,6 +47,42 @@ Or add to `settings.json`:
 }
 ```
 
+## First-Run Configuration
+
+On the first invocation of super-dev, check for a project configuration file:
+
+### Detection
+
+```bash
+# Check for existing config
+CONFIG_PATH="${CLAUDE_PLUGIN_DATA}/config.json"
+if [ ! -f "$CONFIG_PATH" ]; then
+  echo "First-run detected - configuration needed"
+fi
+```
+
+### Setup Flow
+
+If `${CLAUDE_PLUGIN_DATA}/config.json` does not exist:
+
+1. **Announce**: "This is the first run of super-dev. Let me set up your project configuration."
+2. **Auto-detect** what you can from the project:
+   - Language: Check for `package.json` (Node), `Cargo.toml` (Rust), `go.mod` (Go), `pyproject.toml` (Python), etc.
+   - Framework: Check for `next.config.*` (Next.js), `vite.config.*` (Vite), `angular.json` (Angular), etc.
+   - Package manager: Check for `bun.lockb`, `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`
+   - Test runner: Check for `jest.config.*`, `vitest.config.*`, `playwright.config.*`, `.pytest.ini`
+3. **Ask user to confirm** detected values and fill in missing ones using AskUserQuestion
+4. **Write config** to `${CLAUDE_PLUGIN_DATA}/config.json`
+5. **Continue** with the normal workflow
+
+### Subsequent Runs
+
+On subsequent runs, read `${CLAUDE_PLUGIN_DATA}/config.json` silently and apply preferences. Do NOT ask again unless the user runs `/super-dev configure`.
+
+### Config Reference
+
+See `${CLAUDE_PLUGIN_ROOT}/templates/config-template.json` for the full schema.
+
 ## Architecture Overview
 
 ```
@@ -561,6 +597,53 @@ git diff --cached --name-only | grep "specification/"
 
 ---
 
+## Session State Management
+
+Super-dev maintains persistent state across sessions using `${CLAUDE_PLUGIN_DATA}`.
+
+### Phase 0 — Read History
+
+At the start of every session (during Phase 0), read previous session data:
+
+```bash
+# Read last 3 sessions for context
+if [ -f "${CLAUDE_PLUGIN_DATA}/session-history.log" ]; then
+  tail -3 "${CLAUDE_PLUGIN_DATA}/session-history.log"
+fi
+
+# Read learned patterns
+if [ -f "${CLAUDE_PLUGIN_DATA}/patterns.json" ]; then
+  cat "${CLAUDE_PLUGIN_DATA}/patterns.json"
+fi
+```
+
+Use this context to:
+- Avoid repeating mistakes from previous sessions
+- Apply learned patterns consistently
+- Skip research for topics already investigated
+
+### Phase 12 — Write History
+
+After committing, append a session summary:
+
+```bash
+# Append session record (single JSON line)
+echo '{"timestamp":"[ISO]","spec":"[spec-name]","task":"[description]","phases_completed":[...],"verdict":{"code_review":"[verdict]","adversarial":"[verdict]"},"files_changed":[count],"language":"[lang]","framework":"[fw]"}' >> "${CLAUDE_PLUGIN_DATA}/session-history.log"
+```
+
+### Pattern Learning
+
+During Phases 5 and 9, record discovered patterns:
+
+```bash
+# Update patterns.json with new discoveries
+# Only add patterns seen 2+ times (high confidence)
+```
+
+### State File Reference
+
+See `${CLAUDE_PLUGIN_ROOT}/templates/reference/state-management.md` for full format documentation.
+
 ## Display Modes
 
 - **In-Process** (default): All in main terminal, use Shift+Up/Down to navigate
@@ -670,6 +753,17 @@ Teammates to include:
 
 **Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
 
+## Gotchas
+
+- **Team Lead doing work directly instead of delegating**: The number one failure mode. The coordinator starts using Edit, Bash, or Grep to "just quickly fix something" instead of spawning an agent via Task tool. This violates the prime directive and defeats the entire team-based architecture.
+- **Forgetting to terminate teammates after completion**: Idle teammates consume context window and memory. If teammates are not terminated immediately after their phase completes, resources accumulate and the session degrades or hits limits.
+- **Branch name not matching worktree name**: The git branch created with `git worktree add` must exactly match the worktree directory name (e.g., `03-user-auth`). A mismatch causes merge failures and confuses the commit/merge workflow in Phase 12.
+- **Skipping Phase 0 dev-rules loading**: Without loading dev-rules at session start, teammates operate without coding standards, git practices, or quality guidelines, leading to inconsistent output that fails review.
+- **Not passing BDD scenarios to downstream phases**: `01.1-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
+- **Creating spec directory in main repo instead of worktree**: The spec directory must be created inside the worktree (`.worktree/[name]/specification/[name]/`), not in the main repository root. Creating it in the wrong location breaks isolation and causes files to appear in the wrong branch.
+- **Batching multiple tasks into one commit instead of atomic commits**: Each completed task should be committed individually. Batching makes it impossible to revert a single change and violates the incremental development principle.
+- **Not presenting options to user in Phases 3/5.3/5.4/5.5**: These phases require presenting 3-5 options for the user to choose from. Skipping option presentation and jumping straight to implementation removes the user from the decision loop.
+
 ## Troubleshooting
 
 | Issue | Solution |
@@ -679,6 +773,7 @@ Teammates to include:
 | Teammates stopping on errors | Check output, give additional instructions |
 | Lead shuts down too early | Say "Keep going" or "Wait for teammates" |
 | Orphaned tmux sessions | `tmux ls` then `tmux kill-session -t <name>` |
+| Config outdated | Run `/super-dev configure` to re-run setup |
 
 ---
 
