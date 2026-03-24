@@ -138,6 +138,8 @@ When invoked, you receive:
 
 **Objective:** Design UI options that work within each architecture option's constraints.
 
+**CRITICAL — Pencil MCP Pass-Through:** When delegating to ui-ux-designer, you MUST instruct it to check for Pencil MCP availability. If Pencil MCP tools are available, the ui-ux-designer MUST use them for visual design. Include this in the delegation prompt.
+
 **Actions:**
 
 1. **Invoke UI/UX Designer Agent**
@@ -148,6 +150,7 @@ When invoked, you receive:
    - Assessment: [assessment path]
    - Architecture Context: [constraints and enablers from Phase 2]
    - Special instruction: Generate 3-5 options that work with architecture constraints
+   - Pencil MCP: Check for Pencil MCP tools (mcp__pencil__*). If available, MUST create .pen design file with visual wireframes. If not available, use ASCII wireframes.
    - Return: UI options with architecture compatibility notes
    ```
 

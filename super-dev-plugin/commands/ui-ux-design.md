@@ -17,12 +17,29 @@ Create comprehensive UI/UX design specifications for features requiring user int
 
 When invoked, this command activates the `super-dev:ui-ux-designer` to:
 
-1. **Analyzes user needs**: Understands user context and requirements
-2. **Creates wireframes**: Designs interface layouts and structure
-3. **Defines interactions**: Specifies user flows and interactions
-4. **Establishes design tokens**: Creates consistent design system
-5. **Plans responsive design**: Ensures cross-device compatibility
-6. **Creates design spec**: Generates `[doc-index]-design-spec.md`
+1. **Detects Pencil MCP**: Checks if Pencil MCP tools (`mcp__pencil__*`) are available
+2. **Analyzes user needs**: Understands user context and requirements
+3. **Creates wireframes**: Designs interface layouts (.pen file if Pencil MCP available, ASCII fallback otherwise)
+4. **Defines interactions**: Specifies user flows and interactions
+5. **Establishes design tokens**: Creates consistent design system
+6. **Plans responsive design**: Ensures cross-device compatibility
+7. **Validates visually**: Uses `get_screenshot` for visual validation (Pencil MCP mode)
+8. **Creates design spec**: Generates `[doc-index]-design-spec.md`
+
+## Pencil MCP Enforcement (MANDATORY)
+
+**Before any design work begins, the agent MUST check for Pencil MCP availability.**
+
+| Pencil MCP Available? | Design Tool | Output Format |
+|----------------------|-------------|---------------|
+| Yes | Pencil MCP (.pen files) | .pen file + design-spec.md |
+| No | ASCII wireframes | design-spec.md only |
+
+When Pencil MCP is available:
+- MUST create .pen design file with all screens and components
+- MUST validate visually using `get_screenshot` after each major step
+- MUST use `get_guidelines` and `get_style_guide` for design rules
+- FORBIDDEN to produce ASCII-only wireframes as final deliverables
 
 ## Design Process
 
@@ -150,7 +167,15 @@ Validation gates (must be satisfied before completion):
 
 ## Output
 
-Creates `[index]-design-spec.md` with:
+**When Pencil MCP is available:**
+- `.pen` design file with all screens, components, states, and interactions
+- Exported PNG/PDF screen images via `export_nodes`
+- `[index]-design-spec.md` referencing the .pen file
+
+**When Pencil MCP is NOT available (fallback):**
+- `[index]-design-spec.md` with ASCII wireframes
+
+Both outputs include:
 - User personas and journeys
 - Wireframes and layouts
 - Component specifications
