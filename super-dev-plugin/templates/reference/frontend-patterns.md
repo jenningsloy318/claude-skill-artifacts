@@ -1,6 +1,6 @@
 ---
 name: frontend-patterns
-description: Frontend development patterns for React, Next.js, state management, performance optimization, and UI best practices.
+description: Frontend development patterns for React 19, Next.js 16, state management, performance optimization (React Compiler 1.0), and UI best practices.
 ---
 
 # Frontend Development Patterns
@@ -280,28 +280,29 @@ export function useMarkets() {
 
 ## Performance Optimization
 
-### Memoization
+### Memoization (React 19 + React Compiler 1.0)
+
+With React Compiler 1.0 (stable), manual memoization is no longer needed in most cases. The compiler auto-memoizes components and hooks at build time.
 
 ```typescript
-// ✅ useMemo for expensive computations
-const sortedMarkets = useMemo(() => {
-  return markets.sort((a, b) => b.volume - a.volume)
-}, [markets])
-
-// ✅ useCallback for functions passed to children
-const handleSearch = useCallback((query: string) => {
-  setSearchQuery(query)
-}, [])
-
-// ✅ React.memo for pure components
-export const MarketCard = React.memo<MarketCardProps>(({ market }) => {
+// ✅ React 19 + Compiler: Just write plain code — compiler handles memoization
+function MarketCard({ market }: MarketCardProps) {
   return (
     <div className="market-card">
       <h3>{market.name}</h3>
       <p>{market.description}</p>
     </div>
   )
-})
+}
+
+function MarketList({ markets }: { markets: Market[] }) {
+  const sortedMarkets = markets.toSorted((a, b) => b.volume - a.volume)
+  const handleSearch = (query: string) => setSearchQuery(query)
+  return <div>{sortedMarkets.map(m => <MarketCard key={m.id} market={m} />)}</div>
+}
+
+// ❌ AVOID: Manual useMemo/useCallback/React.memo (React Compiler handles this)
+// Only use manual memoization if profiling shows the compiler misses a specific case
 ```
 
 ### Code Splitting & Lazy Loading

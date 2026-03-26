@@ -1,6 +1,6 @@
 ---
 name: backend-patterns
-description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes.
+description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js 22 LTS, Hono, Drizzle ORM, and Next.js API routes.
 ---
 
 # Backend Development Patterns
