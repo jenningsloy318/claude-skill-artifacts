@@ -4,6 +4,15 @@ A comprehensive coordinator-driven development workflow plugin for Claude Code w
 
 **Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
 
+**v2.1.0 — Enhanced with 2026 AI Development Best Practices:**
+- **Persona-Based Agent Roles**: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
+- **Continuous Verification Gates**: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
+- **Real Browser Testing**: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
+- **Autoresearch Skill**: Auto-improve agent prompts using Karpathy's iterative test-measure-improve method
+- **Investigation Protocol**: New `investigator` agent for bounded mid-execution research when agents hit unknowns (inspired by gstack's `/investigate`)
+
+*Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, and Anthropic's official skill design lessons.*
+
 ## Overview
 
 This plugin provides a systematic development workflow orchestrated by a **Coordinator Agent** that:
@@ -48,6 +57,7 @@ The Coordinator Agent will orchestrate all 13 phases automatically.
 /test-coverage - Check test coverage
 /update-docs - Update documentation
 /update-codemaps - Update code maps
+/autoresearch - Auto-improve agent prompts (Karpathy method)
 ```
 
 ## Architecture
@@ -94,6 +104,7 @@ super-dev-plugin/
 │   ├── qa-agent.md                 # QA Testing
 │   ├── adversarial-reviewer.md      # Multi-lens Adversarial Review
 │   ├── bdd-scenario-writer.md       # BDD Scenario Generation (Phase 2.5)
+│   ├── investigator.md              # Mid-Execution Investigation (any phase, on-demand)
 │   │
 │   # Additional agents:
 │   ├── architect.md                # System Design
@@ -221,6 +232,7 @@ super-dev-plugin/
 6. **Time MCP Integration** - Freshness-aware research queries
 7. **ast-grep Integration** - Structural code analysis for assessment/debug
 8. **BDD Integration** - Mandatory Phase 2.5 for behavior scenario generation with 100% coverage gate
+9. **Investigation Protocol** - Bounded mid-execution investigation when agents hit unknowns (auto-triggered by dev-executor, qa-agent, code-reviewer)
 
 ### Additional Integrated Features
 
@@ -273,6 +285,7 @@ During Phase 8-9, THREE executors run in PARALLEL:
 | `spec-writer` | Write specifications | `super-dev:spec-writer` |
 | `qa-agent` | Modality-specific QA testing | `super-dev:qa-agent` |
 | `bdd-scenario-writer` | BDD scenario generation (Phase 2.5) | `super-dev:bdd-scenario-writer` |
+| `investigator` | Mid-execution investigation (any phase, on-demand) | `super-dev:investigator` |
 | `planner` | Implementation planning | `planner` |
 | `tdd-guide` | Test-driven development | `tdd-guide` |
 | `security-reviewer` | Security analysis | `security-reviewer` |

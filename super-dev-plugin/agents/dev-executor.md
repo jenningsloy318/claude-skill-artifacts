@@ -150,8 +150,10 @@ On build failure:
   3. Analyze root cause
   4. Apply fix
   5. Re-request build
-  6. Repeat until success (max 3 attempts)
-  7. If still failing → Report as blocked
+  6. Repeat until success (max 2 attempts)
+  7. If still failing → Trigger Investigation Protocol
+  8. If investigation resolves → Apply fix and rebuild
+  9. If investigation inconclusive → Report as blocked
 ```
 
 ### Common Error Patterns
@@ -165,15 +167,44 @@ On build failure:
 | Unused variable | Remove or use the variable |
 | Missing function | Implement or import |
 
+### Investigation Protocol (Mid-Execution Research)
+
+**Trigger conditions** — spawn investigator when ANY of these occur:
+1. Same error recurs after 2 different fix attempts (loop detection)
+2. API/library behaves differently than documentation says
+3. Missing dependency or config not identified during assessment
+4. No existing codebase pattern for the required approach
+5. Build/runtime error with no obvious cause
+
+**How to spawn:**
+```
+Task(
+  prompt: "Investigate: [error/unknown description].
+    Context: implementing [task ID] in [file].
+    Error: [exact error message and stack trace].
+    Spec directory: [path to spec dir].
+    What I already tried: [list of attempts and results].",
+  subagent_type: "super-dev:investigator"
+)
+```
+
+**After investigation returns:**
+1. Read the investigation report from spec directory
+2. Apply the recommended fix
+3. Re-request build/test
+4. If fix works → continue to next task
+5. If fix fails → report as BUILD_BLOCKED (investigation already exhausted)
+
 ### Error Escalation
 
-After 3 failed attempts:
+After investigation fails OR for non-investigatable errors:
 ```markdown
 BUILD_BLOCKED:
   Error: [error message]
   File: [file path]
   Line: [line number]
-  Attempts: 3
+  Attempts: [N] + investigation
+  Investigation: [RESOLVED/INCONCLUSIVE/NOT_TRIGGERED]
   Resolution needed: [description]
 ```
 

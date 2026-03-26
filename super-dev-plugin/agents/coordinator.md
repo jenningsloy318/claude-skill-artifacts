@@ -486,8 +486,23 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | Missing file | Message appropriate teammate: "Create the missing file" |
 | Teammate timeout | Re-spawn teammate |
 | Teammate error | Message teammate with specific error recovery instructions |
+| Unknown/opaque failure | Spawn `super-dev:investigator` with error context before escalating |
 
-**Non-Recoverable:** After 3 attempts or critical error:
+**Investigation Trigger (before escalating to user):**
+If a teammate reports BUILD_BLOCKED or TEST_BLOCKED and the error is unclear, spawn the investigator BEFORE declaring non-recoverable:
+```
+Task(
+  prompt: "Investigate: [teammate] reports [BLOCKED type] in Phase [N].
+    Error: [error details from teammate report].
+    Spec directory: [path].
+    Previous attempts: [list from teammate].",
+  subagent_type: "super-dev:investigator"
+)
+```
+If investigator resolves → forward findings to the blocked teammate to retry.
+If investigator is inconclusive → proceed with non-recoverable escalation.
+
+**Non-Recoverable:** After 3 attempts + investigation (if applicable) or critical error:
 1. Document in implementation-summary
 2. Create blocking issue
 3. Report to user

@@ -14,7 +14,7 @@ license: MIT
 compatibility: Requires Claude Code CLI with Task tool and agent teams experimental feature (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1). Git required for worktree management.
 metadata:
   author: Jennings Liu
-  version: "2.5.0"
+  version: "2.7.0"
   repository: https://github.com/jenningsloy318/super-skill-claude-artifacts
   keywords:
     - development
@@ -164,7 +164,9 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 0:  Apply Dev Rules
 - [ ] Phase 1:  Specification Setup (worktree + team creation)
 - [ ] Phase 2:  Requirements Clarification
+- [ ] GATE:     Requirements Completeness (gate-requirements.sh)
 - [ ] Phase 2.5: BDD Scenario Writing (MANDATORY, user confirmation required)
+- [ ] GATE:     BDD Scenario Quality (gate-bdd.sh)
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
@@ -172,10 +174,14 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 5.4: Product Design (arch + UI together)
 - [ ] Phase 5.5: UI/UX Design (UI only)
 - [ ] Phase 6:  Specification Writing
+- [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh)
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
+- [ ] GATE:     Build & Test Pass (gate-build.sh)
 - [ ] Phase 9:  Code Review + Adversarial Review (PARALLEL teammates)
+- [ ] GATE:     Review Verdicts (gate-review.sh)
 - [ ] Phase 10: Documentation Update
+- [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh)
 - [ ] Phase 10.5: Handoff Writing (MANDATORY)
 - [ ] Phase 11: Team Cleanup (keep worktree)
 - [ ] Phase 12: Commit & Merge to Main
@@ -188,6 +194,39 @@ Grade each completed workflow run against these three dimensions:
 - BOTH → Phase 5.4 (product-designer) - coordinates both agents together
 
 **Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, code review verdict is Approved, adversarial verdict is PASS, ALL acceptance criteria are met, AND BDD scenario coverage is 100%. NEVER proceed to Phase 10 with unresolved issues, a REJECT/CONTESTED verdict, or uncovered scenarios.
+
+## Verification Gates (MANDATORY)
+
+Gates are **programmatic quality checks** that run between phases to catch problems early. Each gate is a script in `scripts/gates/` that exits 0 (PASS) or 1 (FAIL).
+
+**CRITICAL:** Gates are NON-NEGOTIABLE. If a gate fails, the Team Lead MUST NOT proceed to the next phase. Instead, loop back to the failing phase and fix the issue.
+
+### Gate Execution
+
+```bash
+# Run any gate script
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
+```
+
+### Gate Map
+
+| After Phase | Gate Script | What It Checks |
+|-------------|-------------|----------------|
+| Phase 2 → 2.5 | `gate-requirements.sh` | Requirements have acceptance criteria, NFRs, summary, sufficient detail |
+| Phase 2.5 → 3 | `gate-bdd.sh` | BDD scenarios have SCENARIO-IDs, Given/When/Then, AC traceability |
+| Phase 6 → 7 | `gate-spec-trace.sh` | Spec references BDD scenarios, has testing strategy, has task list |
+| Phase 8 → 9 | `gate-build.sh` | Build succeeds, tests pass, type checks pass |
+| Phase 9 → 10 | `gate-review.sh` | Code review approved, adversarial review PASS, no critical issues |
+| Phase 10 → 10.5 | `gate-docs-drift.sh` | Documentation exists, no excessive TODOs left in code |
+
+### Gate Failure Handling
+
+1. Gate fails → Team Lead reports which gate and which checks failed
+2. Team Lead spawns the appropriate agent to fix the failing phase
+3. After fix, re-run the gate
+4. Only proceed when gate returns PASS (exit 0)
+
+**Gotcha:** Do NOT skip gates to "save time." Gates prevent compound errors that cost 10x more to fix in later phases.
 
 ## Entry Point: Team Lead Coordinator
 
@@ -273,21 +312,22 @@ Task tool → subagent_type: "super-dev:agent-name"
 
 | Phase | Teammate | Role |
 |-------|----------|------|
-| 2 | requirements-clarifier | Gather requirements, output requirements.md |
+| 2 | requirements-clarifier | **Product Thinker (YC Partner Mode):** Challenge framing with 6 forcing questions, gather requirements |
 | 2.5 | bdd-scenario-writer | Write BDD behavior scenarios from acceptance criteria |
-| 3 | research-agent | Research best practices, present 3-5 options |
+| 3 | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring, present 3-5 options |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
 | 5 | code-assessor | Assess architecture, style, frameworks |
-| 5.3 | architecture-agent | Design architecture (arch only), present 3-5 options |
+| 5.3 | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard, present 3-5 options |
 | 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
 | 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
 | 6 | spec-writer | Write spec, plan, task list |
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
-| 8 | qa-agent | Plan and run tests (parallel with dev-executor) |
-| 9 | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) |
-| 9 | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) |
+| 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with dev-executor) |
+| 9 | code-reviewer | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs (parallel with adversarial-reviewer) |
+| 9 | adversarial-reviewer | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) |
 | 10 | docs-executor | Update documentation |
 | 10.5 | handoff-writer | Generate session handoff document |
+| Any | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns (spawned by any agent) |
 
 ## Key Concepts
 
@@ -571,6 +611,60 @@ Each lens applies structured attack vector sub-checklists (V1-V8) for systematic
 
 ---
 
+## Investigation Protocol (Any Phase — On-Demand)
+
+**Agent:** `super-dev:investigator` — can be spawned by any phase agent or Team Lead when unknowns arise mid-execution.
+
+**Problem this solves:** During Phase 8 (Execution) or Phase 9 (Review), agents often discover unexpected behavior, missing dependencies, or opaque errors that simple retry loops cannot resolve. Instead of immediately escalating to the user, agents can spawn a bounded investigation.
+
+### Auto-Trigger Conditions
+
+Any phase agent SHOULD spawn the investigator when:
+
+| Condition | Signal |
+|-----------|--------|
+| **Loop detection** | Same error 2x with different fix attempts |
+| **Doc mismatch** | API/library behaves differently than docs |
+| **Missing dependency** | Required config/package not in assessment |
+| **Unknown pattern** | No codebase convention for needed approach |
+| **Opaque failure** | Build/test error with no obvious cause |
+| **Abnormal behavior** | Code compiles but produces wrong results |
+
+### Four-Phase Protocol (Bounded: 120s, 5 tool calls)
+
+```
+GATHER (30s) → SEARCH (60s) → HYPOTHESIZE (30s) → RESOLVE
+                                      |
+                                      v (3 hypotheses failed)
+                                   ESCALATE to Team Lead
+```
+
+1. **GATHER** — Collect evidence: error messages, stack traces, git diff, environment versions
+2. **SEARCH** — Search max 3 sources: project docs first, then library docs, then web
+3. **HYPOTHESIZE** — Form testable hypothesis, verify with minimal validation (log/assert/run)
+4. **RESOLVE** — Document root cause and fix instructions for the calling agent
+
+### Output
+
+Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-index]-investigation-[seq].md`
+
+### Integration Points
+
+| Caller | When | What Happens After |
+|--------|------|-------------------|
+| **dev-executor** | Build error after 2 fix attempts | Applies investigation fix, rebuilds |
+| **qa-agent** | Test failure after 2 retries, unclear cause | Adjusts test or reports code bug |
+| **code-reviewer** | Suspicious pattern needs verification | Includes finding in review |
+| **Team Lead** | Teammate reports BLOCKED, error unclear | Forwards findings to blocked teammate |
+
+### Iron Law
+
+**No fix without root cause investigation first.** The investigator never proposes a fix it cannot explain.
+
+**Full reference:** See `super-dev:investigator` agent for detailed specification.
+
+---
+
 ## Phase 12: Commit & Merge to Main
 
 **Executed by:** Team Lead (direct git operations)
@@ -689,21 +783,22 @@ Create an agent team named "super-dev-agent-team" with these teammates:
 | Category | Teammate | Role | Spawn Command |
 |----------|----------|------|---------------|
 | **Team Lead** | coordinator | Orchestrates all phases, manages task list | Team Lead (always active) |
-| **Planning** | requirements-clarifier | Gather requirements, output requirements.md | `super-dev:requirements-clarifier` |
+| **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** Challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
-| **Planning** | research-agent | Research best practices, present options | `super-dev:research-agent` |
+| **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring | `super-dev:research-agent` |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks | `super-dev:code-assessor` |
-| **Design** | architecture-agent | Design architecture (arch only) | `super-dev:architecture-agent` |
+| **Design** | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard | `super-dev:architecture-agent` |
 | **Design** | ui-ux-designer | Create UI/UX design (UI only) | `super-dev:ui-ux-designer` |
 | **Design** | product-designer | Coordinate architecture + UI together | `super-dev:product-designer` |
 | **Spec** | spec-writer | Write spec, plan, task list | `super-dev:spec-writer` |
 | **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
-| **Execution** | qa-agent | Plan and run tests | `super-dev:qa-agent` |
-| **Review** | code-reviewer | Spec-aware code review (parallel with adversarial-reviewer) | `super-dev:code-reviewer` |
-| **Review** | adversarial-reviewer | Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) | `super-dev:adversarial-reviewer` |
+| **Execution** | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests | `super-dev:qa-agent` |
+| **Review** | code-reviewer | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs | `super-dev:code-reviewer` |
+| **Review** | adversarial-reviewer | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge with Destructive Action Gate | `super-dev:adversarial-reviewer` |
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 | **Docs** | handoff-writer | Generate session handoff | `super-dev:handoff-writer` |
+| **Support** | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns | `super-dev:investigator` |
 
 ### Team Creation at Phase 1
 
@@ -731,6 +826,7 @@ Teammates to include:
 14. super-dev:adversarial-reviewer
 15. super-dev:docs-executor
 16. super-dev:handoff-writer
+17. super-dev:investigator
 ```
 
 ### When to Spawn Each Teammate
@@ -750,6 +846,7 @@ Teammates to include:
 | 9 | code-reviewer + adversarial-reviewer (parallel) |
 | 10 | docs-executor |
 | 10.5 | handoff-writer |
+| Any (on-demand) | investigator (spawned by dev-executor, qa-agent, code-reviewer, or Team Lead when unknowns arise) |
 
 **Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
 
@@ -763,6 +860,10 @@ Teammates to include:
 - **Creating spec directory in main repo instead of worktree**: The spec directory must be created inside the worktree (`.worktree/[name]/specification/[name]/`), not in the main repository root. Creating it in the wrong location breaks isolation and causes files to appear in the wrong branch.
 - **Batching multiple tasks into one commit instead of atomic commits**: Each completed task should be committed individually. Batching makes it impossible to revert a single change and violates the incremental development principle.
 - **Not presenting options to user in Phases 3/5.3/5.4/5.5**: These phases require presenting 3-5 options for the user to choose from. Skipping option presentation and jumping straight to implementation removes the user from the decision loop.
+- **Skipping verification gates between phases**: Gates are programmatic quality checks (scripts in `scripts/gates/`) that catch problems early. Skipping them to "save time" causes compound errors that cost 10x more to fix in later phases. Every gate must PASS (exit 0) before proceeding.
+- **Agent prompts degrading over time without measurement**: Use `/super-dev:autoresearch` periodically to auto-improve agent prompts. Run it on the agent that caused the most Phase 8/9 iteration loops.
+- **Retrying the same fix 3+ times instead of investigating**: When dev-executor or qa-agent hits the same error repeatedly with different fix attempts, they should spawn `super-dev:investigator` after 2 attempts instead of brute-forcing to 3. The investigation protocol exists precisely for this — blind retries waste tokens and delay resolution.
+- **Investigation scope creep**: The investigator has strict budget limits (120s, 5 tool calls, 3 sources). If an investigation is unbounded, it bloats context and delays the calling agent. Always respect the budget constraints and escalate if inconclusive.
 
 ## Troubleshooting
 
