@@ -32,19 +32,19 @@ if [ ! -f "$REQ_FILE" ]; then
 fi
 
 # Check for acceptance criteria section
-has_ac=$(grep -ci "acceptance criteria" "$REQ_FILE" || echo "0")
+has_ac=$(grep -ci "acceptance criteria" "$REQ_FILE" || true)
 check "Has acceptance criteria section" "$([ "$has_ac" -gt 0 ] && echo true || echo false)"
 
 # Check for at least 2 acceptance criteria items
-ac_count=$(grep -cE '^\s*-\s*\[' "$REQ_FILE" 2>/dev/null || echo "0")
+ac_count=$(grep -cE '^\s*-\s*\[' "$REQ_FILE" 2>/dev/null || true)
 check "Has at least 2 acceptance criteria items (found: ${ac_count})" "$([ "$ac_count" -ge 2 ] && echo true || echo false)"
 
 # Check for non-functional requirements
-has_nfr=$(grep -ci "non-functional\|performance\|security\|accessibility" "$REQ_FILE" || echo "0")
+has_nfr=$(grep -ci "non-functional\|performance\|security\|accessibility" "$REQ_FILE" || true)
 check "Has non-functional requirements" "$([ "$has_nfr" -gt 0 ] && echo true || echo false)"
 
 # Check for executive summary
-has_summary=$(grep -ci "executive summary\|summary" "$REQ_FILE" || echo "0")
+has_summary=$(grep -ci "executive summary\|summary" "$REQ_FILE" || true)
 check "Has executive summary" "$([ "$has_summary" -gt 0 ] && echo true || echo false)"
 
 # Check minimum file size (at least 500 chars = not just a template)

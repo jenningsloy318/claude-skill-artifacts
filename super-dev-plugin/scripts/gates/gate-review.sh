@@ -29,14 +29,14 @@ CODE_REVIEW=$(find "$SPEC_DIR" -name "*code-review*" -type f 2>/dev/null | head 
 if [ -n "$CODE_REVIEW" ]; then
     # Check for approved verdict
     cr_verdict=$(grep -iE '(approved|changes requested|blocked)' "$CODE_REVIEW" | head -1 || echo "")
-    is_approved=$(echo "$cr_verdict" | grep -ci "approved" || echo "0")
-    is_blocked=$(echo "$cr_verdict" | grep -ciE "(changes requested|blocked)" || echo "0")
+    is_approved=$(echo "$cr_verdict" | grep -ci "approved" || true)
+    is_blocked=$(echo "$cr_verdict" | grep -ciE "(changes requested|blocked)" || true)
 
     check "Code review exists" "true"
     check "Code review approved (verdict: $(echo "$cr_verdict" | head -c 50))" "$([ "$is_approved" -gt 0 ] && [ "$is_blocked" -eq 0 ] && echo true || echo false)"
 
     # Check no critical issues remain
-    critical_count=$(grep -cE '\*\*Critical\*\*|Critical.*[1-9]' "$CODE_REVIEW" 2>/dev/null || echo "0")
+    critical_count=$(grep -cE '\*\*Critical\*\*|Critical.*[1-9]' "$CODE_REVIEW" 2>/dev/null || true)
     check "No critical issues (found: ${critical_count})" "$([ "$critical_count" -eq 0 ] && echo true || echo false)"
 else
     check "Code review file exists" "false"
@@ -47,8 +47,8 @@ ADV_REVIEW=$(find "$SPEC_DIR" -name "*adversarial*" -type f 2>/dev/null | head -
 if [ -n "$ADV_REVIEW" ]; then
     # Check for PASS verdict
     adv_verdict=$(grep -iE '(PASS|CONTESTED|REJECT|HALT)' "$ADV_REVIEW" | head -1 || echo "")
-    is_pass=$(echo "$adv_verdict" | grep -ci "PASS" || echo "0")
-    is_reject=$(echo "$adv_verdict" | grep -ci "REJECT" || echo "0")
+    is_pass=$(echo "$adv_verdict" | grep -ci "PASS" || true)
+    is_reject=$(echo "$adv_verdict" | grep -ci "REJECT" || true)
 
     check "Adversarial review exists" "true"
     check "Adversarial review PASS (verdict: $(echo "$adv_verdict" | head -c 50))" "$([ "$is_pass" -gt 0 ] && [ "$is_reject" -eq 0 ] && echo true || echo false)"

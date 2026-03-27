@@ -38,19 +38,19 @@ if [ ! -f "$BDD_FILE" ]; then
 fi
 
 # Check spec references BDD scenarios
-spec_refs=$(grep -cE 'SCENARIO-[0-9]+' "$SPEC_FILE" 2>/dev/null || echo "0")
+spec_refs=$(grep -cE 'SCENARIO-[0-9]+' "$SPEC_FILE" 2>/dev/null || true)
 check "Spec references BDD scenarios (found: ${spec_refs} refs)" "$([ "$spec_refs" -ge 1 ] && echo true || echo false)"
 
 # Check for testing strategy section in spec
-has_testing=$(grep -ci "testing strategy\|test plan\|test approach" "$SPEC_FILE" || echo "0")
+has_testing=$(grep -ci "testing strategy\|test plan\|test approach" "$SPEC_FILE" || true)
 check "Spec includes testing strategy" "$([ "$has_testing" -gt 0 ] && echo true || echo false)"
 
 # Check for task list in spec
-task_count=$(grep -cE '^\s*-\s*\[[ x]\]' "$SPEC_FILE" 2>/dev/null || echo "0")
+task_count=$(grep -cE '^\s*-\s*\[[ x]\]' "$SPEC_FILE" 2>/dev/null || true)
 check "Spec has task list (found: ${task_count} tasks)" "$([ "$task_count" -ge 1 ] && echo true || echo false)"
 
 # Check spec has implementation plan
-has_plan=$(grep -ci "implementation plan\|implementation phases\|task list" "$SPEC_FILE" || echo "0")
+has_plan=$(grep -ci "implementation plan\|implementation phases\|task list" "$SPEC_FILE" || true)
 check "Spec includes implementation plan" "$([ "$has_plan" -gt 0 ] && echo true || echo false)"
 
 # Report
