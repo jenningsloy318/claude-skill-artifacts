@@ -195,6 +195,18 @@ Grade each completed workflow run against these three dimensions:
 
 **Iteration Rule:** YOU MUST loop Phase 8/9 until Critical=0, High=0, Medium=0, code review verdict is Approved, adversarial verdict is PASS, ALL acceptance criteria are met, AND BDD scenario coverage is 100%. NEVER proceed to Phase 10 with unresolved issues, a REJECT/CONTESTED verdict, or uncovered scenarios.
 
+**MANDATORY Phase 9 → 12 Transition Sequence (NEVER skip or reorder):**
+After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump to Phase 12.
+1. **Run gate-review.sh** → Must PASS (exit 0)
+2. **Phase 10:** Spawn `super-dev:docs-executor` → Wait for completion → Terminate
+3. **Run gate-docs-drift.sh** → Must PASS (exit 0)
+4. **Phase 10.5:** Spawn `super-dev:handoff-writer` → Wait for completion → Terminate
+5. **Phase 11:** Verify all teammates terminated, worktree preserved
+6. **Phase 11.5:** Present summary to user for confirmation
+7. **ONLY THEN** proceed to Phase 12 (commit & merge)
+
+**VIOLATION:** Jumping from Phase 9 directly to Phase 12 is a CRITICAL workflow violation.
+
 ## Verification Gates (MANDATORY)
 
 Gates are **programmatic quality checks** that run between phases to catch problems early. Each gate is a script in `scripts/gates/` that exits 0 (PASS) or 1 (FAIL).
@@ -607,6 +619,8 @@ Each lens applies structured attack vector sub-checklists (V1-V8) for systematic
 
 **If any fails:** Loop back to Phase 8 with combined findings from both reviews as input.
 
+**After all pass:** Proceed to Phase 10 (Documentation Update). Do NOT skip to Phase 12.
+
 **Full references:** See `super-dev:code-reviewer` and `super-dev:adversarial-reviewer` agents for detailed specifications.
 
 ---
@@ -665,9 +679,83 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
 
 ---
 
-## Phase 12: Commit & Merge to Main
+## Phase 10: Documentation Update (MANDATORY — do NOT skip)
+
+**Executed by:** `super-dev:docs-executor` (spawned via Task tool)
+
+**CRITICAL:** This phase MUST be executed after Phase 9 passes. NEVER jump from Phase 9 to Phase 12.
+
+**Purpose:** Update all relevant documentation (README, API docs, inline docs) to reflect changes made during this workflow.
+
+**Steps:**
+1. Run `gate-review.sh` → Must PASS (exit 0) before starting Phase 10
+2. Spawn `super-dev:docs-executor` with context:
+   - Spec directory path
+   - Specification document (06-specification.md)
+   - Implementation summary (09-implementation-summary.md)
+   - Code review results
+3. Wait for docs-executor to complete
+4. Verify documentation files are updated
+5. Terminate docs-executor immediately after completion
+6. Run `gate-docs-drift.sh` → Must PASS (exit 0)
+
+**Output:** Updated documentation files in the project
+
+**After Phase 10:** Proceed to Phase 10.5 (Handoff Writing). NEVER skip to Phase 12.
+
+---
+
+## Phase 10.5: Handoff Writing (MANDATORY — do NOT skip)
+
+**Executed by:** `super-dev:handoff-writer` (spawned via Task tool)
+
+**Purpose:** Generate a structured session handoff document for seamless AI agent continuity.
+
+**Steps:**
+1. Spawn `super-dev:handoff-writer` with context:
+   - All spec artifacts in the spec directory
+   - Workflow tracking JSON
+   - Git diff: `git diff --stat main..HEAD`
+   - Feature name
+2. Wait for handoff-writer to complete `11-handoff.md`
+3. Verify `11-handoff.md` exists in spec directory
+4. Terminate handoff-writer immediately after completion
+
+**Output:** `specification/[spec-index]-[spec-name]/11-handoff.md`
+
+**After Phase 10.5:** Proceed to Phase 11 (Team Cleanup). NEVER skip to Phase 12.
+
+---
+
+## Phase 11: Team Cleanup (MANDATORY — do NOT skip)
+
+**Executed by:** Team Lead (direct verification)
+
+**Purpose:** Final verification that all teammates are terminated and resources cleaned up, while preserving the worktree.
+
+**Steps:**
+1. Verify all teammates have been terminated (should already be done per-phase)
+2. If any teammates still active, message them: "Please shut down gracefully"
+3. Verify worktree is preserved at `.worktree/[spec-index]-[spec-name]/`
+4. Update workflow tracking JSON: Phase 11 = complete
+
+**After Phase 11:** Proceed to Phase 11.5 (present summary to user for confirmation), then Phase 12 (Commit & Merge).
+
+---
+
+## Phase 12: Commit & Merge to Main (ONLY after Phases 10-11 complete)
 
 **Executed by:** Team Lead (direct git operations)
+
+**PRE-CONDITION CHECK (MANDATORY — run before ANY Phase 12 work):**
+Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP and go back to the missing phase.
+1. **Phase 8 complete:** Build passes, tests pass, implementation done
+2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
+3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
+4. **Phase 10.5 complete:** `11-handoff.md` exists in spec directory
+5. **Phase 11 complete:** All teammates terminated, worktree preserved
+
+**If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.
 
 **CRITICAL — Specification Directory Commit Rule:**
 The `specification/[spec-index]-[spec-name]/` directory contains team-wide workflow artifacts created by multiple agents across all phases. These files MUST always be committed regardless of which agent created or edited them.
@@ -864,6 +952,7 @@ Teammates to include:
 - **Agent prompts degrading over time without measurement**: Use `/super-dev:autoresearch` periodically to auto-improve agent prompts. Run it on the agent that caused the most Phase 8/9 iteration loops.
 - **Retrying the same fix 3+ times instead of investigating**: When dev-executor or qa-agent hits the same error repeatedly with different fix attempts, they should spawn `super-dev:investigator` after 2 attempts instead of brute-forcing to 3. The investigation protocol exists precisely for this — blind retries waste tokens and delay resolution.
 - **Investigation scope creep**: The investigator has strict budget limits (120s, 5 tool calls, 3 sources). If an investigation is unbounded, it bloats context and delays the calling agent. Always respect the budget constraints and escalate if inconclusive.
+- **Jumping from Phase 9 to Phase 12, skipping Phases 10/10.5/11**: After Phase 9 reviews pass, the Phase 12 "Commit & Merge" section acts as a gravity well — its detail and finality cause the coordinator to skip documentation (Phase 10), handoff writing (Phase 10.5), and team cleanup (Phase 11). Always follow the mandatory transition sequence: Phase 9 → gate-review → Phase 10 → gate-docs-drift → Phase 10.5 → Phase 11 → Phase 12. Phase 12 has a pre-condition check that enforces this.
 
 ## Troubleshooting
 

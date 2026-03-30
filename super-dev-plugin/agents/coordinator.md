@@ -143,6 +143,18 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 - If triggered: Create remediation tasks in shared task list → Re-spawn dev-executor + qa-agent → Re-run code-reviewer + adversarial-reviewer (parallel)
 - Else: Proceed to Phase 10
 
+**MANDATORY Phase 9 → 12 Transition Sequence (NEVER skip or reorder):**
+After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump to Phase 12.
+1. **Run gate-review.sh** → Must PASS (exit 0)
+2. **Phase 10:** Spawn `super-dev:docs-executor` → Wait for completion → Terminate
+3. **Run gate-docs-drift.sh** → Must PASS (exit 0)
+4. **Phase 10.5:** Spawn `super-dev:handoff-writer` → Wait for completion → Terminate
+5. **Phase 11:** Verify all teammates terminated, worktree preserved
+6. **Phase 11.5:** Present summary to user for confirmation
+7. **ONLY THEN** proceed to Phase 12 (commit & merge)
+
+**VIOLATION:** Jumping from Phase 9 directly to Phase 12 is a CRITICAL workflow violation.
+
 ## Skip Conditions
 
 | Phase | Skip When |
@@ -153,7 +165,9 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 | Phase 5.5 | NO UI components, OR using Phase 5.4 instead. If UI involved → NEVER skip, MANDATORY user review |
 | Phase 9 | Never skip — both code review and adversarial review are mandatory (unless explicitly waived by project lead) |
 | Phase 2.5 | Never skip -- BDD scenarios are mandatory for all features. MANDATORY user confirmation required before proceeding to Phase 3 |
+| Phase 10 | Never skip — documentation update is mandatory for all workflow runs |
 | Phase 10.5 | Never skip — handoff document is mandatory for all workflow runs |
+| Phase 11 | Never skip — team cleanup and final verification is mandatory |
 
 ## Super Dev Agent Team Definition
 
@@ -275,7 +289,21 @@ Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing 
 "Spawn an adversarial-reviewer teammate with this context: ..."
 ```
 
-**Phase 10.5 (Handoff Writing):**
+**Phase 10 (Documentation Update — MANDATORY, do NOT skip):**
+```
+"Spawn a docs-executor teammate with this context:
+- Task: Update documentation to reflect implemented changes
+- Worktree: .worktree/[spec-index]-[spec-name]
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/06-specification.md
+- Implementation summary: specification/[spec-index]-[spec-name]/09-implementation-summary.md
+- Code review: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md
+
+Your role is to update all relevant documentation (README, API docs, inline docs)
+to reflect the changes made during this workflow. Output: updated documentation files."
+```
+
+**Phase 10.5 (Handoff Writing — MANDATORY, do NOT skip):**
 ```
 "Spawn a handoff-writer teammate with this context:
 - Task: Generate session handoff document
@@ -392,7 +420,55 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **Stop only for:** Critical error, external dependency unavailable, permission denied, user explicit request, **mandatory user confirmation gates (Phase 2.5, 3, 5.3, 5.4, 5.5)**
 
-## Final Verification (Phase 12)
+## Phase 10: Documentation Update (MANDATORY — do NOT skip)
+
+**Executed by:** `super-dev:docs-executor` (spawned via Task tool)
+
+**CRITICAL:** This phase MUST be executed after Phase 9 passes. NEVER jump from Phase 9 to Phase 12.
+
+1. Spawn `super-dev:docs-executor` with full context (spec dir, implementation summary, code review)
+2. Wait for docs-executor to complete documentation updates
+3. Verify output: documentation files updated
+4. Terminate docs-executor immediately after completion
+5. Run `gate-docs-drift.sh` → Must PASS before proceeding
+6. Update workflow tracking JSON: Phase 10 = complete
+
+**After Phase 10:** Proceed to Phase 10.5 (Handoff Writing)
+
+## Phase 10.5: Handoff Writing (MANDATORY — do NOT skip)
+
+**Executed by:** `super-dev:handoff-writer` (spawned via Task tool)
+
+1. Spawn `super-dev:handoff-writer` with full context (all spec artifacts, workflow JSON, git diff)
+2. Wait for handoff-writer to complete `11-handoff.md`
+3. Verify output: `11-handoff.md` exists in spec directory
+4. Terminate handoff-writer immediately after completion
+5. Update workflow tracking JSON: Phase 10.5 = complete
+
+**After Phase 10.5:** Proceed to Phase 11 (Team Cleanup)
+
+## Phase 11: Team Cleanup (MANDATORY — do NOT skip)
+
+**Executed by:** Team Lead (direct verification)
+
+1. Verify all teammates have been terminated (should already be done per-phase)
+2. If any teammates still active, message them: "Please shut down gracefully"
+3. Verify worktree is preserved at `.worktree/[spec-index]-[spec-name]/`
+4. Update workflow tracking JSON: Phase 11 = complete, allPhasesComplete = true
+
+**After Phase 11:** Proceed to Phase 11.5 (present summary to user), then Phase 12 (Commit & Merge)
+
+## Phase 12: Commit & Merge to Main (ONLY after Phases 10-11 complete)
+
+**PRE-CONDITION CHECK (MANDATORY — run before ANY Phase 12 work):**
+Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP and go back to the missing phase.
+1. **Phase 8 complete:** Build passes, tests pass, implementation done
+2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
+3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
+4. **Phase 10.5 complete:** `11-handoff.md` exists in spec directory
+5. **Phase 11 complete:** All teammates terminated, worktree preserved
+
+**If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.
 
 **IMPORTANT: Worktree Preservation**
 - **DO NOT remove the worktree** - Keep `.worktree/[spec-index]-[spec-name]/` for reference
