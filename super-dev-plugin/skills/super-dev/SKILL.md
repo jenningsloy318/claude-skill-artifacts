@@ -524,17 +524,20 @@ Create `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow
   "phases": [{ "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "...", "completedAt": "..." }],
   "tasks": [{ "id": "T1.1", "phase": 1, "description": "Specification Setup", "status": "complete", "files": [...], "updatedAt": "..." }],
   "iteration": { "loops": 0, "lastReviewVerdict": null },
-  "team": { "name": "super-dev-[spec-index]-[spec-name]", "teammates": [], "messages": [] },
+  "team": { "name": "super-dev-team", "teammates": [], "messages": [] },
   "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
 }
 ```
 
-### Step 5: Create the Agent Team
+### Step 5: Create or Reuse the Agent Team
 
-**Team Lead creates the team:**
+**Team name is always `super-dev-team`** — the same team is reused across all invocations.
+
+**If the team already exists:** Reuse it. Do NOT create a new team.
+**If the team does not exist:** Create it:
 
 ```
-Create an agent team for this development workflow. The team name should be "super-dev-[spec-index]-[spec-name]".
+Create an agent team for this development workflow. The team name should be "super-dev-team".
 ```
 
 ### Verification Checklist
@@ -840,14 +843,14 @@ Set in `settings.json`:
 
 ## Super Dev Agent Team Definition
 
-**Team Name:** `super-dev-agent-team`
+**Team Name:** `super-dev-team`
 
-This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 to have all teammates ready.
+This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 if it doesn't already exist. Reuse the existing team across invocations.
 
 ### Team Creation Command
 
 ```
-Create an agent team named "super-dev-agent-team" with these teammates:
+Create an agent team named "super-dev-team" with these teammates:
 - super-dev:coordinator (Team Lead)
 - super-dev:requirements-clarifier
 - super-dev:bdd-scenario-writer
@@ -894,8 +897,8 @@ When creating the agent team in Phase 1, use this pattern:
 
 ```
 Create an agent team for this development workflow:
-- Team name: "super-dev-[spec-index]-[spec-name]"
-- Include all teammates from super-dev-agent-team definition
+- Team name: "super-dev-team"
+- Reuse existing team if already created from a previous invocation
 
 Teammates to include:
 1. super-dev:coordinator (Team Lead - this session)

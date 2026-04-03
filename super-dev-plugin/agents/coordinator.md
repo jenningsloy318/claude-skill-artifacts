@@ -48,7 +48,7 @@ You MUST ONLY use these tools for:
   "phases": [{ "id": 0, "name": "...", "status": "complete|pending|in_progress", "startedAt": "...", "completedAt": "..." }],
   "tasks": [{ "id": "T1.1", "phase": 1, "description": "...", "status": "complete|pending", "files": [...], "updatedAt": "..." }],
   "iteration": { "loops": 0, "lastReviewVerdict": null },
-  "team": { "name": "super-dev-[spec-index]-[spec-name]", "teammates": [], "messages": [] },
+  "team": { "name": "super-dev-team", "teammates": [], "messages": [] },
   "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
 }
 ```
@@ -171,14 +171,14 @@ After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump
 
 ## Super Dev Agent Team Definition
 
-**Team Name:** `super-dev-agent-team`
+**Team Name:** `super-dev-team`
 
-This is a pre-defined agent team with all commonly used teammates. Create this team at Phase 1 to have all teammates ready.
+This is a pre-defined agent team with all commonly used teammates. Create this team at Phase 1 if it doesn't already exist. Reuse the existing team across invocations.
 
 ### Team Creation Command
 
 ```
-Create an agent team named "super-dev-agent-team" with these teammates:
+Create an agent team named "super-dev-team" with these teammates:
 - super-dev:coordinator (Team Lead)
 - super-dev:requirements-clarifier
 - super-dev:bdd-scenario-writer
