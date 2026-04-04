@@ -4,14 +4,15 @@ A comprehensive coordinator-driven development workflow plugin for Claude Code w
 
 **Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
 
-**v2.1.0 — Enhanced with 2026 AI Development Best Practices:**
+**v2.3.0 — Enhanced with 2026 AI Development Best Practices:**
 - **Persona-Based Agent Roles**: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
 - **Continuous Verification Gates**: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
 - **Real Browser Testing**: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
 - **Autoresearch Skill**: Auto-improve agent prompts using Karpathy's iterative test-measure-improve method
 - **Investigation Protocol**: New `investigator` agent for bounded mid-execution research when agents hit unknowns (inspired by gstack's `/investigate`)
+- **10 Automated Hooks**: Hook-level enforcement for safety, formatting, linting, testing, phase gates, and checkpoints (inspired by @zodchiii's 8 hooks principle)
 
-*Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, and Anthropic's official skill design lessons.*
+*Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, @zodchiii's Claude Code hooks, and Anthropic's official skill design lessons.*
 
 ## Overview
 
@@ -185,8 +186,18 @@ super-dev-plugin/
 │   ├── review.md                 # Code review mode context
 │   └── research.md               # Research/exploration mode context
 │
-├── mcp-configs/                # MCP server configurations (NEW)
-│   └── mcp-servers.json          # GitHub, Supabase, Vercel, Railway, etc.
+├── hooks/                     # Automated hooks (10 total)
+│   ├── hooks.json                  # Hook configuration (PreToolUse/PostToolUse/Stop)
+│   ├── block-dangerous.sh          # Block destructive Bash commands
+│   ├── protect-files.sh            # Block edits to sensitive files
+│   ├── log-commands.sh             # Audit trail of all commands
+│   ├── require-tests-pr.sh         # Gate: tests must pass before PR
+│   ├── phase-gate.sh               # Gate: validate phase artifacts before agent spawn
+│   ├── phase-manifest.json         # Phase → required artifacts mapping
+│   ├── auto-format.sh              # Auto-detect and run formatter
+│   ├── auto-lint.sh                # Auto-detect and run linter
+│   ├── run-tests.sh                # Run tests after edit (opt-in)
+│   └── auto-checkpoint.sh          # Git checkpoint on stop
 │
 ├── plugins/                    # Plugin ecosystem documentation (NEW)
 │   └── README.md                # Plugins and marketplaces guide
@@ -243,6 +254,59 @@ super-dev-plugin/
 5. **MCP Configurations** - Pre-configured MCP server templates
 6. **Additional Agents** - planner, tdd-guide, security-reviewer, refactor-cleaner, etc.
 7. **Additional Commands** - /plan, /tdd, /e2e, /refactor-clean, etc.
+
+## Hooks (10 Total)
+
+Hooks are automatic actions that fire every time Claude edits a file, runs a command, or finishes a task. Unlike CLAUDE.md rules (~80% compliance), hooks provide **100% enforcement** — they run in the background without Claude needing to remember.
+
+### PreToolUse Hooks (block before action)
+
+| # | Hook | Matcher | Purpose |
+|---|------|---------|---------|
+| 1 | `usage-tracker.sh` | `Skill\|Agent` | Track skill/agent invocations to usage log |
+| 2 | `block-dangerous.sh` | `Bash` | Block `rm -rf`, `DROP TABLE`, `git push --force`, etc. (exit 2) |
+| 3 | `protect-files.sh` | `Edit\|Write` | Block edits to `.env`, `.pem`, `secrets/`, `.git/` (exit 2) |
+| 4 | `log-commands.sh` | `Bash` | Timestamped audit trail of every command |
+| 5 | `require-tests-pr.sh` | `mcp__github__create_pull_request` | Hard gate: tests must pass before PR creation |
+| 6 | `phase-gate.sh` | `Agent` | Validate previous phase artifacts before spawning next agent |
+
+### PostToolUse Hooks (quality control after action)
+
+| # | Hook | Matcher | Purpose |
+|---|------|---------|---------|
+| 7 | `auto-format.sh` | `Write\|Edit` | Auto-detect formatter (prettier/biome/black/ruff/gofmt/rustfmt) |
+| 8 | `auto-lint.sh` | `Write\|Edit` | Auto-detect linter (eslint/biome/ruff/golangci-lint/clippy) |
+| 9 | `run-tests.sh` | `Write\|Edit` | Run tests after edit (opt-in: `SUPER_DEV_TEST_ON_EDIT=1`) |
+
+### Stop Hook (cleanup on session end)
+
+| # | Hook | Matcher | Purpose |
+|---|------|---------|---------|
+| 10 | `auto-checkpoint.sh` | (all) | Create recoverable git checkpoint via `git stash create` |
+
+### Phase Gate (Hook #6)
+
+The phase-gate hook validates that prerequisite artifacts exist before spawning phase agents. It reads `phase-manifest.json` to map agent types to required files:
+
+```
+Phase 2.5 (BDD)        → requires 01-requirements.md
+Phase 3   (Research)    → requires 01-requirements.md + 01.1-behavior-scenarios.md
+Phase 5   (Assessment)  → requires 02-research-report.md
+Phase 6   (Spec)        → requires 04-assessment.md
+Phase 8   (Execution)   → requires 06-specification.md + 07-plan.md + 08-task-list.md
+Phase 9   (Review)      → requires 06-specification.md
+Phase 10  (Docs)        → requires 06-specification.md
+Phase 10.5 (Handoff)    → requires 06-specification.md
+```
+
+The gate also validates required sections within files (e.g., requirements.md must contain "Acceptance Criteria").
+
+### Configuration
+
+Hooks are defined in `hooks/hooks.json` and activated automatically when the plugin is loaded. Environment variables:
+
+- `SUPER_DEV_TEST_ON_EDIT=1` — Enable test-on-edit feedback loop (Hook #9)
+- `SUPER_DEV_SPEC_DIR=/path` — Override spec directory detection for phase gates
 
 ## Agents
 

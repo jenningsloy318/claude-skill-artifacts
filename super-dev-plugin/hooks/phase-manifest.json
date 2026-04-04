@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "description": "Maps super-dev agent types to required prerequisite artifacts from previous phases",
+  "gates": {
+    "super-dev:bdd-scenario-writer": {
+      "phase": "2.5",
+      "description": "BDD Scenario Writing requires completed requirements",
+      "requires": ["01-requirements.md"],
+      "sections": {
+        "01-requirements.md": ["Acceptance Criteria"]
+      }
+    },
+    "super-dev:research-agent": {
+      "phase": "3",
+      "description": "Research requires completed requirements and BDD scenarios",
+      "requires": ["01-requirements.md", "01.1-behavior-scenarios.md"],
+      "sections": {
+        "01.1-behavior-scenarios.md": ["Scenario", "Given"]
+      }
+    },
+    "super-dev:debug-analyzer": {
+      "phase": "4",
+      "description": "Debug analysis requires completed requirements",
+      "requires": ["01-requirements.md"],
+      "sections": {}
+    },
+    "super-dev:code-assessor": {
+      "phase": "5",
+      "description": "Code assessment requires research report",
+      "requires": ["02-research-report.md"],
+      "sections": {}
+    },
+    "super-dev:architecture-agent": {
+      "phase": "5.3",
+      "description": "Architecture design requires assessment",
+      "requires": ["04-assessment.md"],
+      "sections": {}
+    },
+    "super-dev:product-designer": {
+      "phase": "5.4",
+      "description": "Product design requires assessment with both arch and UI",
+      "requires": ["04-assessment.md"],
+      "sections": {}
+    },
+    "super-dev:ui-ux-designer": {
+      "phase": "5.5",
+      "description": "UI/UX design requires assessment",
+      "requires": ["04-assessment.md"],
+      "sections": {}
+    },
+    "super-dev:spec-writer": {
+      "phase": "6",
+      "description": "Spec writing requires assessment and design documents",
+      "requires": ["04-assessment.md"],
+      "sections": {}
+    },
+    "super-dev:dev-executor": {
+      "phase": "8",
+      "description": "Execution requires complete specification, plan, and task list",
+      "requires": ["06-specification.md", "07-implementation-plan.md", "08-task-list.md"],
+      "sections": {
+        "06-specification.md": ["Implementation"],
+        "08-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:qa-agent": {
+      "phase": "8",
+      "description": "QA requires complete specification and BDD scenarios",
+      "requires": ["06-specification.md", "01.1-behavior-scenarios.md"],
+      "sections": {}
+    },
+    "super-dev:code-reviewer": {
+      "phase": "9",
+      "description": "Code review requires specification (after execution)",
+      "requires": ["06-specification.md"],
+      "sections": {}
+    },
+    "super-dev:adversarial-reviewer": {
+      "phase": "9",
+      "description": "Adversarial review requires specification (after execution)",
+      "requires": ["06-specification.md"],
+      "sections": {}
+    },
+    "super-dev:docs-executor": {
+      "phase": "10",
+      "description": "Documentation requires specification and implementation summary",
+      "requires": ["06-specification.md"],
+      "sections": {}
+    },
+    "super-dev:handoff-writer": {
+      "phase": "10.5",
+      "description": "Handoff requires specification directory with all artifacts",
+      "requires": ["06-specification.md"],
+      "sections": {}
+    }
+  }
+}
