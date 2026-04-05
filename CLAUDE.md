@@ -28,6 +28,11 @@ These rules define how to translate Figma inputs into code for this project and 
 - when commit and push, only commit those file you edited, ignore the files which are not created or edit by you at the moment
 - don't use git add -A, just use git add file1 file2( only files edit/created/delete by you in this session)
 
+## Plugin versioning rule (MUST follow)
+- Every modification to files under `super-dev-plugin/` MUST include a patch version bump in `super-dev-plugin/.claude-plugin/plugin.json`
+- Every modification to files under `context-keeper-plugin/` MUST include a patch version bump in `context-keeper-plugin/.claude-plugin/plugin.json`
+- Bump the patch level (e.g., 2.3.1 → 2.3.2) and include `plugin.json` in the same commit
+
 ## Development Philosophy Integration (MUST follow)
 
 - **Incremental development**: Make small, atomic commits; each commit must compile/build successfully and pass all tests.

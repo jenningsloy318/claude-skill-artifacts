@@ -2,7 +2,7 @@
 
 ## Available Agents
 
-Located in `~/.claude/agents/`:
+Located in `${CLAUDE_PLUGIN_ROOT}/agents/`:
 
 | Agent | Purpose | When to Use |
 |-------|---------|-------------|

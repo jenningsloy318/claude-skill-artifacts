@@ -110,4 +110,4 @@ After planning:
 ## Related Agents
 
 This command invokes the `planner` agent located at:
-`~/.claude/agents/planner.md`
+`${CLAUDE_PLUGIN_ROOT}/agents/planner.md`
