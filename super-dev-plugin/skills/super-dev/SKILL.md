@@ -163,9 +163,9 @@ Grade each completed workflow run against these three dimensions:
 ```
 - [ ] Phase 0:  Apply Dev Rules
 - [ ] Phase 1:  Specification Setup (worktree + team creation)
-- [ ] Phase 2:  Requirements Clarification
+- [ ] Phase 2:  Requirements Clarification (requirements-clarifier + doc-validator PARALLEL)
 - [ ] GATE:     Requirements Completeness (gate-requirements.sh — run by doc-validator)
-- [ ] Phase 2.5: BDD Scenario Writing (MANDATORY, user confirmation required)
+- [ ] Phase 2.5: BDD Scenario Writing (bdd-scenario-writer + doc-validator PARALLEL, user confirmation required)
 - [ ] GATE:     BDD Scenario Quality (gate-bdd.sh — run by doc-validator)
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
@@ -173,12 +173,12 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 5.3: Architecture Design (arch only)
 - [ ] Phase 5.4: Product Design (arch + UI together)
 - [ ] Phase 5.5: UI/UX Design (UI only)
-- [ ] Phase 6:  Specification Writing
+- [ ] Phase 6:  Specification Writing (spec-writer + doc-validator PARALLEL)
 - [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
 - [ ] GATE:     Build & Test Pass (gate-build.sh — run by coordinator)
-- [ ] Phase 9:  Code Review + Adversarial Review (PARALLEL teammates)
+- [ ] Phase 9:  Code Review + Adversarial Review (code-reviewer + adversarial-reviewer + 2x doc-validator, 4 agents PARALLEL)
 - [ ] GATE:     Review Verdicts (gate-review.sh — run by doc-validator)
 - [ ] Phase 10: Documentation Update
 - [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh — run by coordinator)

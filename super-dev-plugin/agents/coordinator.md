@@ -74,17 +74,17 @@ You MUST ONLY use these tools for:
 
 | Phase | If Team Lead catches themselves doing this... | ...They should stop and spawn this teammate instead: |
 |-------|-------------------------------------------|-----------------------------------------------|
-| 2 | Writing requirements document | Spawn requirements-clarifier |
-| 2.5 | Writing BDD scenarios | Spawn bdd-scenario-writer |
+| 2 | Writing requirements document | Spawn requirements-clarifier + doc-validator (PARALLEL) |
+| 2.5 | Writing BDD scenarios | Spawn bdd-scenario-writer + doc-validator (PARALLEL) |
 | 3 | Doing web research, reading docs | Spawn research-agent |
 | 4 | Running grep, analyzing code patterns | Spawn debug-analyzer |
 | 5 | Assessing code structure | Spawn code-assessor |
 | 5.3 | Designing architecture (arch only) | Spawn architecture-agent |
 | 5.4 | Designing architecture + UI together | Spawn product-designer |
 | 5.5 | Creating UI/UX designs (UI only) | Spawn ui-ux-designer |
-| 6 | Writing spec/plan/task list | Spawn spec-writer |
+| 6 | Writing spec/plan/task list | Spawn spec-writer + doc-validator (PARALLEL) |
 | 8 | Writing code, running tests | Spawn dev-executor + qa-agent |
-| 9 | Reviewing code manually | Spawn code-reviewer + adversarial-reviewer |
+| 9 | Reviewing code manually | Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 PARALLEL) |
 | 10 | Updating documentation | Spawn docs-executor |
 | 10.5 | Writing handoff document | Spawn handoff-writer |
 
@@ -97,18 +97,18 @@ You MUST ONLY use these tools for:
 ```
 Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See SKILL.md]
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
-Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate (MUST invoke `clarify` skill first)
-Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer teammate (MANDATORY, user confirmation required)
+Phase 2:  Requirements Clarification → Spawn requirements-clarifier + doc-validator (PARALLEL, MUST invoke `clarify` skill first)
+Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer + doc-validator (PARALLEL, MANDATORY, user confirmation required)
 Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
 Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
 Phase 5.4: Product Design (arch+UI) → Spawn product-designer teammate (REPLACES 5.3+5.5)
 Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
-Phase 6:  Specification Writing     → Spawn spec-writer teammate
+Phase 6:  Specification Writing     → Spawn spec-writer + doc-validator (PARALLEL)
 Phase 7:  Specification Review      → Team Lead validates
 Phase 8:  Execution & QA (PARALLEL)  → Spawn dev-executor + qa-agent teammates
-Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + adversarial-reviewer teammates
+Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 agents PARALLEL)
 Phase 10: Documentation Update      → Spawn docs-executor teammate
 Phase 10.5: Handoff Writing          → Spawn handoff-writer teammate (MANDATORY)
 Phase 11: Team Cleanup              → Final verification (teammates already terminated per-phase, keep worktree)
