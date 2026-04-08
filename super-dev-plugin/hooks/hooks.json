@@ -1,5 +1,6 @@
 {
-  "PreToolUse": [
+  "hooks": {
+    "PreToolUse": [
     {
       "matcher": "Skill|Agent",
       "hooks": [
@@ -80,4 +81,5 @@
       ]
     }
   ]
+  }
 }
