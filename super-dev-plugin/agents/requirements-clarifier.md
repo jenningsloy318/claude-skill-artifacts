@@ -398,7 +398,7 @@ Based on the analysis, I recommend:
 The output file `01-requirements.md` MUST satisfy these automated gate checks or the workflow will be blocked:
 
 1. **"acceptance criteria" text** — The document MUST contain the exact phrase "Acceptance Criteria" (case-insensitive) as a section heading
-2. **Minimum 2 checkbox items** — MUST have at least 2 lines matching `- [ ]` format (acceptance criteria items). Always produce 3+ items.
+2. **Minimum 2 acceptance criteria items** — MUST have at least 2 lines matching EITHER `- [ ]` checkbox format OR `- **AC-XX**: description` / `- AC-XX: description` format. Always produce 3+ items.
 3. **Non-functional keywords** — MUST contain at least one of: "non-functional", "performance", "security", "accessibility" (case-insensitive)
 4. **Summary keyword** — MUST contain "executive summary" or "summary" (case-insensitive)
 5. **Minimum 500 characters** — Document must be substantive, not just a template skeleton

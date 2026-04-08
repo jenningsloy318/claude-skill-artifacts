@@ -35,8 +35,11 @@ fi
 has_ac=$(grep -ci "acceptance criteria" "$REQ_FILE" || true)
 check "Has acceptance criteria section" "$([ "$has_ac" -gt 0 ] && echo true || echo false)"
 
-# Check for at least 2 acceptance criteria items
-ac_count=$(grep -cE '^\s*-\s*\[' "$REQ_FILE" 2>/dev/null || true)
+# Check for at least 2 acceptance criteria items (supports both checkbox and AC-ID formats)
+# Matches: "- [ ] criterion", "- [x] criterion", "- **AC-1.1**: criterion", "- AC-01: criterion"
+ac_checkbox=$(grep -cE '^\s*-\s*\[' "$REQ_FILE" 2>/dev/null || true)
+ac_id=$(grep -cE '^\s*-\s*\*{0,2}AC-[0-9]' "$REQ_FILE" 2>/dev/null || true)
+ac_count=$((ac_checkbox + ac_id))
 check "Has at least 2 acceptance criteria items (found: ${ac_count})" "$([ "$ac_count" -ge 2 ] && echo true || echo false)"
 
 # Check for non-functional requirements
