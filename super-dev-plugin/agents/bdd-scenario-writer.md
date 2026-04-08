@@ -166,6 +166,18 @@ The output file is `01.1-behavior-scenarios.md` in the spec directory:
 - [x] D8: No duplicates
 ```
 
+## Gate Compliance (MANDATORY — gate-bdd.sh)
+
+The output file `01.1-behavior-scenarios.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+
+1. **SCENARIO-IDs** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`)
+2. **Given/When/Then at line start** — MUST have at least 3 lines where Given, When, Then, or And appears at the start of the line (after optional whitespace and bold markers). The gate regex matches `^\s*\*{0,2}(given|when|then|and)`. Both `**Given**` and plain `Given` formats work.
+3. **AC references** — MUST contain at least 1 `AC-[0-9]+` pattern (e.g., `AC-01`) for traceability
+4. **Scenario count >= AC count** — The number of SCENARIO-XXX IDs MUST be greater than or equal to the number of `- [ ]` acceptance criteria items in `01-requirements.md`. Always produce at least as many scenarios as there are acceptance criteria.
+5. **Minimum 300 characters** — Document must be substantive, not just a template skeleton
+
+**If any check fails, the gate blocks Phase 3 (Research) from starting.**
+
 ## Quality Gates
 
 ### Per-Scenario Checks (Q1-Q10)

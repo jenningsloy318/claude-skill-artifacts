@@ -292,6 +292,16 @@ ELSE:
 - **CONTESTED** → Team Lead reviews findings, decides accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with the findings as input for dev-executor to fix
 
+## Gate Compliance (MANDATORY — gate-review.sh)
+
+The output file `*-adversarial-review-report.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+
+1. **Verdict text** — MUST contain one of: "PASS", "CONTESTED", "REJECT", "HALT" (case-insensitive). The `**Verdict:**` line in the header satisfies this.
+2. **PASS or CONTESTED to pass gate** — The gate passes when "PASS" or "CONTESTED" is found AND "REJECT" is NOT found in the first matching line. CONTESTED is treated as Team Lead accepted, since the gate runs only after the Team Lead decides to proceed.
+3. **REJECT blocks the gate** — If "REJECT" appears, the gate fails and Phase 8/9 must loop.
+
+**If the gate fails, Phase 10 (Documentation) is blocked.**
+
 ## Severity Reference
 
 | Severity | Impact | Examples |

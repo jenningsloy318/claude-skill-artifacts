@@ -35,8 +35,11 @@ if [ -n "$CODE_REVIEW" ]; then
     check "Code review exists" "true"
     check "Code review approved (verdict: $(echo "$cr_verdict" | head -c 50))" "$([ "$is_approved" -gt 0 ] && [ "$is_blocked" -eq 0 ] && echo true || echo false)"
 
-    # Check no critical issues remain
-    critical_count=$(grep -cE '\*\*Critical\*\*|Critical.*[1-9]' "$CODE_REVIEW" 2>/dev/null || true)
+    # Check no critical issues remain (match "| Critical | N |" where N>0, or bold **Critical** in findings)
+    # Exclude section headings like "### Critical" and summary rows like "| Critical | 0 |"
+    critical_findings=$(grep -cE '\*\*Critical\*\*' "$CODE_REVIEW" 2>/dev/null || true)
+    critical_nonzero=$(grep -cE '\|\s*Critical\s*\|\s*[1-9]' "$CODE_REVIEW" 2>/dev/null || true)
+    critical_count=$((critical_findings + critical_nonzero))
     check "No critical issues (found: ${critical_count})" "$([ "$critical_count" -eq 0 ] && echo true || echo false)"
 else
     check "Code review file exists" "false"
@@ -45,13 +48,13 @@ fi
 # Find adversarial review file
 ADV_REVIEW=$(find "$SPEC_DIR" -name "*adversarial*" -type f 2>/dev/null | head -1)
 if [ -n "$ADV_REVIEW" ]; then
-    # Check for PASS verdict
+    # Check for PASS or CONTESTED verdict (CONTESTED = Team Lead accepted)
     adv_verdict=$(grep -iE '(PASS|CONTESTED|REJECT|HALT)' "$ADV_REVIEW" | head -1 || echo "")
-    is_pass=$(echo "$adv_verdict" | grep -ci "PASS" || true)
+    is_pass=$(echo "$adv_verdict" | grep -ciE "PASS|CONTESTED" || true)
     is_reject=$(echo "$adv_verdict" | grep -ci "REJECT" || true)
 
     check "Adversarial review exists" "true"
-    check "Adversarial review PASS (verdict: $(echo "$adv_verdict" | head -c 50))" "$([ "$is_pass" -gt 0 ] && [ "$is_reject" -eq 0 ] && echo true || echo false)"
+    check "Adversarial review PASS or CONTESTED (verdict: $(echo "$adv_verdict" | head -c 50))" "$([ "$is_pass" -gt 0 ] && [ "$is_reject" -eq 0 ] && echo true || echo false)"
 else
     check "Adversarial review file exists" "false"
 fi

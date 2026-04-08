@@ -288,6 +288,19 @@ Files: [list of updated doc files]
 All documentation updated and ready for cleanup and commit.
 ```
 
+## Gate Compliance (MANDATORY — gate-docs-drift.sh)
+
+The documentation update MUST satisfy these automated gate checks or the workflow will be blocked:
+
+1. **README.md exists** — Verify `README.md` exists in the project root. If it doesn't exist, create a minimal one describing the project. If it exists, update it to reflect any user-facing changes from this workflow.
+2. **README.md is non-trivial** — README must be >100 characters. Ensure it has substantive content, not just a title.
+3. **TODO/FIXME count** — The project must have <=5 source files containing TODO, FIXME, HACK, or XXX comments (checked across `.ts`, `.tsx`, `.js`, `.py`, `.rs`, `.go` files). Before completing Phase 10:
+   - Scan the project for these markers: `grep -rl "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.py" --include="*.rs" --include="*.go" .`
+   - If count > 5 files, resolve or remove TODOs introduced by this workflow
+   - If pre-existing TODOs push count > 5, report the count to the Team Lead for awareness
+
+**If any check fails, the gate blocks Phase 10.5 (Handoff Writing) from starting.**
+
 ## Quality Standards
 
 Every document update must:

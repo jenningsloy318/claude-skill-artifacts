@@ -281,6 +281,17 @@ You run IN PARALLEL with:
 "DEV_BLOCKED: [task_id] [error_description]"
 ```
 
+## Gate Compliance (MANDATORY — gate-build.sh + gate-docs-drift.sh)
+
+The implementation MUST satisfy these constraints enforced by downstream gates:
+
+1. **Build passes** (`gate-build.sh`) — All code must compile/build successfully and all tests must pass
+2. **No excessive TODO/FIXME markers** (`gate-docs-drift.sh`) — The project must have <=5 source files containing TODO, FIXME, HACK, or XXX. When implementing:
+   - NEVER leave TODO/FIXME/HACK/XXX comments in new code — implement fully or flag as blocked
+   - If you find pre-existing TODOs that push the count >5, report to Team Lead
+   - Before signaling DEV_COMPLETE, check: `grep -rl "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.py" --include="*.rs" --include="*.go" . | wc -l`
+3. **BDD scenario references in code** — For business logic implementing specific behaviors, include SCENARIO-XXX IDs in code comments
+
 ## Quality Standards
 
 Every implementation must:

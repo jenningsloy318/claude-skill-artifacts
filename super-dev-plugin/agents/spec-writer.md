@@ -337,6 +337,18 @@ Examples:
 1. [Step 1]
 2. [Step 2]
 
+## 8.1 Implementation Plan
+
+### Task List
+
+The following tasks implement this specification (cross-referenced with BDD scenarios):
+
+- [ ] **T1** [First implementation task] (SCENARIO-XXX)
+- [ ] **T2** [Second implementation task] (SCENARIO-XXX)
+- [ ] **T3** [Third implementation task] (SCENARIO-XXX)
+
+See `08-task-list.md` for full task breakdown with file paths and acceptance criteria.
+
 ## 9. Unambiguous Implementation Requirements (MANDATORY)
 
 ### 9.1 Single Implementation Guarantee
@@ -553,6 +565,17 @@ T1.1 ──┬──▶ T1.2 ──┬──▶ T2.1
 2. T1.2 - [reason]
 3. ...
 ```
+
+## Gate Compliance (MANDATORY — gate-spec-trace.sh)
+
+The output file `06-specification.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+
+1. **BDD scenario references** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4 and Section 8.1.
+2. **Testing strategy text** — MUST contain at least one of: "testing strategy", "test plan", "test approach" (case-insensitive). Section 5 heading satisfies this.
+3. **Task list items** — MUST contain at least 1 checkbox line matching `- [ ]` or `- [x]`. Section 8.1 "Task List" provides these.
+4. **Implementation plan text** — MUST contain at least one of: "implementation plan", "implementation phases", "task list" (case-insensitive). Section 8.1 heading satisfies this.
+
+**If any check fails, the gate blocks Phase 7 (Spec Review) from starting.**
 
 ## Quality Standards
 

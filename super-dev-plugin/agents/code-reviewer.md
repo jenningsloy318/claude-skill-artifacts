@@ -370,6 +370,19 @@ Else → Approved
 **Blocking Issues:** [F-XXX IDs or “None”]
 ```
 
+## Gate Compliance (MANDATORY — gate-review.sh)
+
+The output file `*-code-review.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+
+1. **Verdict text** — MUST contain one of: "Approved", "Approved with Comments", "Changes Requested", "Blocked" (case-insensitive). The `**Status:**` line in the header and `## Verdict` section both satisfy this.
+2. **Approved to pass** — The gate passes when "approved" is found AND neither "changes requested" nor "blocked" appears in the first matching line. "Approved with Comments" counts as approved.
+3. **No critical issues** — The gate checks for `**Critical**` (bold markdown) and `| Critical | N |` where N>0 in summary tables. If ANY critical findings exist, the gate fails regardless of verdict.
+   - The `### Critical` section heading does NOT trigger this (it's `###` not `**`).
+   - A summary table row `| Critical | 0 |` does NOT trigger this (0 is not matched by `[1-9]`).
+   - A summary table row `| Critical | 2 |` DOES trigger this — ensure critical count is 0 when approving.
+
+**If the gate fails, Phase 10 (Documentation) is blocked and Phase 8/9 must loop.**
+
 ## Severity Reference
 
 | Severity | Blocks? | When to Use | Examples |
