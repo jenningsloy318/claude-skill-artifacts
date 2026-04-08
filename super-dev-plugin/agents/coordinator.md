@@ -277,6 +277,12 @@ Create an agent team named "super-dev-team" with these teammates:
 
 ## Teammate Spawn Patterns
 
+**⚠️ MANDATORY PARALLEL SPAWN RULE — DO NOT SKIP DOC-VALIDATOR ⚠️**
+
+For Phases 2, 2.5, 6, and 9: you MUST spawn the doc-validator teammate AT THE SAME TIME as the writer teammate. This is NOT optional. If you spawn only the writer agent without the doc-validator, you are violating the workflow.
+
+**Self-check before each spawn:** "Am I spawning doc-validator alongside the writer? If not, STOP and add it."
+
 **Planning Phases (sequential — with parallel validator):**
 
 **Phase 2 (PARALLEL — writer + validator):**

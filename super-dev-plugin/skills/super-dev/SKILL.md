@@ -416,6 +416,8 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 
 **MANDATORY: Team Lead orchestrates via Task tool, agents execute.**
 
+**⚠️ PARALLEL DOC-VALIDATOR RULE (Phases 2, 2.5, 6, 9): ALWAYS spawn `super-dev:doc-validator` alongside the writer agent. Spawning only the writer without doc-validator is a VIOLATION. Both must be spawned in the SAME action.**
+
 | Phase | Team Lead Action | Agent to Spawn (via Task tool) |
 |-------|-----------------|--------------------------------|
 | 0 | Invoke dev-rules skill | (none) |
