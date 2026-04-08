@@ -195,6 +195,7 @@ Create an agent team named "super-dev-team" with these teammates:
 - super-dev:adversarial-reviewer
 - super-dev:docs-executor
 - super-dev:handoff-writer
+- super-dev:doc-validator
 ```
 
 ### Teammate Roles by Category
@@ -217,49 +218,72 @@ Create an agent team named "super-dev-team" with these teammates:
 | **Review** | adversarial-reviewer | Multi-lens adversarial challenge |
 | **Docs** | docs-executor | Update documentation |
 | **Docs** | handoff-writer | Generate session handoff document |
+| **Support** | doc-validator | Independent gate-criteria validation, runs parallel with writers |
 
 ### When to Spawn Each Teammate
 
 | Phase | Spawn These Teammates |
 |-------|----------------------|
-| 2 | requirements-clarifier |
-| 2.5 | bdd-scenario-writer |
+| 2 | requirements-clarifier + doc-validator (parallel) |
+| 2.5 | bdd-scenario-writer + doc-validator (parallel) |
 | 3 | research-agent |
 | 4 | debug-analyzer (bugs only) |
 | 5 | code-assessor |
 | 5.3 | architecture-agent |
 | 5.4 | product-designer |
 | 5.5 | ui-ux-designer |
-| 6 | spec-writer |
+| 6 | spec-writer + doc-validator (parallel) |
 | 8 | dev-executor + qa-agent (parallel) |
-| 9 | code-reviewer + adversarial-reviewer (parallel) |
+| 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator (parallel, 4 agents) |
 | 10 | docs-executor |
 | 10.5 | handoff-writer |
 
 ## Teammate Spawn Patterns
 
-**Planning Phases (sequential):**
-```
-"Spawn a [role] teammate with this context:
-- Task: [task description]
-- Worktree: .worktree/[spec-index]-[spec-name]
-- Spec directory: specification/[spec-index]-[spec-name]
-- [Additional context as needed]
+**Planning Phases (sequential — with parallel validator):**
 
-Your role is to [brief role description]. Output: [expected output]"
+**Phase 2 (PARALLEL — writer + validator):**
 ```
+Spawn BOTH in parallel:
 
-**Phase 2.5 (BDD Scenarios — MANDATORY user confirmation):**
-```
-"Spawn a bdd-scenario-writer teammate with this context:
-- Task: Generate BDD behavior scenarios from acceptance criteria
-- Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
-- Spec directory: specification/[spec-index]-[spec-name]
-- Feature name: [feature name]
+1. "Spawn a requirements-clarifier teammate with this context:
+   - Task: [task description]
+   - Worktree: .worktree/[spec-index]-[spec-name]
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Your role is to produce 01-requirements.md. A doc-validator runs alongside you —
+   respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
-Your role is to produce 01.1-behavior-scenarios.md with Given/When/Then scenarios
-mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-Q10 and D1-D8."
+2. "Spawn a doc-validator teammate with this context:
+   - Document: specification/[spec-index]-[spec-name]/01-requirements.md
+   - Gate profile: gate-requirements
+   - Writer agent: requirements-clarifier
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate 01-requirements.md against gate-requirements.sh criteria.
+   Message the writer with fix instructions on failure. Loop until PASS."
 ```
+Wait for BOTH to complete (validator reports PASS). Then terminate both.
+
+**Phase 2.5 (PARALLEL — writer + validator, then user confirmation):**
+```
+Spawn BOTH in parallel:
+
+1. "Spawn a bdd-scenario-writer teammate with this context:
+   - Task: Generate BDD behavior scenarios from acceptance criteria
+   - Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
+   - Spec directory: specification/[spec-index]-[spec-name]
+   - Feature name: [feature name]
+   Your role is to produce 01.1-behavior-scenarios.md. A doc-validator runs alongside you —
+   respond to its VALIDATION FAILED messages by fixing and replying FIXED."
+
+2. "Spawn a doc-validator teammate with this context:
+   - Document: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
+   - Gate profile: gate-bdd
+   - Writer agent: bdd-scenario-writer
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate 01.1-behavior-scenarios.md against gate-bdd.sh criteria.
+   Message the writer with fix instructions on failure. Loop until PASS."
+```
+Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **After bdd-scenario-writer completes:**
 1. Team Lead reads and summarizes the generated BDD scenarios for the user
@@ -267,6 +291,32 @@ mapped to every acceptance criterion. No Scenario Outlines. Validate against Q1-
 3. **WAIT for user confirmation** before proceeding to Phase 3
 4. If user requests changes: message bdd-scenario-writer with feedback, or re-spawn if terminated
 5. Only proceed to Phase 3 AFTER user explicitly confirms the scenarios
+
+**Phase 6 (PARALLEL — writer + validator):**
+```
+Spawn BOTH in parallel:
+
+1. "Spawn a spec-writer teammate with this context:
+   - Task: Write technical specification, implementation plan, and task list
+   - Spec directory: specification/[spec-index]-[spec-name]
+   - Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
+   - BDD Scenarios: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
+   - Research: specification/[spec-index]-[spec-name]/02-research-report.md
+   - Assessment: specification/[spec-index]-[spec-name]/04-code-assessment.md
+   - [additional inputs as applicable]
+   Your role is to produce 06-specification.md, 07-implementation-plan.md, 08-task-list.md.
+   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
+   by fixing and replying FIXED."
+
+2. "Spawn a doc-validator teammate with this context:
+   - Document: specification/[spec-index]-[spec-name]/06-specification.md
+   - Gate profile: gate-spec-trace
+   - Writer agent: spec-writer
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate 06-specification.md against gate-spec-trace.sh criteria.
+   Message the writer with fix instructions on failure. Loop until PASS."
+```
+Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 8 (PARALLEL):**
 ```
@@ -282,12 +332,37 @@ Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing 
 "Spawn a qa-agent teammate with this context: ..."
 ```
 
-**Phase 9 (PARALLEL):**
+**Phase 9 (PARALLEL — reviewers + validators):**
 ```
-"Spawn a code-reviewer teammate with this context: ..."
+Spawn ALL FOUR in parallel:
 
-"Spawn an adversarial-reviewer teammate with this context: ..."
+1. "Spawn a code-reviewer teammate with this context:
+   - [existing context]
+   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
+   by fixing the review document and replying FIXED."
+
+2. "Spawn a doc-validator teammate with this context:
+   - Document: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md
+   - Gate profile: gate-review-code
+   - Writer agent: code-reviewer
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate the code review against gate-review.sh criteria (verdict format, critical count).
+   Message the writer with fix instructions on failure. Loop until PASS."
+
+3. "Spawn an adversarial-reviewer teammate with this context:
+   - [existing context]
+   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
+   by fixing the review document and replying FIXED."
+
+4. "Spawn a doc-validator teammate with this context:
+   - Document: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md
+   - Gate profile: gate-review-adversarial
+   - Writer agent: adversarial-reviewer
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate the adversarial review against gate-review.sh criteria (verdict format).
+   Message the writer with fix instructions on failure. Loop until PASS."
 ```
+Wait for ALL FOUR to complete (both validators report PASS). Then terminate all four.
 
 **Phase 10 (Documentation Update — MANDATORY, do NOT skip):**
 ```
@@ -365,17 +440,17 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Per-Phase Termination:**
 | Phase | Teammate | Terminate After |
 |-------|----------|-----------------|
-| 2 | requirements-clarifier | requirements.md complete |
-| 2.5 | bdd-scenario-writer | 01.1-behavior-scenarios.md complete AND user confirmed scenarios |
+| 2 | requirements-clarifier + doc-validator | requirements.md complete AND validator PASS, then terminate both |
+| 2.5 | bdd-scenario-writer + doc-validator | 01.1-behavior-scenarios.md complete AND validator PASS AND user confirmed scenarios, then terminate both |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
 | 5 | code-assessor | assessment.md complete |
 | 5.3 | architecture-agent | architecture.md complete, user selected option |
 | 5.4 | product-designer | All design docs complete, user selected option |
 | 5.5 | ui-ux-designer | design-spec.md complete, user selected option |
-| 6 | spec-writer | spec, plan, task-list complete |
+| 6 | spec-writer + doc-validator | spec, plan, task-list complete AND validator PASS, then terminate both |
 | 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
-| 9 | code-reviewer + adversarial-reviewer | **BOTH complete** (parallel), then terminate both |
+| 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator | **ALL FOUR complete** (parallel), both validators PASS, then terminate all four |
 | 10 | docs-executor | Documentation updated |
 | 10.5 | handoff-writer | 11-handoff.md complete |
 

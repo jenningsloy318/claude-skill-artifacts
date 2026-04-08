@@ -370,6 +370,21 @@ Else → Approved
 **Blocking Issues:** [F-XXX IDs or “None”]
 ```
 
+## Parallel Validator Integration
+
+A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the code review document, the validator independently checks it against `gate-review.sh` criteria (verdict format, critical finding count).
+
+**Your responsibilities:**
+1. Write `*-code-review.md` as normal
+2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, critical count format)
+3. After fixing, message the validator: `"FIXED: ready for re-check"`
+4. Repeat until you receive `"VALIDATED: PASS"`
+5. Only report completion to Team Lead after the validator confirms PASS
+
+**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+
+---
+
 ## Gate Compliance (MANDATORY — gate-review.sh)
 
 The output file `*-code-review.md` MUST satisfy these automated gate checks or the workflow will be blocked:

@@ -416,6 +416,21 @@ Based on the analysis, I recommend:
 3. **Future**: [What to keep in mind for roadmap]
 ```
 
+## Parallel Validator Integration
+
+A `doc-validator` agent runs alongside you in parallel during Phase 2. After you write `01-requirements.md`, the validator independently checks it against `gate-requirements.sh` criteria.
+
+**Your responsibilities:**
+1. Write `01-requirements.md` as normal
+2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
+3. After fixing, message the validator: `"FIXED: ready for re-check"`
+4. Repeat until you receive `"VALIDATED: PASS"`
+5. Only report completion to Team Lead after the validator confirms PASS
+
+**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+
+---
+
 ## Gate Compliance (MANDATORY — gate-requirements.sh)
 
 The output file `01-requirements.md` MUST satisfy these automated gate checks or the workflow will be blocked:

@@ -292,6 +292,21 @@ ELSE:
 - **CONTESTED** → Team Lead reviews findings, decides accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with the findings as input for dev-executor to fix
 
+## Parallel Validator Integration
+
+A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the adversarial review report, the validator independently checks it against `gate-review.sh` criteria (verdict format).
+
+**Your responsibilities:**
+1. Write `*-adversarial-review-report.md` as normal
+2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, REJECT appearing when intent was PASS)
+3. After fixing, message the validator: `"FIXED: ready for re-check"`
+4. Repeat until you receive `"VALIDATED: PASS"`
+5. Only report completion to Team Lead after the validator confirms PASS
+
+**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+
+---
+
 ## Gate Compliance (MANDATORY — gate-review.sh)
 
 The output file `*-adversarial-review-report.md` MUST satisfy these automated gate checks or the workflow will be blocked:

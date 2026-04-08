@@ -48,6 +48,17 @@ Break specification into implementable milestones.
 
 Generate granular tasks for execution.
 
+### Step 5: Pre-Output Self-Check (MANDATORY — do NOT skip)
+
+Before writing `06-specification.md` to disk, verify ALL of the following are present in your output. If any check fails, fix the spec before writing — do NOT rely on the gate to catch it.
+
+1. **Section 8.1 "Implementation Plan"** exists with heading text containing "Implementation Plan"
+2. **Task List inside Section 8.1** contains at least 3 items in `- [ ] **T1** ...` or `- [ ] T1: ...` format, each cross-referencing SCENARIO-XXX IDs
+3. **Section 5 "Testing Strategy"** exists and contains at least one of: "testing strategy", "test plan", "unit test", "integration test"
+4. **BDD scenario references** — at least 1 `SCENARIO-XXX` pattern appears (Section 5.4 and Section 8.1)
+
+**If any check fails:** Fix the missing section in your draft before writing the file. Do NOT output an incomplete spec.
+
 ## Output Documents
 
 **IMPORTANT FILE NAMING:** Files within each spec directory should start from 01-XX, not use the spec directory index. Example: `01-requirements.md`, `02-research-report.md`, etc.
@@ -565,6 +576,21 @@ T1.1 ──┬──▶ T1.2 ──┬──▶ T2.1
 2. T1.2 - [reason]
 3. ...
 ```
+
+## Parallel Validator Integration
+
+A `doc-validator` agent runs alongside you in parallel during Phase 6. After you write `06-specification.md`, the validator independently checks it against `gate-spec-trace.sh` criteria.
+
+**Your responsibilities:**
+1. Write `06-specification.md`, `07-implementation-plan.md`, `08-task-list.md` as normal
+2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
+3. After fixing, message the validator: `"FIXED: ready for re-check"`
+4. Repeat until you receive `"VALIDATED: PASS"`
+5. Only report completion to Team Lead after the validator confirms PASS
+
+**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+
+---
 
 ## Gate Compliance (MANDATORY — gate-spec-trace.sh)
 

@@ -324,19 +324,19 @@ Task tool → subagent_type: "super-dev:agent-name"
 
 | Phase | Teammate | Role |
 |-------|----------|------|
-| 2 | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements |
-| 2.5 | bdd-scenario-writer | Write BDD behavior scenarios from acceptance criteria |
+| 2 | requirements-clarifier + doc-validator | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements. **Validator runs in parallel** |
+| 2.5 | bdd-scenario-writer + doc-validator | Write BDD behavior scenarios from acceptance criteria. **Validator runs in parallel** |
 | 3 | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring, present 3-5 options |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
 | 5 | code-assessor | Assess architecture, style, frameworks |
 | 5.3 | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard, present 3-5 options |
 | 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
 | 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
-| 6 | spec-writer | Write spec, plan, task list |
+| 6 | spec-writer + doc-validator | Write spec, plan, task list. **Validator runs in parallel** |
 | 8 | dev-executor | Implement code (parallel with qa-agent) |
 | 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with dev-executor) |
-| 9 | code-reviewer | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs (parallel with adversarial-reviewer) |
-| 9 | adversarial-reviewer | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate (parallel with code-reviewer) |
+| 9 | code-reviewer + doc-validator | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs. **Validator runs in parallel** (parallel with adversarial-reviewer) |
+| 9 | adversarial-reviewer + doc-validator | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate. **Validator runs in parallel** (parallel with code-reviewer) |
 | 10 | docs-executor | Update documentation |
 | 10.5 | handoff-writer | Generate session handoff document |
 | Any | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns (spawned by any agent) |
@@ -420,18 +420,18 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 |-------|-----------------|--------------------------------|
 | 0 | Invoke dev-rules skill | (none) |
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
-| 2 | Use Task tool → `super-dev:requirements-clarifier` | requirements-clarifier |
-| 2.5 | Use Task tool → `super-dev:bdd-scenario-writer`, **present scenarios to user for confirmation** | bdd-scenario-writer |
+| 2 | Use Task tool → `super-dev:requirements-clarifier` + `super-dev:doc-validator` (parallel) | requirements-clarifier, doc-validator |
+| 2.5 | Use Task tool → `super-dev:bdd-scenario-writer` + `super-dev:doc-validator` (parallel), **present scenarios to user for confirmation** | bdd-scenario-writer, doc-validator |
 | 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
 | 5.3 | Use Task tool → `super-dev:architecture-agent`, present options (**include BDD scenarios**) | architecture-agent |
 | 5.4 | Use Task tool → `super-dev:product-designer`, present combined options (**include BDD scenarios**) | product-designer |
 | 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options (**include BDD scenarios**) | ui-ux-designer |
-| 6 | Use Task tool → `super-dev:spec-writer` | spec-writer |
+| 6 | Use Task tool → `super-dev:spec-writer` + `super-dev:doc-validator` (parallel) | spec-writer, doc-validator |
 | 7 | Validate spec (no agent) | (none) |
 | 8 | Use Task tool → `super-dev:dev-executor` (**include BDD scenarios**) + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
-| 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (parallel) | code-reviewer, adversarial-reviewer |
+| 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:doc-validator` + `super-dev:adversarial-reviewer` + `super-dev:doc-validator` (parallel, 4 agents) | code-reviewer, adversarial-reviewer, doc-validator x2 |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
 | 10.5 | Use Task tool → `super-dev:handoff-writer` | handoff-writer |
 | 11 | Final verification (teammates already terminated per-phase, keep worktree) | (varies) |
@@ -867,6 +867,7 @@ Create an agent team named "super-dev-team" with these teammates:
 - super-dev:adversarial-reviewer
 - super-dev:docs-executor
 - super-dev:handoff-writer
+- super-dev:doc-validator
 ```
 
 ### Teammate Roles by Category
@@ -890,6 +891,7 @@ Create an agent team named "super-dev-team" with these teammates:
 | **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
 | **Docs** | handoff-writer | Generate session handoff | `super-dev:handoff-writer` |
 | **Support** | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns | `super-dev:investigator` |
+| **Support** | doc-validator | **Quality Gate Inspector:** Independent gate-criteria validation, runs parallel with writers | `super-dev:doc-validator` |
 
 ### Team Creation at Phase 1
 
@@ -918,23 +920,24 @@ Teammates to include:
 15. super-dev:docs-executor
 16. super-dev:handoff-writer
 17. super-dev:investigator
+18. super-dev:doc-validator
 ```
 
 ### When to Spawn Each Teammate
 
 | Phase | Spawn These Teammates |
 |-------|----------------------|
-| 2 | requirements-clarifier |
-| 2.5 | bdd-scenario-writer |
+| 2 | requirements-clarifier + doc-validator (parallel) |
+| 2.5 | bdd-scenario-writer + doc-validator (parallel) |
 | 3 | research-agent |
 | 4 | debug-analyzer (bugs only) |
 | 5 | code-assessor |
 | 5.3 | architecture-agent |
 | 5.4 | product-designer |
 | 5.5 | ui-ux-designer |
-| 6 | spec-writer |
+| 6 | spec-writer + doc-validator (parallel) |
 | 8 | dev-executor + qa-agent (parallel) |
-| 9 | code-reviewer + adversarial-reviewer (parallel) |
+| 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator (parallel, 4 agents) |
 | 10 | docs-executor |
 | 10.5 | handoff-writer |
 | Any (on-demand) | investigator (spawned by dev-executor, qa-agent, code-reviewer, or Team Lead when unknowns arise) |

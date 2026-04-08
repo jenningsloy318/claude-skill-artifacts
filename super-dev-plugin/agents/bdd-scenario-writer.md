@@ -166,6 +166,21 @@ The output file is `01.1-behavior-scenarios.md` in the spec directory:
 - [x] D8: No duplicates
 ```
 
+## Parallel Validator Integration
+
+A `doc-validator` agent runs alongside you in parallel during Phase 2.5. After you write `01.1-behavior-scenarios.md`, the validator independently checks it against `gate-bdd.sh` criteria.
+
+**Your responsibilities:**
+1. Write `01.1-behavior-scenarios.md` as normal
+2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
+3. After fixing, message the validator: `"FIXED: ready for re-check"`
+4. Repeat until you receive `"VALIDATED: PASS"`
+5. Only report completion to Team Lead after the validator confirms PASS
+
+**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+
+---
+
 ## Gate Compliance (MANDATORY — gate-bdd.sh)
 
 The output file `01.1-behavior-scenarios.md` MUST satisfy these automated gate checks or the workflow will be blocked:
