@@ -62,7 +62,7 @@ The next agent session will NOT read this document fully. Per workflow rules, it
 
 ### Step 2 — Write the Handoff (Under 300 Lines)
 
-Write `[NEXT_INDEX]-handoff.md` using the compact template below. For each section, ask: "Can the next agent get this from a source file?" If yes, point to the file instead of writing it out.
+Write `*-handoff.md` using the compact template below. For each section, ask: "Can the next agent get this from a source file?" If yes, point to the file instead of writing it out.
 
 ### Step 3 — Validate Conciseness
 
@@ -77,7 +77,7 @@ Before signaling completion:
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/handoff-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and all 7 required sections.
 
-Output file: `[NEXT_INDEX]-handoff.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming).
+Output file: `*-handoff.md` in the spec directory. The doc-validator handles naming (computes the correct `[XX]-handoff.md` index).
 
 ## Quality Gates
 

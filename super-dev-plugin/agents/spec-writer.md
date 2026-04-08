@@ -60,22 +60,22 @@ Before writing the specification document to disk, verify ALL of the following a
 
 ## Output Documents
 
-**IMPORTANT FILE NAMING:** Documents use incremental indexing with NO gaps. The coordinator provides the `NEXT_INDEX` for this phase. Name your outputs as:
-- `[NEXT_INDEX]-specification.md`
-- `[NEXT_INDEX+1]-implementation-plan.md`
-- `[NEXT_INDEX+2]-task-list.md`
+**IMPORTANT FILE NAMING:** Documents use incremental indexing with NO gaps. The doc-validator handles naming — it scans the spec dir and renames your files to the correct `[XX]-[doc-type].md`. Name your outputs as:
+- `*-specification.md`
+- `*-implementation-plan.md`
+- `*-task-list.md`
 
 The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` convention and rename if needed. When referencing upstream docs, use glob patterns (e.g., `*-requirements.md`) since their indices depend on which phases were executed.
 
-### Document 1: Technical Specification (`[NEXT_INDEX]-specification.md`)
+### Document 1: Technical Specification (`*-specification.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with all 11 sections including technical design, testing strategy, security, performance, and unambiguous implementation requirements.
 
-### Document 2: Implementation Plan (`[NEXT_INDEX+1]-implementation-plan.md`)
+### Document 2: Implementation Plan (`*-implementation-plan.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-plan-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with phased milestones, file inventory, risk assessment, and dependencies.
 
-### Document 3: Task List (`[NEXT_INDEX+2]-task-list.md`)
+### Document 3: Task List (`*-task-list.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with per-milestone task checklists, file tracking, and dependency graph.
 
@@ -84,7 +84,7 @@ The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` co
 A `doc-validator` agent runs alongside you in parallel during Phase 6. After you write the specification document, the validator independently checks it against `gate-spec-trace.sh` criteria.
 
 **Your responsibilities:**
-1. Write `[NEXT_INDEX]-specification.md`, `[NEXT_INDEX+1]-implementation-plan.md`, `[NEXT_INDEX+2]-task-list.md` as normal
+1. Write `*-specification.md`, `*-implementation-plan.md`, `*-task-list.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

@@ -104,14 +104,14 @@ This is BAD because: imperative style (click, type, field), implementation detai
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/behavior-scenarios-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and gate compliance.
 
-Output file: `[NEXT_INDEX]-behavior-scenarios.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming).
+Output file: `*-behavior-scenarios.md` in the spec directory. The doc-validator handles naming (computes the correct `[XX]-behavior-scenarios.md` index).
 
 ## Parallel Validator Integration
 
 A `doc-validator` agent runs alongside you in parallel during Phase 2.5. After you write the behavior scenarios document, the validator independently checks it against `gate-bdd.sh` criteria.
 
 **Your responsibilities:**
-1. Write `[NEXT_INDEX]-behavior-scenarios.md` as normal
+1. Write `*-behavior-scenarios.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

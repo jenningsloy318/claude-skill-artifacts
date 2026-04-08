@@ -133,12 +133,7 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 
 **All spec documents use incremental indexing with NO gaps.** The filename pattern is `[XX]-[doc-type].md` where `[XX]` is a zero-padded sequential number.
 
-**How to compute the next index before each phase:**
-```bash
-MAX_INDEX=$(find "$SPEC_DIR" -maxdepth 1 -regex '.*/[0-9][0-9]-.*\.md' -type f 2>/dev/null \
-    | sed 's|.*/\([0-9][0-9]\)-.*|\1|' | sort -n | tail -1)
-NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
-```
+**Who computes the index:** The **doc-validator** handles all naming in its Step 0. The coordinator does NOT need to compute NEXT_INDEX — just tell the writer the doc-type and spec directory. The doc-validator will scan for existing files, compute the correct index, and rename the writer's file if needed.
 
 **Document type identifiers** (used in filenames):
 
@@ -162,9 +157,8 @@ NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
 
 **Rules:**
 - Indices are strictly incremental — if a phase is skipped, its index is NOT reserved
-- The doc-validator agent enforces naming in its Step 0 (check + rename if needed)
+- The doc-validator agent handles naming in its Step 0 (scan existing files, compute next index, rename if needed)
 - When referencing upstream docs in spawn prompts, use glob patterns: `*-requirements.md`, `*-behavior-scenarios.md`, etc.
-- The coordinator computes `NEXT_INDEX` before each phase and passes it to the writer
 
 ## Iteration Rule: Phase 8/9 Loop
 
@@ -287,14 +281,6 @@ For Phases 2, 2.5, 6, and 9: you MUST spawn the doc-validator teammate AT THE SA
 
 **Phase 2 (PARALLEL — writer + validator):**
 
-**Before spawning:** Compute the next document index by scanning the spec directory:
-```bash
-MAX_INDEX=$(find "specification/[spec-index]-[spec-name]" -maxdepth 1 -regex '.*/[0-9][0-9]-.*\.md' -type f 2>/dev/null \
-    | sed 's|.*/\([0-9][0-9]\)-.*|\1|' | sort -n | tail -1)
-NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
-# First doc → NEXT_INDEX = 01
-```
-
 ```
 Spawn BOTH in parallel:
 
@@ -302,23 +288,22 @@ Spawn BOTH in parallel:
    - Task: [task description]
    - Worktree: .worktree/[spec-index]-[spec-name]
    - Spec directory: specification/[spec-index]-[spec-name]
-   Your role is to produce [NEXT_INDEX]-requirements.md. A doc-validator runs alongside you —
-   respond to its VALIDATION FAILED messages by fixing and replying FIXED."
+   Your role is to produce a requirements document (*-requirements.md). A doc-validator runs alongside you —
+   it will handle file naming and validate gate compliance.
+   Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: requirements
    - Gate profile: gate-requirements
    - Writer agent: requirements-clarifier
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Verify/rename the requirements document to [NEXT_INDEX]-requirements.md.
+   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-requirements.md.
    Then validate against gate-requirements.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 2.5 (PARALLEL — writer + validator, then user confirmation):**
-
-**Before spawning:** Compute next index (after requirements doc).
 
 ```
 Spawn BOTH in parallel:
@@ -328,15 +313,16 @@ Spawn BOTH in parallel:
    - Requirements: specification/[spec-index]-[spec-name]/*-requirements.md
    - Spec directory: specification/[spec-index]-[spec-name]
    - Feature name: [feature name]
-   Your role is to produce [NEXT_INDEX]-behavior-scenarios.md. A doc-validator runs alongside you —
-   respond to its VALIDATION FAILED messages by fixing and replying FIXED."
+   Your role is to produce a behavior scenarios document (*-behavior-scenarios.md). A doc-validator runs alongside you —
+   it will handle file naming and validate gate compliance.
+   Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: behavior-scenarios
    - Gate profile: gate-bdd
    - Writer agent: bdd-scenario-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Verify/rename the BDD document to [NEXT_INDEX]-behavior-scenarios.md.
+   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-behavior-scenarios.md.
    Then validate against gate-bdd.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -351,8 +337,6 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 6 (PARALLEL — writer + validator):**
 
-**Before spawning:** Compute next index (after the last existing doc in spec dir).
-
 ```
 Spawn BOTH in parallel:
 
@@ -364,16 +348,16 @@ Spawn BOTH in parallel:
    - Research: specification/[spec-index]-[spec-name]/*-research-report.md
    - Assessment: specification/[spec-index]-[spec-name]/*-code-assessment.md
    - [additional inputs as applicable]
-   Your role is to produce [NEXT_INDEX]-specification.md, [NEXT_INDEX+1]-implementation-plan.md, [NEXT_INDEX+2]-task-list.md.
-   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
-   by fixing and replying FIXED."
+   Your role is to produce *-specification.md, *-implementation-plan.md, *-task-list.md.
+   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: specification
    - Gate profile: gate-spec-trace
    - Writer agent: spec-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Verify/rename the specification document to [NEXT_INDEX]-specification.md.
+   Step 0: Scan spec dir, compute next index, rename writer's files to [XX]-specification.md.
    Then validate against gate-spec-trace.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -399,27 +383,29 @@ Spawn ALL FOUR in parallel:
 
 1. "Spawn a code-reviewer teammate with this context:
    - [existing context]
-   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
-   by fixing the review document and replying FIXED."
+   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
-   - Document: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md
+   - Doc type: code-review
    - Gate profile: gate-review-code
    - Writer agent: code-reviewer
    - Spec directory: specification/[spec-index]-[spec-name]
+   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-code-review.md.
    Validate the code review against gate-review.sh criteria (verdict format, critical count).
    Message the writer with fix instructions on failure. Loop until PASS."
 
 3. "Spawn an adversarial-reviewer teammate with this context:
    - [existing context]
-   A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
-   by fixing the review document and replying FIXED."
+   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
 
 4. "Spawn a doc-validator teammate with this context:
-   - Document: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md
+   - Doc type: adversarial-review-report
    - Gate profile: gate-review-adversarial
    - Writer agent: adversarial-reviewer
    - Spec directory: specification/[spec-index]-[spec-name]
+   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-adversarial-review-report.md.
    Validate the adversarial review against gate-review.sh criteria (verdict format).
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -449,7 +435,7 @@ to reflect the changes made during this workflow. Output: updated documentation 
 - All spec artifacts in the spec directory
 - Git diff: run `git diff --stat main..HEAD`
 
-Your role is to synthesize all workflow artifacts into [NEXT_INDEX]-handoff.md following the 7-section template.
+Your role is to synthesize all workflow artifacts into a handoff document (*-handoff.md) following the 7-section template.
 Write FOR the next AI agent. Be specific, concrete, and actionable."
 ```
 
