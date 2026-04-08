@@ -182,7 +182,7 @@ NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
 
 **MANDATORY Phase 9 → 12 Transition Sequence (NEVER skip or reorder):**
 After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump to Phase 12.
-1. **Run gate-review.sh** → Must PASS (exit 0)
+1. Phase 9 gate validation already completed by doc-validator (gate-review.sh PASSED during Phase 9)
 2. **Phase 10:** Spawn `super-dev:docs-executor` → Wait for completion → Terminate
 3. **Run gate-docs-drift.sh** → Must PASS (exit 0)
 4. **Phase 10.5:** Spawn `super-dev:handoff-writer` → Wait for completion → Terminate

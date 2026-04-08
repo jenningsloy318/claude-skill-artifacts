@@ -102,69 +102,9 @@ This is BAD because: imperative style (click, type, field), implementation detai
 
 ## Output Template
 
-The output file is `[NEXT_INDEX]-behavior-scenarios.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming):
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/behavior-scenarios-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and gate compliance.
 
-```markdown
-# Behavior Scenarios: [Feature Name]
-
-**Date:** [timestamp]
-**Author:** super-dev:bdd-scenario-writer
-**Source:** ./*-requirements.md
-**Total Scenarios:** [count]
-
-## Feature: [Feature Name]
-
-### SCENARIO-001: [Meaningful Behavior Title]
-**Acceptance Criteria:** AC-XX from requirements
-**Priority:** P0/P1/P2
-
-**Given** [precondition in business language]
-**When** [single action/event in business language]
-**Then** [verifiable outcome in business language]
-
-### SCENARIO-002: [Meaningful Behavior Title]
-**Acceptance Criteria:** AC-XX from requirements
-**Priority:** P0/P1/P2
-
-**Given** [precondition]
-**When** [action]
-**Then** [outcome]
-**And** [additional outcome if needed]
-
-[... more scenarios ...]
-
-## Scenario-Acceptance Criteria Traceability Matrix
-
-| Acceptance Criterion | Scenario IDs | Coverage |
-|---------------------|-------------|----------|
-| AC-01: [description] | SCENARIO-001, SCENARIO-002 | Covered |
-| AC-02: [description] | SCENARIO-003 | Covered |
-
-## Coverage Summary
-
-- **Total Acceptance Criteria:** [X]
-- **Covered by Scenarios:** [Y]
-- **Uncovered:** [Z] (must be 0)
-- **Total Scenarios:** [N]
-- **Scenarios per AC (avg):** [N/X]
-
-## Quality Validation
-
-### Per-Scenario Checks
-| Scenario | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 | Pass |
-|----------|----|----|----|----|----|----|----|----|----|----|------|
-| SCENARIO-001 | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-
-### Per-Document Checks
-- [x] D1: All AC covered
-- [x] D2: Scenario count within limits
-- [x] D3: Traceability matrix complete
-- [x] D4: All IDs unique
-- [x] D5: Priorities assigned
-- [x] D6: Happy paths first
-- [x] D7: Error cases included
-- [x] D8: No duplicates
-```
+Output file: `[NEXT_INDEX]-behavior-scenarios.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming).
 
 ## Parallel Validator Integration
 
@@ -183,13 +123,7 @@ A `doc-validator` agent runs alongside you in parallel during Phase 2.5. After y
 
 ## Gate Compliance (MANDATORY — gate-bdd.sh)
 
-The output behavior scenarios file MUST satisfy these automated gate checks or the workflow will be blocked:
-
-1. **SCENARIO-IDs** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`)
-2. **Given/When/Then at line start** — MUST have at least 3 lines where Given, When, Then, or And appears at the start of the line (after optional whitespace and bold markers). The gate regex matches `^\s*\*{0,2}(given|when|then|and)`. Both `**Given**` and plain `Given` formats work.
-3. **AC references** — MUST contain at least 1 `AC-[0-9]+` pattern (e.g., `AC-01`) for traceability
-4. **Scenario count >= AC count** — The number of SCENARIO-XXX IDs MUST be greater than or equal to the number of `- [ ]` acceptance criteria items in `*-requirements.md`. Always produce at least as many scenarios as there are acceptance criteria.
-5. **Minimum 300 characters** — Document must be substantive, not just a template skeleton
+See the rendering rules and regex patterns in `${CLAUDE_PLUGIN_ROOT}/templates/reference/behavior-scenarios-template.md`. The doc-validator runs the gate script — you do NOT need to run it yourself.
 
 **If any check fails, the gate blocks Phase 3 (Research) from starting.**
 

@@ -271,104 +271,9 @@ Else → Approved
 
 ## Output Template
 
-```markdown
-# Code Review: [Feature/Fix Name]
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/code-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with severity tables, specification validation, BDD coverage, and deterministic verdict logic.
 
-**Date:** [timestamp]
-**Reviewer:** super-dev:code-reviewer
-**Secondary Reviewer:** code-review-expert (if available)
-**Status:** [Approved / Approved with Comments / Changes Requested / Blocked]
-**Base SHA:** [sha or N/A]
-**Head SHA:** [sha or N/A]
-
-## Summary Statistics
-
-| Severity | Count |
-|----------|-------|
-| Critical | X |
-| High | X |
-| Medium | X |
-| Low | X |
-| Info | X |
-
-| Dimension | Issues |
-|-----------|--------|
-| Correctness | X |
-| Security | X |
-| Performance | X |
-| Maintainability | X |
-| Testability | X |
-| Error Handling | X |
-| Consistency | X |
-| Accessibility | X |
-
-## Specification Validation
-
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| AC-1: [description] | Met/Not Met/Partial | [file:line] |
-| AC-2: [description] | Met/Not Met/Partial | [file:line] |
-| ... | ... | ... |
-
-### Non-Goals Check
-- [x] NG-1: [non-goal] - Not implemented (correct)
-- [ ] NG-2: [non-goal] - Implemented (issue - see F-XXX)
-
-## BDD Scenario Coverage
-
-| Scenario ID | Title | Test Reference | Status |
-|-------------|-------|---------------|--------|
-| SCENARIO-001 | [title] | [test file:line or test name] | Covered / Missing |
-
-**Coverage:** [M/N] scenarios covered
-**Gate:** PASS / FAIL
-
-## Findings
-
-> **Note:** Findings include both specification-first review (internal) and senior engineer review (external code-review-expert skill, if available). Findings identified by both reviewers are marked with **[Dual]**.
-
-### Critical
-
-**F-001** | [Dimension] | `file:line` **[Dual]** (if identified by both)
-**Issue:** [description]
-**Suggestion:** [concrete fix]
-**Rationale:** [why it matters]
-
-### High
-
-**F-002** | [Dimension] | `file:line`
-**Issue:** [description]
-**Suggestion:** [fix]
-**Rationale:** [why]
-
-### Medium
-
-[Same format]
-
-### Low
-
-[Same format]
-
-### Info
-
-[Same format]
-
-## Strengths
-
-- [Specific good patterns with file:line references]
-
-## Recommendations
-
-- [Non-blocking improvements and future considerations]
-
-## Verdict
-
-**[Approved / Approved with Comments / Changes Requested / Blocked]**
-
-**Reasoning:** [brief technical assessment]
-
-**Blocking Issues:** [F-XXX IDs or “None”]
-```
+Output file: `*-code-review.md` in the spec directory.
 
 ## Parallel Validator Integration
 
@@ -387,36 +292,6 @@ A `doc-validator` agent runs alongside you in parallel during Phase 9. After you
 
 ## Gate Compliance (MANDATORY — gate-review.sh)
 
-The output file `*-code-review.md` MUST satisfy these automated gate checks or the workflow will be blocked:
-
-1. **Verdict text** — MUST contain one of: "Approved", "Approved with Comments", "Changes Requested", "Blocked" (case-insensitive). The `**Status:**` line in the header and `## Verdict` section both satisfy this.
-2. **Approved to pass** — The gate passes when "approved" is found AND neither "changes requested" nor "blocked" appears in the first matching line. "Approved with Comments" counts as approved.
-3. **No critical issues** — The gate checks for `**Critical**` (bold markdown) and `| Critical | N |` where N>0 in summary tables. If ANY critical findings exist, the gate fails regardless of verdict.
-   - The `### Critical` section heading does NOT trigger this (it's `###` not `**`).
-   - A summary table row `| Critical | 0 |` does NOT trigger this (0 is not matched by `[1-9]`).
-   - A summary table row `| Critical | 2 |` DOES trigger this — ensure critical count is 0 when approving.
+See Gate Compliance rules (verdict logic, critical-text-guard, verdict-consistency) in `${CLAUDE_PLUGIN_ROOT}/templates/reference/code-review-template.md`. The doc-validator runs the gate script — you do NOT need to run it yourself.
 
 **If the gate fails, Phase 10 (Documentation) is blocked and Phase 8/9 must loop.**
-
-## Severity Reference
-
-| Severity | Blocks? | When to Use | Examples |
-|----------|---------|-------------|----------|
-| Critical | Yes | Security/data loss/broken core | SQL injection, auth bypass, null pointer in critical path |
-| High | No | Significant bugs/spec gaps/poor architecture | Missing error handling, N+1 queries, spec deviations |
-| Medium | No | Maintainability/minor bugs/suboptimal patterns | High complexity, missing docs, inconsistent naming |
-| Low | No | Minor improvements/style | Magic numbers, minor naming |
-| Info | No | Observations | Future considerations, FYI notes |
-
-## Dimension Reference
-
-| Dimension | Priority | Focus |
-|-----------|----------|-------|
-| Correctness | P0 | Logic, spec compliance |
-| Security | P0 | Vulnerabilities |
-| Performance | P1 | Efficiency |
-| Maintainability | P1 | Readability |
-| Testability | P1 | Test structure |
-| Error Handling | P1 | Graceful failure |
-| Consistency | P2 | Pattern adherence |
-| Accessibility | P2 | WCAG compliance |

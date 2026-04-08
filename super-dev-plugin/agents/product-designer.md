@@ -413,14 +413,15 @@ Recommendation: Option C - balances complexity and UX
 
 ### Primary Outputs
 
-1. **05-architecture.md** - Full architecture specification (from architecture-agent)
-2. **05-design-spec.md** - Full UI/UX specification (from ui-ux-designer)
-3. **05-product-design-summary.md** - Cross-reference and contracts
+**Output Templates:** Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`:
+1. `architecture-template.md` → produces `*-architecture.md` (from architecture-agent)
+2. `design-spec-template.md` → produces `*-design-spec.md` (from ui-ux-designer)
+3. `product-design-summary-template.md` → produces `*-product-design-summary.md` (cross-reference and contracts)
 
 ### Delegation Outputs (when not FULL_STACK)
 
-- ARCHITECTURE_ONLY: Only `05-architecture.md`
-- UI_ONLY: Only `05-design-spec.md`
+- ARCHITECTURE_ONLY: Only `*-architecture.md`
+- UI_ONLY: Only `*-design-spec.md`
 
 ---
 

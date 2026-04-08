@@ -164,9 +164,9 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 0:  Apply Dev Rules
 - [ ] Phase 1:  Specification Setup (worktree + team creation)
 - [ ] Phase 2:  Requirements Clarification
-- [ ] GATE:     Requirements Completeness (gate-requirements.sh)
+- [ ] GATE:     Requirements Completeness (gate-requirements.sh — run by doc-validator)
 - [ ] Phase 2.5: BDD Scenario Writing (MANDATORY, user confirmation required)
-- [ ] GATE:     BDD Scenario Quality (gate-bdd.sh)
+- [ ] GATE:     BDD Scenario Quality (gate-bdd.sh — run by doc-validator)
 - [ ] Phase 3:  Research (options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
@@ -174,14 +174,14 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 5.4: Product Design (arch + UI together)
 - [ ] Phase 5.5: UI/UX Design (UI only)
 - [ ] Phase 6:  Specification Writing
-- [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh)
+- [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
-- [ ] GATE:     Build & Test Pass (gate-build.sh)
+- [ ] GATE:     Build & Test Pass (gate-build.sh — run by coordinator)
 - [ ] Phase 9:  Code Review + Adversarial Review (PARALLEL teammates)
-- [ ] GATE:     Review Verdicts (gate-review.sh)
+- [ ] GATE:     Review Verdicts (gate-review.sh — run by doc-validator)
 - [ ] Phase 10: Documentation Update
-- [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh)
+- [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh — run by coordinator)
 - [ ] Phase 10.5: Handoff Writing (MANDATORY)
 - [ ] Phase 11: Team Cleanup (keep worktree)
 - [ ] Phase 12: Commit & Merge to Main
@@ -197,7 +197,7 @@ Grade each completed workflow run against these three dimensions:
 
 **MANDATORY Phase 9 → 12 Transition Sequence (NEVER skip or reorder):**
 After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump to Phase 12.
-1. **Run gate-review.sh** → Must PASS (exit 0)
+1. Phase 9 gate validation already completed by doc-validator (gate-review.sh PASSED during Phase 9)
 2. **Phase 10:** Spawn `super-dev:docs-executor` → Wait for completion → Terminate
 3. **Run gate-docs-drift.sh** → Must PASS (exit 0)
 4. **Phase 10.5:** Spawn `super-dev:handoff-writer` → Wait for completion → Terminate
@@ -222,14 +222,14 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
 
 ### Gate Map
 
-| After Phase | Gate Script | What It Checks |
-|-------------|-------------|----------------|
-| Phase 2 → 2.5 | `gate-requirements.sh` | Requirements have acceptance criteria, NFRs, summary, sufficient detail |
-| Phase 2.5 → 3 | `gate-bdd.sh` | BDD scenarios have SCENARIO-IDs, Given/When/Then, AC traceability |
-| Phase 6 → 7 | `gate-spec-trace.sh` | Spec references BDD scenarios, has testing strategy, has task list |
-| Phase 8 → 9 | `gate-build.sh` | Build succeeds, tests pass, type checks pass |
-| Phase 9 → 10 | `gate-review.sh` | Code review approved, adversarial review PASS, no critical issues |
-| Phase 10 → 10.5 | `gate-docs-drift.sh` | Documentation exists, no excessive TODOs left in code |
+| After Phase | Gate Script | Run By | What It Checks |
+|-------------|-------------|--------|----------------|
+| Phase 2 → 2.5 | `gate-requirements.sh` | doc-validator | Requirements have acceptance criteria, NFRs, summary, sufficient detail |
+| Phase 2.5 → 3 | `gate-bdd.sh` | doc-validator | BDD scenarios have SCENARIO-IDs, Given/When/Then, AC traceability |
+| Phase 6 → 7 | `gate-spec-trace.sh` | doc-validator | Spec references BDD scenarios, has testing strategy, has task list |
+| Phase 8 → 9 | `gate-build.sh` | coordinator | Build succeeds, tests pass, type checks pass |
+| Phase 9 → 10 | `gate-review.sh` | doc-validator | Code review approved, adversarial review PASS, no critical issues |
+| Phase 10 → 10.5 | `gate-docs-drift.sh` | coordinator | Documentation exists, no excessive TODOs left in code |
 
 ### Gate Failure Handling
 
@@ -697,7 +697,7 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
 **Purpose:** Update all relevant documentation (README, API docs, inline docs) to reflect changes made during this workflow.
 
 **Steps:**
-1. Run `gate-review.sh` → Must PASS (exit 0) before starting Phase 10
+1. Gate-review.sh already PASSED via doc-validator during Phase 9 — no need to re-run
 2. Spawn `super-dev:docs-executor` with context:
    - Spec directory path
    - Specification document (*-specification.md)

@@ -1486,72 +1486,9 @@ project/
 
 ## Output Format
 
-### Primary Output: `05-architecture.md`
+### Primary Output: `*-architecture.md`
 
-```markdown
-# Architecture: [Feature Name]
-
-**Date:** [timestamp]
-**Author:** Claude
-**Status:** Draft
-
-## Overview
-[2-3 sentences describing the architecture]
-
-## Architectural Drivers
-- [Primary driver 1]
-- [Primary driver 2]
-
-## Module Architecture
-
-```
-[ASCII diagram showing modules and relationships]
-```
-
-## Module Specifications
-
-### Module 1: [Name]
-- **Purpose:** [single sentence]
-- **Responsibilities:**
-  - [responsibility 1]
-  - [responsibility 2]
-- **Dependencies:** [list of modules this depends on]
-- **Public Interface:**
-  ```typescript
-  interface [Name]Service {
-    operation(): Promise<Result>;
-  }
-  ```
-
-### Module 2: [Name]
-[same structure]
-
-## Data Flow
-
-```
-[Sequence or flow diagram showing data movement]
-```
-
-## Technology Stack
-| Layer | Technology | Rationale |
-|-------|------------|-----------|
-| [layer] | [tech] | [why] |
-
-## ADRs
-- ADR-001: [Title] - [link]
-- ADR-002: [Title] - [link]
-
-## Security Considerations
-- [Security measure 1]
-- [Security measure 2]
-
-## Performance Considerations
-- [Performance measure 1]
-- [Performance measure 2]
-
-## Future Considerations
-- [Item for future - NOT to be implemented now]
-```
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/architecture-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with module specifications, data flow diagrams, and ADR references.
 
 ### Secondary Output: ADR files as needed
 

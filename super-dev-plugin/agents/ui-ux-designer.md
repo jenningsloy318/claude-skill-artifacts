@@ -709,58 +709,9 @@ organisms:  # Complex sections
 3. Provide .pen file path for developers to reference
 4. Document component node IDs for precise implementation reference
 
-**Output: `05-design-spec.md`**
+**Output: `*-design-spec.md`**
 
-```markdown
-# Design Specification: {Feature Name}
-
-**Date:** [timestamp]
-**Version:** 1.0.0
-
-## Executive Summary
-[2-3 sentences: what, why, key decisions]
-
-## User Context
-- **Target Users**: [Persona description]
-- **Primary Goal**: [What users accomplish]
-- **Success Criteria**: [How we measure success]
-
-## User Flows
-[Mermaid diagrams for all critical paths]
-
-## Screen Inventory
-
-### Screen 1: [Name]
-[Wireframe + specifications]
-
-### Screen 2: [Name]
-[Wireframe + specifications]
-
-## Component Specifications
-[Visual design + states + interactions + accessibility]
-
-## Design Tokens
-[YAML of reusable design values]
-
-## Accessibility Requirements
-[WCAG checklist + testing instructions]
-
-## Responsive Behavior
-[Breakpoint-specific changes]
-
-## Implementation Notes
-- Framework guidance
-- Libraries to use
-- Performance considerations
-- Edge cases
-
-## Definition of Done
-- [ ] All screens implemented
-- [ ] All states handled
-- [ ] Accessibility verified
-- [ ] Responsive tested
-- [ ] No visual regressions
-```
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/design-spec-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with user flows, screen inventory, component specs, design tokens, accessibility requirements, and definition of done.
 
 <final_verification>
 

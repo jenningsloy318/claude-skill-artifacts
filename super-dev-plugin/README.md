@@ -164,12 +164,12 @@ super-dev-plugin/
 │       ├── ui-ux-patterns.md         # UI/UX design patterns, wireframes, accessibility
 │       ├── debugging-patterns.md     # Systematic debugging methodology, root cause analysis
 │       ├── research-methodology.md   # Multi-source research, option presentation, synthesis
-│       ├── specification-templates.md # Technical spec templates, validation gates
 │       ├── testing-patterns.md       # CLI, Desktop UI, Web testing strategies
 │       ├── backend-patterns.md       # API, database, caching patterns
 │       ├── frontend-patterns.md      # React, Next.js patterns
 │       ├── coding-standards.md       # Language best practices
 │       ├── bdd-patterns.md            # BDD scenario writing patterns and reference
+│       ├── *-template.md              # XML-tagged document templates (12 files)
 │       └── project-guidelines-example.md
 │
 ├── rules/                      # Always-follow guidelines (NEW - 7 files)
@@ -420,9 +420,9 @@ Systematic debugging methodology, root cause analysis, evidence collection, and 
 
 Multi-source research, option presentation, Time MCP integration, and synthesis techniques.
 
-### specification-templates
+### Document Templates (XML-tagged)
 
-Technical specification templates, validation gates, naming conventions, and quality standards.
+12 XML-tagged document templates in `templates/reference/*-template.md`. Each agent loads its template at runtime for consistent document formatting. Templates cover: requirements, behavior-scenarios, specification, implementation-plan, task-list, handoff, code-review, adversarial-review, implementation-summary, architecture, design-spec, product-design-summary.
 
 ### testing-patterns
 

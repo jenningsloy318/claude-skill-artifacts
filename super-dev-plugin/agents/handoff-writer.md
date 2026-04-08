@@ -75,85 +75,9 @@ Before signaling completion:
 
 ## Output Template
 
-The output file is `[NEXT_INDEX]-handoff.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming):
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/handoff-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and all 7 required sections.
 
-```
-# Handoff: [Feature/Fix Name]
-
-**Date:** [timestamp]
-**Spec:** specification/[spec-index]-[spec-name]
-**Status:** [Complete / Partial — specify what's missing]
-**Commits:** [N] commits on branch [branch-name]
-
----
-
-## 1. Objective
-
-[1-2 sentences: what problem, what deliverable, what "done" means]
-AC reference: See `*-requirements.md` → Acceptance Criteria section
-
----
-
-## 2. Progress
-
-| Phase | Status | Notes |
-|-------|--------|-------|
-| Requirements | [done/partial] | |
-| BDD Scenarios | [done/partial] | |
-| Research | [done/partial/skipped] | |
-| Specification | [done/partial] | |
-| Implementation | [done/partial] | |
-| Code Review | [verdict] | |
-| Adversarial Review | [verdict] | |
-| Documentation | [done/partial] | |
-
----
-
-## 3. Key Decisions
-
-- **[Decision 1]**: [choice] — why: [1-line rationale]
-- **[Decision 2]**: [choice] — why: [1-line rationale]
-- Full context: See `*-specification.md` Section [N]
-
----
-
-## 4. Unfinished Items
-
-### P0: Critical
-- [Item] — See [source file/section]
-
-### P1: Important
-- [Item] — See [source file/section]
-
-### P2: Nice-to-Have
-- [Item]
-
----
-
-## 5. Risks & Gotchas
-
-- [Risk 1]: [1-line description + what to watch for]
-- [Risk 2]: [1-line description]
-- Directions NOT worth pursuing: [approach already tried and rejected, with reason]
-
----
-
-## 6. Read These First
-
-1. `[path]` — [why this file matters, 5 words]
-2. `[path]` — [why]
-3. `[path]` — [why]
-
----
-
-## 7. Next Steps
-
-1. [Concrete action — e.g., "Run `make test` to verify green build"]
-2. [Concrete action — e.g., "Address P0 item: [description]"]
-3. [Concrete action]
-4. [Concrete action]
-5. [Concrete action]
-```
+Output file: `[NEXT_INDEX]-handoff.md` in the spec directory (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming).
 
 ## Quality Gates
 

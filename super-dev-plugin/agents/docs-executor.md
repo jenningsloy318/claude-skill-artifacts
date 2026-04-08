@@ -44,81 +44,19 @@ You are the Documentation Executor Agent, responsible for updating all specifica
 
 **Update When:** After Phase 9 (Code Review) approval
 
-**Format:**
-```markdown
-## Tasks
-
-### Phase/Milestone X
-
-- [x] **TX.1** Task description (completed)
-  - Files: [files modified]
-  - Notes: [any notes]
-- [x] **TX.2** Task description (completed)
-- [ ] **TX.3** Task description (in progress)
-- [ ] **TX.4** Task description (pending)
-
-## Progress
-- Completed: X/Y tasks
-- Current: TX.3
-- Status: In Progress
-```
+**Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md` for structure reference. Mark tasks complete, update progress tracking, and add file change details.
 
 ### 2. Implementation Summary (`*-implementation-summary.md`)
 
 **Update When:** After Phase 9 (Code Review) approval - compile complete story
 
-**Format:**
-```markdown
-# Implementation Summary: [Feature/Fix Name]
-
-**Last Updated:** [timestamp]
-**Status:** In Progress / Complete
-
-## Progress Updates
-
-### [Timestamp] - Milestone X Complete
-
-**Tasks Completed:**
-- TX.1: [description]
-- TX.2: [description]
-
-**Files Changed:**
-| File | Action | Changes |
-|------|--------|---------|
-| [path] | Created/Modified/Deleted | [description] |
-
-**Technical Decisions:**
-1. [Decision]: [rationale]
-
-**Challenges Encountered:**
-1. [Challenge]: [solution]
-
----
-
-### [Earlier Timestamp] - Milestone Y Complete
-[same structure]
-```
+**Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md` for structure reference. Fill in milestone progress, files changed, technical decisions, and challenges.
 
 ### 3. Specification (`*-specification.md`)
 
 **Update When:** Code review identifies deviations or implementation requirements differ from original spec
 
-**Format:**
-```markdown
-[UPDATED: YYYY-MM-DD] Section X.Y
-
-**Original:**
-> [what the spec originally said]
-
-**Changed to:**
-> [new specification]
-
-**Reason:**
-[why the change was necessary]
-
-**Impact:**
-[what else this affects]
-```
+**Spec Change Entry Format:** Use the spec change log section from `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md` — document original text, changed text, reason, and impact for each deviation.
 
 ## Update Triggers
 

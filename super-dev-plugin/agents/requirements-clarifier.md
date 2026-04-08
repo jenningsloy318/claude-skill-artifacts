@@ -283,138 +283,9 @@ For complex features, build an empathy map:
 
 ## Output Format
 
-Return requirements as a structured document:
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/requirements-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and gate compliance.
 
-```markdown
-# Requirements: [Feature/Fix Name]
-
-**Date:** [timestamp]
-**Type:** Feature/Bug Fix/Improvement
-**Priority:** High/Medium/Low
-
-## Executive Summary
-[2-3 sentence overview of the real need, not just the surface request]
-
-## The Real Need (Root Cause Analysis)
-
-### Surface Request
-[What the user explicitly asked for]
-
-### 5 Whys Analysis
-1. Why: [First why and answer]
-2. Why: [Second why and answer]
-3. Why: [Third why and answer]
-4. Why: [Fourth why and answer]
-5. Why: [Root cause identified]
-
-### Job to Be Done
-**When** [situation/context]
-**I want to** [motivation/goal]
-**So I can** [expected outcome]
-
-**Job Type:**
-- Functional: [practical task]
-- Emotional: [how they want to feel]
-- Social: [how they want to be perceived]
-
-## Workflow Context
-
-### Current State
-[How the user currently accomplishes this]
-
-### Pain Points
-- [Pain point 1]
-- [Pain point 2]
-
-### Workflow Map
-```
-[Before] → [Requested Action] → [After]
-           ↓
-    [Related Actions]
-```
-
-### Stakeholders
-- [Who else is involved or affected]
-
-## Requirements
-
-### Functional Requirements
-1. [Requirement 1]
-2. [Requirement 2]
-
-### Non-Functional Requirements
-- Performance: [requirements]
-- Security: [requirements]
-- Accessibility: [requirements]
-
-### Anticipated Downstream Needs
-Based on workflow analysis:
-- [Anticipated need 1]: [rationale]
-- [Anticipated need 2]: [rationale]
-
-## Proposed Solution Options
-
-### Option 1: [Minimum Viable]
-[Description of simplest solution]
-- Pros: [benefits]
-- Cons: [limitations]
-
-### Option 2: [Recommended]
-[Description of recommended solution that addresses root need]
-- Pros: [benefits]
-- Cons: [limitations]
-
-### Option 3: [Comprehensive]
-[Description of full-featured solution]
-- Pros: [benefits]
-- Cons: [limitations]
-
-## Impact Assessment
-
-### Business Outcome
-[What business goal does this support?]
-
-### Success Metrics
-- [Metric 1]: [target]
-- [Metric 2]: [target]
-
-### Behavior Change Expected
-[How will user behavior change after implementation?]
-
-## Technical Considerations
-
-### Integration Points
-- [System/API 1]
-- [System/API 2]
-
-### Technical Constraints
-- [Constraint 1]
-- [Constraint 2]
-
-### Design References
-- [Links to designs if applicable]
-
-## Assumptions
-- [Assumption 1]: [rationale]
-- [Assumption 2]: [rationale]
-
-## Open Questions
-- [ ] [Question 1]
-- [ ] [Question 2]
-
-## Acceptance Criteria
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
-- [ ] [Criterion 3]
-
-## Recommendations
-
-Based on the analysis, I recommend:
-
-1. **Immediate**: [What to build now]
-2. **Next**: [What to consider for follow-up]
-3. **Future**: [What to keep in mind for roadmap]
-```
+Output file: `[NEXT_INDEX]-requirements.md` in the spec directory.
 
 ## Parallel Validator Integration
 
@@ -433,13 +304,7 @@ A `doc-validator` agent runs alongside you in parallel during Phase 2. After you
 
 ## Gate Compliance (MANDATORY — gate-requirements.sh)
 
-The output requirements file MUST satisfy these automated gate checks or the workflow will be blocked:
-
-1. **"acceptance criteria" text** — The document MUST contain the exact phrase "Acceptance Criteria" (case-insensitive) as a section heading
-2. **Minimum 2 acceptance criteria items** — MUST have at least 2 lines matching EITHER `- [ ]` checkbox format OR `- **AC-XX**: description` / `- AC-XX: description` format. Always produce 3+ items.
-3. **Non-functional keywords** — MUST contain at least one of: "non-functional", "performance", "security", "accessibility" (case-insensitive)
-4. **Summary keyword** — MUST contain "executive summary" or "summary" (case-insensitive)
-5. **Minimum 500 characters** — Document must be substantive, not just a template skeleton
+See Gate Compliance Notes in `${CLAUDE_PLUGIN_ROOT}/templates/reference/requirements-template.md` for the exact regex patterns and rendering rules the gate expects. The doc-validator runs the gate script — you do NOT need to run it yourself.
 
 **If any check fails, the gate blocks Phase 2.5 (BDD scenarios) from starting.**
 

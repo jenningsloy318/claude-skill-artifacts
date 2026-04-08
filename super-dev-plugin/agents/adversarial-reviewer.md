@@ -208,83 +208,9 @@ ELSE:
 
 ## Output Template
 
-```markdown
-# Adversarial Review: [Feature/Fix Name]
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/adversarial-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with destructive action gate, lens/vector-tagged findings, and deterministic verdict logic.
 
-**Date:** [timestamp]
-**Reviewer:** super-dev:adversarial-reviewer
-**Verdict:** PASS | CONTESTED | REJECT
-
-## Intent
-<what the author is trying to achieve>
-
-## Verdict Summary
-<one-line summary>
-
-## Change Scope
-| Metric | Value |
-|--------|-------|
-| Lines changed | X |
-| Files changed | X |
-| Size classification | Small/Medium/Large |
-| Reviewers activated | Skeptic [+ Architect] [+ Minimalist] |
-| Attack vectors applied | V1-V6, V8 [+ V7] |
-
-## Destructive Action Gate
-
-**Gate Verdict:** CLEAR | BLOCKED
-
-| Check | Status | Evidence |
-|-------|--------|----------|
-| Data Destruction (DAT) | CLEAR/HALT | [details or file:line] |
-| Irreversible State (IRR) | CLEAR/HALT | [details or file:line] |
-| Production Impact (PRD) | CLEAR/HALT | [details or file:line] |
-| Permission Escalation (PRM) | CLEAR/HALT | [details or file:line] |
-| Secret Operations (SEC) | CLEAR/HALT | [details or file:line] |
-
-### HALT Findings
-<DAG-XXX entries if any, or "None">
-
-## Findings
-<numbered list, ordered by severity: HALT -> high -> medium -> low>
-<each finding tagged with Lens/Vector: e.g., Skeptic/V2>
-
-### High
-
-**AF-001** | Skeptic/V2 | `file:line`
-**Issue:** [description]
-**Recommendation:** [concrete action, not vague advice]
-
-### Medium
-
-**AF-002** | Architect/V7 | `file:line`
-**Issue:** [description]
-**Recommendation:** [concrete action]
-
-### Low
-
-**AF-003** | Minimalist/V7 | `file:line`
-**Issue:** [description]
-**Recommendation:** [concrete action]
-
-## Vector Coverage
-| Vector | Lens | Findings | Highest Severity |
-|--------|------|----------|-----------------|
-| V1: False Assumptions | Skeptic | 0 | -- |
-| V2: Edge Cases | Skeptic | 0 | -- |
-| V3: Failure Modes | Skeptic | 0 | -- |
-| V4: Adversarial Input | Skeptic | 0 | -- |
-| V5: Safety & Compliance | Skeptic | 0 | -- |
-| V6: Grounding Audit | Skeptic | 0 | -- |
-| V7: Dependencies | Architect | 0 | -- |
-| V8: Behavior Coverage | Skeptic | 0 | -- |
-
-## What Went Well
-<1-3 things the reviewers found no issue with>
-
-## Lead Judgment
-<for each finding: accept or reject with a one-line rationale>
-```
+Output file: `*-adversarial-review-report.md` in the spec directory.
 
 ## Iteration Behavior
 
@@ -309,19 +235,6 @@ A `doc-validator` agent runs alongside you in parallel during Phase 9. After you
 
 ## Gate Compliance (MANDATORY — gate-review.sh)
 
-The output file `*-adversarial-review-report.md` MUST satisfy these automated gate checks or the workflow will be blocked:
-
-1. **Verdict text** — MUST contain one of: "PASS", "CONTESTED", "REJECT", "HALT" (case-insensitive). The `**Verdict:**` line in the header satisfies this.
-2. **PASS or CONTESTED to pass gate** — The gate passes when "PASS" or "CONTESTED" is found AND "REJECT" is NOT found in the first matching line. CONTESTED is treated as Team Lead accepted, since the gate runs only after the Team Lead decides to proceed.
-3. **REJECT blocks the gate** — If "REJECT" appears, the gate fails and Phase 8/9 must loop.
+See Gate Compliance rules (verdict-logic, halt-placeholder-rendering, destructive action gate) in `${CLAUDE_PLUGIN_ROOT}/templates/reference/adversarial-review-template.md`. The doc-validator runs the gate script — you do NOT need to run it yourself.
 
 **If the gate fails, Phase 10 (Documentation) is blocked.**
-
-## Severity Reference
-
-| Severity | Impact | Examples |
-|----------|--------|----------|
-| **HALT** | Irreversible operation without safeguard | Destructive Action Gate only — `DROP TABLE`, `rm -rf`, `git push --force`, `chmod 777` |
-| High | Breaks correctness, security, or core functionality | Unhandled error paths, race conditions, security holes, missing validation |
-| Medium | Structural weakness or unnecessary complexity | Coupling issues, premature abstractions, responsibility leaks |
-| Low | Minor observations or style preferences | Naming suggestions, minor simplifications |
