@@ -324,7 +324,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 
 | Phase | Teammate | Role |
 |-------|----------|------|
-| 2 | requirements-clarifier | **Product Thinker (YC Partner Mode):** Challenge framing with 6 forcing questions, gather requirements |
+| 2 | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements |
 | 2.5 | bdd-scenario-writer | Write BDD behavior scenarios from acceptance criteria |
 | 3 | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring, present 3-5 options |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
@@ -874,7 +874,7 @@ Create an agent team named "super-dev-team" with these teammates:
 | Category | Teammate | Role | Spawn Command |
 |----------|----------|------|---------------|
 | **Team Lead** | coordinator | Orchestrates all phases, manages task list | Team Lead (always active) |
-| **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** Challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
+| **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
 | **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring | `super-dev:research-agent` |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |

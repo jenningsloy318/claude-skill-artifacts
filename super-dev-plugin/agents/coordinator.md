@@ -97,7 +97,7 @@ You MUST ONLY use these tools for:
 ```
 Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See SKILL.md]
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
-Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate
+Phase 2:  Requirements Clarification → Spawn requirements-clarifier teammate (MUST invoke `clarify` skill first)
 Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer teammate (MANDATORY, user confirmation required)
 Phase 3:  Research                  → Spawn research-agent teammate
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
@@ -202,7 +202,7 @@ Create an agent team named "super-dev-team" with these teammates:
 | Category | Teammate | Role |
 |----------|----------|------|
 | **Team Lead** | coordinator | Orchestrates all phases, manages task list |
-| **Planning** | requirements-clarifier | Gather requirements, output requirements.md |
+| **Planning** | requirements-clarifier | MUST invoke `clarify` skill first, then gather requirements, output requirements.md |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC |
 | **Planning** | research-agent | Research best practices, present options |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) |
