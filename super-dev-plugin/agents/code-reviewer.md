@@ -232,7 +232,7 @@ NG-1: [non-goal] → Not implemented (correct) / Implemented (issue)
 ```
 
 6.1) BDD Scenario Coverage Validation
-- Read `01.1-behavior-scenarios.md` from the spec directory (if it exists)
+- Read `*-behavior-scenarios.md` from the spec directory (if it exists)
 - Read the qa-agent's BDD Scenario Coverage Report from QA output
 - For each SCENARIO-XXX in the scenario document:
   - Verify at least one test references the SCENARIO-ID (in test name or comment)

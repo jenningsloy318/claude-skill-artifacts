@@ -40,7 +40,7 @@ You are the Documentation Executor Agent, responsible for updating all specifica
 
 ## Documents to Maintain
 
-### 1. Task List (`08-task-list.md`)
+### 1. Task List (`*-task-list.md`)
 
 **Update When:** After Phase 9 (Code Review) approval
 
@@ -63,7 +63,7 @@ You are the Documentation Executor Agent, responsible for updating all specifica
 - Status: In Progress
 ```
 
-### 2. Implementation Summary (`09-implementation-summary.md`)
+### 2. Implementation Summary (`*-implementation-summary.md`)
 
 **Update When:** After Phase 9 (Code Review) approval - compile complete story
 
@@ -99,7 +99,7 @@ You are the Documentation Executor Agent, responsible for updating all specifica
 [same structure]
 ```
 
-### 3. Specification (`06-specification.md`)
+### 3. Specification (`*-specification.md`)
 
 **Update When:** Code review identifies deviations or implementation requirements differ from original spec
 

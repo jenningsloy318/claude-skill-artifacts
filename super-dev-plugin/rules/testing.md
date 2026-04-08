@@ -34,7 +34,7 @@ MANDATORY workflow:
 MANDATORY for all features developed through super-dev workflow:
 
 1. BDD scenarios written BEFORE implementation (Phase 2.5)
-2. All scenarios stored in `01.1-behavior-scenarios.md` in spec directory
+2. All scenarios stored in `*-behavior-scenarios.md` in spec directory
 3. Format: Given/When/Then (Gherkin-like markdown, NOT .feature files)
 4. No Scenario Outlines in v1 -- individual scenarios only
 5. Every scenario MUST have a unique SCENARIO-XXX ID

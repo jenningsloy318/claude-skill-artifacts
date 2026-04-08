@@ -871,7 +871,7 @@ Single deliverable — design specification as a structured markdown document wi
 **Inputs:**
 - requirements-{feature}.md (required)
 - assessment-{feature}.md (required)
-- 01.1-behavior-scenarios.md (required — BDD scenarios for behavior-driven UX design)
+- *-behavior-scenarios.md (required — BDD scenarios for behavior-driven UX design)
 - research-report-{feature}.md (optional)
 
 **Output:**

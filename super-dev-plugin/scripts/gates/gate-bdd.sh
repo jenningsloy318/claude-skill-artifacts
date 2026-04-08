@@ -8,8 +8,10 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-bdd.sh <spec-dir>}"
-BDD_FILE="${SPEC_DIR}/01.1-behavior-scenarios.md"
-REQ_FILE="${SPEC_DIR}/01-requirements.md"
+
+# Dynamic file discovery: find *-behavior-scenarios.md and *-requirements.md (incremental index)
+BDD_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-behavior-scenarios.md' -type f 2>/dev/null | head -1)
+REQ_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-requirements.md' -type f 2>/dev/null | head -1)
 
 PASS=0
 FAIL=0
@@ -26,9 +28,9 @@ check() {
     fi
 }
 
-# Check BDD file exists
-if [ ! -f "$BDD_FILE" ]; then
-    echo "GATE FAIL: BDD scenarios file not found: ${BDD_FILE}"
+# Check BDD file exists (dynamic discovery)
+if [ -z "$BDD_FILE" ] || [ ! -f "$BDD_FILE" ]; then
+    echo "GATE FAIL: No *-behavior-scenarios.md file found in: ${SPEC_DIR}"
     exit 1
 fi
 

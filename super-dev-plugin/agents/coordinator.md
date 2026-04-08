@@ -129,6 +129,43 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 - Workflow tracking JSON initialization
 - Agent team creation
 
+## Dynamic Document Naming Convention (MANDATORY)
+
+**All spec documents use incremental indexing with NO gaps.** The filename pattern is `[XX]-[doc-type].md` where `[XX]` is a zero-padded sequential number.
+
+**How to compute the next index before each phase:**
+```bash
+MAX_INDEX=$(find "$SPEC_DIR" -maxdepth 1 -regex '.*/[0-9][0-9]-.*\.md' -type f 2>/dev/null \
+    | sed 's|.*/\([0-9][0-9]\)-.*|\1|' | sort -n | tail -1)
+NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
+```
+
+**Document type identifiers** (used in filenames):
+
+| Doc Type | Produced By | Example |
+|----------|------------|---------|
+| `requirements` | requirements-clarifier | `01-requirements.md` |
+| `behavior-scenarios` | bdd-scenario-writer | `02-behavior-scenarios.md` |
+| `research-report` | research-agent | `03-research-report.md` |
+| `debug-analysis` | debug-analyzer | `03-debug-analysis.md` (if bug) |
+| `code-assessment` | code-assessor | `04-code-assessment.md` |
+| `architecture` | architecture-agent | `05-architecture.md` |
+| `design-spec` | ui-ux-designer | `05-design-spec.md` |
+| `product-design-summary` | product-designer | `05-product-design-summary.md` |
+| `specification` | spec-writer | `06-specification.md` |
+| `implementation-plan` | spec-writer | `07-implementation-plan.md` |
+| `task-list` | spec-writer | `08-task-list.md` |
+| `implementation-summary` | dev-executor | `09-implementation-summary.md` |
+| `handoff` | handoff-writer | `10-handoff.md` |
+| `code-review` | code-reviewer | `*-code-review.md` |
+| `adversarial-review-report` | adversarial-reviewer | `*-adversarial-review-report.md` |
+
+**Rules:**
+- Indices are strictly incremental — if a phase is skipped, its index is NOT reserved
+- The doc-validator agent enforces naming in its Step 0 (check + rename if needed)
+- When referencing upstream docs in spawn prompts, use glob patterns: `*-requirements.md`, `*-behavior-scenarios.md`, etc.
+- The coordinator computes `NEXT_INDEX` before each phase and passes it to the writer
+
 ## Iteration Rule: Phase 8/9 Loop
 
 **Loop until:** Critical=0, High=0, Medium=0, AcceptanceCriteriaMet, ScenarioCoverageMet (100%), CodeReviewVerdict=Approved, AdversarialVerdict=PASS
@@ -243,6 +280,15 @@ Create an agent team named "super-dev-team" with these teammates:
 **Planning Phases (sequential — with parallel validator):**
 
 **Phase 2 (PARALLEL — writer + validator):**
+
+**Before spawning:** Compute the next document index by scanning the spec directory:
+```bash
+MAX_INDEX=$(find "specification/[spec-index]-[spec-name]" -maxdepth 1 -regex '.*/[0-9][0-9]-.*\.md' -type f 2>/dev/null \
+    | sed 's|.*/\([0-9][0-9]\)-.*|\1|' | sort -n | tail -1)
+NEXT_INDEX=$(printf "%02d" $((10#${MAX_INDEX:-0} + 1)))
+# First doc → NEXT_INDEX = 01
+```
+
 ```
 Spawn BOTH in parallel:
 
@@ -250,37 +296,42 @@ Spawn BOTH in parallel:
    - Task: [task description]
    - Worktree: .worktree/[spec-index]-[spec-name]
    - Spec directory: specification/[spec-index]-[spec-name]
-   Your role is to produce 01-requirements.md. A doc-validator runs alongside you —
+   Your role is to produce [NEXT_INDEX]-requirements.md. A doc-validator runs alongside you —
    respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
-   - Document: specification/[spec-index]-[spec-name]/01-requirements.md
+   - Doc type: requirements
    - Gate profile: gate-requirements
    - Writer agent: requirements-clarifier
    - Spec directory: specification/[spec-index]-[spec-name]
-   Validate 01-requirements.md against gate-requirements.sh criteria.
+   Step 0: Verify/rename the requirements document to [NEXT_INDEX]-requirements.md.
+   Then validate against gate-requirements.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 2.5 (PARALLEL — writer + validator, then user confirmation):**
+
+**Before spawning:** Compute next index (after requirements doc).
+
 ```
 Spawn BOTH in parallel:
 
 1. "Spawn a bdd-scenario-writer teammate with this context:
    - Task: Generate BDD behavior scenarios from acceptance criteria
-   - Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
+   - Requirements: specification/[spec-index]-[spec-name]/*-requirements.md
    - Spec directory: specification/[spec-index]-[spec-name]
    - Feature name: [feature name]
-   Your role is to produce 01.1-behavior-scenarios.md. A doc-validator runs alongside you —
+   Your role is to produce [NEXT_INDEX]-behavior-scenarios.md. A doc-validator runs alongside you —
    respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
-   - Document: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
+   - Doc type: behavior-scenarios
    - Gate profile: gate-bdd
    - Writer agent: bdd-scenario-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Validate 01.1-behavior-scenarios.md against gate-bdd.sh criteria.
+   Step 0: Verify/rename the BDD document to [NEXT_INDEX]-behavior-scenarios.md.
+   Then validate against gate-bdd.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
@@ -293,27 +344,31 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 5. Only proceed to Phase 3 AFTER user explicitly confirms the scenarios
 
 **Phase 6 (PARALLEL — writer + validator):**
+
+**Before spawning:** Compute next index (after the last existing doc in spec dir).
+
 ```
 Spawn BOTH in parallel:
 
 1. "Spawn a spec-writer teammate with this context:
    - Task: Write technical specification, implementation plan, and task list
    - Spec directory: specification/[spec-index]-[spec-name]
-   - Requirements: specification/[spec-index]-[spec-name]/01-requirements.md
-   - BDD Scenarios: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
-   - Research: specification/[spec-index]-[spec-name]/02-research-report.md
-   - Assessment: specification/[spec-index]-[spec-name]/04-code-assessment.md
+   - Requirements: specification/[spec-index]-[spec-name]/*-requirements.md
+   - BDD Scenarios: specification/[spec-index]-[spec-name]/*-behavior-scenarios.md
+   - Research: specification/[spec-index]-[spec-name]/*-research-report.md
+   - Assessment: specification/[spec-index]-[spec-name]/*-code-assessment.md
    - [additional inputs as applicable]
-   Your role is to produce 06-specification.md, 07-implementation-plan.md, 08-task-list.md.
+   Your role is to produce [NEXT_INDEX]-specification.md, [NEXT_INDEX+1]-implementation-plan.md, [NEXT_INDEX+2]-task-list.md.
    A doc-validator runs alongside you — respond to its VALIDATION FAILED messages
    by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
-   - Document: specification/[spec-index]-[spec-name]/06-specification.md
+   - Doc type: specification
    - Gate profile: gate-spec-trace
    - Writer agent: spec-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Validate 06-specification.md against gate-spec-trace.sh criteria.
+   Step 0: Verify/rename the specification document to [NEXT_INDEX]-specification.md.
+   Then validate against gate-spec-trace.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
@@ -323,9 +378,9 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 "Spawn a dev-executor teammate with this context:
 - Task: Implement code changes per task list
 - Spec directory: specification/[spec-index]-[spec-name]
-- Specification: specification/[spec-index]-[spec-name]/06-specification.md
-- BDD Scenarios: specification/[spec-index]-[spec-name]/01.1-behavior-scenarios.md
-- Task list: specification/[spec-index]-[spec-name]/08-task-list.md
+- Specification: specification/[spec-index]-[spec-name]/*-specification.md
+- BDD Scenarios: specification/[spec-index]-[spec-name]/*-behavior-scenarios.md
+- Task list: specification/[spec-index]-[spec-name]/*-task-list.md
 
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors."
 
@@ -370,9 +425,9 @@ Wait for ALL FOUR to complete (both validators report PASS). Then terminate all 
 - Task: Update documentation to reflect implemented changes
 - Worktree: .worktree/[spec-index]-[spec-name]
 - Spec directory: specification/[spec-index]-[spec-name]
-- Specification: specification/[spec-index]-[spec-name]/06-specification.md
-- Implementation summary: specification/[spec-index]-[spec-name]/09-implementation-summary.md
-- Code review: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md
+- Specification: specification/[spec-index]-[spec-name]/*-specification.md
+- Implementation summary: specification/[spec-index]-[spec-name]/*-implementation-summary.md
+- Code review: specification/[spec-index]-[spec-name]/*-code-review.md
 
 Your role is to update all relevant documentation (README, API docs, inline docs)
 to reflect the changes made during this workflow. Output: updated documentation files."
@@ -388,7 +443,7 @@ to reflect the changes made during this workflow. Output: updated documentation 
 - All spec artifacts in the spec directory
 - Git diff: run `git diff --stat main..HEAD`
 
-Your role is to synthesize all workflow artifacts into 11-handoff.md following the 7-section template.
+Your role is to synthesize all workflow artifacts into [NEXT_INDEX]-handoff.md following the 7-section template.
 Write FOR the next AI agent. Be specific, concrete, and actionable."
 ```
 
@@ -441,7 +496,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | Phase | Teammate | Terminate After |
 |-------|----------|-----------------|
 | 2 | requirements-clarifier + doc-validator | requirements.md complete AND validator PASS, then terminate both |
-| 2.5 | bdd-scenario-writer + doc-validator | 01.1-behavior-scenarios.md complete AND validator PASS AND user confirmed scenarios, then terminate both |
+| 2.5 | bdd-scenario-writer + doc-validator | *-behavior-scenarios.md complete AND validator PASS AND user confirmed scenarios, then terminate both |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
 | 5 | code-assessor | assessment.md complete |
@@ -452,7 +507,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
 | 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator | **ALL FOUR complete** (parallel), both validators PASS, then terminate all four |
 | 10 | docs-executor | Documentation updated |
-| 10.5 | handoff-writer | 11-handoff.md complete |
+| 10.5 | handoff-writer | *-handoff.md complete |
 
 **Exception:** Phase 8 (dev-executor + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer) - These run in parallel and should BOTH complete before termination.
 
@@ -461,15 +516,15 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Phase Transitions:**
 | → Phase 0-1 | See SKILL.md - Dev rules applied, worktree created with branch=name match, spec dir setup, agent team created |
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
-| → Phase 3 | 01-requirements.md exists AND 01.1-behavior-scenarios.md exists AND user confirmed BDD scenarios |
-| → Phase 5 | 02-research-report.md exists |
-| → Phase 5.4 | 04-assessment.md exists, BOTH architecture AND UI work identified |
-| → Phase 6 | 04-assessment.md exists (+ 03-debug-analysis.md if bug), design docs exist (05-architecture.md and/or 05-design-spec.md, or 05-product-design-summary.md if Phase 5.4 used) |
-| → Phase 7 | 06-specification.md, 07-implementation-plan.md, 08-task-list.md exist |
+| → Phase 3 | *-requirements.md exists AND *-behavior-scenarios.md exists AND user confirmed BDD scenarios |
+| → Phase 5 | *-research-report.md exists |
+| → Phase 5.4 | *-code-assessment.md exists, BOTH architecture AND UI work identified |
+| → Phase 6 | *-code-assessment.md exists (+ *-debug-analysis.md if bug), design docs exist (*-architecture.md and/or *-design-spec.md, or *-product-design-summary.md if Phase 5.4 used) |
+| → Phase 7 | *-specification.md, *-implementation-plan.md, *-task-list.md exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
 | → Phase 10 | Code review approved AND adversarial review PASS |
 | → Phase 10.5 | Documentation updated |
-| → Phase 11 | 11-handoff.md exists in spec directory, teammates shut down (worktree preserved) |
+| → Phase 11 | *-handoff.md exists in spec directory, teammates shut down (worktree preserved) |
 | → Phase 12 | All changes committed and merged to main |
 | Complete | Git status clean, merged to main, team cleaned up, worktree preserved |
 
@@ -515,8 +570,8 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Executed by:** `super-dev:handoff-writer` (spawned via Task tool)
 
 1. Spawn `super-dev:handoff-writer` with full context (all spec artifacts, workflow JSON, git diff)
-2. Wait for handoff-writer to complete `11-handoff.md`
-3. Verify output: `11-handoff.md` exists in spec directory
+2. Wait for handoff-writer to complete `*-handoff.md`
+3. Verify output: `*-handoff.md` exists in spec directory
 4. Terminate handoff-writer immediately after completion
 5. Update workflow tracking JSON: Phase 10.5 = complete
 
@@ -540,7 +595,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 1. **Phase 8 complete:** Build passes, tests pass, implementation done
 2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
 3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
-4. **Phase 10.5 complete:** `11-handoff.md` exists in spec directory
+4. **Phase 10.5 complete:** `*-handoff.md` exists in spec directory
 5. **Phase 11 complete:** All teammates terminated, worktree preserved
 
 **If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.

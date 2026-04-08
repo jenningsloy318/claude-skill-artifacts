@@ -73,10 +73,10 @@ Ask:
 - [ ] **V5 Safety & Compliance:** Check for: PII in logs, hardcoded secrets, auth bypass paths, missing rate limiting, CORS wildcards
 - [ ] **V6 Grounding Audit:** Verify every API call, config reference, and method signature exists in the actual dependency version used
 - [ ] **V8 Behavior Coverage:** Are all user-facing behaviors covered by BDD scenarios?
-  - Read `01.1-behavior-scenarios.md` from the spec directory
+  - Read `*-behavior-scenarios.md` from the spec directory
   - Cross-reference with implementation: are there code paths with business logic that have no corresponding scenario?
   - Check the qa-agent's scenario coverage report: does it show 100% coverage?
-  - Are there acceptance criteria from `01-requirements.md` that lack corresponding scenarios in the traceability matrix?
+  - Are there acceptance criteria from `*-requirements.md` that lack corresponding scenarios in the traceability matrix?
   - If any gaps found: emit finding with High severity
 
 #### Architect — Challenge structural fitness
@@ -112,9 +112,9 @@ Ask:
 Before applying lens reviews, validate that required BDD artifacts exist:
 
 - [ ] **D9 BDD Document Validation:**
-  - Does `01.1-behavior-scenarios.md` exist in the spec directory?
+  - Does `*-behavior-scenarios.md` exist in the spec directory?
   - Does it contain a Traceability Matrix section?
-  - Are all ACs from `01-requirements.md` represented in the traceability matrix?
+  - Are all ACs from `*-requirements.md` represented in the traceability matrix?
   - If any check fails: emit finding with High severity (Skeptic/D9)
 
 **D9 is a pre-gate:** If the scenario document is missing or incomplete, this finding is emitted before any V1-V8 analysis begins.

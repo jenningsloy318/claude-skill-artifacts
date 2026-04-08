@@ -1600,7 +1600,7 @@ Every architecture must:
 **Inputs:**
 - `[index]-requirements.md` (required)
 - `[index]-assessment.md` (required)
-- `01.1-behavior-scenarios.md` (required — BDD scenarios for behavior-driven module boundaries)
+- `*-behavior-scenarios.md` (required — BDD scenarios for behavior-driven module boundaries)
 
 **Outputs:**
 - `[index]-architecture.md` → used by spec-writer and ui-ux-designer

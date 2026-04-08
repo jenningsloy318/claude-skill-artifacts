@@ -418,10 +418,10 @@ Based on the analysis, I recommend:
 
 ## Parallel Validator Integration
 
-A `doc-validator` agent runs alongside you in parallel during Phase 2. After you write `01-requirements.md`, the validator independently checks it against `gate-requirements.sh` criteria.
+A `doc-validator` agent runs alongside you in parallel during Phase 2. After you write the requirements document, the validator independently checks it against `gate-requirements.sh` criteria.
 
 **Your responsibilities:**
-1. Write `01-requirements.md` as normal
+1. Write `[NEXT_INDEX]-requirements.md` as normal (the coordinator provides `NEXT_INDEX`; the doc-validator enforces correct naming)
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`
@@ -433,7 +433,7 @@ A `doc-validator` agent runs alongside you in parallel during Phase 2. After you
 
 ## Gate Compliance (MANDATORY — gate-requirements.sh)
 
-The output file `01-requirements.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+The output requirements file MUST satisfy these automated gate checks or the workflow will be blocked:
 
 1. **"acceptance criteria" text** — The document MUST contain the exact phrase "Acceptance Criteria" (case-insensitive) as a section heading
 2. **Minimum 2 acceptance criteria items** — MUST have at least 2 lines matching EITHER `- [ ]` checkbox format OR `- **AC-XX**: description` / `- AC-XX: description` format. Always produce 3+ items.

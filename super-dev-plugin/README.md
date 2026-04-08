@@ -289,13 +289,13 @@ Hooks are automatic actions that fire every time Claude edits a file, runs a com
 The phase-gate hook validates that prerequisite artifacts exist before spawning phase agents. It reads `phase-manifest.json` to map agent types to required files:
 
 ```
-Phase 2.5 (BDD)        → requires 01-requirements.md
-Phase 3   (Research)    → requires 01-requirements.md + 01.1-behavior-scenarios.md
-Phase 5   (Assessment)  → requires 02-research-report.md
-Phase 6   (Spec)        → requires 04-assessment.md
-Phase 8   (Execution)   → requires 06-specification.md + 07-plan.md + 08-task-list.md
-Phase 9   (Review)      → requires 06-specification.md
-Phase 10  (Docs)        → requires 06-specification.md
+Phase 2.5 (BDD)        → requires *-requirements.md
+Phase 3   (Research)    → requires *-requirements.md + *-behavior-scenarios.md
+Phase 5   (Assessment)  → requires *-research-report.md
+Phase 6   (Spec)        → requires *-code-assessment.md
+Phase 8   (Execution)   → requires *-specification.md + *-implementation-plan.md + *-task-list.md
+Phase 9   (Review)      → requires *-specification.md
+Phase 10  (Docs)        → requires *-specification.md
 Phase 10.5 (Handoff)    → requires 06-specification.md
 ```
 

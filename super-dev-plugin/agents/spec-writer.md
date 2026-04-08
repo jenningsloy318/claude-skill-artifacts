@@ -50,20 +50,24 @@ Generate granular tasks for execution.
 
 ### Step 5: Pre-Output Self-Check (MANDATORY — do NOT skip)
 
-Before writing `06-specification.md` to disk, verify ALL of the following are present in your output. If any check fails, fix the spec before writing — do NOT rely on the gate to catch it.
+Before writing the specification document to disk, verify ALL of the following are present in your output. If any check fails, fix the spec before writing — do NOT rely on the gate to catch it.
 
-1. **Section 8.1 "Implementation Plan"** exists with heading text containing "Implementation Plan"
-2. **Task List inside Section 8.1** contains at least 3 items in `- [ ] **T1** ...` or `- [ ] T1: ...` format, each cross-referencing SCENARIO-XXX IDs
-3. **Section 5 "Testing Strategy"** exists and contains at least one of: "testing strategy", "test plan", "unit test", "integration test"
-4. **BDD scenario references** — at least 1 `SCENARIO-XXX` pattern appears (Section 5.4 and Section 8.1)
+1. **Section 5 "Testing Strategy"** exists and contains at least one of: "testing strategy", "test plan", "unit test", "integration test"
+2. **BDD scenario references** — at least 1 `SCENARIO-XXX` pattern appears (Section 5.4)
+3. **All three output files produced** — `*-specification.md`, `*-implementation-plan.md`, and `*-task-list.md` must all be written (the gate checks file existence)
 
 **If any check fails:** Fix the missing section in your draft before writing the file. Do NOT output an incomplete spec.
 
 ## Output Documents
 
-**IMPORTANT FILE NAMING:** Files within each spec directory should start from 01-XX, not use the spec directory index. Example: `01-requirements.md`, `02-research-report.md`, etc.
+**IMPORTANT FILE NAMING:** Documents use incremental indexing with NO gaps. The coordinator provides the `NEXT_INDEX` for this phase. Name your outputs as:
+- `[NEXT_INDEX]-specification.md`
+- `[NEXT_INDEX+1]-implementation-plan.md`
+- `[NEXT_INDEX+2]-task-list.md`
 
-### Document 1: Technical Specification (`06-specification.md`)
+The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` convention and rename if needed. When referencing upstream docs, use glob patterns (e.g., `*-requirements.md`) since their indices depend on which phases were executed.
+
+### Document 1: Technical Specification (`[NEXT_INDEX]-specification.md`)
 
 ```markdown
 # Technical Specification: [Feature/Fix Name]
@@ -279,7 +283,7 @@ async function [featureName][action](
 
 ### 5.4 BDD Scenario References
 
-Tests MUST reference BDD scenario IDs from `01.1-behavior-scenarios.md`:
+Tests MUST reference BDD scenario IDs from `*-behavior-scenarios.md`:
 
 | Scenario ID | Title | Test Type | Test Location |
 |-------------|-------|-----------|---------------|
@@ -350,15 +354,8 @@ Examples:
 
 ## 8.1 Implementation Plan
 
-### Task List
-
-The following tasks implement this specification (cross-referenced with BDD scenarios):
-
-- [ ] **T1** [First implementation task] (SCENARIO-XXX)
-- [ ] **T2** [Second implementation task] (SCENARIO-XXX)
-- [ ] **T3** [Third implementation task] (SCENARIO-XXX)
-
-See `08-task-list.md` for full task breakdown with file paths and acceptance criteria.
+See `*-implementation-plan.md` for phased implementation milestones.
+See `*-task-list.md` for full task breakdown with file paths and acceptance criteria.
 
 ## 9. Unambiguous Implementation Requirements (MANDATORY)
 
@@ -405,7 +402,7 @@ Review this specification against these ambiguity sources:
 - Debug Analysis (super-dev:debug-analyzer): [link if applicable]
 ```
 
-### Document 2: Implementation Plan (`07-implementation-plan.md`)
+### Document 2: Implementation Plan (`[NEXT_INDEX+1]-implementation-plan.md`)
 
 ```markdown
 # Implementation Plan: [Feature/Fix Name]
@@ -511,7 +508,7 @@ Review this specification against these ambiguity sources:
 - [ ] [Metric 2]
 ```
 
-### Document 3: Task List (`08-task-list.md`)
+### Document 3: Task List (`[NEXT_INDEX+2]-task-list.md`)
 
 ```markdown
 # Task List: [Feature/Fix Name]
@@ -579,10 +576,10 @@ T1.1 ──┬──▶ T1.2 ──┬──▶ T2.1
 
 ## Parallel Validator Integration
 
-A `doc-validator` agent runs alongside you in parallel during Phase 6. After you write `06-specification.md`, the validator independently checks it against `gate-spec-trace.sh` criteria.
+A `doc-validator` agent runs alongside you in parallel during Phase 6. After you write the specification document, the validator independently checks it against `gate-spec-trace.sh` criteria.
 
 **Your responsibilities:**
-1. Write `06-specification.md`, `07-implementation-plan.md`, `08-task-list.md` as normal
+1. Write `[NEXT_INDEX]-specification.md`, `[NEXT_INDEX+1]-implementation-plan.md`, `[NEXT_INDEX+2]-task-list.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`
@@ -594,12 +591,12 @@ A `doc-validator` agent runs alongside you in parallel during Phase 6. After you
 
 ## Gate Compliance (MANDATORY — gate-spec-trace.sh)
 
-The output file `06-specification.md` MUST satisfy these automated gate checks or the workflow will be blocked:
+The output specification file MUST satisfy these automated gate checks or the workflow will be blocked:
 
-1. **BDD scenario references** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4 and Section 8.1.
+1. **BDD scenario references** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4.
 2. **Testing strategy text** — MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this — ensure it contains one of these exact phrases.
-3. **Task list items** — MUST contain at least 1 line matching EITHER `- [ ]` / `- [x]` checkbox format OR `- **T1** task` / `- T1: task` format. Section 8.1 "Task List" provides these.
-4. **Implementation plan text** — MUST contain at least one of: "implementation plan", "implementation phases", "task list", "implementation approach", "implementation steps" (case-insensitive). Section 8.1 heading satisfies this — ensure it contains one of these exact phrases.
+3. **Task list file exists** — `*-task-list.md` must exist as a separate file in the spec directory. You MUST produce this file.
+4. **Implementation plan file exists** — `*-implementation-plan.md` must exist as a separate file in the spec directory. You MUST produce this file.
 
 **If any check fails, the gate blocks Phase 7 (Spec Review) from starting.**
 
@@ -613,7 +610,7 @@ Every specification set must:
 - [ ] Include final commit task
 - [ ] List all files to be affected
 - [ ] Identify task dependencies
-- [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory (e.g., `./01-requirements.md`)
+- [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory with glob patterns (e.g., `./*-requirements.md`)
 - [ ] BDD scenarios cross-referenced in testing strategy (Section 5.4)
 
 ### Naming Convention Standards (MANDATORY)

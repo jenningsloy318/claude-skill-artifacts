@@ -143,7 +143,7 @@ Grade each completed workflow run against these three dimensions:
 - Code review resolves all Critical, High, and Medium issues to zero
 - BDD scenario coverage: 100% of scenarios have corresponding passing tests
 - Documentation updated to reflect changes
-- Handoff document generated in spec directory (`11-handoff.md`)
+- Handoff document generated in spec directory (`*-handoff.md`)
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
 - Phase iteration loops < 3 (Phase 8/9 loop)
@@ -361,7 +361,7 @@ In Phase 5.4, ALWAYS present COMBINED architecture+UI options together.
 YOU MUST ensure the git branch name matches the worktree name exactly: `[spec-index]-[spec-name]`. NEVER create a branch with a different name than the worktree.
 
 ### BDD Scenario Propagation Rule
-`01.1-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
+`*-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
 - **Design phases (5.3, 5.4, 5.5):** BDD scenarios inform module boundaries, user flows, and interaction patterns
 - **Spec writing (6):** BDD scenarios are cross-referenced in testing strategy
 - **Execution (8):** dev-executor references SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
@@ -474,7 +474,7 @@ YOU MUST load coding standards, git practices, and quality standards at the star
 Analyze the task and define an appropriate spec directory name (do NOT create yet):
 
 1. **Check for existing specs**: Search `specification/` for directories matching the current task
-   - **If a matching spec with `11-handoff.md` exists (continuation):**
+   - **If a matching spec with `*-handoff.md` exists (continuation):**
      1. Read ONLY sections 2 (Progress), 4 (Unfinished Items), and 7 (Next Steps) from the handoff
      2. Do NOT read the full handoff — it's a map, not a novel
      3. Resume from the last incomplete phase per the Progress table
@@ -700,8 +700,8 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
 1. Run `gate-review.sh` → Must PASS (exit 0) before starting Phase 10
 2. Spawn `super-dev:docs-executor` with context:
    - Spec directory path
-   - Specification document (06-specification.md)
-   - Implementation summary (09-implementation-summary.md)
+   - Specification document (*-specification.md)
+   - Implementation summary (*-implementation-summary.md)
    - Code review results
 3. Wait for docs-executor to complete
 4. Verify documentation files are updated
@@ -726,11 +726,11 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
    - Workflow tracking JSON
    - Git diff: `git diff --stat main..HEAD`
    - Feature name
-2. Wait for handoff-writer to complete `11-handoff.md`
-3. Verify `11-handoff.md` exists in spec directory
+2. Wait for handoff-writer to complete `*-handoff.md`
+3. Verify `*-handoff.md` exists in spec directory
 4. Terminate handoff-writer immediately after completion
 
-**Output:** `specification/[spec-index]-[spec-name]/11-handoff.md`
+**Output:** `specification/[spec-index]-[spec-name]/*-handoff.md`
 
 **After Phase 10.5:** Proceed to Phase 11 (Team Cleanup). NEVER skip to Phase 12.
 
@@ -761,7 +761,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 1. **Phase 8 complete:** Build passes, tests pass, implementation done
 2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
 3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
-4. **Phase 10.5 complete:** `11-handoff.md` exists in spec directory
+4. **Phase 10.5 complete:** `*-handoff.md` exists in spec directory
 5. **Phase 11 complete:** All teammates terminated, worktree preserved
 
 **If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.
@@ -956,7 +956,7 @@ Teammates to include:
 - **Forgetting to terminate teammates after completion**: Idle teammates consume context window and memory. If teammates are not terminated immediately after their phase completes, resources accumulate and the session degrades or hits limits.
 - **Branch name not matching worktree name**: The git branch created with `git worktree add` must exactly match the worktree directory name (e.g., `03-user-auth`). A mismatch causes merge failures and confuses the commit/merge workflow in Phase 12.
 - **Skipping Phase 0 dev-rules loading**: Without loading dev-rules at session start, teammates operate without coding standards, git practices, or quality guidelines, leading to inconsistent output that fails review.
-- **Not passing BDD scenarios to downstream phases**: `01.1-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
+- **Not passing BDD scenarios to downstream phases**: `*-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
 - **Creating spec directory in main repo instead of worktree**: The spec directory must be created inside the worktree (`.worktree/[name]/specification/[name]/`), not in the main repository root. Creating it in the wrong location breaks isolation and causes files to appear in the wrong branch.
 - **Batching multiple tasks into one commit instead of atomic commits**: Each completed task should be committed individually. Batching makes it impossible to revert a single change and violates the incremental development principle.
 - **Not presenting options to user in Phases 3/5.3/5.4/5.5**: These phases require presenting 3-5 options for the user to choose from. Skipping option presentation and jumping straight to implementation removes the user from the decision loop.

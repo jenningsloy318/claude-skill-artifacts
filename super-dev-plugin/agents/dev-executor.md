@@ -82,7 +82,7 @@ Task(
   prompt: "Implement [task description]",
   context: {
     specification: "[path to spec]",
-    bdd_scenarios: "[path to 01.1-behavior-scenarios.md]",
+    bdd_scenarios: "[path to *-behavior-scenarios.md]",
     task_details: "[task from task-list]",
     target_files: ["file1.rs", "file2.rs"],
     existing_patterns: "[patterns from assessment]"

@@ -8,7 +8,13 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-requirements.sh <spec-dir>}"
-REQ_FILE="${SPEC_DIR}/01-requirements.md"
+
+# Dynamic file discovery: find *-requirements.md (incremental index)
+REQ_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-requirements.md' -type f 2>/dev/null | head -1)
+if [ -z "$REQ_FILE" ]; then
+    echo "GATE FAIL: No *-requirements.md file found in: ${SPEC_DIR}"
+    exit 1
+fi
 
 PASS=0
 FAIL=0
@@ -25,11 +31,7 @@ check() {
     fi
 }
 
-# Check file exists
-if [ ! -f "$REQ_FILE" ]; then
-    echo "GATE FAIL: Requirements file not found: ${REQ_FILE}"
-    exit 1
-fi
+# File already confirmed to exist via dynamic discovery above
 
 # Check for acceptance criteria section
 has_ac=$(grep -ci "acceptance criteria" "$REQ_FILE" || true)

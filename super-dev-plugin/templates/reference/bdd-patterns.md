@@ -21,7 +21,7 @@ BDD scenarios use Given/When/Then format in markdown (NOT .feature files):
 
 - Format: `SCENARIO-001`, `SCENARIO-002`, ..., `SCENARIO-NNN`
 - Sequential, zero-padded to 3 digits
-- Unique within a single `01.1-behavior-scenarios.md`
+- Unique within a single `*-behavior-scenarios.md`
 - Referenced in tests: `describe('SCENARIO-001: ...')` or `// SCENARIO-001`
 
 ### Priority Levels
