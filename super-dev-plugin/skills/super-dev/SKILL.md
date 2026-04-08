@@ -474,6 +474,12 @@ YOU MUST load coding standards, git practices, and quality standards at the star
 Analyze the task and define an appropriate spec directory name (do NOT create yet):
 
 1. **Check for existing specs**: Search `specification/` for directories matching the current task
+   - **If a matching spec with `11-handoff.md` exists (continuation):**
+     1. Read ONLY sections 2 (Progress), 4 (Unfinished Items), and 7 (Next Steps) from the handoff
+     2. Do NOT read the full handoff — it's a map, not a novel
+     3. Resume from the last incomplete phase per the Progress table
+     4. Skip to the "Read These First" list (Section 6) if you need deeper context on specific files
+     5. Re-use the existing worktree and spec directory — do NOT recreate
 2. **New spec directory naming**: `[spec-index]-[spec-name]`
    - `spec-index`: Next sequential number (01, 02, 03, ...)
    - `spec-name`: Kebab-case descriptor (e.g., `user-auth`, `payment-integration`, `fix-login-bug`)
