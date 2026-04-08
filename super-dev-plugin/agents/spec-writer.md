@@ -571,9 +571,9 @@ T1.1 ──┬──▶ T1.2 ──┬──▶ T2.1
 The output file `06-specification.md` MUST satisfy these automated gate checks or the workflow will be blocked:
 
 1. **BDD scenario references** — MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4 and Section 8.1.
-2. **Testing strategy text** — MUST contain at least one of: "testing strategy", "test plan", "test approach" (case-insensitive). Section 5 heading satisfies this.
-3. **Task list items** — MUST contain at least 1 checkbox line matching `- [ ]` or `- [x]`. Section 8.1 "Task List" provides these.
-4. **Implementation plan text** — MUST contain at least one of: "implementation plan", "implementation phases", "task list" (case-insensitive). Section 8.1 heading satisfies this.
+2. **Testing strategy text** — MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this — ensure it contains one of these exact phrases.
+3. **Task list items** — MUST contain at least 1 line matching EITHER `- [ ]` / `- [x]` checkbox format OR `- **T1** task` / `- T1: task` format. Section 8.1 "Task List" provides these.
+4. **Implementation plan text** — MUST contain at least one of: "implementation plan", "implementation phases", "task list", "implementation approach", "implementation steps" (case-insensitive). Section 8.1 heading satisfies this — ensure it contains one of these exact phrases.
 
 **If any check fails, the gate blocks Phase 7 (Spec Review) from starting.**
 
