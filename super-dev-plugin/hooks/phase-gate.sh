@@ -29,11 +29,16 @@ agent_prompt=$(echo "$INPUT" | jq -r '.tool_input.prompt // ""' 2>/dev/null || e
 
 # Try to find spec directory from the prompt
 SPEC_DIR=""
+SPEC_NAME=""
 
 # Method 1: Extract from prompt (most reliable — team-lead always includes spec path)
 if [ -n "$agent_prompt" ]; then
   # Match "specification/NNN-name" or "Spec directory: specification/NNN-name"
   SPEC_DIR=$(echo "$agent_prompt" | grep -oP 'specification/[^\s,)"]+' | head -1 || echo "")
+  # Extract just the spec name (e.g., "94-settings-deferred-apply")
+  if [ -n "$SPEC_DIR" ]; then
+    SPEC_NAME=$(basename "$SPEC_DIR")
+  fi
 fi
 
 # Method 2: Check SUPER_DEV_SPEC_DIR env var
@@ -45,14 +50,36 @@ fi
 if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
   for candidate in specification/*/; do
     if [ -d "$candidate" ]; then
-      # Pick the most recently modified spec directory
       SPEC_DIR=$(ls -td specification/*/ 2>/dev/null | head -1 || echo "")
       break
     fi
   done
 fi
 
-# Method 4: Check parent directory (worktree scenario)
+# Method 4: Check worktree paths (hook runs from main repo root, but spec is inside worktree)
+if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
+  if [ -n "$SPEC_NAME" ]; then
+    # Try the exact worktree path for this spec
+    WT_CANDIDATE=".worktree/${SPEC_NAME}/specification/${SPEC_NAME}"
+    if [ -d "$WT_CANDIDATE" ]; then
+      SPEC_DIR="$WT_CANDIDATE"
+    fi
+  fi
+  # Fallback: scan all worktrees for matching spec directories
+  if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
+    for wt in .worktree/*/; do
+      if [ -d "$wt" ]; then
+        candidate=$(ls -td "${wt}specification/"*/ 2>/dev/null | head -1 || echo "")
+        if [ -n "$candidate" ] && [ -d "$candidate" ]; then
+          SPEC_DIR="$candidate"
+          break
+        fi
+      fi
+    done
+  fi
+fi
+
+# Method 5: Check parent directory (already inside worktree)
 if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
   for candidate in ../specification/*/; do
     if [ -d "$candidate" ]; then
@@ -78,10 +105,13 @@ MISSING=""
 while IFS= read -r req_file; do
   [ -z "$req_file" ] && continue
 
+  # Replace [doc-index] with * for shell globbing (manifest uses [doc-index] as placeholder)
+  glob_pattern="${req_file/\[doc-index\]/*}"
+
   found=false
 
-  # Search in spec directory (exact match and glob for numbered prefixes)
-  for candidate in "$SPEC_DIR/$req_file" "$SPEC_DIR"/*"$req_file"; do
+  # Search in spec directory (glob for numbered prefixes like 01-requirements.md)
+  for candidate in "$SPEC_DIR"/$glob_pattern; do
     if [ -f "$candidate" ] && [ -s "$candidate" ]; then
       # Check required sections if defined
       SECTIONS=$(echo "$GATE" | jq -r --arg f "$req_file" '.sections[$f][]? // empty' 2>/dev/null || echo "")
