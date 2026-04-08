@@ -1,7 +1,7 @@
 {
   "name": "super-dev",
-  "description": "Coordinator-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
-  "version": "2.3.17",
+  "description": "Team-lead-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
+  "version": "2.3.18",
   "author": {
     "name": "Jennings Liu",
     "email": "jenningsloy318@gmail.com"
@@ -16,7 +16,7 @@
     "implementation",
     "refactoring",
     "specification",
-    "coordinator",
+    "team-lead",
     "parallel"
   ]
 }

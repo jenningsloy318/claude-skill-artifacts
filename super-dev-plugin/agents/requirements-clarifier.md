@@ -285,14 +285,14 @@ For complex features, build an empathy map:
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/requirements-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting and gate compliance.
 
-Output file: `*-requirements.md` in the spec directory. The doc-validator handles naming (computes the correct `[XX]-requirements.md` index).
+Output file: `[doc-index]-requirements.md` in the spec directory. The doc-validator handles naming (computes the correct `[XX]-requirements.md` index).
 
 ## Parallel Validator Integration
 
 A `doc-validator` agent runs alongside you in parallel during Phase 2. After you write the requirements document, the validator independently checks it against `gate-requirements.sh` criteria.
 
 **Your responsibilities:**
-1. Write `*-requirements.md` as normal (the doc-validator handles naming — it scans the spec dir and renames your file to the correct `[XX]-requirements.md`)
+1. Write `[doc-index]-requirements.md` as normal (the doc-validator handles naming — it scans the spec dir and renames your file to the correct `[XX]-requirements.md`)
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

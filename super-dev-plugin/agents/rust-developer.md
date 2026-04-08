@@ -454,7 +454,7 @@ pedantic = { level = "warn", priority = -1 }
 
 ## Integration
 
-**Triggered by:** execution-coordinator for Rust tasks
+**Triggered by:** execution-team-lead for Rust tasks
 
 **Input:**
 - Task from task list

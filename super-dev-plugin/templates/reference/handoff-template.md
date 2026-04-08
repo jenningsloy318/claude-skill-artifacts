@@ -17,7 +17,7 @@ gate-profile: none
 
 <section title="Objective">
   <paragraph>[1-2 sentences: what problem, what deliverable, what "done" means]</paragraph>
-  <reference target="*-requirements.md" section="Acceptance Criteria">
+  <reference target="[doc-index]-requirements.md" section="Acceptance Criteria">
     AC reference: See requirements document Acceptance Criteria section
   </reference>
 </section>
@@ -77,7 +77,7 @@ gate-profile: none
     <item><strong>[Decision 1]</strong>: [choice] -- why: [1-line rationale]</item>
     <item><strong>[Decision 2]</strong>: [choice] -- why: [1-line rationale]</item>
   </list>
-  <reference target="*-specification.md" section="[N]">
+  <reference target="[doc-index]-specification.md" section="[N]">
     Full context in specification document Section [N]
   </reference>
 </section>

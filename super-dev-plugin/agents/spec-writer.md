@@ -54,28 +54,28 @@ Before writing the specification document to disk, verify ALL of the following a
 
 1. **Section 5 "Testing Strategy"** exists and contains at least one of: "testing strategy", "test plan", "unit test", "integration test"
 2. **BDD scenario references** — at least 1 `SCENARIO-XXX` pattern appears (Section 5.4)
-3. **All three output files produced** — `*-specification.md`, `*-implementation-plan.md`, and `*-task-list.md` must all be written (the gate checks file existence)
+3. **All three output files produced** — `[doc-index]-specification.md`, `[doc-index]-implementation-plan.md`, and `[doc-index]-task-list.md` must all be written (the gate checks file existence)
 
 **If any check fails:** Fix the missing section in your draft before writing the file. Do NOT output an incomplete spec.
 
 ## Output Documents
 
 **IMPORTANT FILE NAMING:** Documents use incremental indexing with NO gaps. The doc-validator handles naming — it scans the spec dir and renames your files to the correct `[XX]-[doc-type].md`. Name your outputs as:
-- `*-specification.md`
-- `*-implementation-plan.md`
-- `*-task-list.md`
+- `[doc-index]-specification.md`
+- `[doc-index]-implementation-plan.md`
+- `[doc-index]-task-list.md`
 
-The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` convention and rename if needed. When referencing upstream docs, use glob patterns (e.g., `*-requirements.md`) since their indices depend on which phases were executed.
+The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` convention and rename if needed. When referencing upstream docs, use glob patterns (e.g., `[doc-index]-requirements.md`) since their indices depend on which phases were executed.
 
-### Document 1: Technical Specification (`*-specification.md`)
+### Document 1: Technical Specification (`[doc-index]-specification.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with all 11 sections including technical design, testing strategy, security, performance, and unambiguous implementation requirements.
 
-### Document 2: Implementation Plan (`*-implementation-plan.md`)
+### Document 2: Implementation Plan (`[doc-index]-implementation-plan.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-plan-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with phased milestones, file inventory, risk assessment, and dependencies.
 
-### Document 3: Task List (`*-task-list.md`)
+### Document 3: Task List (`[doc-index]-task-list.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with per-milestone task checklists, file tracking, and dependency graph.
 
@@ -84,7 +84,7 @@ The doc-validator running alongside you will enforce the `[XX]-[doc-type].md` co
 A `doc-validator` agent runs alongside you in parallel during Phase 6. After you write the specification document, the validator independently checks it against `gate-spec-trace.sh` criteria.
 
 **Your responsibilities:**
-1. Write `*-specification.md`, `*-implementation-plan.md`, `*-task-list.md` as normal
+1. Write `[doc-index]-specification.md`, `[doc-index]-implementation-plan.md`, `[doc-index]-task-list.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately**
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`
@@ -96,7 +96,7 @@ A `doc-validator` agent runs alongside you in parallel during Phase 6. After you
 
 ## Gate Compliance (MANDATORY — gate-spec-trace.sh)
 
-See the rendering rules and regex patterns in `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md`. The doc-validator runs the gate script — you do NOT need to run it yourself. You MUST also produce `*-implementation-plan.md` and `*-task-list.md` as separate files.
+See the rendering rules and regex patterns in `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md`. The doc-validator runs the gate script — you do NOT need to run it yourself. You MUST also produce `[doc-index]-implementation-plan.md` and `[doc-index]-task-list.md` as separate files.
 
 **If any check fails, the gate blocks Phase 7 (Spec Review) from starting.**
 
@@ -110,7 +110,7 @@ Every specification set must:
 - [ ] Include final commit task
 - [ ] List all files to be affected
 - [ ] Identify task dependencies
-- [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory with glob patterns (e.g., `./*-requirements.md`)
+- [ ] **Use relative paths only** - never use absolute paths like `/home/user/project/...`; always use paths relative to the current spec directory with glob patterns (e.g., `./[doc-index]-requirements.md`)
 - [ ] BDD scenarios cross-referenced in testing strategy (Section 5.4)
 
 ### Naming Convention Standards (MANDATORY)

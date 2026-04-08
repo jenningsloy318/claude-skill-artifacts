@@ -709,7 +709,7 @@ organisms:  # Complex sections
 3. Provide .pen file path for developers to reference
 4. Document component node IDs for precise implementation reference
 
-**Output: `*-design-spec.md`**
+**Output: `[doc-index]-design-spec.md`**
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/design-spec-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with user flows, screen inventory, component specs, design tokens, accessibility requirements, and definition of done.
 
@@ -822,7 +822,7 @@ Single deliverable — design specification as a structured markdown document wi
 **Inputs:**
 - requirements-{feature}.md (required)
 - assessment-{feature}.md (required)
-- *-behavior-scenarios.md (required — BDD scenarios for behavior-driven UX design)
+- [doc-index]-behavior-scenarios.md (required — BDD scenarios for behavior-driven UX design)
 - research-report-{feature}.md (optional)
 
 **Output:**

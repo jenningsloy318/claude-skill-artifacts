@@ -13,8 +13,8 @@ gate-profile: gate-docs-drift.sh
     <field name="date">[timestamp]</field>
     <field name="author">super-dev:docs-executor</field>
     <field name="status">In Progress | Complete</field>
-    <field name="spec-reference">[path to *-specification.md]</field>
-    <field name="plan-reference">[path to *-implementation-plan.md]</field>
+    <field name="spec-reference">[path to [doc-index]-specification.md]</field>
+    <field name="plan-reference">[path to [doc-index]-implementation-plan.md]</field>
     <field name="total-tasks">[total count]</field>
     <field name="completed-tasks">[completed count]</field>
   </metadata>

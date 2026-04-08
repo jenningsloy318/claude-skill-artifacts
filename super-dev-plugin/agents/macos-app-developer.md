@@ -231,7 +231,7 @@ MyMacApp/
 
 ## Integration
 
-**Triggered by:** execution-coordinator for macOS tasks
+**Triggered by:** execution-team-lead for macOS tasks
 
 **Input:**
 - Task from task list

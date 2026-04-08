@@ -1486,7 +1486,7 @@ project/
 
 ## Output Format
 
-### Primary Output: `*-architecture.md`
+### Primary Output: `[doc-index]-architecture.md`
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/architecture-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with module specifications, data flow diagrams, and ADR references.
 
@@ -1537,7 +1537,7 @@ Every architecture must:
 **Inputs:**
 - `[index]-requirements.md` (required)
 - `[index]-assessment.md` (required)
-- `*-behavior-scenarios.md` (required — BDD scenarios for behavior-driven module boundaries)
+- `[doc-index]-behavior-scenarios.md` (required — BDD scenarios for behavior-driven module boundaries)
 
 **Outputs:**
 - `[index]-architecture.md` → used by spec-writer and ui-ux-designer

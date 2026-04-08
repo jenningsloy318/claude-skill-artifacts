@@ -13,8 +13,8 @@ gate-profile: gate-spec-trace.sh
     <field name="date">[timestamp]</field>
     <field name="author">super-dev:planner</field>
     <field name="status">Draft | Review | Approved</field>
-    <field name="spec-reference">[path to *-specification.md]</field>
-    <field name="requirements-reference">[path to *-requirements.md]</field>
+    <field name="spec-reference">[path to [doc-index]-specification.md]</field>
+    <field name="requirements-reference">[path to [doc-index]-requirements.md]</field>
   </metadata>
 
   <section title="Overview">
@@ -230,7 +230,7 @@ Phase 1                Phase 2                Phase 3
       <item status="open">[Success criterion 2]</item>
       <item status="open">[Success criterion 3]</item>
     </checklist>
-    <reference doc="*-requirements.md" section="Acceptance Criteria">Cross-reference with requirements acceptance criteria for full coverage.</reference>
+    <reference doc="[doc-index]-requirements.md" section="Acceptance Criteria">Cross-reference with requirements acceptance criteria for full coverage.</reference>
   </section>
 
   <section title="Rollback Plan">

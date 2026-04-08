@@ -24,7 +24,7 @@ When invoked, this command activates the `super-dev:adversarial-reviewer` agent 
 5. **Synthesize verdict**: Produce PASS, CONTESTED, or REJECT with evidence
 6. **Generate report**: Write adversarial review report with findings
 
-### Output: Creates `[spec-index]-[spec-name]-adversarial-review-report.md`
+### Output: Creates `[doc-index]-adversarial-review-report.md`
 
 ## Reviewer Lenses
 

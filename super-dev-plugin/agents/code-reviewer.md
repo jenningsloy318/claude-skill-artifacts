@@ -232,7 +232,7 @@ NG-1: [non-goal] → Not implemented (correct) / Implemented (issue)
 ```
 
 6.1) BDD Scenario Coverage Validation
-- Read `*-behavior-scenarios.md` from the spec directory (if it exists)
+- Read `[doc-index]-behavior-scenarios.md` from the spec directory (if it exists)
 - Read the qa-agent's BDD Scenario Coverage Report from QA output
 - For each SCENARIO-XXX in the scenario document:
   - Verify at least one test references the SCENARIO-ID (in test name or comment)
@@ -273,14 +273,14 @@ Else → Approved
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/code-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with severity tables, specification validation, BDD coverage, and deterministic verdict logic.
 
-Output file: `*-code-review.md` in the spec directory.
+Output file: `[doc-index]-code-review.md` in the spec directory.
 
 ## Parallel Validator Integration
 
 A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the code review document, the validator independently checks it against `gate-review.sh` criteria (verdict format, critical finding count).
 
 **Your responsibilities:**
-1. Write `*-code-review.md` as normal
+1. Write `[doc-index]-code-review.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, critical count format)
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

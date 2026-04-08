@@ -354,7 +354,7 @@ async function [featureName][action](
   </subsection>
 
   <subsection title="5.4 BDD Scenario References">
-    <paragraph>Tests MUST reference BDD scenario IDs from `*-behavior-scenarios.md`:</paragraph>
+    <paragraph>Tests MUST reference BDD scenario IDs from `[doc-index]-behavior-scenarios.md`:</paragraph>
 
     <table>
       <row header="true">
@@ -524,8 +524,8 @@ async function [featureName][action](
   </list>
 
   <subsection title="8.1 Implementation Plan">
-    <reference type="cross-document">See `*-implementation-plan.md` for phased implementation milestones.</reference>
-    <reference type="cross-document">See `*-task-list.md` for full task breakdown with file paths and acceptance criteria.</reference>
+    <reference type="cross-document">See `[doc-index]-implementation-plan.md` for phased implementation milestones.</reference>
+    <reference type="cross-document">See `[doc-index]-task-list.md` for full task breakdown with file paths and acceptance criteria.</reference>
   </subsection>
 </section>
 
@@ -594,8 +594,8 @@ async function [featureName][action](
   <list type="ordered">
     <item>**BDD scenario references** - MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4.</item>
     <item>**Testing strategy text** - MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this.</item>
-    <item>**Task list file exists** - `*-task-list.md` must exist as a separate file in the spec directory.</item>
-    <item>**Implementation plan file exists** - `*-implementation-plan.md` must exist as a separate file in the spec directory.</item>
+    <item>**Task list file exists** - `[doc-index]-task-list.md` must exist as a separate file in the spec directory.</item>
+    <item>**Implementation plan file exists** - `[doc-index]-implementation-plan.md` must exist as a separate file in the spec directory.</item>
   </list>
 </rule>
 

@@ -1,6 +1,6 @@
 # Super Dev Plugin
 
-A comprehensive coordinator-driven development workflow plugin for Claude Code with parallel agent execution for implementing features, fixing bugs, and refactoring code.
+A comprehensive team-lead-driven development workflow plugin for Claude Code with parallel agent execution for implementing features, fixing bugs, and refactoring code.
 
 **Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
 
@@ -89,7 +89,7 @@ The Coordinator Agent will orchestrate all 13 phases automatically.
 ```
 super-dev-plugin/
 ├── agents/                    # Specialized agents (30 total)
-│   ├── coordinator.md              # Central Coordinator Agent (super-dev unique)
+│   ├── team-lead.md              # Central Team Lead Agent (super-dev unique)
 │   ├── dev-executor.md             # Development Executor
 │   ├── qa-executor.md              # QA Executor
 │   ├── docs-executor.md            # Documentation Executor
@@ -289,13 +289,13 @@ Hooks are automatic actions that fire every time Claude edits a file, runs a com
 The phase-gate hook validates that prerequisite artifacts exist before spawning phase agents. It reads `phase-manifest.json` to map agent types to required files:
 
 ```
-Phase 2.5 (BDD)        → requires *-requirements.md
-Phase 3   (Research)    → requires *-requirements.md + *-behavior-scenarios.md
-Phase 5   (Assessment)  → requires *-research-report.md
-Phase 6   (Spec)        → requires *-code-assessment.md
-Phase 8   (Execution)   → requires *-specification.md + *-implementation-plan.md + *-task-list.md
-Phase 9   (Review)      → requires *-specification.md
-Phase 10  (Docs)        → requires *-specification.md
+Phase 2.5 (BDD)        → requires [doc-index]-requirements.md
+Phase 3   (Research)    → requires [doc-index]-requirements.md + [doc-index]-behavior-scenarios.md
+Phase 5   (Assessment)  → requires [doc-index]-research-report.md
+Phase 6   (Spec)        → requires [doc-index]-code-assessment.md
+Phase 8   (Execution)   → requires [doc-index]-specification.md + [doc-index]-implementation-plan.md + [doc-index]-task-list.md
+Phase 9   (Review)      → requires [doc-index]-specification.md
+Phase 10  (Docs)        → requires [doc-index]-specification.md
 Phase 10.5 (Handoff)    → requires 06-specification.md
 ```
 
@@ -320,7 +320,7 @@ The Coordinator Agent orchestrates ALL workflow phases:
 - **Quality Gates**: Enforces checkpoints at phase boundaries
 - **Final Verification**: Verifies all artifacts complete
 
-**Invoke:** `Task(subagent_type: "super-dev:coordinator")`
+**Invoke:** `Task(subagent_type: "super-dev:team-lead")`
 
 ### Executor Agents (Parallel Execution)
 

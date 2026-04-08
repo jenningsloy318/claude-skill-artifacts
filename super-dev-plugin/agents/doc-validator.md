@@ -179,7 +179,7 @@ Last gate output: [paste output]. Escalating to Team Lead."
 **Purpose:** When the gate script FAILs, use these tables to generate precise fix instructions. Each check lists the regex the script uses, so you can tell the writer the EXACT format needed.
 
 ### Profile: `gate-requirements` (Phase 2)
-**Document:** `*-requirements.md` (dynamically discovered)
+**Document:** `[doc-index]-requirements.md` (dynamically discovered)
 **Gate script:** `gate-requirements.sh`
 
 | # | Check | Regex / Rule | Fix Example |
@@ -193,7 +193,7 @@ Last gate output: [paste output]. Escalating to Team Lead."
 **Common trap:** ACs in markdown tables do NOT match R2. The regex requires list items starting with `- [ ]` or `- AC-XX:`. Tell the writer to use bullet lists, NOT tables.
 
 ### Profile: `gate-bdd` (Phase 2.5)
-**Document:** `*-behavior-scenarios.md` (dynamically discovered)
+**Document:** `[doc-index]-behavior-scenarios.md` (dynamically discovered)
 **Gate script:** `gate-bdd.sh`
 
 | # | Check | Regex / Rule | Fix Example |
@@ -201,22 +201,22 @@ Last gate output: [paste output]. Escalating to Team Lead."
 | B1 | SCENARIO-IDs | `SCENARIO-[0-9]+` | `### SCENARIO-01: User login flow` |
 | B2 | Given/When/Then (≥3 lines) | `^\s*\*{0,2}(Given\|When\|Then\|And)` | `**Given** user is on login page` |
 | B3 | AC references | `AC-[0-9]+` | `Maps to: AC-01, AC-02` |
-| B4 | Scenario count ≥ AC count | Count of `SCENARIO-[0-9]+` ≥ count of `- [ ]` in `*-requirements.md` | Add more scenarios to cover all ACs |
+| B4 | Scenario count ≥ AC count | Count of `SCENARIO-[0-9]+` ≥ count of `- [ ]` in `[doc-index]-requirements.md` | Add more scenarios to cover all ACs |
 | B5 | Substantive content | `wc -c > 300` | Ensure document exceeds 300 characters |
 
 ### Profile: `gate-spec-trace` (Phase 6)
-**Document:** `*-specification.md` (dynamically discovered)
+**Document:** `[doc-index]-specification.md` (dynamically discovered)
 **Gate script:** `gate-spec-trace.sh`
 
 | # | Check | Regex / Rule | Fix Example |
 |---|-------|-------------|-------------|
 | S1 | BDD scenario refs | `SCENARIO-[0-9]+` | `Covers SCENARIO-01 and SCENARIO-02` |
 | S2 | Testing strategy text | `grep -i "testing strategy\|test plan\|test approach\|test coverage\|unit test\|integration test"` | Add `## Testing Strategy` section |
-| S3 | Task list file exists | `*-task-list.md` must exist in spec directory | Ensure spec-writer produced the task list file |
-| S4 | Implementation plan file exists | `*-implementation-plan.md` must exist in spec directory | Ensure spec-writer produced the implementation plan file |
+| S3 | Task list file exists | `[doc-index]-task-list.md` must exist in spec directory | Ensure spec-writer produced the task list file |
+| S4 | Implementation plan file exists | `[doc-index]-implementation-plan.md` must exist in spec directory | Ensure spec-writer produced the implementation plan file |
 
 ### Profile: `gate-review-code` (Phase 9 — code reviewer)
-**Document:** `*-code-review.md`
+**Document:** `[doc-index]-code-review.md`
 **Gate script:** `gate-review.sh`
 
 | # | Check | Regex / Rule | Fix Example |
@@ -226,7 +226,7 @@ Last gate output: [paste output]. Escalating to Team Lead."
 | CR3 | No critical findings | No `**Critical**` markers AND no `\| Critical \| [1-9]` table rows | Ensure zero Critical severity items remain |
 
 ### Profile: `gate-review-adversarial` (Phase 9 — adversarial reviewer)
-**Document:** `*-adversarial-review-report.md`
+**Document:** `[doc-index]-adversarial-review-report.md`
 **Gate script:** `gate-review.sh`
 
 | # | Check | Regex / Rule | Fix Example |

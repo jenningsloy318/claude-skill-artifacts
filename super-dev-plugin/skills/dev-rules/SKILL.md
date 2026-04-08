@@ -15,7 +15,7 @@ At the start of every super-dev session, check for context from the previous com
 
 1. **Scan spec directories**: List all directories in `specification/` and extract the numeric prefix (e.g., `20` from `20-bdd-integration`)
 2. **Sort descending**: Order by numeric prefix, highest first
-3. **Find the most recent handoff**: Starting from highest-index directory, check if `*-handoff.md` exists
+3. **Find the most recent handoff**: Starting from highest-index directory, check if `[doc-index]-handoff.md` exists
    - If found: Read the handoff file — proceed to step 4
    - If not found: Try the next-highest directory
    - If no handoff found in any directory: Skip silently — first run or all specs predate the handoff phase
@@ -100,9 +100,9 @@ All work should have a spec directory under `specification/` using pattern `[ind
 
 Documents within each spec directory use dynamic naming (`[XX]-[doc-type].md`):
 
-1. **Task List (`*-task-list.md`)**: Mark tasks complete immediately, add discovered tasks, never leave stale
-2. **Implementation Summary (`*-implementation-summary.md`)**: Update after each milestone — files changed, decisions made, challenges, deviations
-3. **Specification (`*-specification.md`)**: Update when implementation differs, mark with `[UPDATED: YYYY-MM-DD]`
+1. **Task List (`[doc-index]-task-list.md`)**: Mark tasks complete immediately, add discovered tasks, never leave stale
+2. **Implementation Summary (`[doc-index]-implementation-summary.md`)**: Update after each milestone — files changed, decisions made, challenges, deviations
+3. **Specification (`[doc-index]-specification.md`)**: Update when implementation differs, mark with `[UPDATED: YYYY-MM-DD]`
 
 ### Rules
 - **Commit docs WITH code**: Never commit code without updating related docs

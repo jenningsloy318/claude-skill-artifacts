@@ -11,8 +11,8 @@ agent_type=$(echo "$INPUT" | jq -r '.tool_input.subagent_type // ""' 2>/dev/null
 # Only gate super-dev agents
 [[ "$agent_type" != super-dev:* ]] && exit 0
 
-# Skip coordinator (it's the orchestrator, not a phase worker)
-[[ "$agent_type" == "super-dev:coordinator" ]] && exit 0
+# Skip team-lead (it's the orchestrator, not a phase worker)
+[[ "$agent_type" == "super-dev:team-lead" ]] && exit 0
 
 # Load manifest
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,13 +24,13 @@ GATE=$(jq -r --arg agent "$agent_type" '.gates[$agent] // empty' "$MANIFEST" 2>/
 [ -z "$GATE" ] && exit 0
 
 # Extract spec directory from agent prompt
-# The coordinator always includes "specification/[spec-index]-[spec-name]" in the prompt
+# The team-lead always includes "specification/[spec-index]-[spec-name]" in the prompt
 agent_prompt=$(echo "$INPUT" | jq -r '.tool_input.prompt // ""' 2>/dev/null || echo "")
 
 # Try to find spec directory from the prompt
 SPEC_DIR=""
 
-# Method 1: Extract from prompt (most reliable — coordinator always includes spec path)
+# Method 1: Extract from prompt (most reliable — team-lead always includes spec path)
 if [ -n "$agent_prompt" ]; then
   # Match "specification/NNN-name" or "Spec directory: specification/NNN-name"
   SPEC_DIR=$(echo "$agent_prompt" | grep -oP 'specification/[^\s,)"]+' | head -1 || echo "")

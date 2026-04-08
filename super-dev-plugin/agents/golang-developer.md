@@ -713,7 +713,7 @@ goimports -w .
 
 ## Integration
 
-**Triggered by:** execution-coordinator for Go tasks
+**Triggered by:** execution-team-lead for Go tasks
 
 **Input:**
 - Task from task list

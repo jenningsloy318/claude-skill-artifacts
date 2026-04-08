@@ -414,14 +414,14 @@ Recommendation: Option C - balances complexity and UX
 ### Primary Outputs
 
 **Output Templates:** Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`:
-1. `architecture-template.md` → produces `*-architecture.md` (from architecture-agent)
-2. `design-spec-template.md` → produces `*-design-spec.md` (from ui-ux-designer)
-3. `product-design-summary-template.md` → produces `*-product-design-summary.md` (cross-reference and contracts)
+1. `architecture-template.md` → produces `[doc-index]-architecture.md` (from architecture-agent)
+2. `design-spec-template.md` → produces `[doc-index]-design-spec.md` (from ui-ux-designer)
+3. `product-design-summary-template.md` → produces `[doc-index]-product-design-summary.md` (cross-reference and contracts)
 
 ### Delegation Outputs (when not FULL_STACK)
 
-- ARCHITECTURE_ONLY: Only `*-architecture.md`
-- UI_ONLY: Only `*-design-spec.md`
+- ARCHITECTURE_ONLY: Only `[doc-index]-architecture.md`
+- UI_ONLY: Only `[doc-index]-design-spec.md`
 
 ---
 
@@ -444,7 +444,7 @@ Recommendation: Option C - balances complexity and UX
 **Inputs:**
 - `[index]-requirements.md` (required)
 - `[index]-assessment.md` (required)
-- `*-behavior-scenarios.md` (required — BDD scenarios for behavior-driven design)
+- `[doc-index]-behavior-scenarios.md` (required — BDD scenarios for behavior-driven design)
 
 **Outputs:**
 - `[index]-architecture.md` → used by spec-writer

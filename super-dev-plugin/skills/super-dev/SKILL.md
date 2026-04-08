@@ -20,13 +20,13 @@ metadata:
     - development
     - workflow
     - agent-teams
-    - coordinator
+    - team-lead
     - parallel-execution
 ---
 
 # Super Dev Workflow - Agent Teams Edition
 
-A team-based development system where the Coordinator acts as Team Lead, orchestrating specialized teammate agents who work independently with their own context windows, communicate directly, and share a task list for self-coordination.
+A team-based development system where the Team Lead orchestrates specialized teammate agents who work independently with their own context windows, communicate directly, and share a task list for self-coordination.
 
 **Announce at start:** YOU MUST say "I'm using the super-dev skill with agent teams to systematically implement this task." at the beginning of every run.
 
@@ -87,8 +87,8 @@ See `${CLAUDE_PLUGIN_ROOT}/templates/config-template.json` for the full schema.
 
 ```
                     ┌─────────────────┐
-                    │   Coordinator   │ ◄── Team Lead (Orchestration Only)
-                    │   (Team Lead)   │     Spawns teammates
+                    │   Team Lead    │ ◄── Team Lead (Orchestration Only)
+                    │                │     Spawns teammates
                     └────────┬────────┘     Manages shared task list
                              │              Coordinates via messaging
                              │
@@ -143,7 +143,7 @@ Grade each completed workflow run against these three dimensions:
 - Code review resolves all Critical, High, and Medium issues to zero
 - BDD scenario coverage: 100% of scenarios have corresponding passing tests
 - Documentation updated to reflect changes
-- Handoff document generated in spec directory (`*-handoff.md`)
+- Handoff document generated in spec directory (`[doc-index]-handoff.md`)
 
 ### Efficiency (Undervalued — two correct runs can differ 3x in cost)
 - Phase iteration loops < 3 (Phase 8/9 loop)
@@ -177,11 +177,11 @@ Grade each completed workflow run against these three dimensions:
 - [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Execution & QA (PARALLEL teammates)
-- [ ] GATE:     Build & Test Pass (gate-build.sh — run by coordinator)
+- [ ] GATE:     Build & Test Pass (gate-build.sh — run by team-lead)
 - [ ] Phase 9:  Code Review + Adversarial Review (code-reviewer + adversarial-reviewer + 2x doc-validator, 4 agents PARALLEL)
 - [ ] GATE:     Review Verdicts (gate-review.sh — run by doc-validator)
 - [ ] Phase 10: Documentation Update
-- [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh — run by coordinator)
+- [ ] GATE:     Documentation-Code Drift (gate-docs-drift.sh — run by team-lead)
 - [ ] Phase 10.5: Handoff Writing (MANDATORY)
 - [ ] Phase 11: Team Cleanup (keep worktree)
 - [ ] Phase 12: Commit & Merge to Main
@@ -227,9 +227,9 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
 | Phase 2 → 2.5 | `gate-requirements.sh` | doc-validator | Requirements have acceptance criteria, NFRs, summary, sufficient detail |
 | Phase 2.5 → 3 | `gate-bdd.sh` | doc-validator | BDD scenarios have SCENARIO-IDs, Given/When/Then, AC traceability |
 | Phase 6 → 7 | `gate-spec-trace.sh` | doc-validator | Spec references BDD scenarios, has testing strategy, has task list |
-| Phase 8 → 9 | `gate-build.sh` | coordinator | Build succeeds, tests pass, type checks pass |
+| Phase 8 → 9 | `gate-build.sh` | team-lead | Build succeeds, tests pass, type checks pass |
 | Phase 9 → 10 | `gate-review.sh` | doc-validator | Code review approved, adversarial review PASS, no critical issues |
-| Phase 10 → 10.5 | `gate-docs-drift.sh` | coordinator | Documentation exists, no excessive TODOs left in code |
+| Phase 10 → 10.5 | `gate-docs-drift.sh` | team-lead | Documentation exists, no excessive TODOs left in code |
 
 ### Gate Failure Handling
 
@@ -240,13 +240,13 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
 
 **Gotcha:** Do NOT skip gates to "save time." Gates prevent compound errors that cost 10x more to fix in later phases.
 
-## Entry Point: Team Lead Coordinator
+## Entry Point: Team Lead
 
 **ROLE:** Current session becomes Team Lead
 
 **To start:**
 ```
-"I'm using super-dev with agent teams. Create an agent team with the Coordinator as Team Lead to implement: [task]"
+"I'm using super-dev with agent teams. Create an agent team with the Team Lead to implement: [task]"
 ```
 
 ## Team Lead Responsibilities (Delegate Mode)
@@ -361,7 +361,7 @@ In Phase 5.4, ALWAYS present COMBINED architecture+UI options together.
 YOU MUST ensure the git branch name matches the worktree name exactly: `[spec-index]-[spec-name]`. NEVER create a branch with a different name than the worktree.
 
 ### BDD Scenario Propagation Rule
-`*-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
+`[doc-index]-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
 - **Design phases (5.3, 5.4, 5.5):** BDD scenarios inform module boundaries, user flows, and interaction patterns
 - **Spec writing (6):** BDD scenarios are cross-referenced in testing strategy
 - **Execution (8):** dev-executor references SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
@@ -476,7 +476,7 @@ YOU MUST load coding standards, git practices, and quality standards at the star
 Analyze the task and define an appropriate spec directory name (do NOT create yet):
 
 1. **Check for existing specs**: Search `specification/` for directories matching the current task
-   - **If a matching spec with `*-handoff.md` exists (continuation):**
+   - **If a matching spec with `[doc-index]-handoff.md` exists (continuation):**
      1. Read ONLY sections 2 (Progress), 4 (Unfinished Items), and 7 (Next Steps) from the handoff
      2. Do NOT read the full handoff — it's a map, not a novel
      3. Resume from the last incomplete phase per the Progress table
@@ -585,8 +585,8 @@ Before proceeding to Phase 2:
 **Purpose:** Dual-track review — spec-aware code review and multi-lens adversarial challenge run simultaneously. Both produce independent verdicts that must be satisfied before proceeding.
 
 **Outputs:**
-- Code Review: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-code-review.md`
-- Adversarial Review: `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md`
+- Code Review: `specification/[spec-index]-[spec-name]/[doc-index]-code-review.md`
+- Adversarial Review: `specification/[spec-index]-[spec-name]/[doc-index]-adversarial-review-report.md`
 
 **PARALLEL Execution (like Phase 8):**
 - Spawn BOTH code-reviewer and adversarial-reviewer simultaneously
@@ -702,8 +702,8 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
 1. Gate-review.sh already PASSED via doc-validator during Phase 9 — no need to re-run
 2. Spawn `super-dev:docs-executor` with context:
    - Spec directory path
-   - Specification document (*-specification.md)
-   - Implementation summary (*-implementation-summary.md)
+   - Specification document ([doc-index]-specification.md)
+   - Implementation summary ([doc-index]-implementation-summary.md)
    - Code review results
 3. Wait for docs-executor to complete
 4. Verify documentation files are updated
@@ -728,11 +728,11 @@ Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-i
    - Workflow tracking JSON
    - Git diff: `git diff --stat main..HEAD`
    - Feature name
-2. Wait for handoff-writer to complete `*-handoff.md`
-3. Verify `*-handoff.md` exists in spec directory
+2. Wait for handoff-writer to complete `[doc-index]-handoff.md`
+3. Verify `[doc-index]-handoff.md` exists in spec directory
 4. Terminate handoff-writer immediately after completion
 
-**Output:** `specification/[spec-index]-[spec-name]/*-handoff.md`
+**Output:** `specification/[spec-index]-[spec-name]/[doc-index]-handoff.md`
 
 **After Phase 10.5:** Proceed to Phase 11 (Team Cleanup). NEVER skip to Phase 12.
 
@@ -763,7 +763,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 1. **Phase 8 complete:** Build passes, tests pass, implementation done
 2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
 3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
-4. **Phase 10.5 complete:** `*-handoff.md` exists in spec directory
+4. **Phase 10.5 complete:** `[doc-index]-handoff.md` exists in spec directory
 5. **Phase 11 complete:** All teammates terminated, worktree preserved
 
 **If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.
@@ -786,7 +786,7 @@ git add [code-files]
 git diff --cached --name-only | grep "specification/"
 ```
 
-**Full commit procedure:** See `agents/coordinator.md` Phase 12 for detailed steps and verification checklist.
+**Full commit procedure:** See `agents/team-lead.md` Phase 12 for detailed steps and verification checklist.
 
 ---
 
@@ -859,7 +859,7 @@ This is a pre-defined agent team with all commonly used teammates for implementi
 
 ```
 Create an agent team named "super-dev-team" with these teammates:
-- super-dev:coordinator (Team Lead)
+- super-dev:team-lead (Team Lead)
 - super-dev:requirements-clarifier
 - super-dev:bdd-scenario-writer
 - super-dev:research-agent
@@ -882,7 +882,7 @@ Create an agent team named "super-dev-team" with these teammates:
 
 | Category | Teammate | Role | Spawn Command |
 |----------|----------|------|---------------|
-| **Team Lead** | coordinator | Orchestrates all phases, manages task list | Team Lead (always active) |
+| **Team Lead** | team-lead | Orchestrates all phases, manages task list | Team Lead (always active) |
 | **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
 | **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring | `super-dev:research-agent` |
@@ -911,7 +911,7 @@ Create an agent team for this development workflow:
 - Reuse existing team if already created from a previous invocation
 
 Teammates to include:
-1. super-dev:coordinator (Team Lead - this session)
+1. super-dev:team-lead (Team Lead - this session)
 2. super-dev:requirements-clarifier
 3. super-dev:bdd-scenario-writer
 4. super-dev:research-agent
@@ -954,11 +954,11 @@ Teammates to include:
 
 ## Gotchas
 
-- **Team Lead doing work directly instead of delegating**: The number one failure mode. The coordinator starts using Edit, Bash, or Grep to "just quickly fix something" instead of spawning an agent via Task tool. This violates the prime directive and defeats the entire team-based architecture.
+- **Team Lead doing work directly instead of delegating**: The number one failure mode. The team-lead starts using Edit, Bash, or Grep to "just quickly fix something" instead of spawning an agent via Task tool. This violates the prime directive and defeats the entire team-based architecture.
 - **Forgetting to terminate teammates after completion**: Idle teammates consume context window and memory. If teammates are not terminated immediately after their phase completes, resources accumulate and the session degrades or hits limits.
 - **Branch name not matching worktree name**: The git branch created with `git worktree add` must exactly match the worktree directory name (e.g., `03-user-auth`). A mismatch causes merge failures and confuses the commit/merge workflow in Phase 12.
 - **Skipping Phase 0 dev-rules loading**: Without loading dev-rules at session start, teammates operate without coding standards, git practices, or quality guidelines, leading to inconsistent output that fails review.
-- **Not passing BDD scenarios to downstream phases**: `*-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
+- **Not passing BDD scenarios to downstream phases**: `[doc-index]-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
 - **Creating spec directory in main repo instead of worktree**: The spec directory must be created inside the worktree (`.worktree/[name]/specification/[name]/`), not in the main repository root. Creating it in the wrong location breaks isolation and causes files to appear in the wrong branch.
 - **Batching multiple tasks into one commit instead of atomic commits**: Each completed task should be committed individually. Batching makes it impossible to revert a single change and violates the incremental development principle.
 - **Not presenting options to user in Phases 3/5.3/5.4/5.5**: These phases require presenting 3-5 options for the user to choose from. Skipping option presentation and jumping straight to implementation removes the user from the decision loop.
@@ -966,7 +966,7 @@ Teammates to include:
 - **Agent prompts degrading over time without measurement**: Use `/super-dev:autoresearch` periodically to auto-improve agent prompts. Run it on the agent that caused the most Phase 8/9 iteration loops.
 - **Retrying the same fix 3+ times instead of investigating**: When dev-executor or qa-agent hits the same error repeatedly with different fix attempts, they should spawn `super-dev:investigator` after 2 attempts instead of brute-forcing to 3. The investigation protocol exists precisely for this — blind retries waste tokens and delay resolution.
 - **Investigation scope creep**: The investigator has strict budget limits (120s, 5 tool calls, 3 sources). If an investigation is unbounded, it bloats context and delays the calling agent. Always respect the budget constraints and escalate if inconclusive.
-- **Jumping from Phase 9 to Phase 12, skipping Phases 10/10.5/11**: After Phase 9 reviews pass, the Phase 12 "Commit & Merge" section acts as a gravity well — its detail and finality cause the coordinator to skip documentation (Phase 10), handoff writing (Phase 10.5), and team cleanup (Phase 11). Always follow the mandatory transition sequence: Phase 9 → gate-review → Phase 10 → gate-docs-drift → Phase 10.5 → Phase 11 → Phase 12. Phase 12 has a pre-condition check that enforces this.
+- **Jumping from Phase 9 to Phase 12, skipping Phases 10/10.5/11**: After Phase 9 reviews pass, the Phase 12 "Commit & Merge" section acts as a gravity well — its detail and finality cause the team-lead to skip documentation (Phase 10), handoff writing (Phase 10.5), and team cleanup (Phase 11). Always follow the mandatory transition sequence: Phase 9 → gate-review → Phase 10 → gate-docs-drift → Phase 10.5 → Phase 11 → Phase 12. Phase 12 has a pre-condition check that enforces this.
 
 ## Troubleshooting
 
@@ -981,4 +981,4 @@ Teammates to include:
 
 ---
 
-**For detailed phase-by-phase implementation, see:** `agents/coordinator.md`
+**For detailed phase-by-phase implementation, see:** `agents/team-lead.md`

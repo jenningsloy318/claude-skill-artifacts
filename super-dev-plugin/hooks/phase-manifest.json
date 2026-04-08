@@ -5,92 +5,92 @@
     "super-dev:bdd-scenario-writer": {
       "phase": "2.5",
       "description": "BDD Scenario Writing requires completed requirements",
-      "requires": ["*-requirements.md"],
+      "requires": ["[doc-index]-requirements.md"],
       "sections": {
-        "*-requirements.md": ["Acceptance Criteria"]
+        "[doc-index]-requirements.md": ["Acceptance Criteria"]
       }
     },
     "super-dev:research-agent": {
       "phase": "3",
       "description": "Research requires completed requirements and BDD scenarios",
-      "requires": ["*-requirements.md", "*-behavior-scenarios.md"],
+      "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {
-        "*-behavior-scenarios.md": ["Scenario", "Given"]
+        "[doc-index]-behavior-scenarios.md": ["Scenario", "Given"]
       }
     },
     "super-dev:debug-analyzer": {
       "phase": "4",
       "description": "Debug analysis requires completed requirements",
-      "requires": ["*-requirements.md"],
+      "requires": ["[doc-index]-requirements.md"],
       "sections": {}
     },
     "super-dev:code-assessor": {
       "phase": "5",
       "description": "Code assessment requires research report",
-      "requires": ["*-research-report.md"],
+      "requires": ["[doc-index]-research-report.md"],
       "sections": {}
     },
     "super-dev:architecture-agent": {
       "phase": "5.3",
       "description": "Architecture design requires assessment",
-      "requires": ["*-code-assessment.md"],
+      "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:product-designer": {
       "phase": "5.4",
       "description": "Product design requires assessment with both arch and UI",
-      "requires": ["*-code-assessment.md"],
+      "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:ui-ux-designer": {
       "phase": "5.5",
       "description": "UI/UX design requires assessment",
-      "requires": ["*-code-assessment.md"],
+      "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-writer": {
       "phase": "6",
       "description": "Spec writing requires assessment and design documents",
-      "requires": ["*-code-assessment.md"],
+      "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:dev-executor": {
       "phase": "8",
       "description": "Execution requires complete specification, plan, and task list",
-      "requires": ["*-specification.md", "*-implementation-plan.md", "*-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
       "sections": {
-        "*-specification.md": ["Implementation"],
-        "*-task-list.md": ["Task"]
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
       }
     },
     "super-dev:qa-agent": {
       "phase": "8",
       "description": "QA requires complete specification and BDD scenarios",
-      "requires": ["*-specification.md", "*-behavior-scenarios.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {}
     },
     "super-dev:code-reviewer": {
       "phase": "9",
       "description": "Code review requires specification (after execution)",
-      "requires": ["*-specification.md"],
+      "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:adversarial-reviewer": {
       "phase": "9",
       "description": "Adversarial review requires specification (after execution)",
-      "requires": ["*-specification.md"],
+      "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:docs-executor": {
       "phase": "10",
       "description": "Documentation requires specification and implementation summary",
-      "requires": ["*-specification.md"],
+      "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:handoff-writer": {
       "phase": "10.5",
       "description": "Handoff requires specification directory with all artifacts",
-      "requires": ["*-specification.md"],
+      "requires": ["[doc-index]-specification.md"],
       "sections": {}
     }
   }

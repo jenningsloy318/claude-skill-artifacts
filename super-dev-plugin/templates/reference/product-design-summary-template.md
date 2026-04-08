@@ -229,7 +229,7 @@ gate-profile: null
       <item>[pattern 1]</item>
       <item>[pattern 2]</item>
     </list>
-    <reference type="artifact">See `*-architecture.md`</reference>
+    <reference type="artifact">See `[doc-index]-architecture.md`</reference>
   </subsection>
 
   <subsection title="UI/UX Decision">
@@ -238,7 +238,7 @@ gate-profile: null
       <item>[pattern 1]</item>
       <item>[pattern 2]</item>
     </list>
-    <reference type="artifact">See `*-design-spec.md`</reference>
+    <reference type="artifact">See `[doc-index]-design-spec.md`</reference>
   </subsection>
 
   <subsection title="Rationale">
@@ -310,9 +310,9 @@ gate-profile: null
 
 <section title="Output Artifacts">
   <list type="unordered">
-    <item>Architecture document: <reference type="artifact">`*-architecture.md`</reference></item>
-    <item>Design specification: <reference type="artifact">`*-design-spec.md`</reference></item>
-    <item>Product design summary: <reference type="artifact">`*-product-design-summary.md` (this document)</reference></item>
+    <item>Architecture document: <reference type="artifact">`[doc-index]-architecture.md`</reference></item>
+    <item>Design specification: <reference type="artifact">`[doc-index]-design-spec.md`</reference></item>
+    <item>Product design summary: <reference type="artifact">`[doc-index]-product-design-summary.md` (this document)</reference></item>
     <item>ADR files: <reference type="artifact">`*-adr-[topic].md` (as needed)</reference></item>
   </list>
 </section>

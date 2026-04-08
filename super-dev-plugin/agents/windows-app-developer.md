@@ -236,7 +236,7 @@ MyApp/
 
 ## Integration
 
-**Triggered by:** execution-coordinator for Windows tasks
+**Triggered by:** execution-team-lead for Windows tasks
 
 **Input:**
 - Task from task list

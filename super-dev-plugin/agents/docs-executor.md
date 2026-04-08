@@ -40,19 +40,19 @@ You are the Documentation Executor Agent, responsible for updating all specifica
 
 ## Documents to Maintain
 
-### 1. Task List (`*-task-list.md`)
+### 1. Task List (`[doc-index]-task-list.md`)
 
 **Update When:** After Phase 9 (Code Review) approval
 
 **Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md` for structure reference. Mark tasks complete, update progress tracking, and add file change details.
 
-### 2. Implementation Summary (`*-implementation-summary.md`)
+### 2. Implementation Summary (`[doc-index]-implementation-summary.md`)
 
 **Update When:** After Phase 9 (Code Review) approval - compile complete story
 
 **Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md` for structure reference. Fill in milestone progress, files changed, technical decisions, and challenges.
 
-### 3. Specification (`*-specification.md`)
+### 3. Specification (`[doc-index]-specification.md`)
 
 **Update When:** Code review identifies deviations or implementation requirements differ from original spec
 
@@ -181,8 +181,8 @@ Files that may exist in `specification/[spec-index]-[spec-name]/`:
 - `04-assessment.md` — Code assessment (if created)
 - `05-implementation-plan.md` — Implementation plan (if created)
 - `06-implementation-summary.md` — Implementation summary
-- `*-code-review.md` — Code review reports (if created)
-- `*-adversarial-review-report.md` — Adversarial review reports (if created)
+- `[doc-index]-code-review.md` — Code review reports (if created)
+- `[doc-index]-adversarial-review-report.md` — Adversarial review reports (if created)
 - `*-workflow-tracking.json` — Workflow tracking state
 
 ## Output Format

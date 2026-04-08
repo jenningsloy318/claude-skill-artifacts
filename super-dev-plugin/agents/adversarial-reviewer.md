@@ -73,10 +73,10 @@ Ask:
 - [ ] **V5 Safety & Compliance:** Check for: PII in logs, hardcoded secrets, auth bypass paths, missing rate limiting, CORS wildcards
 - [ ] **V6 Grounding Audit:** Verify every API call, config reference, and method signature exists in the actual dependency version used
 - [ ] **V8 Behavior Coverage:** Are all user-facing behaviors covered by BDD scenarios?
-  - Read `*-behavior-scenarios.md` from the spec directory
+  - Read `[doc-index]-behavior-scenarios.md` from the spec directory
   - Cross-reference with implementation: are there code paths with business logic that have no corresponding scenario?
   - Check the qa-agent's scenario coverage report: does it show 100% coverage?
-  - Are there acceptance criteria from `*-requirements.md` that lack corresponding scenarios in the traceability matrix?
+  - Are there acceptance criteria from `[doc-index]-requirements.md` that lack corresponding scenarios in the traceability matrix?
   - If any gaps found: emit finding with High severity
 
 #### Architect — Challenge structural fitness
@@ -112,9 +112,9 @@ Ask:
 Before applying lens reviews, validate that required BDD artifacts exist:
 
 - [ ] **D9 BDD Document Validation:**
-  - Does `*-behavior-scenarios.md` exist in the spec directory?
+  - Does `[doc-index]-behavior-scenarios.md` exist in the spec directory?
   - Does it contain a Traceability Matrix section?
-  - Are all ACs from `*-requirements.md` represented in the traceability matrix?
+  - Are all ACs from `[doc-index]-requirements.md` represented in the traceability matrix?
   - If any check fails: emit finding with High severity (Skeptic/D9)
 
 **D9 is a pre-gate:** If the scenario document is missing or incomplete, this finding is emitted before any V1-V8 analysis begins.
@@ -184,7 +184,7 @@ Safeguard Required: [concrete action to add safety]
 
 ### Step 4 — Synthesize Verdict
 
-Produce a single verdict and write it to `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-adversarial-review-report.md`.
+Produce a single verdict and write it to `specification/[spec-index]-[spec-name]/[doc-index]-adversarial-review-report.md`.
 
 **Verdict logic:**
 
@@ -210,7 +210,7 @@ ELSE:
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/adversarial-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with destructive action gate, lens/vector-tagged findings, and deterministic verdict logic.
 
-Output file: `*-adversarial-review-report.md` in the spec directory.
+Output file: `[doc-index]-adversarial-review-report.md` in the spec directory.
 
 ## Iteration Behavior
 
@@ -223,7 +223,7 @@ Output file: `*-adversarial-review-report.md` in the spec directory.
 A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the adversarial review report, the validator independently checks it against `gate-review.sh` criteria (verdict format).
 
 **Your responsibilities:**
-1. Write `*-adversarial-review-report.md` as normal
+1. Write `[doc-index]-adversarial-review-report.md` as normal
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, REJECT appearing when intent was PASS)
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

@@ -12,7 +12,7 @@ gate-profile: gate-bdd.sh
     <field name="title">Behavior Scenarios: [Feature Name]</field>
     <field name="date">[timestamp]</field>
     <field name="author">super-dev:bdd-scenario-writer</field>
-    <field name="source">./*-requirements.md</field>
+    <field name="source">./[doc-index]-requirements.md</field>
     <field name="total-scenarios">[count]</field>
   </metadata>
 
@@ -68,7 +68,7 @@ gate-profile: gate-bdd.sh
         <cell>Covered</cell>
       </row>
     </table>
-    <rule>Every acceptance criterion from *-requirements.md MUST appear in this matrix with at least one scenario. Zero uncovered items allowed.</rule>
+    <rule>Every acceptance criterion from [doc-index]-requirements.md MUST appear in this matrix with at least one scenario. Zero uncovered items allowed.</rule>
   </section>
 
   <section title="Coverage Summary">
