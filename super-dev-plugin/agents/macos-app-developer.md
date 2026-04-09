@@ -231,7 +231,7 @@ MyMacApp/
 
 ## Integration
 
-**Triggered by:** execution-team-lead for macOS tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for macOS tasks
 
 **Input:**
 - Task from task list

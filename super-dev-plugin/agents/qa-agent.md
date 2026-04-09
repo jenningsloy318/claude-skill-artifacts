@@ -926,11 +926,11 @@ When the application is a web app with UI changes, run this quick smoke test usi
 
 ## Integration
 
-**Triggered by:** execution-team-lead during QA phases
+**Triggered by:** Team Lead during Phase 8 (Implementation) in parallel with specialist developer(s)
 
 **Input:**
 - Specification from spec-writer
-- Implementation summary from execution-team-lead
+- Implementation summary from specialist developer(s)
 - Application type (CLI, Desktop UI, Web App)
 
 **Output:**

@@ -295,6 +295,6 @@ feature/: independent feature modules
 "Android implementation completed. Delivered [N] Compose screens with MVVM architecture, Hilt DI (KSP), Navigation 3, and Room 2.8 migrations. AGP 9.x build with Kotlin 2.x K2 compiler. Baseline Profiles generated; strict-mode clean. Security and accessibility gates met. Test coverage ≥ 80% on new code. Target SDK 36. Ready for QA."
 
 ## Integration
-Triggered by: execution-team-lead (Android tasks)
+Triggered by: Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Android tasks
 Inputs: task list, UI specs, existing app patterns
 Outputs: idiomatic Kotlin 2.x, Compose UI, DI wiring (KSP), Room schema/migrations, Navigation 3 routing, unit/UI/screenshot tests, performance profile, accessibility-compliant UI

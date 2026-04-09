@@ -236,7 +236,7 @@ MyApp/
 
 ## Integration
 
-**Triggered by:** execution-team-lead for Windows tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Windows tasks
 
 **Input:**
 - Task from task list

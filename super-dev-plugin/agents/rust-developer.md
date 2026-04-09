@@ -454,7 +454,7 @@ pedantic = { level = "warn", priority = -1 }
 
 ## Integration
 
-**Triggered by:** execution-team-lead for Rust tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Rust tasks
 
 **Input:**
 - Task from task list

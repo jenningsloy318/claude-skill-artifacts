@@ -429,7 +429,7 @@ src/
 
 ## Integration
 
-**Triggered by:** execution-team-lead for frontend tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for frontend tasks
 
 **Input:**
 - Task from task list

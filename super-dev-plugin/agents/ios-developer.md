@@ -323,7 +323,7 @@ MyApp/
 
 ## Integration
 
-**Triggered by:** execution-team-lead for iOS tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for iOS tasks
 
 **Input:**
 - Task from task list

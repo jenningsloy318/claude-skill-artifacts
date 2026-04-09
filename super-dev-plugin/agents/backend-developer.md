@@ -463,7 +463,7 @@ uv.lock                     # uv lockfile
 
 ## Integration
 
-**Triggered by:** execution-team-lead for backend tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for backend tasks
 
 **Input:**
 - Task from task list

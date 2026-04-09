@@ -713,7 +713,7 @@ goimports -w .
 
 ## Integration
 
-**Triggered by:** execution-team-lead for Go tasks
+**Triggered by:** Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Go tasks
 
 **Input:**
 - Task from task list
