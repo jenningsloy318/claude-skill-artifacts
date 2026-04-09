@@ -36,17 +36,31 @@ Review all input documents:
 - Reference UI/UX specifications from design spec (if applicable)
 - Understand root cause from debug analysis (if applicable)
 
-### Step 2: Create Technical Specification
+### Step 2: Create Technical Specification → WRITE to disk immediately
 
 Document all technical decisions and architecture.
+**WRITE `[XX]-specification.md` to disk NOW before proceeding to Step 3.**
 
-### Step 3: Create Implementation Plan
+### Step 3: Create Implementation Plan → WRITE to disk immediately
 
-Break specification into implementable milestones.
+Break the specification (from Step 2) into implementable milestones.
+**WRITE `[XX+1]-implementation-plan.md` to disk NOW before proceeding to Step 4.**
 
-### Step 4: Create Task List
+### Step 4: Create Task List → WRITE to disk immediately
 
-Generate granular tasks for execution.
+Generate granular tasks from the implementation plan (Step 3).
+**WRITE `[XX+2]-task-list.md` to disk NOW.**
+
+### Sequential Write Rule (MANDATORY)
+
+You MUST write the 3 output files **one at a time, in strict order**:
+1. First: `specification.md` — write to disk, verify it exists
+2. Then: `implementation-plan.md` — derived from the specification, write to disk
+3. Last: `task-list.md` — derived from the implementation plan, write to disk
+
+**Why sequential:** Each document builds on the previous one. The implementation plan cannot be written without a finalized specification. The task list cannot be generated without a finalized implementation plan. Writing all three at once risks inconsistencies between documents.
+
+**FORBIDDEN:** Writing all 3 files in a single batch. Each file must be written and verified before starting the next.
 
 ### Step 5: Pre-Output Self-Check (MANDATORY — do NOT skip)
 

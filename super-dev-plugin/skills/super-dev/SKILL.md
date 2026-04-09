@@ -173,7 +173,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 5.3: Architecture Design (arch only)
 - [ ] Phase 5.4: Product Design (arch + UI together)
 - [ ] Phase 5.5: UI/UX Design (UI only)
-- [ ] Phase 6:  Specification Writing (spec-writer + doc-validator PARALLEL)
+- [ ] Phase 6:  Specification Writing (spec-writer writes 3 files SEQUENTIALLY: specification → implementation-plan → task-list, doc-validator PARALLEL)
 - [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
 - [ ] Phase 7:  Specification Review
 - [ ] Phase 8:  Implementation (Domain-Aware Agent Routing + qa-agent PARALLEL)
@@ -332,7 +332,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 5.3 | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard, present 3-5 options |
 | 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
 | 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
-| 6 | spec-writer + doc-validator | Write spec, plan, task list. **Validator runs in parallel** |
+| 6 | spec-writer + doc-validator | Write 3 files SEQUENTIALLY: specification → implementation-plan → task-list. Each builds on the previous. **Validator runs in parallel** |
 | 8 | dev-executor (fallback) OR specialist developer agent(s) | Implement code — Team Lead routes to best-fit specialist (parallel with qa-agent). See **Domain-Aware Agent Routing** |
 | 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with specialist(s)) |
 | 9 | code-reviewer + doc-validator | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs. **Validator runs in parallel** (parallel with adversarial-reviewer) |

@@ -82,7 +82,7 @@ You MUST ONLY use these tools for:
 | 5.3 | Designing architecture (arch only) | Spawn architecture-agent |
 | 5.4 | Designing architecture + UI together | Spawn product-designer |
 | 5.5 | Creating UI/UX designs (UI only) | Spawn ui-ux-designer |
-| 6 | Writing spec/plan/task list | Spawn spec-writer + doc-validator (PARALLEL) |
+| 6 | Writing spec/plan/task list | Spawn spec-writer (writes 3 files sequentially) + doc-validator (PARALLEL) |
 | 8 | Writing code, running tests | Spawn best-fit developer agent(s) + qa-agent (see Domain-Aware Agent Routing) |
 | 9 | Reviewing code manually | Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 PARALLEL) |
 | 10 | Updating documentation | Spawn docs-executor |
@@ -105,7 +105,7 @@ Phase 5:  Code Assessment           → Spawn code-assessor teammate
 Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
 Phase 5.4: Product Design (arch+UI) → Spawn product-designer teammate (REPLACES 5.3+5.5)
 Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
-Phase 6:  Specification Writing     → Spawn spec-writer + doc-validator (PARALLEL)
+Phase 6:  Specification Writing     → Spawn spec-writer (3 files sequentially) + doc-validator (PARALLEL)
 Phase 7:  Specification Review      → Team Lead validates
 Phase 8:  Implementation (PARALLEL)    → Domain-Aware Agent Routing + qa-agent (see below)
 Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 agents PARALLEL)
@@ -383,17 +383,18 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 Spawn BOTH in parallel:
 
 1. "Spawn a spec-writer teammate with this context:
-   - Task: Write technical specification, implementation plan, and task list
+   - Task: Write technical specification, implementation plan, and task list IN SEQUENTIAL ORDER
    - Spec directory: specification/[spec-index]-[spec-name]
    - Requirements: specification/[spec-index]-[spec-name]/[exact-requirements-filename]
    - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
    - Research: specification/[spec-index]-[spec-name]/[exact-research-filename]
    - Assessment: specification/[spec-index]-[spec-name]/[exact-assessment-filename]
    - [additional inputs as applicable]
-   - OUTPUT FILENAMES (write to EXACTLY these):
-     1. [XX]-specification.md      ← (e.g., 05-specification.md)
-     2. [XX+1]-implementation-plan.md  ← (e.g., 06-implementation-plan.md)
-     3. [XX+2]-task-list.md        ← (e.g., 07-task-list.md)
+   - OUTPUT FILENAMES (write SEQUENTIALLY in this exact order):
+     1. [XX]-specification.md      ← WRITE FIRST (e.g., 05-specification.md)
+     2. [XX+1]-implementation-plan.md  ← WRITE SECOND, derived from specification (e.g., 06-implementation-plan.md)
+     3. [XX+2]-task-list.md        ← WRITE LAST, derived from implementation plan (e.g., 07-task-list.md)
+   Each file must be written to disk before starting the next.
    Do NOT compute your own indices. Use these exact filenames.
    A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
