@@ -176,7 +176,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 6:  Specification Writing (spec-writer + doc-validator PARALLEL)
 - [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
 - [ ] Phase 7:  Specification Review
-- [ ] Phase 8:  Execution & QA (PARALLEL teammates)
+- [ ] Phase 8:  Implementation (Domain-Aware Agent Routing + qa-agent PARALLEL)
 - [ ] GATE:     Build & Test Pass (gate-build.sh — run by team-lead)
 - [ ] Phase 9:  Code Review + Adversarial Review (code-reviewer + adversarial-reviewer + 2x doc-validator, 4 agents PARALLEL)
 - [ ] GATE:     Review Verdicts (gate-review.sh — run by doc-validator)
@@ -333,8 +333,8 @@ Task tool → subagent_type: "super-dev:agent-name"
 | 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
 | 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
 | 6 | spec-writer + doc-validator | Write spec, plan, task list. **Validator runs in parallel** |
-| 8 | dev-executor | Implement code (parallel with qa-agent) |
-| 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with dev-executor) |
+| 8 | dev-executor (fallback) OR specialist developer agent(s) | Implement code — Team Lead routes to best-fit specialist (parallel with qa-agent). See **Domain-Aware Agent Routing** |
+| 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with specialist(s)) |
 | 9 | code-reviewer + doc-validator | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs. **Validator runs in parallel** (parallel with adversarial-reviewer) |
 | 9 | adversarial-reviewer + doc-validator | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate. **Validator runs in parallel** (parallel with code-reviewer) |
 | 10 | docs-executor | Update documentation |
@@ -351,7 +351,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 ### Inter-Teammate Messaging
 - **message**: Send to specific teammate
 - **broadcast**: Send to all teammates
-- Example: dev-executor ↔ qa-agent coordination
+- Example: specialist developer(s) ↔ qa-agent coordination
 
 ### Option Presentation
 YOU MUST present 3-5 options to the user in Phases 3, 5.3, 5.4, 5.5. NEVER skip option presentation.
@@ -376,7 +376,7 @@ All spec documents use `[XX]-[doc-type].md` naming with strictly incremental ind
 `[XX]-behavior-scenarios.md` MUST be passed as input to ALL downstream phases after Phase 2.5:
 - **Design phases (5.3, 5.4, 5.5):** BDD scenarios inform module boundaries, user flows, and interaction patterns
 - **Spec writing (6):** BDD scenarios are cross-referenced in testing strategy
-- **Execution (8):** dev-executor references SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
+- **Execution (8):** specialist developer(s) reference SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
 - **Review (9):** code-reviewer validates scenario coverage; adversarial-reviewer checks V8 behavior coverage
 
 ## Teammate Termination Rules (CRITICAL)
@@ -402,7 +402,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 5. If tmux: close the pane with `exit` or Ctrl+D
 ```
 
-**Exception:** In Phase 8, dev-executor and qa-agent run in parallel — YOU MUST wait for BOTH to complete before terminating either one. Same applies to Phase 9, where code-reviewer and adversarial-reviewer run in parallel.
+**Exception:** In Phase 8, all execution agents (specialist developer(s) + qa-agent) run in parallel — YOU MUST wait for ALL to complete before terminating any. Same applies to Phase 9, where code-reviewer and adversarial-reviewer run in parallel.
 
 ## Best Practices
 
@@ -444,7 +444,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options (**include BDD scenarios**) | ui-ux-designer |
 | 6 | Use Task tool → `super-dev:spec-writer` + `super-dev:doc-validator` (parallel) | spec-writer, doc-validator |
 | 7 | Validate spec (no agent) | (none) |
-| 8 | Use Task tool → `super-dev:dev-executor` (**include BDD scenarios**) + `super-dev:qa-agent` (parallel) | dev-executor, qa-agent |
+| 8 | Use Task tool → Domain-Aware Agent Routing: spawn best-fit specialist(s) (**include BDD scenarios**) + `super-dev:qa-agent` (parallel). See Phase 8 section | specialist developer(s) OR dev-executor (fallback), qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:doc-validator` + `super-dev:adversarial-reviewer` + `super-dev:doc-validator` (parallel, 4 agents) | code-reviewer, adversarial-reviewer, doc-validator x2 |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
 | 10.5 | Use Task tool → `super-dev:handoff-writer` | handoff-writer |
@@ -587,6 +587,85 @@ Before proceeding to Phase 2:
 ❌ Creating workflow tracking JSON in main repo (must be in worktree with spec dir)
 ❌ Branch name not matching worktree name
 ```
+
+---
+
+## Phase 8: Implementation (Domain-Aware Agent Routing)
+
+**Executed by:** Best-fit specialist developer agent(s) + `super-dev:qa-agent` (spawned via Task tool, run in parallel)
+
+**Purpose:** Implement code changes using domain-specialized agents instead of a generic dev-executor. Team Lead analyzes the task list, detects which domains are involved, and directly spawns the best-fit specialist agents. This eliminates the middleman layer and ensures each implementation agent has deep domain expertise.
+
+### Domain Detection Algorithm (Team Lead runs BEFORE spawning)
+
+```
+1. Read task list from spec directory
+2. For each task, identify target files and detect domain:
+
+   File Pattern                          → Specialist Agent
+   ─────────────────────────────────────────────────────────
+   .rs / Cargo.toml                      → super-dev:rust-developer
+   .go / go.mod                          → super-dev:golang-developer
+   .tsx/.jsx/.css/.html / next.config.*  → super-dev:frontend-developer
+     / vite.config.* / tailwind.config.*
+   .py / .ts (API routes, services,      → super-dev:backend-developer
+     middleware) / FastAPI / Express
+   .swift + iOS target / ios/            → super-dev:ios-developer
+   .kt / android/                        → super-dev:android-developer
+   .xaml / .csproj / WinUI               → super-dev:windows-app-developer
+   .swift + macOS target / macos/        → super-dev:macos-app-developer
+
+3. Group tasks by detected domain
+4. Apply routing decision (see table below)
+```
+
+**Config Hint:** If `${CLAUDE_PLUGIN_DATA}/config.json` has a `language` or `framework` field, use it to pre-seed the domain detection instead of re-scanning files.
+
+### Routing Decision Table
+
+| Scenario | What to Spawn | Example |
+|----------|---------------|---------|
+| All tasks → single domain | 1 specialist agent directly | All `.rs` → `super-dev:rust-developer` |
+| Tasks span 2+ domains | 1 specialist per domain group (PARALLEL) | `.rs` + `.tsx` → `rust-developer` + `frontend-developer` |
+| Domain unclear / too mixed | `super-dev:dev-executor` (fallback) | Mixed scripts, config-only tasks |
+
+### Specialist Spawn Prompt Template
+
+Each specialist receives the same base context as the old dev-executor, plus domain-specific task assignment:
+
+```
+"Spawn a [specialist]-developer teammate with this context:
+- Task: Implement [domain] code changes per task list
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- Assigned tasks: [T1, T3, T5] ([domain]-domain tasks ONLY)
+- File ownership: [list of files/dirs this specialist owns — do NOT touch files outside this list]
+- OUTPUT FILENAME for implementation summary: [XX]-implementation-summary.md  ← (exact name, single-domain only)
+
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
+Write your implementation summary to EXACTLY the filename given above.
+Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all assigned tasks done.
+When encountering errors after 2 fix attempts, spawn super-dev:investigator for root-cause analysis."
+```
+
+### Multi-Domain Coordination Rules
+
+When spawning multiple specialists:
+1. **File ownership is MANDATORY** — Each specialist MUST own distinct files. No overlapping edits.
+2. **Implementation summary consolidation** — Team Lead consolidates outputs from all specialists into a single `[XX]-implementation-summary.md` after all specialists complete.
+3. **Build queue still applies** — For Rust/Go, only ONE build at a time. If multiple specialists need builds for the same language, they must coordinate via Team Lead.
+4. **Termination** — Wait for ALL specialists + qa-agent to complete before terminating any.
+
+### Fallback to dev-executor
+
+Use `super-dev:dev-executor` when:
+- Target files don't map to any known domain
+- Tasks are too interleaved across domains to cleanly separate
+- The project uses a language/framework not covered by any specialist
+
+The dev-executor retains its internal specialist delegation table and will attempt its own domain detection.
 
 ---
 
@@ -956,7 +1035,7 @@ Teammates to include:
 | 5.4 | product-designer |
 | 5.5 | ui-ux-designer |
 | 6 | spec-writer + doc-validator (parallel) |
-| 8 | dev-executor + qa-agent (parallel) |
+| 8 | specialist developer(s) + qa-agent (parallel). See Domain-Aware Agent Routing |
 | 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator (parallel, 4 agents) |
 | 10 | docs-executor |
 | 10.5 | handoff-writer |
@@ -966,6 +1045,8 @@ Teammates to include:
 
 ## Gotchas
 
+- **Spawning generic dev-executor when domain is clear**: If the task list targets `.rs` files, spawn `rust-developer` directly — don't route through `dev-executor`. The domain detection algorithm (Phase 8) exists precisely for this. Only fall back to `dev-executor` when domains are genuinely unclear or too mixed to separate.
+- **Overlapping file ownership in multi-domain Phase 8**: When spawning multiple specialists in parallel, each MUST own distinct files. If two specialists edit the same file, merge conflicts are guaranteed. Team Lead must assign clear file ownership boundaries in the spawn prompt.
 - **Team Lead doing work directly instead of delegating**: The number one failure mode. The team-lead starts using Edit, Bash, or Grep to "just quickly fix something" instead of spawning an agent via Task tool. This violates the prime directive and defeats the entire team-based architecture.
 - **Forgetting to terminate teammates after completion**: Idle teammates consume context window and memory. If teammates are not terminated immediately after their phase completes, resources accumulate and the session degrades or hits limits.
 - **Branch name not matching worktree name**: The git branch created with `git worktree add` must exactly match the worktree directory name (e.g., `03-user-auth`). A mismatch causes merge failures and confuses the commit/merge workflow in Phase 12.

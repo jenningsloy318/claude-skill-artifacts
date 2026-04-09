@@ -83,7 +83,7 @@ You MUST ONLY use these tools for:
 | 5.4 | Designing architecture + UI together | Spawn product-designer |
 | 5.5 | Creating UI/UX designs (UI only) | Spawn ui-ux-designer |
 | 6 | Writing spec/plan/task list | Spawn spec-writer + doc-validator (PARALLEL) |
-| 8 | Writing code, running tests | Spawn dev-executor + qa-agent |
+| 8 | Writing code, running tests | Spawn best-fit developer agent(s) + qa-agent (see Domain-Aware Agent Routing) |
 | 9 | Reviewing code manually | Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 PARALLEL) |
 | 10 | Updating documentation | Spawn docs-executor |
 | 10.5 | Writing handoff document | Spawn handoff-writer |
@@ -107,7 +107,7 @@ Phase 5.4: Product Design (arch+UI) → Spawn product-designer teammate (REPLACE
 Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
 Phase 6:  Specification Writing     → Spawn spec-writer + doc-validator (PARALLEL)
 Phase 7:  Specification Review      → Team Lead validates
-Phase 8:  Execution & QA (PARALLEL)  → Spawn dev-executor + qa-agent teammates
+Phase 8:  Implementation (PARALLEL)    → Domain-Aware Agent Routing + qa-agent (see below)
 Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 agents PARALLEL)
 Phase 10: Documentation Update      → Spawn docs-executor teammate
 Phase 10.5: Handoff Writing          → Spawn handoff-writer teammate (MANDATORY)
@@ -410,10 +410,80 @@ Spawn BOTH in parallel:
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
-**Phase 8 (PARALLEL):**
+**Phase 8 (PARALLEL — Domain-Aware Implementation):**
 
 **Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename for implementation-summary (e.g., `08-implementation-summary.md`).
 
+**Domain Analysis (MANDATORY before spawning):**
+Before spawning any execution agent, the Team Lead MUST:
+1. Read the task list from the spec directory
+2. For each task, identify target files and detect their domain:
+   - `.rs` files / `Cargo.toml` → **rust-developer**
+   - `.go` files / `go.mod` → **golang-developer**
+   - `.tsx/.jsx/.css/.html` / `next.config.*` / `vite.config.*` → **frontend-developer**
+   - `.py` / `.ts` (API routes, services) / `fastapi` / `express` → **backend-developer**
+   - `.swift` + iOS target / `ios/` directory → **ios-developer**
+   - `.kt` / `android/` directory → **android-developer**
+   - `.xaml` / `.csproj` / WinUI → **windows-app-developer**
+   - `.swift` + macOS target / `macos/` directory → **macos-app-developer**
+3. Group tasks by detected domain
+4. Apply routing decision:
+
+**Routing Decision Table:**
+
+| Scenario | Action |
+|----------|--------|
+| All tasks → single domain | Spawn 1 specialist directly (e.g., `super-dev:rust-developer`) |
+| Tasks span 2+ domains | Spawn 1 specialist per domain group, all in PARALLEL |
+| Domain unclear / too mixed to classify | Spawn `super-dev:dev-executor` as fallback |
+
+**Single-Domain Spawn Example (e.g., Rust project):**
+```
+"Spawn a rust-developer teammate with this context:
+- Task: Implement code changes per task list
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- OUTPUT FILENAME for implementation summary: [XX]-implementation-summary.md  ← (exact name)
+- Assigned tasks: [T1, T2, T3, ...] (all tasks)
+
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
+Write your implementation summary to EXACTLY the filename given above.
+Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all tasks done."
+```
+
+**Multi-Domain Spawn Example (e.g., Rust backend + React frontend):**
+```
+"Spawn a rust-developer teammate with this context:
+- Task: Implement backend code changes per task list
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- Assigned tasks: [T1, T3, T5] (Rust-domain tasks ONLY)
+- File ownership: src/backend/**, Cargo.toml, src/lib.rs (do NOT touch frontend files)
+
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
+Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all assigned tasks done."
+
+"Spawn a frontend-developer teammate with this context:
+- Task: Implement frontend code changes per task list
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- Assigned tasks: [T2, T4, T6] (frontend-domain tasks ONLY)
+- File ownership: src/frontend/**, package.json, src/components/** (do NOT touch backend files)
+
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
+Signal DEV_COMPLETE after all assigned tasks done."
+
+"Spawn a qa-agent teammate with this context: ..."
+```
+**Note:** For multi-domain, Team Lead consolidates implementation summaries from all specialists into a single `[XX]-implementation-summary.md` after all specialists complete.
+
+**Fallback Spawn (domain unclear):**
 ```
 "Spawn a dev-executor teammate with this context:
 - Task: Implement code changes per task list
@@ -428,6 +498,8 @@ Write your implementation summary to EXACTLY the filename given above."
 
 "Spawn a qa-agent teammate with this context: ..."
 ```
+
+**Termination Rule:** Wait for ALL spawned specialists + qa-agent to complete before terminating any of them.
 
 **Phase 9 (PARALLEL — reviewers + validators):**
 

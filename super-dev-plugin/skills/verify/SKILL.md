@@ -241,7 +241,7 @@ pgrep -f "process-name" > /dev/null
 ## Integration with super-dev Workflow
 
 When used within the super-dev workflow:
-- Run after Phase 8 (Execution & QA) for additional confidence
+- Run after Phase 8 (Implementation) for additional confidence
 - Evidence feeds into Phase 9 (Code Review) -- reviewers can see screenshots
 - Verification report stored in spec directory alongside other artifacts
 

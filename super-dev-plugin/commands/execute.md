@@ -3,7 +3,7 @@ name: super-dev:execute
 description: Execute development and QA in parallel using specialized agents
 ---
 
-# Phase 8: Execution & QA
+# Phase 8: Implementation
 
 Execute development implementation and quality assurance in parallel using specialized agents.
 
