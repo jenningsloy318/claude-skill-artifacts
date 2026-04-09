@@ -51,33 +51,62 @@ Or add to `settings.json`:
 
 On the first invocation of super-dev, check for a project configuration file:
 
+### Project Data Directory
+
+Each project gets its own data directory under `${CLAUDE_PLUGIN_DATA}/projects/`, keyed by the git repository basename:
+
+```bash
+# Derive project key from git root directory name
+PROJECT_NAME="$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
+PROJECT_DATA="${CLAUDE_PLUGIN_DATA}/projects/${PROJECT_NAME}"
+PROJECT_CONFIG="${PROJECT_DATA}/config.json"
+```
+
+**Directory structure:**
+```
+${CLAUDE_PLUGIN_DATA}/
+├── global/
+│   └── stats.json               # Cross-project usage statistics
+└── projects/
+    ├── my-rust-app/              # Per-project data (basename of git root)
+    │   ├── config.json           # Project config (contains full path for verification)
+    │   ├── session-history.log   # Project session log
+    │   └── patterns.json         # Project-specific patterns
+    └── my-react-app/
+        ├── config.json
+        ├── session-history.log
+        └── patterns.json
+```
+
+**Path verification:** Every config.json stores the full project path in `project.path`. On load, verify the stored path matches the current working directory's git root. If mismatched (name collision), append a short hash suffix to create a new directory.
+
 ### Detection
 
 ```bash
-# Check for existing config
-CONFIG_PATH="${CLAUDE_PLUGIN_DATA}/config.json"
-if [ ! -f "$CONFIG_PATH" ]; then
-  echo "First-run detected - configuration needed"
+# Check for existing project config
+if [ ! -f "$PROJECT_CONFIG" ]; then
+  echo "First-run detected for project '${PROJECT_NAME}' - configuration needed"
 fi
 ```
 
 ### Setup Flow
 
-If `${CLAUDE_PLUGIN_DATA}/config.json` does not exist:
+If `${PROJECT_CONFIG}` does not exist:
 
-1. **Announce**: "This is the first run of super-dev. Let me set up your project configuration."
-2. **Auto-detect** what you can from the project:
+1. **Announce**: "This is the first run of super-dev for project '${PROJECT_NAME}'. Let me set up your project configuration."
+2. **Create project directory**: `mkdir -p "${PROJECT_DATA}"`
+3. **Auto-detect** what you can from the project:
    - Language: Check for `package.json` (Node), `Cargo.toml` (Rust), `go.mod` (Go), `pyproject.toml` (Python), etc.
    - Framework: Check for `next.config.*` (Next.js), `vite.config.*` (Vite), `angular.json` (Angular), etc.
    - Package manager: Check for `bun.lockb`, `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`
    - Test runner: Check for `jest.config.*`, `vitest.config.*`, `playwright.config.*`, `.pytest.ini`
-3. **Ask user to confirm** detected values and fill in missing ones using AskUserQuestion
-4. **Write config** to `${CLAUDE_PLUGIN_DATA}/config.json`
-5. **Continue** with the normal workflow
+4. **Ask user to confirm** detected values and fill in missing ones using AskUserQuestion
+5. **Write config** to `${PROJECT_CONFIG}` (include `project.path` with the full git root path)
+6. **Continue** with the normal workflow
 
 ### Subsequent Runs
 
-On subsequent runs, read `${CLAUDE_PLUGIN_DATA}/config.json` silently and apply preferences. Do NOT ask again unless the user runs `/super-dev configure`.
+On subsequent runs, read `${PROJECT_CONFIG}` silently and apply preferences. Do NOT ask again unless the user runs `/super-dev configure`.
 
 ### Config Reference
 
@@ -619,7 +648,7 @@ Before proceeding to Phase 2:
 4. Apply routing decision (see table below)
 ```
 
-**Config Hint:** If `${CLAUDE_PLUGIN_DATA}/config.json` has a `language` or `framework` field, use it to pre-seed the domain detection instead of re-scanning files.
+**Config Hint:** If `${PROJECT_CONFIG}` has a `language` or `framework` field, use it to pre-seed the domain detection instead of re-scanning files.
 
 ### Routing Decision Table
 
@@ -883,21 +912,25 @@ git diff --cached --name-only | grep "specification/"
 
 ## Session State Management
 
-Super-dev maintains persistent state across sessions using `${CLAUDE_PLUGIN_DATA}`.
+Super-dev maintains persistent state per project using `${PROJECT_DATA}` (see First-Run Configuration for path derivation).
 
 ### Phase 0 — Read History
 
 At the start of every session (during Phase 0), read previous session data:
 
 ```bash
+# Derive project data path
+PROJECT_NAME="$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
+PROJECT_DATA="${CLAUDE_PLUGIN_DATA}/projects/${PROJECT_NAME}"
+
 # Read last 3 sessions for context
-if [ -f "${CLAUDE_PLUGIN_DATA}/session-history.log" ]; then
-  tail -3 "${CLAUDE_PLUGIN_DATA}/session-history.log"
+if [ -f "${PROJECT_DATA}/session-history.log" ]; then
+  tail -3 "${PROJECT_DATA}/session-history.log"
 fi
 
 # Read learned patterns
-if [ -f "${CLAUDE_PLUGIN_DATA}/patterns.json" ]; then
-  cat "${CLAUDE_PLUGIN_DATA}/patterns.json"
+if [ -f "${PROJECT_DATA}/patterns.json" ]; then
+  cat "${PROJECT_DATA}/patterns.json"
 fi
 ```
 
@@ -912,7 +945,7 @@ After committing, append a session summary:
 
 ```bash
 # Append session record (single JSON line)
-echo '{"timestamp":"[ISO]","spec":"[spec-name]","task":"[description]","phases_completed":[...],"verdict":{"code_review":"[verdict]","adversarial":"[verdict]"},"files_changed":[count],"language":"[lang]","framework":"[fw]"}' >> "${CLAUDE_PLUGIN_DATA}/session-history.log"
+echo '{"timestamp":"[ISO]","spec":"[spec-name]","task":"[description]","phases_completed":[...],"verdict":{"code_review":"[verdict]","adversarial":"[verdict]"},"files_changed":[count],"language":"[lang]","framework":"[fw]"}' >> "${PROJECT_DATA}/session-history.log"
 ```
 
 ### Pattern Learning

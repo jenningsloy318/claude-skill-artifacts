@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage tracker for super-dev plugin
-# Logs skill and agent invocations to ${CLAUDE_PLUGIN_DATA}/usage.log
+# Logs skill and agent invocations to ${CLAUDE_PLUGIN_DATA}/global/usage.log
 #
 # Called by PreToolUse hook when Skill or Agent tools are invoked.
 # Input: JSON via stdin with tool_name, tool_input fields
@@ -8,8 +8,10 @@
 
 set -euo pipefail
 
-USAGE_LOG="${CLAUDE_PLUGIN_DATA:-/tmp}/usage.log"
-STATS_FILE="${CLAUDE_PLUGIN_DATA:-/tmp}/stats.json"
+GLOBAL_DATA="${CLAUDE_PLUGIN_DATA:-/tmp}/global"
+mkdir -p "$GLOBAL_DATA"
+USAGE_LOG="${GLOBAL_DATA}/usage.log"
+STATS_FILE="${GLOBAL_DATA}/stats.json"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Read tool input from stdin

@@ -1,22 +1,34 @@
 # State Management Reference
 
-Super-dev uses `${CLAUDE_PLUGIN_DATA}` for persistent state that survives plugin upgrades.
+Super-dev uses `${CLAUDE_PLUGIN_DATA}` for persistent state that survives plugin upgrades. Data is organized per-project using the git repository basename as the directory key.
 
 ## Storage Location
 
-All persistent data is stored in `${CLAUDE_PLUGIN_DATA}/`:
-
 ```
 ${CLAUDE_PLUGIN_DATA}/
-├── config.json              # User configuration (first-run setup)
-├── session-history.log      # Append-only session log
-├── patterns.json            # Learned patterns and conventions
-└── stats.json               # Skill usage statistics
+├── global/
+│   └── stats.json               # Cross-project usage statistics
+└── projects/
+    └── [project-name]/           # Per-project data (basename of git root)
+        ├── config.json           # Project config (first-run setup)
+        ├── session-history.log   # Append-only session log
+        └── patterns.json         # Learned patterns and conventions
 ```
+
+## Project Data Path Derivation
+
+```bash
+# Derive project key from git root directory name
+PROJECT_NAME="$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
+PROJECT_DATA="${CLAUDE_PLUGIN_DATA}/projects/${PROJECT_NAME}"
+GLOBAL_DATA="${CLAUDE_PLUGIN_DATA}/global"
+```
+
+**Path verification:** Every `config.json` stores the full project path in `project.path`. On load, verify the stored path matches the current working directory's git root. If mismatched (name collision from different projects with the same basename), append a short hash suffix (first 6 chars of SHA-256 of the full path) to create a new directory.
 
 ## Session History Log
 
-An append-only log of every super-dev workflow run.
+An append-only log of every super-dev workflow run, stored per-project.
 
 ### Format (one JSON line per session)
 
@@ -28,22 +40,22 @@ An append-only log of every super-dev workflow run.
 
 ```bash
 # Append at end of Phase 12 (commit)
-echo '{"timestamp":"...","spec":"...","task":"..."}' >> "${CLAUDE_PLUGIN_DATA}/session-history.log"
+echo '{"timestamp":"...","spec":"...","task":"..."}' >> "${PROJECT_DATA}/session-history.log"
 ```
 
 ### How to Read
 
 ```bash
 # Read last 5 sessions for context
-tail -5 "${CLAUDE_PLUGIN_DATA}/session-history.log"
+tail -5 "${PROJECT_DATA}/session-history.log"
 
 # Count total sessions
-wc -l "${CLAUDE_PLUGIN_DATA}/session-history.log"
+wc -l "${PROJECT_DATA}/session-history.log"
 ```
 
 ## Patterns File
 
-Stores conventions and patterns discovered during development.
+Stores conventions and patterns discovered during development, per-project.
 
 ### Format
 
@@ -71,7 +83,7 @@ Stores conventions and patterns discovered during development.
 
 ## Usage Statistics
 
-Tracks which skills and agents are invoked for optimization.
+Tracks which skills and agents are invoked for optimization. Stored globally (not per-project).
 
 ### Format
 
@@ -104,6 +116,7 @@ Tracks which skills and agents are invoked for optimization.
 - **Always append, never overwrite** the session-history.log
 - **Read history at Phase 0** to inform the current session
 - **Update patterns.json** only when confidence is high (seen 2+ times)
-- **Update stats.json** at the end of every workflow run
+- **Update stats.json** (global) at the end of every workflow run
 - **Never store secrets** in any state file
 - **Graceful degradation**: If any file is missing or corrupt, skip silently and continue
+- **Verify project path** on config load: if `config.json` `project.path` doesn't match current git root, create a new project directory with hash suffix
