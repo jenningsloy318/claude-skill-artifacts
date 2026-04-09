@@ -439,7 +439,7 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 8 (PARALLEL — Domain-Aware Implementation):**
 
-**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename for implementation-summary (e.g., `08-implementation-summary.md`).
+**Pre-computation:** Team Lead runs the pre-computation algorithm, pre-allocates TWO consecutive indices: one for implementation-summary and one for qa-report (e.g., `08-implementation-summary.md` and `09-qa-report.md`).
 
 **Domain Analysis (MANDATORY before spawning):**
 Before spawning any execution agent, the Team Lead MUST:
@@ -478,6 +478,17 @@ Before spawning any execution agent, the Team Lead MUST:
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
 Write your implementation summary to EXACTLY the filename given above.
 Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all tasks done."
+
+"Spawn a qa-agent teammate with this context:
+- Task: Plan and run tests for the implementation
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+
+Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
+Signal QA_COMPLETE after all tests pass and the QA report is written."
 ```
 
 **Multi-Domain Spawn Example (e.g., Rust backend + React frontend):**
@@ -506,7 +517,16 @@ Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all assigne
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
 Signal DEV_COMPLETE after all assigned tasks done."
 
-"Spawn a qa-agent teammate with this context: ..."
+"Spawn a qa-agent teammate with this context:
+- Task: Plan and run tests for the implementation
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+
+Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
+Signal QA_COMPLETE after all tests pass and the QA report is written."
 ```
 **Note:** For multi-domain, Team Lead consolidates implementation summaries from all specialists into a single `[XX]-implementation-summary.md` after all specialists complete.
 
@@ -523,7 +543,16 @@ Signal DEV_COMPLETE after all assigned tasks done."
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
 Write your implementation summary to EXACTLY the filename given above."
 
-"Spawn a qa-agent teammate with this context: ..."
+"Spawn a qa-agent teammate with this context:
+- Task: Plan and run tests for the implementation
+- Spec directory: specification/[spec-index]-[spec-name]
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+
+Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
+Signal QA_COMPLETE after all tests pass and the QA report is written."
 ```
 
 **Termination Rule:** Wait for ALL spawned specialists + qa-agent to complete before terminating any of them.

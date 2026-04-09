@@ -939,3 +939,25 @@ When the application is a web app with UI changes, run this quick smoke test usi
 - Defect report
 - Trace recordings
 - JUnit XML/HTML reports
+- **QA Report in spec directory** (see below)
+
+## QA Report Output (MANDATORY)
+
+After all tests complete, write a structured QA report to the spec directory.
+
+**Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/qa-report-template.md` and fill in all placeholders.
+
+**IMPORTANT FILE NAMING:** The Team Lead pre-computes the exact filename and provides it in your spawn prompt. Write to EXACTLY the filename given — do NOT compute your own index. Example: `09-qa-report.md`.
+
+**When to write:**
+- After all test suites have run and results are final
+- After all defects are classified (fixed/open/deferred)
+- Before signaling QA_COMPLETE to Team Lead
+
+**What to include:**
+1. Executive summary with pass/fail counts and coverage
+2. BDD scenario coverage table mapping every SCENARIO-XXX to its test
+3. Test results by category (unit, integration, browser smoke, CodeRabbit)
+4. All defects found with reproduction steps and status
+5. Quality gates checklist with pass/fail for each gate
+6. Artifact paths for traces, screenshots, coverage reports
