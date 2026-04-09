@@ -1486,7 +1486,7 @@ project/
 
 ## Output Format
 
-### Primary Output: `[doc-index]-architecture.md`
+### Primary Output: Write to the EXACT filename provided by Team Lead in spawn prompt (e.g., `05-architecture.md`)
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/architecture-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with module specifications, data flow diagrams, and ADR references.
 

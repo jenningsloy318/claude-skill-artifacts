@@ -414,14 +414,14 @@ Recommendation: Option C - balances complexity and UX
 ### Primary Outputs
 
 **Output Templates:** Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`:
-1. `architecture-template.md` → produces `[doc-index]-architecture.md` (from architecture-agent)
-2. `design-spec-template.md` → produces `[doc-index]-design-spec.md` (from ui-ux-designer)
-3. `product-design-summary-template.md` → produces `[doc-index]-product-design-summary.md` (cross-reference and contracts)
+1. `architecture-template.md` → produces `[XX]-architecture.md` (from architecture-agent, exact filename from Team Lead)
+2. `design-spec-template.md` → produces `[XX]-design-spec.md` (from ui-ux-designer, exact filename from Team Lead)
+3. `product-design-summary-template.md` → produces `[XX]-product-design-summary.md` (cross-reference and contracts, exact filename from Team Lead)
 
 ### Delegation Outputs (when not FULL_STACK)
 
-- ARCHITECTURE_ONLY: Only `[doc-index]-architecture.md`
-- UI_ONLY: Only `[doc-index]-design-spec.md`
+- ARCHITECTURE_ONLY: Only `[XX]-architecture.md`
+- UI_ONLY: Only `[XX]-design-spec.md`
 
 ---
 

@@ -709,7 +709,7 @@ organisms:  # Complex sections
 3. Provide .pen file path for developers to reference
 4. Document component node IDs for precise implementation reference
 
-**Output: `[doc-index]-design-spec.md`**
+**Output: Write to the EXACT filename provided by Team Lead in spawn prompt (e.g., `05-design-spec.md`)**
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/design-spec-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with user flows, screen inventory, component specs, design tokens, accessibility requirements, and definition of done.
 

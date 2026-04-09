@@ -273,14 +273,14 @@ Else → Approved
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/code-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with severity tables, specification validation, BDD coverage, and deterministic verdict logic.
 
-Output file: `[doc-index]-code-review.md` in the spec directory.
+Output file: Write to the EXACT filename provided in your spawn prompt (e.g., `09-code-review.md`). The Team Lead pre-computes the correct `[XX]-code-review.md` index — do NOT compute your own.
 
 ## Parallel Validator Integration
 
 A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the code review document, the validator independently checks it against `gate-review.sh` criteria (verdict format, critical finding count).
 
 **Your responsibilities:**
-1. Write `[doc-index]-code-review.md` as normal
+1. Write to the EXACT filename given in your spawn prompt's `OUTPUT FILENAME` field (e.g., `09-code-review.md`)
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, critical count format)
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

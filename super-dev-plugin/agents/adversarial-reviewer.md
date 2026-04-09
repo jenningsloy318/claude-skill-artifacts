@@ -184,7 +184,7 @@ Safeguard Required: [concrete action to add safety]
 
 ### Step 4 — Synthesize Verdict
 
-Produce a single verdict and write it to `specification/[spec-index]-[spec-name]/[doc-index]-adversarial-review-report.md`.
+Produce a single verdict and write it to the EXACT filename provided in your spawn prompt (e.g., `specification/[spec-index]-[spec-name]/10-adversarial-review-report.md`). The Team Lead pre-computes the index — do NOT compute your own.
 
 **Verdict logic:**
 
@@ -210,7 +210,7 @@ ELSE:
 
 **Output Template:** Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/adversarial-review-template.md` and fill in all placeholders. The XML-tagged structure ensures consistent formatting with destructive action gate, lens/vector-tagged findings, and deterministic verdict logic.
 
-Output file: `[doc-index]-adversarial-review-report.md` in the spec directory.
+Output file: Write to the EXACT filename provided in your spawn prompt (e.g., `10-adversarial-review-report.md`). The Team Lead pre-computes the correct `[XX]-adversarial-review-report.md` index — do NOT compute your own.
 
 ## Iteration Behavior
 
@@ -223,7 +223,7 @@ Output file: `[doc-index]-adversarial-review-report.md` in the spec directory.
 A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the adversarial review report, the validator independently checks it against `gate-review.sh` criteria (verdict format).
 
 **Your responsibilities:**
-1. Write `[doc-index]-adversarial-review-report.md` as normal
+1. Write to the EXACT filename given in your spawn prompt's `OUTPUT FILENAME` field (e.g., `10-adversarial-review-report.md`)
 2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, REJECT appearing when intent was PASS)
 3. After fixing, message the validator: `"FIXED: ready for re-check"`
 4. Repeat until you receive `"VALIDATED: PASS"`

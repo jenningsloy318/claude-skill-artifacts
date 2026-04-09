@@ -129,36 +129,68 @@ Phase 13: Final Verification        → Verification (worktree preserved for ref
 - Workflow tracking JSON initialization
 - Agent team creation
 
-## Dynamic Document Naming Convention (MANDATORY)
+## Document Naming: Team Lead Pre-Computation (MANDATORY)
 
 **All spec documents use incremental indexing with NO gaps.** The filename pattern is `[XX]-[doc-type].md` where `[XX]` is a zero-padded sequential number.
 
-**Who computes the index:** The **doc-validator** handles all naming in its Step 0. The team-lead does NOT need to compute NEXT_INDEX — just tell the writer the doc-type and spec directory. The doc-validator will scan for existing files, compute the correct index, and rename the writer's file if needed.
+**Who computes the index:** The **Team Lead** pre-computes exact filenames BEFORE spawning any agent for a phase. This eliminates ambiguity — agents receive concrete filenames like `03-research-report.md`, never placeholders like `[doc-index]-research-report.md`.
 
-**Document type identifiers** (used in filenames):
+### Pre-Computation Algorithm (run at the START of every doc-producing phase)
 
-| Doc Type | Produced By | Example |
-|----------|------------|---------|
-| `requirements` | requirements-clarifier | `01-requirements.md` |
-| `behavior-scenarios` | bdd-scenario-writer | `02-behavior-scenarios.md` |
-| `research-report` | research-agent | `03-research-report.md` |
-| `debug-analysis` | debug-analyzer | `03-debug-analysis.md` (if bug) |
-| `code-assessment` | code-assessor | `04-code-assessment.md` |
-| `architecture` | architecture-agent | `05-architecture.md` |
-| `design-spec` | ui-ux-designer | `05-design-spec.md` |
-| `product-design-summary` | product-designer | `05-product-design-summary.md` |
-| `specification` | spec-writer | `06-specification.md` |
-| `implementation-plan` | spec-writer | `07-implementation-plan.md` |
-| `task-list` | spec-writer | `08-task-list.md` |
-| `implementation-summary` | dev-executor | `09-implementation-summary.md` |
-| `handoff` | handoff-writer | `10-handoff.md` |
-| `code-review` | code-reviewer | `[doc-index]-code-review.md` |
-| `adversarial-review-report` | adversarial-reviewer | `[doc-index]-adversarial-review-report.md` |
+```bash
+# 1. Scan spec directory for existing [XX]-*.md files
+SPEC_DIR="specification/[spec-index]-[spec-name]"
+MAX_INDEX=$(find "$SPEC_DIR" -maxdepth 1 -regex '.*/[0-9][0-9]-.*\.md' -type f 2>/dev/null \
+    | sed 's|.*/\([0-9][0-9]\)-.*|\1|' | sort -n | tail -1)
+MAX_INDEX=${MAX_INDEX:-0}
 
-**Rules:**
-- Indices are strictly incremental — if a phase is skipped, its index is NOT reserved
-- The doc-validator agent handles naming in its Step 0 (scan existing files, compute next index, rename if needed)
-- When referencing upstream docs in spawn prompts, use glob patterns: `[doc-index]-requirements.md`, `[doc-index]-behavior-scenarios.md`, etc.
+# 2. Compute next available index
+NEXT_INDEX=$((10#$MAX_INDEX + 1))
+
+# 3. For phases producing multiple docs (e.g., Phase 6: spec + plan + task-list),
+#    pre-allocate consecutive indices:
+#    NEXT_INDEX+0 → first doc, NEXT_INDEX+1 → second doc, NEXT_INDEX+2 → third doc
+```
+
+**CRITICAL:** The Team Lead MUST run this computation and pass the EXACT filenames to agents in the spawn prompt. Agents write to EXACTLY the filename they are given — no self-computation, no placeholders.
+
+### Per-Phase Pre-Computation Reference
+
+| Phase | Doc Types to Pre-Allocate | Example (if max=01) |
+|-------|--------------------------|---------------------|
+| 2 | `requirements` (1 file) | `02-requirements.md` |
+| 2.5 | `behavior-scenarios` (1 file) | `03-behavior-scenarios.md` |
+| 3 | `research-report` (1 file) | `04-research-report.md` |
+| 4 | `debug-analysis` (1 file, bugs only) | `04-debug-analysis.md` |
+| 5 | `code-assessment` (1 file) | `05-code-assessment.md` |
+| 5.3 | `architecture` (1 file) | `06-architecture.md` |
+| 5.4 | `architecture` + `design-spec` + `product-design-summary` (3 files) | `06-architecture.md`, `07-design-spec.md`, `08-product-design-summary.md` |
+| 5.5 | `design-spec` (1 file) | `06-design-spec.md` |
+| 6 | `specification` + `implementation-plan` + `task-list` (3 files) | `07-specification.md`, `08-implementation-plan.md`, `09-task-list.md` |
+| 8 | `implementation-summary` (1 file) | `10-implementation-summary.md` |
+| 9 | `code-review` + `adversarial-review-report` (2 files, pre-allocate BOTH) | `11-code-review.md`, `12-adversarial-review-report.md` |
+| 10.5 | `handoff` (1 file) | `13-handoff.md` |
+
+### Upstream Doc References in Spawn Prompts
+
+When referencing docs produced by earlier phases, the Team Lead MUST use the ACTUAL filename (e.g., `01-requirements.md`), NOT glob patterns. The Team Lead already knows the exact filenames because it computed them for the earlier phase (or can `ls` the spec directory).
+
+**Example spawn prompt excerpt:**
+```
+- Requirements: specification/01-auth-feature/01-requirements.md
+- BDD Scenarios: specification/01-auth-feature/02-behavior-scenarios.md
+- Write your output to EXACTLY: specification/01-auth-feature/05-specification.md
+```
+
+### Phase 9 Parallel Pre-Allocation (CRITICAL)
+
+Phase 9 spawns code-reviewer and adversarial-reviewer in parallel. The Team Lead MUST pre-allocate indices for BOTH before spawning either:
+```
+NEXT_INDEX = max_existing + 1
+code-reviewer       → [NEXT_INDEX]-code-review.md
+adversarial-reviewer → [NEXT_INDEX+1]-adversarial-review-report.md
+```
+This prevents race conditions where both agents compute the same index.
 
 ## Iteration Rule: Phase 8/9 Loop
 
@@ -281,6 +313,8 @@ For Phases 2, 2.5, 6, and 9: you MUST spawn the doc-validator teammate AT THE SA
 
 **Phase 2 (PARALLEL — writer + validator):**
 
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename (e.g., `01-requirements.md`).
+
 ```
 Spawn BOTH in parallel:
 
@@ -288,16 +322,18 @@ Spawn BOTH in parallel:
    - Task: [task description]
    - Worktree: .worktree/[spec-index]-[spec-name]
    - Spec directory: specification/[spec-index]-[spec-name]
-   Your role is to produce a requirements document ([doc-index]-requirements.md). A doc-validator runs alongside you —
-   it will handle file naming and validate gate compliance.
+   - OUTPUT FILENAME: [XX]-requirements.md  ← (Team Lead fills in exact name, e.g., 01-requirements.md)
+   Write your output to EXACTLY this filename in the spec directory. Do NOT compute your own index.
+   A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: requirements
+   - Expected filename: [XX]-requirements.md  ← (same exact name Team Lead gave to writer)
    - Gate profile: gate-requirements
    - Writer agent: requirements-clarifier
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-requirements.md.
+   Verify the writer produces the file at the expected filename.
    Then validate against gate-requirements.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -305,24 +341,28 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 2.5 (PARALLEL — writer + validator, then user confirmation):**
 
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename (e.g., `02-behavior-scenarios.md`).
+
 ```
 Spawn BOTH in parallel:
 
 1. "Spawn a bdd-scenario-writer teammate with this context:
    - Task: Generate BDD behavior scenarios from acceptance criteria
-   - Requirements: specification/[spec-index]-[spec-name]/[doc-index]-requirements.md
+   - Requirements: specification/[spec-index]-[spec-name]/[exact-requirements-filename]  ← (e.g., 01-requirements.md)
    - Spec directory: specification/[spec-index]-[spec-name]
    - Feature name: [feature name]
-   Your role is to produce a behavior scenarios document ([doc-index]-behavior-scenarios.md). A doc-validator runs alongside you —
-   it will handle file naming and validate gate compliance.
+   - OUTPUT FILENAME: [XX]-behavior-scenarios.md  ← (Team Lead fills in exact name, e.g., 02-behavior-scenarios.md)
+   Write your output to EXACTLY this filename in the spec directory. Do NOT compute your own index.
+   A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: behavior-scenarios
+   - Expected filename: [XX]-behavior-scenarios.md  ← (same exact name)
    - Gate profile: gate-bdd
    - Writer agent: bdd-scenario-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-behavior-scenarios.md.
+   Verify the writer produces the file at the expected filename.
    Then validate against gate-bdd.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -337,75 +377,96 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 6 (PARALLEL — writer + validator):**
 
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filenames for ALL THREE outputs (e.g., `05-specification.md`, `06-implementation-plan.md`, `07-task-list.md`).
+
 ```
 Spawn BOTH in parallel:
 
 1. "Spawn a spec-writer teammate with this context:
    - Task: Write technical specification, implementation plan, and task list
    - Spec directory: specification/[spec-index]-[spec-name]
-   - Requirements: specification/[spec-index]-[spec-name]/[doc-index]-requirements.md
-   - BDD Scenarios: specification/[spec-index]-[spec-name]/[doc-index]-behavior-scenarios.md
-   - Research: specification/[spec-index]-[spec-name]/[doc-index]-research-report.md
-   - Assessment: specification/[spec-index]-[spec-name]/[doc-index]-code-assessment.md
+   - Requirements: specification/[spec-index]-[spec-name]/[exact-requirements-filename]
+   - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+   - Research: specification/[spec-index]-[spec-name]/[exact-research-filename]
+   - Assessment: specification/[spec-index]-[spec-name]/[exact-assessment-filename]
    - [additional inputs as applicable]
-   Your role is to produce [doc-index]-specification.md, [doc-index]-implementation-plan.md, [doc-index]-task-list.md.
-   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   - OUTPUT FILENAMES (write to EXACTLY these):
+     1. [XX]-specification.md      ← (e.g., 05-specification.md)
+     2. [XX+1]-implementation-plan.md  ← (e.g., 06-implementation-plan.md)
+     3. [XX+2]-task-list.md        ← (e.g., 07-task-list.md)
+   Do NOT compute your own indices. Use these exact filenames.
+   A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: specification
+   - Expected filenames: [XX]-specification.md, [XX+1]-implementation-plan.md, [XX+2]-task-list.md  ← (same exact names)
    - Gate profile: gate-spec-trace
    - Writer agent: spec-writer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Scan spec dir, compute next index, rename writer's files to [XX]-specification.md.
+   Verify the writer produces ALL THREE files at the expected filenames.
    Then validate against gate-spec-trace.sh criteria.
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
 
 **Phase 8 (PARALLEL):**
+
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename for implementation-summary (e.g., `08-implementation-summary.md`).
+
 ```
 "Spawn a dev-executor teammate with this context:
 - Task: Implement code changes per task list
 - Spec directory: specification/[spec-index]-[spec-name]
-- Specification: specification/[spec-index]-[spec-name]/[doc-index]-specification.md
-- BDD Scenarios: specification/[spec-index]-[spec-name]/[doc-index]-behavior-scenarios.md
-- Task list: specification/[spec-index]-[spec-name]/[doc-index]-task-list.md
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+- OUTPUT FILENAME for implementation summary: [XX]-implementation-summary.md  ← (exact name)
 
-Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors."
+Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
+Write your implementation summary to EXACTLY the filename given above."
 
 "Spawn a qa-agent teammate with this context: ..."
 ```
 
 **Phase 9 (PARALLEL — reviewers + validators):**
+
+**Pre-computation:** Team Lead runs the pre-computation algorithm, pre-allocates TWO consecutive indices for code-review and adversarial-review-report (e.g., `09-code-review.md` and `10-adversarial-review-report.md`).
+
 ```
 Spawn ALL FOUR in parallel:
 
 1. "Spawn a code-reviewer teammate with this context:
    - [existing context]
-   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   - OUTPUT FILENAME: [XX]-code-review.md  ← (exact name, e.g., 09-code-review.md)
+   Write your output to EXACTLY this filename. Do NOT compute your own index.
+   A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: code-review
+   - Expected filename: [XX]-code-review.md  ← (same exact name)
    - Gate profile: gate-review-code
    - Writer agent: code-reviewer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-code-review.md.
+   Verify the writer produces the file at the expected filename.
    Validate the code review against gate-review.sh criteria (verdict format, critical count).
    Message the writer with fix instructions on failure. Loop until PASS."
 
 3. "Spawn an adversarial-reviewer teammate with this context:
    - [existing context]
-   A doc-validator runs alongside you — it will handle file naming and validate gate compliance.
+   - OUTPUT FILENAME: [XX+1]-adversarial-review-report.md  ← (exact name, e.g., 10-adversarial-review-report.md)
+   Write your output to EXACTLY this filename. Do NOT compute your own index.
+   A doc-validator runs alongside you — it will validate gate compliance.
    Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
 
 4. "Spawn a doc-validator teammate with this context:
    - Doc type: adversarial-review-report
+   - Expected filename: [XX+1]-adversarial-review-report.md  ← (same exact name)
    - Gate profile: gate-review-adversarial
    - Writer agent: adversarial-reviewer
    - Spec directory: specification/[spec-index]-[spec-name]
-   Step 0: Scan spec dir, compute next index, rename writer's file to [XX]-adversarial-review-report.md.
+   Verify the writer produces the file at the expected filename.
    Validate the adversarial review against gate-review.sh criteria (verdict format).
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
@@ -417,15 +478,18 @@ Wait for ALL FOUR to complete (both validators report PASS). Then terminate all 
 - Task: Update documentation to reflect implemented changes
 - Worktree: .worktree/[spec-index]-[spec-name]
 - Spec directory: specification/[spec-index]-[spec-name]
-- Specification: specification/[spec-index]-[spec-name]/[doc-index]-specification.md
-- Implementation summary: specification/[spec-index]-[spec-name]/[doc-index]-implementation-summary.md
-- Code review: specification/[spec-index]-[spec-name]/[doc-index]-code-review.md
+- Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+- Implementation summary: specification/[spec-index]-[spec-name]/[exact-implementation-summary-filename]
+- Code review: specification/[spec-index]-[spec-name]/[exact-code-review-filename]
 
 Your role is to update all relevant documentation (README, API docs, inline docs)
 to reflect the changes made during this workflow. Output: updated documentation files."
 ```
 
 **Phase 10.5 (Handoff Writing — MANDATORY, do NOT skip):**
+
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename for handoff (e.g., `11-handoff.md`).
+
 ```
 "Spawn a handoff-writer teammate with this context:
 - Task: Generate session handoff document
@@ -434,8 +498,10 @@ to reflect the changes made during this workflow. Output: updated documentation 
 - Workflow JSON: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json
 - All spec artifacts in the spec directory
 - Git diff: run `git diff --stat main..HEAD`
+- OUTPUT FILENAME: [XX]-handoff.md  ← (exact name, e.g., 11-handoff.md)
 
-Your role is to synthesize all workflow artifacts into a handoff document ([doc-index]-handoff.md) following the 7-section template.
+Write your handoff document to EXACTLY this filename. Do NOT compute your own index.
+Your role is to synthesize all workflow artifacts into a handoff document following the 7-section template.
 Write FOR the next AI agent. Be specific, concrete, and actionable."
 ```
 
@@ -488,7 +554,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | Phase | Teammate | Terminate After |
 |-------|----------|-----------------|
 | 2 | requirements-clarifier + doc-validator | requirements.md complete AND validator PASS, then terminate both |
-| 2.5 | bdd-scenario-writer + doc-validator | [doc-index]-behavior-scenarios.md complete AND validator PASS AND user confirmed scenarios, then terminate both |
+| 2.5 | bdd-scenario-writer + doc-validator | `[XX]-behavior-scenarios.md` complete AND validator PASS AND user confirmed scenarios, then terminate both |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
 | 5 | code-assessor | assessment.md complete |
@@ -499,7 +565,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 8 | dev-executor + qa-agent | **BOTH complete** (parallel), then terminate both |
 | 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator | **ALL FOUR complete** (parallel), both validators PASS, then terminate all four |
 | 10 | docs-executor | Documentation updated |
-| 10.5 | handoff-writer | [doc-index]-handoff.md complete |
+| 10.5 | handoff-writer | `[XX]-handoff.md` complete |
 
 **Exception:** Phase 8 (dev-executor + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer) - These run in parallel and should BOTH complete before termination.
 
@@ -508,15 +574,15 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Phase Transitions:**
 | → Phase 0-1 | See SKILL.md - Dev rules applied, worktree created with branch=name match, spec dir setup, agent team created |
 | → Phase 2 | specDirectory defined, worktree created, spec dir IN worktree, workflow JSON exists, agent team created |
-| → Phase 3 | [doc-index]-requirements.md exists AND [doc-index]-behavior-scenarios.md exists AND user confirmed BDD scenarios |
-| → Phase 5 | [doc-index]-research-report.md exists |
-| → Phase 5.4 | [doc-index]-code-assessment.md exists, BOTH architecture AND UI work identified |
-| → Phase 6 | [doc-index]-code-assessment.md exists (+ [doc-index]-debug-analysis.md if bug), design docs exist ([doc-index]-architecture.md and/or [doc-index]-design-spec.md, or [doc-index]-product-design-summary.md if Phase 5.4 used) |
-| → Phase 7 | [doc-index]-specification.md, [doc-index]-implementation-plan.md, [doc-index]-task-list.md exist |
+| → Phase 3 | `[XX]-requirements.md` exists AND `[XX]-behavior-scenarios.md` exists AND user confirmed BDD scenarios |
+| → Phase 5 | `[XX]-research-report.md` exists |
+| → Phase 5.4 | `[XX]-code-assessment.md` exists, BOTH architecture AND UI work identified |
+| → Phase 6 | `[XX]-code-assessment.md` exists (+ `[XX]-debug-analysis.md` if bug), design docs exist (`[XX]-architecture.md` and/or `[XX]-design-spec.md`, or `[XX]-product-design-summary.md` if Phase 5.4 used) |
+| → Phase 7 | `[XX]-specification.md`, `[XX]-implementation-plan.md`, `[XX]-task-list.md` exist |
 | → Phase 8 | All spec documents reviewed, currently in worktree |
 | → Phase 10 | Code review approved AND adversarial review PASS |
 | → Phase 10.5 | Documentation updated |
-| → Phase 11 | [doc-index]-handoff.md exists in spec directory, teammates shut down (worktree preserved) |
+| → Phase 11 | `[XX]-handoff.md` exists in spec directory, teammates shut down (worktree preserved) |
 | → Phase 12 | All changes committed and merged to main |
 | Complete | Git status clean, merged to main, team cleaned up, worktree preserved |
 
@@ -562,8 +628,8 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Executed by:** `super-dev:handoff-writer` (spawned via Task tool)
 
 1. Spawn `super-dev:handoff-writer` with full context (all spec artifacts, workflow JSON, git diff)
-2. Wait for handoff-writer to complete `[doc-index]-handoff.md`
-3. Verify output: `[doc-index]-handoff.md` exists in spec directory
+2. Wait for handoff-writer to complete `[XX]-handoff.md`
+3. Verify output: `[XX]-handoff.md` exists in spec directory
 4. Terminate handoff-writer immediately after completion
 5. Update workflow tracking JSON: Phase 10.5 = complete
 
@@ -587,7 +653,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 1. **Phase 8 complete:** Build passes, tests pass, implementation done
 2. **Phase 9 complete:** Code review = Approved, adversarial review = PASS
 3. **Phase 10 complete:** Documentation updated, `gate-docs-drift.sh` passed
-4. **Phase 10.5 complete:** `[doc-index]-handoff.md` exists in spec directory
+4. **Phase 10.5 complete:** `[XX]-handoff.md` exists in spec directory
 5. **Phase 11 complete:** All teammates terminated, worktree preserved
 
 **If any check fails:** Do NOT proceed. Go back to the earliest incomplete phase and complete it first.
