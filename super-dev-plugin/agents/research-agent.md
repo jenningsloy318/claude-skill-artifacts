@@ -154,9 +154,27 @@ Every research report MUST include an Options Comparison section:
 ## Input Context
 
 When invoked, you will receive:
-- `topic`: The subject to research
+- `requirements`: Requirements document from Phase 2 (REQUIRED — drives what to research)
+- `bdd_scenarios`: BDD behavior scenarios from Phase 2.5 (REQUIRED — defines the behaviors to find patterns for)
+- `topic`: The subject to research (derived from requirements)
 - `technologies`: List of technologies/frameworks involved
 - `focus_areas`: Specific areas of interest (optional)
+
+### Research Scope (CRITICAL)
+
+**Your PRIMARY purpose is deep online research for latest industry best practices, patterns, and approaches** — NOT searching the local codebase. Codebase assessment is done by `code-assessor` in Phase 5.
+
+You MUST:
+1. **Read the requirements and BDD scenarios FIRST** to understand what needs to be implemented
+2. **Search online** for the latest patterns, libraries, and approaches that solve the problems described in the requirements
+3. **Find real-world examples** of how similar features are built in production systems
+4. **Evaluate freshness** — prioritize sources from the last 12 months over older content
+5. **Present 3-5 options** with trade-offs based on what the requirements and BDD scenarios demand
+
+You MUST NOT:
+- Spend time searching the local codebase (that's Phase 5's job)
+- Skip online research and rely only on training knowledge
+- Ignore the requirements/BDD context and do generic topic research
 
 ## Time MCP Integration (CRITICAL)
 

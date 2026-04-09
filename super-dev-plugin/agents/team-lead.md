@@ -76,7 +76,7 @@ You MUST ONLY use these tools for:
 |-------|-------------------------------------------|-----------------------------------------------|
 | 2 | Writing requirements document | Spawn requirements-clarifier + doc-validator (PARALLEL) |
 | 2.5 | Writing BDD scenarios | Spawn bdd-scenario-writer + doc-validator (PARALLEL) |
-| 3 | Doing web research, reading docs | Spawn research-agent |
+| 3 | Doing deep online research for latest patterns | Spawn research-agent (with requirements + BDD as input) |
 | 4 | Running grep, analyzing code patterns | Spawn debug-analyzer |
 | 5 | Assessing code structure | Spawn code-assessor |
 | 5.3 | Designing architecture (arch only) | Spawn architecture-agent |
@@ -99,7 +99,7 @@ Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
 Phase 2:  Requirements Clarification → Spawn requirements-clarifier + doc-validator (PARALLEL, MUST invoke `clarify` skill first)
 Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer + doc-validator (PARALLEL, MANDATORY, user confirmation required)
-Phase 3:  Research                  → Spawn research-agent teammate
+Phase 3:  Research                  → Spawn research-agent (deep online research, NOT codebase search)
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
 Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
@@ -268,7 +268,7 @@ Create an agent team named "super-dev-team" with these teammates:
 | **Team Lead** | team-lead | Orchestrates all phases, manages task list |
 | **Planning** | requirements-clarifier | MUST invoke `clarify` skill first, then gather requirements, output requirements.md |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC |
-| **Planning** | research-agent | Research best practices, present options |
+| **Planning** | research-agent | Deep online research for latest industry patterns based on requirements + BDD, present 3-5 options |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks |
 | **Design** | architecture-agent | Design architecture (arch only) |
@@ -374,6 +374,32 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 3. **WAIT for user confirmation** before proceeding to Phase 3
 4. If user requests changes: message bdd-scenario-writer with feedback, or re-spawn if terminated
 5. Only proceed to Phase 3 AFTER user explicitly confirms the scenarios
+
+**Phase 3 (Research — deep online research, NOT codebase search):**
+
+**Pre-computation:** Team Lead runs the pre-computation algorithm, determines exact filename for research-report (e.g., `04-research-report.md`).
+
+**Purpose:** Research the latest industry patterns, best practices, libraries, and approaches ONLINE based on the requirements and BDD scenarios. This is NOT a codebase search — codebase assessment happens in Phase 5.
+
+```
+"Spawn a research-agent teammate with this context:
+- Task: Research latest industry best practices and patterns for implementing this feature
+- Spec directory: specification/[spec-index]-[spec-name]
+- Requirements: specification/[spec-index]-[spec-name]/[exact-requirements-filename]
+- BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+- Technologies: [detected tech stack from project]
+- OUTPUT FILENAME: [XX]-research-report.md  ← (exact name, e.g., 04-research-report.md)
+
+Read the requirements and BDD scenarios FIRST to understand what needs to be built.
+Then search ONLINE (Exa, DeepWiki, Context7, GitHub) for:
+1. Latest patterns and best practices for solving these requirements
+2. Production-grade libraries and tools (with version freshness scoring)
+3. Real-world examples of similar features in open-source projects
+4. Anti-patterns and common pitfalls to avoid
+Present 3-5 options with trade-offs. Do NOT search the local codebase — that's Phase 5.
+Write your output to EXACTLY the filename given above."
+```
+Wait for research-agent to complete. Present the options to the user. Then terminate.
 
 **Phase 6 (PARALLEL — writer + validator):**
 

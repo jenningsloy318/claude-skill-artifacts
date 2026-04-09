@@ -167,7 +167,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] GATE:     Requirements Completeness (gate-requirements.sh — run by doc-validator)
 - [ ] Phase 2.5: BDD Scenario Writing (bdd-scenario-writer + doc-validator PARALLEL, user confirmation required)
 - [ ] GATE:     BDD Scenario Quality (gate-bdd.sh — run by doc-validator)
-- [ ] Phase 3:  Research (options presentation)
+- [ ] Phase 3:  Research (deep online research for latest patterns based on requirements + BDD, options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
 - [ ] Phase 5.3: Architecture Design (arch only)
@@ -326,7 +326,7 @@ Task tool → subagent_type: "super-dev:agent-name"
 |-------|----------|------|
 | 2 | requirements-clarifier + doc-validator | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements. **Validator runs in parallel** |
 | 2.5 | bdd-scenario-writer + doc-validator | Write BDD behavior scenarios from acceptance criteria. **Validator runs in parallel** |
-| 3 | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring, present 3-5 options |
+| 3 | research-agent | **Research Scout (Intelligence Analyst):** Deep online research (Exa, DeepWiki, Context7, GitHub) for latest industry patterns and best practices based on requirements + BDD. NOT codebase search. Present 3-5 options with freshness scoring |
 | 4 | debug-analyzer | Root cause analysis (bugs only) |
 | 5 | code-assessor | Assess architecture, style, frameworks |
 | 5.3 | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard, present 3-5 options |
@@ -436,7 +436,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
 | 2 | Use Task tool → `super-dev:requirements-clarifier` + `super-dev:doc-validator` (parallel) | requirements-clarifier, doc-validator |
 | 2.5 | Use Task tool → `super-dev:bdd-scenario-writer` + `super-dev:doc-validator` (parallel), **present scenarios to user for confirmation** | bdd-scenario-writer, doc-validator |
-| 3 | Use Task tool → `super-dev:research-agent`, present options | research-agent |
+| 3 | Use Task tool → `super-dev:research-agent` (with requirements + BDD as input), present options. Deep online research, NOT codebase search | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
 | 5.3 | Use Task tool → `super-dev:architecture-agent`, present options (**include BDD scenarios**) | architecture-agent |
@@ -976,7 +976,7 @@ Create an agent team named "super-dev-team" with these teammates:
 | **Team Lead** | team-lead | Orchestrates all phases, manages task list | Team Lead (always active) |
 | **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
-| **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Multi-source research with freshness scoring | `super-dev:research-agent` |
+| **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Deep online research for latest patterns based on requirements + BDD | `super-dev:research-agent` |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks | `super-dev:code-assessor` |
 | **Design** | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard | `super-dev:architecture-agent` |
