@@ -23,37 +23,43 @@ gate-profile: gate-docs-drift.sh
 
     <subsection title="Phase 1: [Phase/Milestone Name]">
       <checklist>
-        <item status="done">
+        <item status="done" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T1.1** [Task description]
           - Completed: [timestamp]
           - Files: [files modified]
+          - Dependencies: None
           - Notes: [any notes]
         </item>
-        <item status="done">
+        <item status="done" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T1.2** [Task description]
           - Completed: [timestamp]
           - Files: [files modified]
+          - Dependencies: T1.1
           - Notes: [any notes]
         </item>
-        <item status="in-progress">
+        <item status="in-progress" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T1.3** [Task description]
           - Started: [timestamp]
           - Files: [files being modified]
+          - Dependencies: T1.2
           - Notes: [any notes]
         </item>
-        <item status="pending">
+        <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T1.4** [Task description]
+          - Dependencies: None
         </item>
       </checklist>
     </subsection>
 
     <subsection title="Phase 2: [Phase/Milestone Name]">
       <checklist>
-        <item status="pending">
+        <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T2.1** [Task description]
+          - Dependencies: T1.2
         </item>
-        <item status="pending">
+        <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           **T2.2** [Task description]
+          - Dependencies: T2.1
         </item>
       </checklist>
     </subsection>

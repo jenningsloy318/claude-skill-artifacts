@@ -29,9 +29,10 @@ These rules define how to translate Figma inputs into code for this project and 
 - don't use git add -A, just use git add file1 file2( only files edit/created/delete by you in this session)
 
 ## Plugin versioning rule (MUST follow)
-- Every modification to files under `super-dev-plugin/` MUST include a patch version bump in `super-dev-plugin/.claude-plugin/plugin.json`
-- Every modification to files under `context-keeper-plugin/` MUST include a patch version bump in `context-keeper-plugin/.claude-plugin/plugin.json`
-- Bump the patch level (e.g., 2.3.1 → 2.3.2) and include `plugin.json` in the same commit
+- Every modification to files under `super-dev-plugin/` MUST include a patch version bump in BOTH `super-dev-plugin/.claude-plugin/plugin.json` AND `.claude-plugin/marketplace.json` (the super-dev entry)
+- Every modification to files under `context-keeper-plugin/` MUST include a patch version bump in BOTH `context-keeper-plugin/.claude-plugin/plugin.json` AND `.claude-plugin/marketplace.json` (the context-keeper entry)
+- Bump the patch level (e.g., 2.3.1 → 2.3.2) and include both `plugin.json` and `marketplace.json` in the same commit
+- The version in `marketplace.json` MUST always match the version in the corresponding `plugin.json`
 
 ## Development Philosophy Integration (MUST follow)
 

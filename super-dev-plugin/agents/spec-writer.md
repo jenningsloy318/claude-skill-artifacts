@@ -44,6 +44,18 @@ Document all technical decisions and architecture.
 ### Step 3: Create Implementation Plan → WRITE to disk immediately
 
 Break the specification (from Step 2) into implementable milestones.
+
+**Cross-Domain Dependency Analysis (MANDATORY for multi-domain projects):**
+When the project spans multiple domains (e.g., Rust + Node.js, backend + frontend), you MUST:
+1. Tag every `<task>` with a `domain` attribute (rust, go, frontend, backend, ios, android, windows, macos, or mixed)
+2. Identify cross-domain dependencies — tasks where one domain produces artifacts another consumes (e.g., backend defines API types that frontend imports)
+3. Mark cross-domain dependency arrows in the Dependency Graph with domain labels
+4. Document the spawn ordering recommendation in the plan:
+   - **Independent domains** (no shared types/APIs/configs): "Spawn ALL specialists in parallel"
+   - **Dependent domains** (shared types, one imports the other): "Staggered parallel — spawn upstream first, downstream after BUILD_COMPLETE"
+
+This enables the Team Lead to correctly decide between full parallel vs staggered parallel specialist spawning in Phase 8.
+
 **WRITE `[XX+1]-implementation-plan.md` to disk NOW before proceeding to Step 4.**
 
 ### Step 4: Create Task List → WRITE to disk immediately

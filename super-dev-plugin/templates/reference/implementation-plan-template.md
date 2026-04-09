@@ -47,13 +47,13 @@ gate-profile: gate-spec-trace.sh
       <paragraph>**Objective:** [What this phase achieves and why it comes first]</paragraph>
 
       <list type="ordered">
-        <task id="T1.1" file="[path/to/file]" risk="Low | Medium | High">
+        <task id="T1.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           <paragraph>**[Task Name]**</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: None</paragraph>
         </task>
-        <task id="T1.2" file="[path/to/file]" risk="Low | Medium | High">
+        <task id="T1.2" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           <paragraph>**[Task Name]**</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
@@ -78,13 +78,13 @@ gate-profile: gate-spec-trace.sh
       <paragraph>**Objective:** [What this phase achieves]</paragraph>
 
       <list type="ordered">
-        <task id="T2.1" file="[path/to/file]" risk="Low | Medium | High">
+        <task id="T2.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           <paragraph>**[Task Name]**</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: T1.2</paragraph>
         </task>
-        <task id="T2.2" file="[path/to/file]" risk="Low | Medium | High">
+        <task id="T2.2" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           <paragraph>**[Task Name]**</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
@@ -107,7 +107,7 @@ gate-profile: gate-spec-trace.sh
       <paragraph>**Objective:** [What this phase achieves]</paragraph>
 
       <list type="ordered">
-        <task id="T3.1" file="[path/to/file]" risk="Low | Medium | High">
+        <task id="T3.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
           <paragraph>**[Task Name]**</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
@@ -132,7 +132,7 @@ gate-profile: gate-spec-trace.sh
 
   <section title="Dependency Graph">
     <diagram>
-Phase 1                Phase 2                Phase 3
+Phase 1 [rust]         Phase 2 [frontend]     Phase 3 [mixed]
 +-----------+          +-----------+          +-----------+
 |  T1.1     |--------->|  T2.1     |--------->|  T3.1     |
 +-----------+          +-----------+          +-----------+
@@ -143,6 +143,7 @@ Phase 1                Phase 2                Phase 3
 +-----------+          +-----------+
     </diagram>
     <paragraph>Arrows indicate "must complete before" relationships. Tasks within the same phase without arrows can run in parallel.</paragraph>
+    <paragraph>Domain labels on phases indicate which specialist agent handles them. Cross-domain arrows (e.g., rust → frontend) signal staggered parallel spawning: upstream domain specialist starts first, downstream spawns after BUILD_COMPLETE.</paragraph>
   </section>
 
   <section title="Risk Assessment">
@@ -262,7 +263,8 @@ Phase 1                Phase 2                Phase 3
 ## Usage Notes
 
 - Decompose complex work into **3-5 phases**; each phase should be independently verifiable
-- Every `<task>` must specify a `file` attribute with the target file path and a `risk` level
-- The dependency graph should reflect the actual task dependency chain
+- Every `<task>` must specify a `file` attribute with the target file path, a `risk` level, and a `domain` attribute (rust, go, frontend, backend, ios, android, windows, macos, or mixed)
+- The `domain` attribute enables the Team Lead to detect cross-domain dependencies and decide between full parallel vs staggered parallel spawning in Phase 8
+- The dependency graph should reflect the actual task dependency chain, with domain labels on phases to visualize cross-domain boundaries
 - Update the timeline table as estimates are refined during execution
 - Cross-reference the `<reference>` tag to link back to requirements acceptance criteria
