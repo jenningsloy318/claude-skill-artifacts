@@ -475,7 +475,7 @@ All documents are created in `specification/[index]-[name]/` directory:
 1. `[index]-requirements.md` - Clarified requirements
 2. `[index]-research-report.md` - Research findings with freshness scores
 3. `[index]-debug-analysis.md` - Debug analysis (bugs only)
-4. `[index]-assessment.md` - Code assessment with coverage
+4. `[index]-code-assessment.md` - Code assessment with coverage
 5. `[index]-architecture.md` - Architecture design (complex features)
 6. `[index]-design-spec.md` - UI/UX design (UI features)
 7. `[index]-specification.md` - Technical specification

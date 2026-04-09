@@ -443,7 +443,7 @@ Recommendation: Option C - balances complexity and UX
 
 **Inputs:**
 - `[index]-requirements.md` (required)
-- `[index]-assessment.md` (required)
+- `[index]-code-assessment.md` (required)
 - `[doc-index]-behavior-scenarios.md` (required — BDD scenarios for behavior-driven design)
 
 **Outputs:**

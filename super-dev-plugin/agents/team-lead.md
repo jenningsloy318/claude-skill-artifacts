@@ -656,7 +656,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | 2.5 | bdd-scenario-writer + doc-validator | `[XX]-behavior-scenarios.md` complete AND validator PASS AND user confirmed scenarios, then terminate both |
 | 3 | research-agent | research-report.md complete, user selected option |
 | 4 | debug-analyzer | debug-analysis.md complete |
-| 5 | code-assessor | assessment.md complete |
+| 5 | code-assessor | code-assessment.md complete |
 | 5.3 | architecture-agent | architecture.md complete, user selected option |
 | 5.4 | product-designer | All design docs complete, user selected option |
 | 5.5 | ui-ux-designer | design-spec.md complete, user selected option |
@@ -763,7 +763,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 - Only shut down teammates and clean up team resources (NOT the worktree)
 
 **Verification Checklist:**
-- Documents: requirements.md, behavior-scenarios.md, research-report.md, assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md, handoff.md
+- Documents: requirements.md, behavior-scenarios.md, research-report.md, code-assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md, handoff.md
 - Code: All changes implemented, no TODO/FIXME/console.log for current feature, build passes without errors/warnings
 - Tests: Unit/integration tests written and passing, coverage meets standards
 - Git: All changes staged, commit message follows conventions, changes committed, merged to main branch, git status clean

@@ -178,7 +178,7 @@ Files that may exist in `specification/[spec-index]-[spec-name]/`:
 - `01-task-list.md` — Task tracking
 - `02-research-report.md` — Research findings (if created)
 - `03-specification.md` — Technical specification
-- `04-assessment.md` — Code assessment (if created)
+- `04-code-assessment.md` — Code assessment (if created)
 - `05-implementation-plan.md` — Implementation plan (if created)
 - `06-implementation-summary.md` — Implementation summary
 - `[doc-index]-code-review.md` — Code review reports (if created)
