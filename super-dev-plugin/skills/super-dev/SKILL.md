@@ -562,21 +562,9 @@ mkdir -p "specification/[spec-index]-[spec-name]"
 
 ### Step 4: Initialize Workflow Tracking JSON
 
-Create `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json`:
+Create `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json`.
 
-```json
-{
-  "featureName": "[Name]",
-  "specDirectory": "specification/[spec-index]-[spec-name]",
-  "worktreePath": ".worktree/[spec-index]-[spec-name]",
-  "startedAt": "[ISO timestamp]",
-  "phases": [{ "id": 0, "name": "Apply Dev Rules", "status": "complete", "startedAt": "...", "completedAt": "..." }],
-  "tasks": [{ "id": "T1.1", "phase": 1, "description": "Specification Setup", "status": "complete", "files": [...], "updatedAt": "..." }],
-  "iteration": { "loops": 0, "lastReviewVerdict": null },
-  "team": { "name": "super-dev-team", "teammates": [], "messages": [] },
-  "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
-}
-```
+**Template:** See `${CLAUDE_PLUGIN_ROOT}/templates/reference/workflow-tracking-template.json` for the full schema and initial value.
 
 ### Step 5: Create or Reuse the Agent Team
 

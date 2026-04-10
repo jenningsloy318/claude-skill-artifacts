@@ -1,0 +1,191 @@
+{
+  "$schema": "Super Dev Workflow Tracking",
+  "$description": "Per-spec workflow state file. Created in Phase 1, updated every phase/task completion. Location: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json",
+
+  "featureName": {
+    "$type": "string",
+    "$description": "Human-readable name of the feature, fix, or refactor being implemented",
+    "$example": "User Authentication with OAuth2"
+  },
+
+  "specDirectory": {
+    "$type": "string",
+    "$description": "Relative path to the specification directory inside the worktree",
+    "$example": "specification/01-user-auth"
+  },
+
+  "worktreePath": {
+    "$type": "string",
+    "$description": "Relative path to the git worktree from the project root",
+    "$example": ".worktree/01-user-auth"
+  },
+
+  "startedAt": {
+    "$type": "string (ISO 8601)",
+    "$description": "Timestamp when the workflow was initialized (Phase 1 completion)",
+    "$example": "2026-04-10T14:30:00Z"
+  },
+
+  "phases": {
+    "$type": "array of Phase objects",
+    "$description": "Ordered list of all workflow phases and their execution status. Updated by Team Lead on phase start and completion.",
+    "$item": {
+      "id": {
+        "$type": "number",
+        "$description": "Phase identifier matching the workflow phase number (0, 1, 2, 2.5, 3, 4, 5, 5.3, 5.4, 5.5, 6, 7, 8, 9, 10, 10.5, 11, 12, 13)",
+        "$example": 8
+      },
+      "name": {
+        "$type": "string",
+        "$description": "Phase display name",
+        "$example": "Implementation"
+      },
+      "status": {
+        "$type": "string",
+        "$description": "Current phase execution state",
+        "$enum": ["pending", "in_progress", "complete", "skipped"],
+        "$note": "'skipped' used for conditional phases like Phase 4 (bugs only) or Phase 5.3/5.4/5.5 selection"
+      },
+      "startedAt": {
+        "$type": "string (ISO 8601) | null",
+        "$description": "Timestamp when phase execution began"
+      },
+      "completedAt": {
+        "$type": "string (ISO 8601) | null",
+        "$description": "Timestamp when phase finished (null if not yet complete)"
+      },
+      "docs": {
+        "$type": "array of strings",
+        "$description": "Spec documents produced by this phase (filenames only, relative to spec directory). Empty array for phases that produce no documents.",
+        "$example": ["05-specification.md", "06-implementation-plan.md", "07-task-list.md"]
+      },
+      "files": {
+        "$type": "object",
+        "$description": "Code/config files changed during this phase, categorized by operation. All paths relative to worktree root. Empty arrays for doc-only phases.",
+        "created": {
+          "$type": "array of strings",
+          "$description": "Files newly created in this phase",
+          "$example": ["src/auth/login.ts", "src/auth/login.test.ts"]
+        },
+        "modified": {
+          "$type": "array of strings",
+          "$description": "Existing files modified in this phase",
+          "$example": ["src/routes/index.ts", "src/types.ts"]
+        },
+        "deleted": {
+          "$type": "array of strings",
+          "$description": "Files removed in this phase",
+          "$example": ["src/auth/legacy-login.ts"]
+        }
+      }
+    }
+  },
+
+  "tasks": {
+    "$type": "array of Task objects",
+    "$description": "Individual work items within phases. Task IDs use format T{phase}.{seq} (e.g., T8.1, T8.2). Updated on task start, file changes, and completion.",
+    "$item": {
+      "id": {
+        "$type": "string",
+        "$description": "Task identifier in T{phase}.{seq} format",
+        "$example": "T8.3"
+      },
+      "phase": {
+        "$type": "number",
+        "$description": "Phase this task belongs to",
+        "$example": 8
+      },
+      "description": {
+        "$type": "string",
+        "$description": "Brief description of the task",
+        "$example": "Implement login API endpoint"
+      },
+      "status": {
+        "$type": "string",
+        "$description": "Current task execution state",
+        "$enum": ["pending", "in_progress", "complete"]
+      },
+      "files": {
+        "$type": "object",
+        "$description": "Code/config files changed by this task, categorized by operation. All paths relative to worktree root.",
+        "created": {
+          "$type": "array of strings",
+          "$description": "Files newly created by this task",
+          "$example": ["src/auth/login.ts"]
+        },
+        "modified": {
+          "$type": "array of strings",
+          "$description": "Existing files modified by this task",
+          "$example": ["src/routes/index.ts"]
+        },
+        "deleted": {
+          "$type": "array of strings",
+          "$description": "Files removed by this task",
+          "$example": []
+        }
+      },
+      "updatedAt": {
+        "$type": "string (ISO 8601)",
+        "$description": "Timestamp of last status or file list change"
+      }
+    }
+  },
+
+  "iteration": {
+    "$type": "object",
+    "$description": "Tracks Phase 8/9 review loops. Incremented each time Phase 9 review fails and loops back to Phase 8 for fixes.",
+    "loops": {
+      "$type": "number",
+      "$description": "Number of Phase 8 -> 9 iteration cycles completed. 0 means first pass. Target: < 3 loops (efficiency metric)",
+      "$example": 1
+    },
+    "lastReviewVerdict": {
+      "$type": "string | null",
+      "$description": "Most recent combined verdict from Phase 9 (code-reviewer + adversarial-reviewer). null before first review.",
+      "$enum": [null, "Approved", "Approved with Comments", "Changes Requested", "Blocked", "PASS", "CONTESTED", "REJECT"],
+      "$note": "Code review uses Approved/Changes Requested/Blocked. Adversarial uses PASS/CONTESTED/REJECT. Record the blocking verdict."
+    }
+  },
+
+  "team": {
+    "$type": "object",
+    "$description": "Agent team metadata and communication log for the workflow session.",
+    "name": {
+      "$type": "string",
+      "$description": "Team name, always 'super-dev-team'",
+      "$example": "super-dev-team"
+    },
+    "teammates": {
+      "$type": "array of strings",
+      "$description": "List of teammate agent types that have been spawned during this workflow (for audit, not live status)",
+      "$example": ["requirements-clarifier", "doc-validator", "bdd-scenario-writer", "spec-writer", "rust-developer", "qa-agent"]
+    },
+    "messages": {
+      "$type": "array of Message objects",
+      "$description": "Key inter-agent messages logged for traceability (not exhaustive, only significant coordination events)",
+      "$item": {
+        "from": { "$type": "string", "$description": "Sender agent type" },
+        "to": { "$type": "string", "$description": "Receiver agent type or 'all' for broadcast" },
+        "content": { "$type": "string", "$description": "Brief message summary" },
+        "timestamp": { "$type": "string (ISO 8601)" }
+      }
+    }
+  },
+
+  "status": {
+    "$type": "object",
+    "$description": "Top-level workflow completion flags. Team Lead sets these during Phase 11-12 transition.",
+    "allPhasesComplete": {
+      "$type": "boolean",
+      "$description": "True when all required phases (including 10, 10.5, 11) have status 'complete' or 'skipped'. Set during Phase 11."
+    },
+    "allTasksComplete": {
+      "$type": "boolean",
+      "$description": "True when every task in the tasks array has status 'complete'. Set during Phase 11."
+    },
+    "workflowDone": {
+      "$type": "boolean",
+      "$description": "True after Phase 12 commit succeeds. Final flag indicating the workflow is fully finished."
+    }
+  }
+}

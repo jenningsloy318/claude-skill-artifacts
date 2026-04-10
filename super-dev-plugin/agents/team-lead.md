@@ -38,20 +38,7 @@ You MUST ONLY use these tools for:
 
 **Created:** Phase 1 | **Updated:** Every phase/task completion
 
-**JSON Schema:**
-```json
-{
-  "featureName": "[Name]",
-  "specDirectory": "specification/[spec-index]-[spec-name]",
-  "worktreePath": ".worktree/[spec-index]-[spec-name]",
-  "startedAt": "[ISO timestamp]",
-  "phases": [{ "id": 0, "name": "...", "status": "complete|pending|in_progress", "startedAt": "...", "completedAt": "..." }],
-  "tasks": [{ "id": "T1.1", "phase": 1, "description": "...", "status": "complete|pending", "files": [...], "updatedAt": "..." }],
-  "iteration": { "loops": 0, "lastReviewVerdict": null },
-  "team": { "name": "super-dev-team", "teammates": [], "messages": [] },
-  "status": { "allPhasesComplete": false, "allTasksComplete": false, "workflowDone": false }
-}
-```
+**JSON Schema:** See `${CLAUDE_PLUGIN_ROOT}/templates/reference/workflow-tracking-template.json` for the full schema, field definitions, and initial value.
 
 **Team Lead Responsibilities:**
 - **Phase 0 and Phase 1:** Documented in `skills/super-dev/SKILL.md` (apply dev rules, setup spec/worktree/branch with consistent naming, create agent team)
