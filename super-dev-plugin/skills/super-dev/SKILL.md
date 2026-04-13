@@ -280,95 +280,24 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
 
 ## Team Lead Responsibilities (Delegate Mode)
 
-**SYSTEM OVERRIDE: DELEGATION MODE ENABLED**
-
-**CRITICAL PRIME DIRECTIVE:**
-You are the **Team Lead**, NOT an individual contributor.
-Your core function is to **manage resources**, not perform labor.
-You MUST suppress the urge to "just fix it yourself".
-
 **THE "HANDS-OFF" RULE:**
-From **Phase 2 onwards**, you are FORBIDDEN from using these tools for implementation, debugging, or research tasks:
-- `Edit` - file editing
-- `Write` - file creation
-- `Bash` - command execution
-- `Grep` - code searching
-- `Glob` - file pattern matching
-- `Read` - reading files for implementation analysis
+From **Phase 2 onwards**, you are FORBIDDEN from using these tools for implementation, debugging, or research:
+- `Edit`, `Write`, `Bash`, `Grep`, `Glob`, `Read` (for implementation analysis)
 
-You MUST ONLY use these tools for:
-1. Phase 0/1 Setup (creating directories, worktrees)
-2. Phase 12 Git Operations (merge, commit)
-3. Project Management (reading status, updating task lists)
+Allowed uses: Phase 0/1 setup, Phase 12 git operations, reading status/task lists.
 
-**HOW TO SPAWN AGENTS:**
-Use the **Task tool** with the appropriate `subagent_type`:
-```
-Task tool → subagent_type: "super-dev:agent-name"
-```
+**HOW TO SPAWN AGENTS:** `Task tool → subagent_type: "super-dev:agent-name"`
 
-**IF YOU CATCH YOURSELF DOING THE WORK:**
-- STOP immediately
-- Ask: "Which agent handles this?"
-- Use the **Task tool** to spawn that agent
-
-**CRITICAL ENFORCEMENT:** Team Lead operates in orchestration-only mode. The ONLY way to do work in Phases 2-13 is via the Task tool.
-
-**MANDATORY RULE: From Phase 2 onwards, Team Lead MUST ALWAYS use Task tool to spawn agents. NEVER do detailed tasks directly.**
-
-✅ **CAN (Phases 0-1 only):**
-- Phase 0: Apply dev rules
-- Phase 1: Execute specification setup (worktree, spec dir, workflow JSON, team creation)
-
-✅ **CAN (All phases - orchestration only):**
-- Use **Task tool** to spawn specialized agents
-- Create tasks in shared list (TaskCreate, TaskUpdate)
-- Monitor task status (TaskList, TaskGet)
-- Message teammates
-- Synthesize findings from agents
-- Coordinate phase transitions
-- Commit and merge (Phase 12)
-- Clean up team (Phase 13)
-
-❌ **CANNOT (Phases 2-13) - USE TASK TOOL INSTEAD:**
-- **NEVER edit files directly** → Task tool with `super-dev:dev-executor` or `super-dev:docs-executor`
-- **NEVER run commands directly** → Task tool with `super-dev:dev-executor` or `super-dev:qa-agent`
-- **NEVER perform research directly** → Task tool with `super-dev:research-agent`
-- **NEVER write specifications** → Task tool with `super-dev:spec-writer`
-- **NEVER do code assessment** → Task tool with `super-dev:code-assessor`
-- **NEVER do architecture design** → Task tool with `super-dev:architecture-agent` or `super-dev:product-designer`
-- **NEVER do UI/UX design** → Task tool with `super-dev:ui-ux-designer` or `super-dev:product-designer`
-- **NEVER do combined arch+UI design** → Task tool with `super-dev:product-designer`
-- **NEVER do debug analysis** → Task tool with `super-dev:debug-analyzer`
-- **NEVER do code review** → Task tool with `super-dev:code-reviewer`
-- **NEVER do adversarial review** → Task tool with `super-dev:adversarial-reviewer`
-- **NEVER skip agent communication**
-- **NEVER take over agent tasks**
-
-**VIOLATION DETECTION:** If Team Lead starts doing Phase 2-13 work directly, user should say:
-- "Stop! You are in delegate mode. Use Task tool to spawn an agent."
-- "Remember: Team Lead orchestrates via Task tool, agents execute."
-
-## Teammate Roles
-
-| Phase | Teammate | Role |
-|-------|----------|------|
-| 2 | requirements-clarifier + doc-validator | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements. **Validator runs in parallel** |
-| 2.5 | bdd-scenario-writer + doc-validator | Write BDD behavior scenarios from acceptance criteria. **Validator runs in parallel** |
-| 3 | research-agent | **Research Scout (Intelligence Analyst):** Deep online research (Exa, DeepWiki, Context7, GitHub) for latest industry patterns and best practices based on requirements + BDD. NOT codebase search. Present 3-5 options with freshness scoring |
-| 4 | debug-analyzer | Root cause analysis (bugs only) |
-| 5 | code-assessor | Assess architecture, style, frameworks |
-| 5.3 | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard, present 3-5 options |
-| 5.4 | product-designer | Coordinate architecture + UI design together, present combined options |
-| 5.5 | ui-ux-designer | Create UI/UX design (UI only), present 3-5 options |
-| 6 | spec-writer + doc-validator | Write 3 files SEQUENTIALLY: specification → implementation-plan → task-list. Each builds on the previous. **Validator runs in parallel** |
-| 8 | dev-executor (fallback) OR specialist developer agent(s) | Implement code — Team Lead routes to best-fit specialist (parallel with qa-agent). See **Domain-Aware Agent Routing** |
-| 8 | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests (parallel with specialist(s)) |
-| 9 | code-reviewer + doc-validator | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs. **Validator runs in parallel** (parallel with adversarial-reviewer) |
-| 9 | adversarial-reviewer + doc-validator | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge (Skeptic, Architect, Minimalist) with attack vectors (V1-V8) and Destructive Action Gate. **Validator runs in parallel** (parallel with code-reviewer) |
-| 10 | docs-executor | Update documentation |
-| 10.5 | handoff-writer | Generate session handoff document |
-| Any | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns (spawned by any agent) |
+❌ **NEVER in Phases 2-13** — use Task tool to spawn the appropriate agent instead:
+- Edit/write files → `dev-executor` or `docs-executor`
+- Run commands → `dev-executor` or `qa-agent`
+- Research → `research-agent`
+- Write specs → `spec-writer`
+- Code assessment → `code-assessor`
+- Architecture → `architecture-agent` or `product-designer`
+- UI/UX → `ui-ux-designer` or `product-designer`
+- Debug analysis → `debug-analyzer`
+- Code/adversarial review → `code-reviewer` / `adversarial-reviewer`
 
 ## Key Concepts
 
@@ -413,48 +342,18 @@ All spec documents use `[XX]-[doc-type].md` naming with strictly incremental ind
 - **Execution (8):** specialist developer(s) reference SCENARIO-XXX IDs in code; qa-agent maps scenarios to tests
 - **Review (9):** code-reviewer validates scenario coverage; adversarial-reviewer checks V8 behavior coverage
 
-## Teammate Termination Rules (CRITICAL)
+## Teammate Termination Rules
 
-**TERMINATE IMMEDIATELY AFTER COMPLETION:**
-When a teammate finishes their assigned task, the Team Lead MUST:
-1. Verify the teammate's output is complete
-2. **Terminate the teammate immediately** - Do NOT keep idle teammates running
-3. **Close the tmux pane** (if using tmux mode) to free resources
+Terminate teammates **immediately** after their work completes. Verify output, then shut down. Do NOT keep idle teammates running.
 
-**Why immediate termination:**
-- Frees up context window and memory
-- Prevents resource accumulation
-- Keeps the agent team lean and efficient
-- Reduces confusion about active teammates
-
-**Termination Process:**
-```
-1. Teammate reports completion
-2. Team Lead verifies output
-3. Team Lead sends: "Thank you. Your work is complete. Please shut down."
-4. Teammate shuts down gracefully
-5. If tmux: close the pane with `exit` or Ctrl+D
-```
-
-**Exception:** In Phase 8, all execution agents (specialist developer(s) + qa-agent) run in parallel — YOU MUST wait for ALL to complete before terminating any. Same applies to Phase 9, where code-reviewer and adversarial-reviewer run in parallel.
+**Exception:** In Phase 8 (specialist(s) + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer), wait for ALL parallel agents to complete before terminating any.
 
 ## Best Practices
 
-1. **Always give teammates full context** — Include task details, file paths, and acceptance criteria in every spawn prompt
-2. **Size tasks as self-contained units** — Each teammate MUST have clear deliverables and boundaries
-3. **NEVER implement directly as Team Lead** — Always wait for teammates to complete their work
-4. **Assign file ownership** — Each teammate MUST own different files to prevent conflicts
-5. **Monitor and redirect actively** — Check teammate progress and course-correct immediately when needed
-6. **Use direct peer communication** — Parallel teammates MUST message each other directly (see Direct Peer Communication signals), not via Team Lead relay
-7. **Terminate teammates immediately after completion** — NEVER keep idle teammates running
-8. **Clean build artifacts during final cleanup** (run the appropriate command for the project type):
-   - **Rust**: `cargo clean`
-   - **Go**: `go clean -cache -i -r`
-   - **Node.js**: Delete `node_modules/.cache` or rebuild
-   - **Python**: `find . -type d -name "__pycache__" -exec rm -rf {} +`
-   - **Maven (Java)**: `mvn clean`
-   - **Gradle (Java/Kotlin)**: `gradle clean`
-   - **.NET/C#**: `dotnet clean`
+1. **Full context in spawn prompts** — task details, file paths, acceptance criteria, peer agents
+2. **Self-contained tasks** — clear deliverables and file ownership boundaries
+3. **Direct peer communication** — parallel teammates message each other directly (see signals above)
+4. **Monitor and redirect** — check progress, course-correct immediately
 
 ---
 
@@ -593,23 +492,6 @@ Before proceeding to Phase 2:
 - [ ] Workflow JSON created in worktree
 - [ ] Agent team created with Team Lead
 
-### Error Handling
-
-- **Worktree already exists**: Reuse existing worktree automatically (cd to it)
-- **Already in a worktree**: Verify the current worktree matches the spec directory
-- **Branch name mismatch**: Recreate worktree with correct branch name
-
-### Forbidden Patterns (NEVER do these in Phase 1)
-
-```
-❌ Creating spec directory in main repo (must be in worktree)
-❌ Creating worktree without creating spec dir inside it
-❌ Skipping worktree creation
-❌ Creating spec dir before worktree
-❌ Creating workflow tracking JSON in main repo (must be in worktree with spec dir)
-❌ Branch name not matching worktree name
-```
-
 ---
 
 ## Phase 8: Implementation (Domain-Aware Agent Routing)
@@ -693,113 +575,34 @@ The dev-executor retains its internal specialist delegation table and will attem
 
 ## Phase 9: Code Review + Adversarial Review (PARALLEL)
 
-**Executed by:** `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (both spawned via Task tool, run in parallel)
+**Executed by:** `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` + 2× `super-dev:doc-validator` (4 agents parallel)
 
-**Purpose:** Dual-track review — spec-aware code review and multi-lens adversarial challenge run simultaneously. Both produce independent verdicts that must be satisfied before proceeding. Reviewers share findings directly with each other (see Direct Peer Communication signals).
+**Outputs:** `[XX]-code-review.md` and `[XX]-adversarial-review-report.md`
 
-**Outputs:**
-- Code Review: `specification/[spec-index]-[spec-name]/[XX]-code-review.md`
-- Adversarial Review: `specification/[spec-index]-[spec-name]/[XX]-adversarial-review-report.md`
+**Verdicts:**
+- **Code Review:** Approved / Approved with Comments → pass. Changes Requested / Blocked → loop to Phase 8.
+- **Adversarial:** PASS → pass. CONTESTED → Team Lead decides. REJECT → loop to Phase 8. HALT from Destructive Action Gate → forces CONTESTED minimum (multiple HALTs → REJECT).
 
-**PARALLEL Execution (like Phase 8):**
-- Spawn BOTH code-reviewer and adversarial-reviewer simultaneously
-- Wait for BOTH to complete before evaluating results
-- Terminate BOTH only after both finish (same rule as dev-executor + qa-agent in Phase 8)
+**Pass criteria (ALL required for Phase 10):**
+- Code Review = Approved (or with Comments)
+- Adversarial = PASS
+- BDD Scenario Coverage = 100%
 
-### Code Reviewer
+**If any fails:** Loop back to Phase 8 with combined findings. **After all pass:** Phase 10 (not Phase 12).
 
-Spec-aware review across 8 dimensions: Correctness, Security, Performance, Maintainability, Testability, Error Handling, Consistency, Accessibility.
-
-**Code Review Verdict:**
-- **Approved** → code review passes
-- **Approved with Comments** → code review passes (minor items noted)
-- **Changes Requested** → loop back to Phase 8
-- **Blocked** → loop back to Phase 8
-
-### Adversarial Reviewer
-
-**Reviewer lenses** (count based on diff size):
-- **Skeptic** — correctness and completeness (always)
-- **Architect** — structural fitness (50+ lines)
-- **Minimalist** — necessity and complexity (200+ lines)
-
-Each lens applies structured attack vector sub-checklists (V1-V8) for systematic probing of false assumptions, edge cases, failure modes, adversarial inputs, safety compliance, grounding accuracy, and dependency fitness.
-
-**Destructive Action Gate:** An always-on checkpoint that scans every diff for irreversible operations (data destruction, irreversible state changes, production impact, permission escalation, secret operations). HALT findings from the gate cannot be downgraded and force the verdict upward.
-
-**Adversarial Verdict logic:**
-- **PASS** → adversarial review passes
-- **CONTESTED** → Team Lead decides: accept or loop back to Phase 8
-- **REJECT** → YOU MUST loop back to Phase 8 with findings as input
-- **HALT from gate** → Single HALT forces CONTESTED minimum; multiple HALTs force REJECT
-- **Gate BLOCKED** → Forces loop back to Phase 8
-
-### Combined Phase 9 Pass Criteria
-
-**ALL must pass to proceed to Phase 10 (Documentation):**
-- Code Review verdict = Approved (or Approved with Comments)
-- Adversarial Review verdict = PASS
-- BDD Scenario Coverage = 100% (all scenarios have corresponding passing tests)
-
-**If any fails:** Loop back to Phase 8 with combined findings from both reviews as input.
-
-**After all pass:** Proceed to Phase 10 (Documentation Update). Do NOT skip to Phase 12.
-
-**Full references:** See `super-dev:code-reviewer` and `super-dev:adversarial-reviewer` agents for detailed specifications.
+**Full references:** See `super-dev:code-reviewer` and `super-dev:adversarial-reviewer` agent files.
 
 ---
 
 ## Investigation Protocol (Any Phase — On-Demand)
 
-**Agent:** `super-dev:investigator` — can be spawned by any phase agent or Team Lead when unknowns arise mid-execution.
+**Agent:** `super-dev:investigator` — spawned by any agent or Team Lead when unknowns arise.
 
-**Problem this solves:** During Phase 8 (Execution) or Phase 9 (Review), agents often discover unexpected behavior, missing dependencies, or opaque errors that simple retry loops cannot resolve. Instead of immediately escalating to the user, agents can spawn a bounded investigation.
+**Trigger:** Same error 2× with different fix attempts, opaque failures, doc mismatches, missing dependencies, abnormal behavior. Budget: 120s, 5 tool calls.
 
-### Auto-Trigger Conditions
+**Output:** `specification/[spec-index]-[spec-name]/[spec-index]-investigation-[seq].md`
 
-Any phase agent SHOULD spawn the investigator when:
-
-| Condition | Signal |
-|-----------|--------|
-| **Loop detection** | Same error 2x with different fix attempts |
-| **Doc mismatch** | API/library behaves differently than docs |
-| **Missing dependency** | Required config/package not in assessment |
-| **Unknown pattern** | No codebase convention for needed approach |
-| **Opaque failure** | Build/test error with no obvious cause |
-| **Abnormal behavior** | Code compiles but produces wrong results |
-
-### Four-Phase Protocol (Bounded: 120s, 5 tool calls)
-
-```
-GATHER (30s) → SEARCH (60s) → HYPOTHESIZE (30s) → RESOLVE
-                                      |
-                                      v (3 hypotheses failed)
-                                   ESCALATE to Team Lead
-```
-
-1. **GATHER** — Collect evidence: error messages, stack traces, git diff, environment versions
-2. **SEARCH** — Search max 3 sources: project docs first, then library docs, then web
-3. **HYPOTHESIZE** — Form testable hypothesis, verify with minimal validation (log/assert/run)
-4. **RESOLVE** — Document root cause and fix instructions for the calling agent
-
-### Output
-
-Investigation report written to: `specification/[spec-index]-[spec-name]/[spec-index]-investigation-[seq].md`
-
-### Integration Points
-
-| Caller | When | What Happens After |
-|--------|------|-------------------|
-| **dev-executor** | Build error after 2 fix attempts | Applies investigation fix, rebuilds |
-| **qa-agent** | Test failure after 2 retries, unclear cause | Adjusts test or reports code bug |
-| **code-reviewer** | Suspicious pattern needs verification | Includes finding in review |
-| **Team Lead** | Teammate reports BLOCKED, error unclear | Forwards findings to blocked teammate |
-
-### Iron Law
-
-**No fix without root cause investigation first.** The investigator never proposes a fix it cannot explain.
-
-**Full reference:** See `super-dev:investigator` agent for detailed specification.
+**Iron Law:** No fix without root cause. See `super-dev:investigator` agent for full protocol.
 
 ---
 
@@ -905,54 +708,13 @@ git diff --cached --name-only | grep "specification/"
 
 ## Session State Management
 
-Super-dev maintains persistent state per project using `${PROJECT_DATA}` (see First-Run Configuration for path derivation).
+Per-project state stored at `${PROJECT_DATA}` (derived from git root basename, see First-Run Configuration).
 
-### Phase 0 — Read History
+- **Phase 0:** Read `session-history.log` (last 3 sessions) and `patterns.json` for context.
+- **Phase 12:** Append session record to `session-history.log`.
+- **Phases 5/9:** Record discovered patterns to `patterns.json` (only patterns seen 2+ times).
 
-At the start of every session (during Phase 0), read previous session data:
-
-```bash
-# Derive project data path
-PROJECT_NAME="$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
-PROJECT_DATA="${CLAUDE_PLUGIN_DATA}/projects/${PROJECT_NAME}"
-
-# Read last 3 sessions for context
-if [ -f "${PROJECT_DATA}/session-history.log" ]; then
-  tail -3 "${PROJECT_DATA}/session-history.log"
-fi
-
-# Read learned patterns
-if [ -f "${PROJECT_DATA}/patterns.json" ]; then
-  cat "${PROJECT_DATA}/patterns.json"
-fi
-```
-
-Use this context to:
-- Avoid repeating mistakes from previous sessions
-- Apply learned patterns consistently
-- Skip research for topics already investigated
-
-### Phase 12 — Write History
-
-After committing, append a session summary:
-
-```bash
-# Append session record (single JSON line)
-echo '{"timestamp":"[ISO]","spec":"[spec-name]","task":"[description]","phases_completed":[...],"verdict":{"code_review":"[verdict]","adversarial":"[verdict]"},"files_changed":[count],"language":"[lang]","framework":"[fw]"}' >> "${PROJECT_DATA}/session-history.log"
-```
-
-### Pattern Learning
-
-During Phases 5 and 9, record discovered patterns:
-
-```bash
-# Update patterns.json with new discoveries
-# Only add patterns seen 2+ times (high confidence)
-```
-
-### State File Reference
-
-See `${CLAUDE_PLUGIN_ROOT}/templates/reference/state-management.md` for full format documentation.
+See `${CLAUDE_PLUGIN_ROOT}/templates/reference/state-management.md` for full format.
 
 ## Display Modes
 
@@ -968,64 +730,13 @@ Set in `settings.json`:
 
 ## Super Dev Agent Team Definition
 
-**Team Name:** `super-dev-[spec-name]`
-
-This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 using the spec name. Each spec gets its own dedicated team — do NOT reuse teams from other specs.
-
-### Team Creation Command
-
-```
-Create an agent team named "super-dev-[spec-name]" with these teammates:
-- super-dev:team-lead (Team Lead)
-- super-dev:requirements-clarifier
-- super-dev:bdd-scenario-writer
-- super-dev:research-agent
-- super-dev:debug-analyzer
-- super-dev:code-assessor
-- super-dev:architecture-agent
-- super-dev:ui-ux-designer
-- super-dev:product-designer
-- super-dev:spec-writer
-- super-dev:dev-executor
-- super-dev:qa-agent
-- super-dev:code-reviewer
-- super-dev:adversarial-reviewer
-- super-dev:docs-executor
-- super-dev:handoff-writer
-- super-dev:doc-validator
-```
-
-### Teammate Roles by Category
-
-| Category | Teammate | Role | Spawn Command |
-|----------|----------|------|---------------|
-| **Team Lead** | team-lead | Orchestrates all phases, manages task list | Team Lead (always active) |
-| **Planning** | requirements-clarifier | **Product Thinker (YC Partner Mode):** MUST invoke `clarify` skill first, then challenge framing with 6 forcing questions, gather requirements | `super-dev:requirements-clarifier` |
-| **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC | `super-dev:bdd-scenario-writer` |
-| **Planning** | research-agent | **Research Scout (Intelligence Analyst):** Deep online research for latest patterns based on requirements + BDD | `super-dev:research-agent` |
-| **Analysis** | debug-analyzer | Root cause analysis (bugs only) | `super-dev:debug-analyzer` |
-| **Analysis** | code-assessor | Assess architecture, style, frameworks | `super-dev:code-assessor` |
-| **Design** | architecture-agent | **Eng Manager (Architecture Lock-Down):** Design architecture with readiness dashboard | `super-dev:architecture-agent` |
-| **Design** | ui-ux-designer | Create UI/UX design (UI only) | `super-dev:ui-ux-designer` |
-| **Design** | product-designer | Coordinate architecture + UI together | `super-dev:product-designer` |
-| **Spec** | spec-writer | Write spec, plan, task list | `super-dev:spec-writer` |
-| **Execution** | dev-executor | Implement code | `super-dev:dev-executor` |
-| **Execution** | qa-agent | **QA Lead (Break It Before Users Do):** Plan tests, run tests + browser smoke tests | `super-dev:qa-agent` |
-| **Review** | code-reviewer | **Staff Engineer (Production Bug Hunter):** Spec-aware review focused on production-risk bugs | `super-dev:code-reviewer` |
-| **Review** | adversarial-reviewer | **Red Team (Three Critical Lenses):** Multi-lens adversarial challenge with Destructive Action Gate | `super-dev:adversarial-reviewer` |
-| **Docs** | docs-executor | Update documentation | `super-dev:docs-executor` |
-| **Docs** | handoff-writer | Generate session handoff | `super-dev:handoff-writer` |
-| **Support** | investigator | **Detective (Root-Cause Investigator):** Bounded 4-phase investigation for mid-execution unknowns | `super-dev:investigator` |
-| **Support** | doc-validator | **Quality Gate Inspector:** Independent gate-criteria validation, runs parallel with writers | `super-dev:doc-validator` |
+**Team Name:** `super-dev-[spec-name]` — each spec gets its own dedicated team. Do NOT reuse teams from other specs.
 
 ### Team Creation at Phase 1
-
-When creating the agent team in Phase 1, use this pattern:
 
 ```
 Create an agent team for this development workflow:
 - Team name: "super-dev-[spec-name]"
-- Each spec gets its own dedicated team — do NOT reuse teams from other specs
 - Reuse existing team if already created from a previous invocation of the same spec
 
 Teammates to include:
@@ -1049,44 +760,10 @@ Teammates to include:
 18. super-dev:doc-validator
 ```
 
-### When to Spawn Each Teammate
-
-| Phase | Spawn These Teammates |
-|-------|----------------------|
-| 2 | requirements-clarifier + doc-validator (parallel) |
-| 2.5 | bdd-scenario-writer + doc-validator (parallel) |
-| 3 | research-agent |
-| 4 | debug-analyzer (bugs only) |
-| 5 | code-assessor |
-| 5.3 | architecture-agent |
-| 5.4 | product-designer |
-| 5.5 | ui-ux-designer |
-| 6 | spec-writer + doc-validator (parallel) |
-| 8 | specialist developer(s) + qa-agent (parallel). See Domain-Aware Agent Routing |
-| 9 | code-reviewer + doc-validator + adversarial-reviewer + doc-validator (parallel, 4 agents) |
-| 10 | docs-executor |
-| 10.5 | handoff-writer |
-| Any (on-demand) | investigator (spawned by dev-executor, qa-agent, code-reviewer, or Team Lead when unknowns arise) |
-
-**Remember:** Terminate each teammate immediately after their work is complete (see Teammate Termination Rules).
-
 ## Gotchas
 
-- **Spawning generic dev-executor when domain is clear**: If the task list targets `.rs` files, spawn `rust-developer` directly — don't route through `dev-executor`. The domain detection algorithm (Phase 8) exists precisely for this. Only fall back to `dev-executor` when domains are genuinely unclear or too mixed to separate.
-- **Overlapping file ownership in multi-domain Phase 8**: When spawning multiple specialists in parallel, each MUST own distinct files. If two specialists edit the same file, merge conflicts are guaranteed. Team Lead must assign clear file ownership boundaries in the spawn prompt.
-- **Team Lead doing work directly instead of delegating**: The number one failure mode. The team-lead starts using Edit, Bash, or Grep to "just quickly fix something" instead of spawning an agent via Task tool. This violates the prime directive and defeats the entire team-based architecture.
-- **Forgetting to terminate teammates after completion**: Idle teammates consume context window and memory. If teammates are not terminated immediately after their phase completes, resources accumulate and the session degrades or hits limits.
-- **Branch name not matching worktree name**: The git branch created with `git worktree add` must exactly match the worktree directory name (e.g., `03-user-auth`). A mismatch causes merge failures and confuses the commit/merge workflow in Phase 12.
-- **Skipping Phase 0 dev-rules loading**: Without loading dev-rules at session start, teammates operate without coding standards, git practices, or quality guidelines, leading to inconsistent output that fails review.
-- **Not passing BDD scenarios to downstream phases**: `[XX]-behavior-scenarios.md` must be included as input to design (5.3/5.4/5.5), spec writing (6), execution (8), and review (9) phases. Omitting them creates coverage gaps where implemented behavior diverges from agreed scenarios.
-- **Creating spec directory in main repo instead of worktree**: The spec directory must be created inside the worktree (`.worktree/[name]/specification/[name]/`), not in the main repository root. Creating it in the wrong location breaks isolation and causes files to appear in the wrong branch.
-- **Batching multiple tasks into one commit instead of atomic commits**: Each completed task should be committed individually. Batching makes it impossible to revert a single change and violates the incremental development principle.
-- **Not presenting options to user in Phases 3/5.3/5.4/5.5**: These phases require presenting 3-5 options for the user to choose from. Skipping option presentation and jumping straight to implementation removes the user from the decision loop.
-- **Skipping verification gates between phases**: Gates are programmatic quality checks (scripts in `scripts/gates/`) that catch problems early. Skipping them to "save time" causes compound errors that cost 10x more to fix in later phases. Every gate must PASS (exit 0) before proceeding.
-- **Agent prompts degrading over time without measurement**: Use `/super-dev:autoresearch` periodically to auto-improve agent prompts. Run it on the agent that caused the most Phase 8/9 iteration loops.
-- **Retrying the same fix 3+ times instead of investigating**: When dev-executor or qa-agent hits the same error repeatedly with different fix attempts, they should spawn `super-dev:investigator` after 2 attempts instead of brute-forcing to 3. The investigation protocol exists precisely for this — blind retries waste tokens and delay resolution.
-- **Investigation scope creep**: The investigator has strict budget limits (120s, 5 tool calls, 3 sources). If an investigation is unbounded, it bloats context and delays the calling agent. Always respect the budget constraints and escalate if inconclusive.
-- **Jumping from Phase 9 to Phase 12, skipping Phases 10/10.5/11**: After Phase 9 reviews pass, the Phase 12 "Commit & Merge" section acts as a gravity well — its detail and finality cause the team-lead to skip documentation (Phase 10), handoff writing (Phase 10.5), and team cleanup (Phase 11). Always follow the mandatory transition sequence: Phase 9 → gate-review → Phase 10 → gate-docs-drift → Phase 10.5 → Phase 11 → Phase 12. Phase 12 has a pre-condition check that enforces this.
+- **Batching multiple tasks into one commit**: Each completed task should be committed individually — batching makes reverting impossible.
+- **Agent prompts degrading without measurement**: Use `/super-dev:autoresearch` periodically on the agent that caused the most Phase 8/9 iteration loops.
 
 ## Troubleshooting
 
