@@ -221,14 +221,14 @@ After Phase 9 passes, you MUST execute these phases in strict order. Do NOT jump
 
 ## Super Dev Agent Team Definition
 
-**Team Name:** `super-dev-team`
+**Team Name:** `super-dev-[spec-name]`
 
-This is a pre-defined agent team with all commonly used teammates. Create this team at Phase 1 if it doesn't already exist. Reuse the existing team across invocations.
+This is a pre-defined agent team with all commonly used teammates. Create this team at Phase 1 using the spec name. Each spec gets its own dedicated team — do NOT reuse teams from other specs.
 
 ### Team Creation Command
 
 ```
-Create an agent team named "super-dev-team" with these teammates:
+Create an agent team named "super-dev-[spec-name]" with these teammates:
 - super-dev:team-lead (Team Lead)
 - super-dev:requirements-clarifier
 - super-dev:bdd-scenario-writer

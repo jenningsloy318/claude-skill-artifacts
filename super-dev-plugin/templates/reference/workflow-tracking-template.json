@@ -152,8 +152,8 @@
     "$description": "Agent team metadata and communication log for the workflow session.",
     "name": {
       "$type": "string",
-      "$description": "Team name, always 'super-dev-team'",
-      "$example": "super-dev-team"
+      "$description": "Team name, always 'super-dev-[spec-name]' (each spec gets its own dedicated team)",
+      "$example": "super-dev-add-auth-flow"
     },
     "teammates": {
       "$type": "array of strings",

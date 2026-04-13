@@ -568,13 +568,13 @@ Create `specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow
 
 ### Step 5: Create or Reuse the Agent Team
 
-**Team name is always `super-dev-team`** — the same team is reused across all invocations.
+**Team name is always `super-dev-[spec-name]`** — each spec gets its own dedicated team. Do NOT reuse teams from other specs.
 
 **If the team already exists:** Reuse it. Do NOT create a new team.
 **If the team does not exist:** Create it:
 
 ```
-Create an agent team for this development workflow. The team name should be "super-dev-team".
+Create an agent team for this development workflow. The team name should be "super-dev-[spec-name]".
 ```
 
 ### Verification Checklist
@@ -963,14 +963,14 @@ Set in `settings.json`:
 
 ## Super Dev Agent Team Definition
 
-**Team Name:** `super-dev-team`
+**Team Name:** `super-dev-[spec-name]`
 
-This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 if it doesn't already exist. Reuse the existing team across invocations.
+This is a pre-defined agent team with all commonly used teammates for implementing features or fixing bugs. Create this team at Phase 1 using the spec name. Each spec gets its own dedicated team — do NOT reuse teams from other specs.
 
 ### Team Creation Command
 
 ```
-Create an agent team named "super-dev-team" with these teammates:
+Create an agent team named "super-dev-[spec-name]" with these teammates:
 - super-dev:team-lead (Team Lead)
 - super-dev:requirements-clarifier
 - super-dev:bdd-scenario-writer
@@ -1019,8 +1019,9 @@ When creating the agent team in Phase 1, use this pattern:
 
 ```
 Create an agent team for this development workflow:
-- Team name: "super-dev-team"
-- Reuse existing team if already created from a previous invocation
+- Team name: "super-dev-[spec-name]"
+- Each spec gets its own dedicated team — do NOT reuse teams from other specs
+- Reuse existing team if already created from a previous invocation of the same spec
 
 Teammates to include:
 1. super-dev:team-lead (Team Lead - this session)
