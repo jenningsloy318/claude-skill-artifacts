@@ -204,7 +204,8 @@ Grade each completed workflow run against these three dimensions:
 - [ ] Phase 5.5: UI/UX Design (UI only)
 - [ ] Phase 6:  Specification Writing (spec-writer writes 3 files SEQUENTIALLY: specification → implementation-plan → task-list, doc-validator PARALLEL)
 - [ ] GATE:     Spec-to-BDD Traceability (gate-spec-trace.sh — run by doc-validator)
-- [ ] Phase 7:  Specification Review
+- [ ] Phase 7:  Specification Review (spec-reviewer + doc-validator PARALLEL)
+- [ ] GATE:     Specification Review Quality (gate-spec-review.sh — run by doc-validator)
 - [ ] Phase 8:  Implementation (Domain-Aware Agent Routing + qa-agent PARALLEL)
 - [ ] GATE:     Build & Test Pass (gate-build.sh — run by team-lead)
 - [ ] Phase 9:  Code Review + Adversarial Review (code-reviewer + adversarial-reviewer + 2x doc-validator, 4 agents PARALLEL)
@@ -256,6 +257,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>
 | Phase 2 → 2.5 | `gate-requirements.sh` | doc-validator | Requirements have acceptance criteria, NFRs, summary, sufficient detail |
 | Phase 2.5 → 3 | `gate-bdd.sh` | doc-validator | BDD scenarios have SCENARIO-IDs, Given/When/Then, AC traceability |
 | Phase 6 → 7 | `gate-spec-trace.sh` | doc-validator | Spec references BDD scenarios, has testing strategy, has task list |
+| Phase 7 → 8 | `gate-spec-review.sh` | doc-validator | Spec review verdict approved, all 8 dimensions covered, grounding verified |
 | Phase 8 → 9 | `gate-build.sh` | team-lead | Build succeeds, tests pass, type checks pass |
 | Phase 9 → 10 | `gate-review.sh` | doc-validator | Code review approved, adversarial review PASS, no critical issues |
 | Phase 10 → 10.5 | `gate-docs-drift.sh` | team-lead | Documentation exists, no excessive TODOs left in code |
@@ -361,7 +363,7 @@ Terminate teammates **immediately** after their work completes. Verify output, t
 
 **MANDATORY: Team Lead orchestrates via Task tool, agents execute.**
 
-**⚠️ PARALLEL DOC-VALIDATOR RULE (Phases 2, 2.5, 6, 9): ALWAYS spawn `super-dev:doc-validator` alongside the writer agent. Spawning only the writer without doc-validator is a VIOLATION. Both must be spawned in the SAME action.**
+**⚠️ PARALLEL DOC-VALIDATOR RULE (Phases 2, 2.5, 6, 7, 9): ALWAYS spawn `super-dev:doc-validator` alongside the writer/reviewer agent. Spawning only the writer without doc-validator is a VIOLATION. Both must be spawned in the SAME action.**
 
 | Phase | Team Lead Action | Agent to Spawn (via Task tool) |
 |-------|-----------------|--------------------------------|
@@ -376,7 +378,7 @@ Terminate teammates **immediately** after their work completes. Verify output, t
 | 5.4 | Use Task tool → `super-dev:product-designer`, present combined options (**include BDD scenarios**) | product-designer |
 | 5.5 | Use Task tool → `super-dev:ui-ux-designer`, present options (**include BDD scenarios**) | ui-ux-designer |
 | 6 | Use Task tool → `super-dev:spec-writer` + `super-dev:doc-validator` (parallel) | spec-writer, doc-validator |
-| 7 | Validate spec (no agent) | (none) |
+| 7 | Use Task tool → `super-dev:spec-reviewer` + `super-dev:doc-validator` (parallel) | spec-reviewer, doc-validator |
 | 8 | Use Task tool → Domain-Aware Agent Routing: spawn best-fit specialist(s) (**include BDD scenarios**) + `super-dev:qa-agent` (parallel). See Phase 8 section | specialist developer(s) OR dev-executor (fallback), qa-agent |
 | 9 | Use Task tool → `super-dev:code-reviewer` + `super-dev:doc-validator` + `super-dev:adversarial-reviewer` + `super-dev:doc-validator` (parallel, 4 agents) | code-reviewer, adversarial-reviewer, doc-validator x2 |
 | 10 | Use Task tool → `super-dev:docs-executor` | docs-executor |
@@ -491,6 +493,39 @@ Before proceeding to Phase 2:
 - [ ] Spec directory created inside worktree: `specification/[spec-index]-[spec-name]/`
 - [ ] Workflow JSON created in worktree
 - [ ] Agent team created with Team Lead
+
+---
+
+## Phase 7: Specification Review (PARALLEL — spec-reviewer + doc-validator)
+
+**Executed by:** `super-dev:spec-reviewer` + `super-dev:doc-validator` (spawned via Task tool, run in parallel)
+
+**Purpose:** Deep content review of AI-generated specifications across 8 quality dimensions before implementation begins. Catches hallucinated references, missing edge cases, ambiguity, infeasibility, and broken traceability that format-only gates miss.
+
+**Why a dedicated agent:** The spec-writer should NOT review its own output (Fagan inspection principle). doc-validator only checks format/structure via regex. The spec-reviewer checks *meaning* — verifying that referenced files exist, architecture is feasible, and acceptance criteria are testable.
+
+**Steps:**
+1. Pre-compute the next doc index: `[XX]-spec-review.md`
+2. Spawn `super-dev:spec-reviewer` with:
+   - All spec artifacts: specification, implementation plan, task list
+   - Upstream artifacts: requirements, BDD scenarios
+   - Context artifacts: code assessment, research report, architecture doc (if they exist)
+   - OUTPUT FILENAME: `[XX]-spec-review.md`
+3. Spawn `super-dev:doc-validator` in parallel with:
+   - Expected filename: `[XX]-spec-review.md`
+   - Gate profile: `gate-spec-review`
+   - Writer agent: `spec-reviewer`
+4. Wait for BOTH to complete
+5. Check verdict:
+   - **APPROVED** → proceed to Phase 8
+   - **APPROVED WITH REVISIONS** → Team Lead reviews, may proceed or loop
+   - **REVISIONS NEEDED** → loop back to Phase 6 (spec-writer fixes)
+   - **REJECTED** → loop back to Phase 6 (major rewrite)
+6. Terminate both agents after completion
+
+**Output:** `specification/[spec-index]-[spec-name]/[XX]-spec-review.md`
+
+**After Phase 7:** Proceed to Phase 8 (Implementation).
 
 ---
 
@@ -758,10 +793,12 @@ Teammates to include:
 16. super-dev:handoff-writer
 17. super-dev:investigator
 18. super-dev:doc-validator
+19. super-dev:spec-reviewer
 ```
 
 ## Gotchas
 
+- **Skipping Phase 7 spec review to save time**: The spec-reviewer catches hallucinated file references, infeasible architecture, and ambiguous ACs that will cause 5-10x more rework during Phase 8/9 loops. Never skip it.
 - **Batching multiple tasks into one commit**: Each completed task should be committed individually — batching makes reverting impossible.
 - **Agent prompts degrading without measurement**: Use `/super-dev:autoresearch` periodically on the agent that caused the most Phase 8/9 iteration loops.
 

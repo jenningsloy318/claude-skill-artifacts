@@ -93,7 +93,7 @@ Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
 Phase 5.4: Product Design (arch+UI) → Spawn product-designer teammate (REPLACES 5.3+5.5)
 Phase 5.5: UI/UX (with UI)          → Spawn ui-ux-designer teammate
 Phase 6:  Specification Writing     → Spawn spec-writer (3 files sequentially) + doc-validator (PARALLEL)
-Phase 7:  Specification Review      → Team Lead validates
+Phase 7:  Specification Review      → Spawn spec-reviewer + doc-validator (PARALLEL)
 Phase 8:  Implementation (PARALLEL)    → Domain-Aware Agent Routing + qa-agent (see below)
 Phase 9:  Review (PARALLEL)          → Spawn code-reviewer + doc-validator + adversarial-reviewer + doc-validator (4 agents PARALLEL)
 Phase 10: Documentation Update      → Spawn docs-executor teammate
@@ -711,7 +711,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 | → Phase 5.4 | `[XX]-code-assessment.md` exists, BOTH architecture AND UI work identified |
 | → Phase 6 | `[XX]-code-assessment.md` exists (+ `[XX]-debug-analysis.md` if bug), design docs exist (`[XX]-architecture.md` and/or `[XX]-design-spec.md`, or `[XX]-product-design-summary.md` if Phase 5.4 used) |
 | → Phase 7 | `[XX]-specification.md`, `[XX]-implementation-plan.md`, `[XX]-task-list.md` exist |
-| → Phase 8 | All spec documents reviewed, currently in worktree |
+| → Phase 8 | Spec review verdict APPROVED (or APPROVED WITH REVISIONS accepted by Team Lead), `[XX]-spec-review.md` exists, currently in worktree |
 | → Phase 10 | Code review approved AND adversarial review PASS |
 | → Phase 10.5 | Documentation updated |
 | → Phase 11 | `[XX]-handoff.md` exists in spec directory, teammates shut down (worktree preserved) |
@@ -796,7 +796,7 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 - Only shut down teammates and clean up team resources (NOT the worktree)
 
 **Verification Checklist:**
-- Documents: requirements.md, behavior-scenarios.md, research-report.md, code-assessment.md, specification.md, implementation-plan.md, task-list.md (all complete), implementation-summary.md, handoff.md
+- Documents: requirements.md, behavior-scenarios.md, research-report.md, code-assessment.md, specification.md, implementation-plan.md, task-list.md, spec-review.md (all complete), implementation-summary.md, handoff.md
 - Code: All changes implemented, no TODO/FIXME/console.log for current feature, build passes without errors/warnings
 - Tests: Unit/integration tests written and passing, coverage meets standards
 - Git: All changes staged, commit message follows conventions, changes committed, merged to main branch, git status clean
@@ -969,11 +969,11 @@ research-agent: Continues with selected approach
 
 **Team Lead should facilitate but not force all communication through itself.**
 
-## Naming Convention Enforcement (Phase 7)
+## Naming Convention Enforcement (Phase 7, 9)
 
-When reviewing specification, Team Lead must verify:
+Naming conventions are enforced by `super-dev:spec-reviewer` (Phase 7, D8 Ambiguity dimension) and `super-dev:code-reviewer` (Phase 9, step 5.5). Team Lead verifies the spec-reviewer verdict before proceeding to Phase 8.
 
-**Prohibited Generic Names:**
+**Prohibited Generic Names (for reference — spec-reviewer and code-reviewer enforce these):**
 - Variables: `data`, `item`, `value`, `result`, `temp`, `obj`, `val`
 - Collections: `list`, `array`, `map`, `dict`, `items`, `elements`
 - Functions: `handle`, `process`, `parse`, `validate`, `check`, `get`, `set`

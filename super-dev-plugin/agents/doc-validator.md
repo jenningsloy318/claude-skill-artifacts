@@ -31,6 +31,7 @@ You are an **independent validator** — your sole job is to verify that a docum
 | `gate-requirements` | `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-requirements.sh` | `<spec_directory>` |
 | `gate-bdd` | `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-bdd.sh` | `<spec_directory>` |
 | `gate-spec-trace` | `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-spec-trace.sh` | `<spec_directory>` |
+| `gate-spec-review` | `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-spec-review.sh` | `<spec_directory>` |
 | `gate-review` | `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-review.sh` | `<spec_directory>` |
 
 **CRITICAL:** If `CLAUDE_PLUGIN_ROOT` is not set, use the path provided by the Team Lead in the spawn prompt.
@@ -183,6 +184,20 @@ Last gate output: [paste output]. Escalating to Team Lead."
 | S2 | Testing strategy text | `grep -i "testing strategy\|test plan\|test approach\|test coverage\|unit test\|integration test"` | Add `## Testing Strategy` section |
 | S3 | Task list file exists | `*-task-list.md` must exist in spec directory | Ensure spec-writer produced the task list file |
 | S4 | Implementation plan file exists | `*-implementation-plan.md` must exist in spec directory | Ensure spec-writer produced the implementation plan file |
+
+### Profile: `gate-spec-review` (Phase 7)
+**Document:** `[XX]-spec-review.md` (exact filename from Team Lead)
+**Gate script:** `gate-spec-review.sh`
+
+| # | Check | Regex / Rule | Fix Example |
+|---|-------|-------------|-------------|
+| SR1 | Verdict exists | `grep -ci "APPROVED\|REVISIONS NEEDED\|REJECTED"` | `**Verdict:** Approved` |
+| SR2 | All 8 dimensions present | Each of: Completeness, Consistency, Feasibility, Testability, Traceability, Grounding, Complexity, Ambiguity | Add section headings for each missing dimension |
+| SR3 | No contradictory verdict | No line containing both "APPROVED" and "REJECTED" | Use a single, clear verdict |
+| SR4 | Grounding verification | `grep -ci "verified\|exists\|not found\|hallucinated\|confirmed\|grounding"` | Include grounding verification results in D6 section |
+| SR5 | Finding severity summary | `grep -ci "Critical\|High\|Medium\|Low\|finding"` | Add a summary table with finding counts per severity |
+
+**Common trap:** Dimension names must appear as-is. "D7: Complexity Fitness" contains "Complexity" — but the gate checks the exact word, so abbreviating to "Cmplx" will FAIL SR2.
 
 ### Profile: `gate-review-code` (Phase 9 — code reviewer)
 **Document:** `[XX]-code-review.md`

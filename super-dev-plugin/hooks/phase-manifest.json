@@ -54,6 +54,14 @@
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
+    "super-dev:spec-reviewer": {
+      "phase": "7",
+      "description": "Spec review requires specification, implementation plan, and task list",
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Testing Strategy"]
+      }
+    },
     "super-dev:dev-executor": {
       "phase": "8",
       "description": "Execution requires complete specification, plan, and task list",
