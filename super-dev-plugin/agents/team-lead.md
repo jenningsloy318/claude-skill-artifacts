@@ -288,6 +288,12 @@ Create an agent team named "super-dev-[spec-name]" with these teammates:
 | 10 | docs-executor |
 | 10.5 | handoff-writer |
 
+## Direct Peer Communication
+
+Parallel agents message each other **directly** via `SendMessage(to: "<peer-name>")` — NOT via Team Lead relay. Include `Peer agents:` in every parallel spawn prompt. Monitor only; intervene on `TEST_BLOCKED`, `DEP_BLOCKED`, or `VALIDATION BLOCKED`.
+
+**Signals** — see SKILL.md "Direct Peer Communication" for the full signal reference (dev ↔ qa-agent, dev ↔ dev, reviewer ↔ reviewer, doc-validator ↔ writer).
+
 ## Teammate Spawn Patterns
 
 **⚠️ MANDATORY PARALLEL SPAWN RULE — DO NOT SKIP DOC-VALIDATOR ⚠️**
@@ -461,10 +467,11 @@ Before spawning any execution agent, the Team Lead MUST:
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - OUTPUT FILENAME for implementation summary: [XX]-implementation-summary.md  ← (exact name)
 - Assigned tasks: [T1, T2, T3, ...] (all tasks)
+- Peer agents: qa-agent
 
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
 Write your implementation summary to EXACTLY the filename given above.
-Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all tasks done."
+Use Direct Peer Communication signals with qa-agent (see SKILL.md)."
 
 "Spawn a qa-agent teammate with this context:
 - Task: Plan and run tests for the implementation
@@ -473,9 +480,11 @@ Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all tasks d
 - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+- Peer agents: rust-developer
 
 Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
-Signal QA_COMPLETE after all tests pass and the QA report is written."
+Use Direct Peer Communication signals with dev agent (see SKILL.md).
+Signal QA_COMPLETE to Team Lead after all tests pass and the QA report is written."
 ```
 
 **Multi-Domain Spawn Example (e.g., Rust backend + React frontend):**
@@ -488,9 +497,10 @@ Signal QA_COMPLETE after all tests pass and the QA report is written."
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - Assigned tasks: [T1, T3, T5] (Rust-domain tasks ONLY)
 - File ownership: src/backend/**, Cargo.toml, src/lib.rs (do NOT touch frontend files)
+- Peer agents: frontend-developer, qa-agent
 
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
-Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all assigned tasks done."
+Use Direct Peer Communication signals with peers (see SKILL.md)."
 
 "Spawn a frontend-developer teammate with this context:
 - Task: Implement frontend code changes per task list
@@ -500,9 +510,10 @@ Signal BUILD_COMPLETE after successful builds and DEV_COMPLETE after all assigne
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - Assigned tasks: [T2, T4, T6] (frontend-domain tasks ONLY)
 - File ownership: src/frontend/**, package.json, src/components/** (do NOT touch backend files)
+- Peer agents: rust-developer, qa-agent
 
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
-Signal DEV_COMPLETE after all assigned tasks done."
+Use Direct Peer Communication signals with peers (see SKILL.md)."
 
 "Spawn a qa-agent teammate with this context:
 - Task: Plan and run tests for the implementation
@@ -511,9 +522,11 @@ Signal DEV_COMPLETE after all assigned tasks done."
 - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+- Peer agents: rust-developer, frontend-developer
 
 Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
-Signal QA_COMPLETE after all tests pass and the QA report is written."
+Use Direct Peer Communication signals with dev agents (see SKILL.md).
+Signal QA_COMPLETE to Team Lead after all tests pass and the QA report is written."
 ```
 **Note:** For multi-domain, Team Lead consolidates implementation summaries from all specialists into a single `[XX]-implementation-summary.md` after all specialists complete.
 
@@ -526,9 +539,11 @@ Signal QA_COMPLETE after all tests pass and the QA report is written."
 - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - OUTPUT FILENAME for implementation summary: [XX]-implementation-summary.md  ← (exact name)
+- Peer agents: qa-agent
 
 Reference BDD SCENARIO-XXX IDs in code comments for business logic implementing specific behaviors.
-Write your implementation summary to EXACTLY the filename given above."
+Write your implementation summary to EXACTLY the filename given above.
+Use Direct Peer Communication signals with qa-agent (see SKILL.md)."
 
 "Spawn a qa-agent teammate with this context:
 - Task: Plan and run tests for the implementation
@@ -537,9 +552,11 @@ Write your implementation summary to EXACTLY the filename given above."
 - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
 - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
 - OUTPUT FILENAME for QA report: [XX+1]-qa-report.md  ← (exact name)
+- Peer agents: dev-executor
 
 Map every SCENARIO-XXX to at least one test. Write your QA report to EXACTLY the filename given above.
-Signal QA_COMPLETE after all tests pass and the QA report is written."
+Use Direct Peer Communication signals with dev agent (see SKILL.md).
+Signal QA_COMPLETE to Team Lead after all tests pass and the QA report is written."
 ```
 
 **Termination Rule:** Wait for ALL spawned specialists + qa-agent to complete before terminating any of them.
@@ -554,9 +571,9 @@ Spawn ALL FOUR in parallel:
 1. "Spawn a code-reviewer teammate with this context:
    - [existing context]
    - OUTPUT FILENAME: [XX]-code-review.md  ← (exact name, e.g., 09-code-review.md)
+   - Peer agents: adversarial-reviewer, doc-validator
    Write your output to EXACTLY this filename. Do NOT compute your own index.
-   A doc-validator runs alongside you — it will validate gate compliance.
-   Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
+   Use Direct Peer Communication signals with peers (see SKILL.md)."
 
 2. "Spawn a doc-validator teammate with this context:
    - Doc type: code-review
@@ -571,9 +588,9 @@ Spawn ALL FOUR in parallel:
 3. "Spawn an adversarial-reviewer teammate with this context:
    - [existing context]
    - OUTPUT FILENAME: [XX+1]-adversarial-review-report.md  ← (exact name, e.g., 10-adversarial-review-report.md)
+   - Peer agents: code-reviewer, doc-validator
    Write your output to EXACTLY this filename. Do NOT compute your own index.
-   A doc-validator runs alongside you — it will validate gate compliance.
-   Respond to its VALIDATION FAILED messages by fixing the review document and replying FIXED."
+   Use Direct Peer Communication signals with peers (see SKILL.md)."
 
 4. "Spawn a doc-validator teammate with this context:
    - Doc type: adversarial-review-report
@@ -639,8 +656,8 @@ Write FOR the next AI agent. Be specific, concrete, and actionable."
 | Teammate pauses | Message: "Continue execution, no pauses" |
 | Task skipped | Message: "Please complete the skipped task" |
 | Incomplete output | Message: "Please complete your output" |
-| Build failure | Message dev-executor: "Fix and rebuild" |
-| Test failure | Coordinate between dev-executor and qa-agent |
+| Build failure | Dev agent handles directly via peer signals; intervene only on TEST_BLOCKED |
+| Test failure | QA agent messages dev directly via peer signals; intervene only on TEST_BLOCKED |
 
 ## Teammate Termination Rules (CRITICAL)
 
@@ -860,8 +877,8 @@ Before starting Phase 12, verify ALL of these are true. If ANY check fails, STOP
 **Recoverable (max 3 attempts):**
 | Error | Recovery |
 |-------|----------|
-| Build failure | Message dev-executor: "Fix and rebuild" |
-| Test failure | Coordinate between dev-executor and qa-agent |
+| Build failure | Dev agent handles directly via peer signals; intervene only on TEST_BLOCKED |
+| Test failure | QA agent messages dev directly via peer signals; intervene only on TEST_BLOCKED |
 | Missing file | Message appropriate teammate: "Create the missing file" |
 | Teammate timeout | Re-spawn teammate |
 | Teammate error | Message teammate with specific error recovery instructions |

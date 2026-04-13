@@ -377,10 +377,15 @@ Task tool → subagent_type: "super-dev:agent-name"
 - Dependencies block tasks until resolved
 - Location: `~/.claude/tasks/{team-name}/`
 
-### Inter-Teammate Messaging
-- **message**: Send to specific teammate
-- **broadcast**: Send to all teammates
-- Example: specialist developer(s) ↔ qa-agent coordination
+### Direct Peer Communication
+
+Parallel agents message each other **directly** via `SendMessage(to: "<peer-name>")` — NOT via Team Lead relay. Team Lead includes `Peer agents:` in spawn prompts and monitors only; intervenes only on `TEST_BLOCKED`, `DEP_BLOCKED`, or `VALIDATION BLOCKED`.
+
+**Signals:**
+- **dev ↔ qa-agent:** `BUILD_COMPLETE`, `DEV_COMPLETE`, `TEST_FAILED: [test] [error]`, `TEST_PASSED`, `CODERABBIT_ISSUE: [file:line] [desc]`
+- **dev ↔ dev (multi-domain):** `BUILD_SLOT_REQUEST` / `BUILD_SLOT_RELEASED`, `INTERFACE_READY: [file]`, `DEP_BLOCKED: [what]`
+- **reviewer ↔ reviewer:** `FINDING_SHARE: [severity] [file:line] [summary]`, `FINDING_ACK: [agree/disagree]`, `REVIEW_COMPLETE`
+- **doc-validator ↔ writer:** `VALIDATION FAILED: ...` / `VALIDATED: PASS` / `FIXED: ready for re-check`
 
 ### Option Presentation
 YOU MUST present 3-5 options to the user in Phases 3, 5.3, 5.4, 5.5. NEVER skip option presentation.
@@ -440,7 +445,7 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 3. **NEVER implement directly as Team Lead** — Always wait for teammates to complete their work
 4. **Assign file ownership** — Each teammate MUST own different files to prevent conflicts
 5. **Monitor and redirect actively** — Check teammate progress and course-correct immediately when needed
-6. **Require inter-teammate communication** — Teammates MUST message each other for coordination (e.g., dev-executor ↔ qa-agent)
+6. **Use direct peer communication** — Parallel teammates MUST message each other directly (see Direct Peer Communication signals), not via Team Lead relay
 7. **Terminate teammates immediately after completion** — NEVER keep idle teammates running
 8. **Clean build artifacts during final cleanup** (run the appropriate command for the project type):
    - **Rust**: `cargo clean`
@@ -672,7 +677,7 @@ When encountering errors after 2 fix attempts, spawn super-dev:investigator for 
 When spawning multiple specialists:
 1. **File ownership is MANDATORY** — Each specialist MUST own distinct files. No overlapping edits.
 2. **Implementation summary consolidation** — Team Lead consolidates outputs from all specialists into a single `[XX]-implementation-summary.md` after all specialists complete.
-3. **Build queue still applies** — For Rust/Go, only ONE build at a time. If multiple specialists need builds for the same language, they must coordinate via Team Lead.
+3. **Build queue** — For Rust/Go, only ONE build at a time. Specialists message each other directly to coordinate build slots (see Direct Peer Communication signals).
 4. **Termination** — Wait for ALL specialists + qa-agent to complete before terminating any.
 
 ### Fallback to dev-executor
@@ -690,7 +695,7 @@ The dev-executor retains its internal specialist delegation table and will attem
 
 **Executed by:** `super-dev:code-reviewer` + `super-dev:adversarial-reviewer` (both spawned via Task tool, run in parallel)
 
-**Purpose:** Dual-track review — spec-aware code review and multi-lens adversarial challenge run simultaneously. Both produce independent verdicts that must be satisfied before proceeding.
+**Purpose:** Dual-track review — spec-aware code review and multi-lens adversarial challenge run simultaneously. Both produce independent verdicts that must be satisfied before proceeding. Reviewers share findings directly with each other (see Direct Peer Communication signals).
 
 **Outputs:**
 - Code Review: `specification/[spec-index]-[spec-name]/[XX]-code-review.md`

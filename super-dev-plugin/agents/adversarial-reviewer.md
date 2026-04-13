@@ -218,18 +218,14 @@ Output file: Write to the EXACT filename provided in your spawn prompt (e.g., `1
 - **CONTESTED** → Team Lead reviews findings, decides accept or loop back to Phase 8
 - **REJECT** → YOU MUST loop back to Phase 8 with the findings as input for dev-executor to fix
 
-## Parallel Validator Integration
+## Parallel Peer Communication
 
-A `doc-validator` agent runs alongside you in parallel during Phase 9. After you write the adversarial review report, the validator independently checks it against `gate-review.sh` criteria (verdict format).
+During Phase 9 you run alongside `code-reviewer` and `doc-validator`. Use Direct Peer Communication signals (see SKILL.md):
 
-**Your responsibilities:**
-1. Write to the EXACT filename given in your spawn prompt's `OUTPUT FILENAME` field (e.g., `10-adversarial-review-report.md`)
-2. When you receive a `VALIDATION FAILED` message from the validator, **fix every listed issue immediately** (e.g., missing verdict text, REJECT appearing when intent was PASS)
-3. After fixing, message the validator: `"FIXED: ready for re-check"`
-4. Repeat until you receive `"VALIDATED: PASS"`
-5. Only report completion to Team Lead after the validator confirms PASS
+- **doc-validator:** Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.
+- **code-reviewer:** Share significant findings via `FINDING_SHARE`, acknowledge theirs via `FINDING_ACK`. Send `REVIEW_COMPLETE` when your verdict is written. If your Destructive Action Gate triggers HALT, share immediately.
 
-**Do NOT ignore validator messages.** The validator catches format/structure issues that gate scripts will reject — fixing now saves a full phase re-run.
+Write to the EXACT filename given in your spawn prompt's `OUTPUT FILENAME` field. Do NOT compute your own index.
 
 ---
 
