@@ -86,7 +86,7 @@ Phase 0:  Apply Dev Rules           → Skill(skill: "super-dev:dev-rules") [See
 Phase 1:  Specification Setup       → Worktree + Team creation [See SKILL.md]
 Phase 2:  Requirements Clarification → Spawn requirements-clarifier + doc-validator (PARALLEL, MUST invoke `clarify` skill first)
 Phase 2.5: BDD Scenario Writing      → Spawn bdd-scenario-writer + doc-validator (PARALLEL, MANDATORY, user confirmation required)
-Phase 3:  Research                  → Spawn research-agent (deep online research, NOT codebase search)
+Phase 3:  Research                  → Spawn research-agent (Firecrawl MCP first, then supplementary scripts, NOT codebase search)
 Phase 4:  Debug Analysis (bugs)     → Spawn debug-analyzer teammate
 Phase 5:  Code Assessment           → Spawn code-assessor teammate
 Phase 5.3: Architecture (complex)   → Spawn architecture-agent teammate
@@ -255,7 +255,7 @@ Create an agent team named "super-dev-[spec-name]" with these teammates:
 | **Team Lead** | team-lead | Orchestrates all phases, manages task list |
 | **Planning** | requirements-clarifier | MUST invoke `clarify` skill first, then gather requirements, output requirements.md |
 | **Planning** | bdd-scenario-writer | Write BDD behavior scenarios from AC |
-| **Planning** | research-agent | Deep online research for latest industry patterns based on requirements + BDD, present 3-5 options |
+| **Planning** | research-agent | Firecrawl MCP first for broad web research, then supplementary scripts. Present 3-5 options |
 | **Analysis** | debug-analyzer | Root cause analysis (bugs only) |
 | **Analysis** | code-assessor | Assess architecture, style, frameworks |
 | **Design** | architecture-agent | Design architecture (arch only) |
@@ -384,11 +384,12 @@ Wait for BOTH to complete (validator reports PASS). Then terminate both.
 - OUTPUT FILENAME: [XX]-research-report.md  ← (exact name, e.g., 04-research-report.md)
 
 Read the requirements and BDD scenarios FIRST to understand what needs to be built.
-Then search ONLINE (Exa, DeepWiki, Context7, GitHub) for:
+Then search ONLINE using Firecrawl MCP first (firecrawl_search, firecrawl_scrape, firecrawl_extract), then supplementary scripts (Exa, DeepWiki, Context7, GitHub) for:
 1. Latest patterns and best practices for solving these requirements
 2. Production-grade libraries and tools (with version freshness scoring)
 3. Real-world examples of similar features in open-source projects
 4. Anti-patterns and common pitfalls to avoid
+MANDATORY: You MUST perform actual online searches based on the requirements and BDD scenarios via Firecrawl MCP tools.
 Present 3-5 options with trade-offs. Do NOT search the local codebase — that's Phase 5.
 Write your output to EXACTLY the filename given above."
 ```
@@ -429,6 +430,41 @@ Spawn BOTH in parallel:
    Message the writer with fix instructions on failure. Loop until PASS."
 ```
 Wait for BOTH to complete (validator reports PASS). Then terminate both.
+
+**Phase 7 (PARALLEL — spec-reviewer + doc-validator):**
+
+**CRITICAL:** Team Lead MUST NOT review the spec itself. Spawn spec-reviewer + doc-validator.
+
+**Pre-computation:** Team Lead determines exact filename (e.g., `08-spec-review.md`).
+
+```
+Spawn BOTH in parallel:
+
+1. "Spawn a spec-reviewer teammate with this context:
+   - Task: Deep review of specification across 8 quality dimensions
+   - Spec directory: specification/[spec-index]-[spec-name]
+   - Specification: specification/[spec-index]-[spec-name]/[exact-specification-filename]
+   - Implementation plan: specification/[spec-index]-[spec-name]/[exact-impl-plan-filename]
+   - Task list: specification/[spec-index]-[spec-name]/[exact-task-list-filename]
+   - Requirements: specification/[spec-index]-[spec-name]/[exact-requirements-filename]
+   - BDD Scenarios: specification/[spec-index]-[spec-name]/[exact-bdd-filename]
+   - OUTPUT FILENAME: [XX]-spec-review.md
+   Verify referenced files exist, architecture is feasible, ACs are testable.
+   Produce verdict: APPROVED / APPROVED WITH REVISIONS / REVISIONS NEEDED / REJECTED."
+
+2. "Spawn a doc-validator teammate with this context:
+   - Doc type: spec-review
+   - Expected filename: [XX]-spec-review.md
+   - Gate profile: gate-spec-review
+   - Writer agent: spec-reviewer
+   - Spec directory: specification/[spec-index]-[spec-name]
+   Validate against gate-spec-review.sh. Message reviewer on failure."
+```
+Wait for BOTH. Check verdict:
+- **APPROVED** → proceed to Phase 8
+- **APPROVED WITH REVISIONS** → Team Lead reviews, may proceed or loop
+- **REVISIONS NEEDED / REJECTED** → re-spawn spec-writer (Phase 6) with review findings attached, then re-run Phase 7
+Then terminate both.
 
 **Phase 8 (PARALLEL — Domain-Aware Implementation):**
 
@@ -727,6 +763,12 @@ When a teammate finishes their assigned task, the Team Lead MUST:
 **Logic:** IDLE → BUILDING → IDLE (or process QUEUED). Monitor teammates' build activity and queue if needed.
 
 ## Execution Rules (CRITICAL)
+
+**WORKTREE CHECK (Phase 2+ — before every agent spawn):**
+```bash
+pwd | grep -q '\.worktree/' || { echo "STOP: Not in worktree"; exit 1; }
+```
+If this fails, STOP the workflow. Do NOT spawn agents from the main repo root.
 
 **MANDATORY Behavior:**
 1. NEVER pause during workflow - Execute ALL phases continuously

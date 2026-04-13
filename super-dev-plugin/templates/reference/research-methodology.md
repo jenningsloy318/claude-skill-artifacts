@@ -60,8 +60,9 @@ Cover these areas systematically:
 
 ### Step 3: Execute Searches
 
-Use search-agent for all retrieval:
+**Step 3a — Firecrawl MCP (MANDATORY first):** Run `firecrawl_search` → scrape top results → extract patterns. See Firecrawl MCP section above.
 
+**Step 3b — Structured tools (supplementary):**
 ```
 Task(
   prompt: "Search for [query]",
@@ -98,7 +99,17 @@ Compile all findings into structured recommendations:
 
 ## Search Tools
 
-### Exa (Web & Code Search)
+### Firecrawl MCP (MANDATORY — run first)
+
+Run before any other search. No source limits — search everything.
+
+```
+mcp__firecrawl-mcp__firecrawl_search(query: "[topic] best practices [year]", limit: 10)
+mcp__firecrawl-mcp__firecrawl_scrape(url: "[url]", formats: ["markdown"])
+mcp__firecrawl-mcp__firecrawl_extract(urls: [...], prompt: "Extract best practices")
+```
+
+### Exa (Web & Code Search) — Supplementary
 ```bash
 # Web search
 ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.sh --query "[query]" --type auto --results 10
@@ -340,6 +351,8 @@ When comparing options, use these criteria:
 ## Research Best Practices
 
 ### DO's
+- Firecrawl MCP FIRST, then supplementary scripts
+- All source types, focus on latest industry standards
 - Always include year in search queries
 - Cross-reference multiple sources
 - Check for deprecation warnings
@@ -349,8 +362,10 @@ When comparing options, use these criteria:
 - Identify consensus vs disagreements
 
 ### DON'Ts
-- Use information from 2+ years ago without verification
-- Trust single sources without cross-referencing
+- Skip Firecrawl MCP
+- Limit source types
+- Use 2+ year old info without verification
+- Trust single sources
 - Ignore deprecation warnings
 - Make decisions without option comparison
 - Skip checking official documentation

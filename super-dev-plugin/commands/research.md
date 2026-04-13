@@ -18,9 +18,9 @@ Research best practices, documentation, and patterns with Time MCP integration f
 When invoked, this command activates the `super-dev:research-agent` to:
 
 1. **Gets current timestamp**: Uses Time MCP for year context
-2. **Researches best practices**: Searches for established patterns
-3. **Finds official documentation**: Locates API references and guides
-4. **Analyzes community knowledge**: Gathers insights from blogs, tutorials
+2. **Firecrawl MCP (MANDATORY first)**: `firecrawl_search` → `firecrawl_scrape` → `firecrawl_extract` across all online sources
+3. **Supplementary search**: Exa, DeepWiki, Context7, GitHub scripts for targeted gaps
+4. **Focuses on industry standards**: Prioritizes latest best practices and production-proven patterns
 5. **Checks for deprecations**: Identifies outdated patterns
 6. **Creates research report**: Documents findings with freshness scores
 
@@ -82,7 +82,7 @@ Creates `[doc-index]-research-report.md` with:
 
 ## Notes
 
-- All searches use HTTP connector scripts (not direct MCP calls)
+- Firecrawl MCP first, then supplementary scripts
+- No source limits; focus on latest industry standards
 - Emphasizes recent sources (last 6-12 months)
-- Proactively flags deprecated patterns
-- Provides actionable recommendations
+- Flags deprecated patterns

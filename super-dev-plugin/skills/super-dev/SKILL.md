@@ -30,22 +30,7 @@ A team-based development system where the Team Lead orchestrates specialized tea
 
 **Announce at start:** YOU MUST say "I'm using the super-dev skill with agent teams to systematically implement this task." at the beginning of every run.
 
-## Prerequisites
-
-**Agent teams must be enabled:**
-
-```bash
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-```
-
-Or add to `settings.json`:
-```json
-{
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  }
-}
-```
+**NO EARLY CODE ANALYSIS:** Do NOT read code, grep the codebase, or analyze files before Phase 2. Phase 0 loads dev rules, Phase 1 sets up worktree/spec.
 
 ## First-Run Configuration
 
@@ -196,7 +181,7 @@ Grade each completed workflow run against these three dimensions:
 - [ ] GATE:     Requirements Completeness (gate-requirements.sh — run by doc-validator)
 - [ ] Phase 2.5: BDD Scenario Writing (bdd-scenario-writer + doc-validator PARALLEL, user confirmation required)
 - [ ] GATE:     BDD Scenario Quality (gate-bdd.sh — run by doc-validator)
-- [ ] Phase 3:  Research (deep online research for latest patterns based on requirements + BDD, options presentation)
+- [ ] Phase 3:  Research (Firecrawl MCP first, MUST perform actual online searches based on requirements + BDD, options presentation)
 - [ ] Phase 4:  Debug Analysis (bugs only)
 - [ ] Phase 5:  Code Assessment
 - [ ] Phase 5.3: Architecture Design (arch only)
@@ -371,7 +356,7 @@ Terminate teammates **immediately** after their work completes. Verify output, t
 | 1 | Execute setup (worktree, spec dir, JSON, team) | (none) |
 | 2 | Use Task tool → `super-dev:requirements-clarifier` + `super-dev:doc-validator` (parallel) | requirements-clarifier, doc-validator |
 | 2.5 | Use Task tool → `super-dev:bdd-scenario-writer` + `super-dev:doc-validator` (parallel), **present scenarios to user for confirmation** | bdd-scenario-writer, doc-validator |
-| 3 | Use Task tool → `super-dev:research-agent` (with requirements + BDD as input), present options. Deep online research, NOT codebase search | research-agent |
+| 3 | Use Task tool → `super-dev:research-agent` (with requirements + BDD as input), present options. Firecrawl MCP first, then supplementary scripts. NOT codebase search | research-agent |
 | 4 | Use Task tool → `super-dev:debug-analyzer` (bugs only) | debug-analyzer |
 | 5 | Use Task tool → `super-dev:code-assessor` | code-assessor |
 | 5.3 | Use Task tool → `super-dev:architecture-agent`, present options (**include BDD scenarios**) | architecture-agent |
@@ -493,6 +478,20 @@ Before proceeding to Phase 2:
 - [ ] Spec directory created inside worktree: `specification/[spec-index]-[spec-name]/`
 - [ ] Workflow JSON created in worktree
 - [ ] Agent team created with Team Lead
+
+### Worktree Enforcement (MANDATORY — Phase 2+ runtime check)
+
+**CRITICAL:** Before spawning ANY agent in Phase 2+, Team Lead MUST verify `pwd` is inside `.worktree/`. If not, STOP the workflow immediately.
+
+```bash
+# Run this check before every phase (Phase 2+)
+if ! pwd | grep -q '\.worktree/'; then
+  echo "WORKFLOW STOPPED: Not inside a worktree. cd to .worktree/[spec-index]-[spec-name] first."
+  exit 1
+fi
+```
+
+**Why:** Gate scripts, spec files, and all agent work use relative paths. Running from main repo root causes gates to find wrong (or no) files, silently passing invalid specs.
 
 ---
 
