@@ -16,13 +16,13 @@ gate-profile: none
 <section title="Progress Updates">
 
   <subsection title="[Timestamp] - Milestone X Complete">
-    <paragraph><strong>Tasks Completed:</strong></paragraph>
+    <paragraph label="Tasks Completed"></paragraph>
     <list type="unordered">
       <task id="TX.1">[description]</task>
       <task id="TX.2">[description]</task>
     </list>
 
-    <paragraph><strong>Files Changed:</strong></paragraph>
+    <paragraph label="Files Changed"></paragraph>
     <table>
       <row header="true">
         <cell>File</cell>
@@ -36,24 +36,24 @@ gate-profile: none
       </row>
     </table>
 
-    <paragraph><strong>Technical Decisions:</strong></paragraph>
+    <paragraph label="Technical Decisions"></paragraph>
     <list type="ordered">
       <item>[Decision]: [rationale]</item>
     </list>
 
-    <paragraph><strong>Challenges Encountered:</strong></paragraph>
+    <paragraph label="Challenges Encountered"></paragraph>
     <list type="ordered">
       <item>[Challenge]: [solution]</item>
     </list>
   </subsection>
 
   <subsection title="[Earlier Timestamp] - Milestone Y Complete">
-    <paragraph><strong>Tasks Completed:</strong></paragraph>
+    <paragraph label="Tasks Completed"></paragraph>
     <list type="unordered">
       <task id="TY.1">[description]</task>
     </list>
 
-    <paragraph><strong>Files Changed:</strong></paragraph>
+    <paragraph label="Files Changed"></paragraph>
     <table>
       <row header="true">
         <cell>File</cell>
@@ -67,12 +67,12 @@ gate-profile: none
       </row>
     </table>
 
-    <paragraph><strong>Technical Decisions:</strong></paragraph>
+    <paragraph label="Technical Decisions"></paragraph>
     <list type="ordered">
       <item>[Decision]: [rationale]</item>
     </list>
 
-    <paragraph><strong>Challenges Encountered:</strong></paragraph>
+    <paragraph label="Challenges Encountered"></paragraph>
     <list type="ordered">
       <item>[Challenge]: [solution]</item>
     </list>
@@ -83,16 +83,16 @@ gate-profile: none
 <section title="Spec Change Log">
 
   <subsection title="[UPDATED: YYYY-MM-DD] Section X.Y">
-    <paragraph><strong>Original:</strong></paragraph>
+    <paragraph label="Original"></paragraph>
     <quote>[What the spec originally said]</quote>
 
-    <paragraph><strong>Changed to:</strong></paragraph>
+    <paragraph label="Changed to"></paragraph>
     <quote>[New specification]</quote>
 
-    <paragraph><strong>Reason:</strong></paragraph>
+    <paragraph label="Reason"></paragraph>
     <paragraph>[Why the change was necessary]</paragraph>
 
-    <paragraph><strong>Impact:</strong></paragraph>
+    <paragraph label="Impact"></paragraph>
     <paragraph>[What else this affects]</paragraph>
   </subsection>
 

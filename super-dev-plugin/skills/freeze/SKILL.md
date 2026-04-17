@@ -11,10 +11,10 @@
 <activation>Announce: "Freeze mode ACTIVATED. File edits restricted to: [directory]. Changes outside this directory will be blocked."</activation>
 
 <constraints>
-  <constraint>**Edit blocked** when `file_path` is outside freeze directory</constraint>
-  <constraint>**Write blocked** when `file_path` is outside freeze directory</constraint>
-  <constraint>**NotebookEdit blocked** when `notebook_path` is outside freeze directory</constraint>
-  <constraint>**Bash redirects blocked** when command contains `>` or `>>` to path outside freeze directory</constraint>
+  <constraint name="Edit blocked">When `file_path` is outside freeze directory</constraint>
+  <constraint name="Write blocked">When `file_path` is outside freeze directory</constraint>
+  <constraint name="NotebookEdit blocked">When `notebook_path` is outside freeze directory</constraint>
+  <constraint name="Bash redirects blocked">When command contains `>` or `>>` to path outside freeze directory</constraint>
 </constraints>
 
 <allowlist>

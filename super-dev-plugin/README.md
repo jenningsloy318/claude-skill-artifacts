@@ -2,22 +2,22 @@
 
 A comprehensive team-lead-driven development workflow plugin for Claude Code with parallel agent execution for implementing features, fixing bugs, and refactoring code.
 
-**Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
+Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)
 
-**v2.3.36 — XML-Tagged Instruction Format:**
-- **XML-Tagged Structure**: All 85 instruction files (agents, commands, rules, contexts, skills, reference docs) converted from Markdown headings to a unified three-tier XML tag schema for improved LLM parsing (~86% token reduction)
-- **Persona-Based Agent Roles**: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
-- **Continuous Verification Gates**: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
-- **Real Browser Testing**: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
-- **Autoresearch Skill**: Auto-improve agent prompts using Karpathy's iterative test-measure-improve method
-- **Investigation Protocol**: New `investigator` agent for bounded mid-execution research when agents hit unknowns (inspired by gstack's `/investigate`)
-- **10 Automated Hooks**: Hook-level enforcement for safety, formatting, linting, testing, phase gates, and checkpoints (inspired by @zodchiii's 8 hooks principle)
+v2.3.36 — XML-Tagged Instruction Format:
+- XML-Tagged Structure: All 85 instruction files (agents, commands, rules, contexts, skills, reference docs) converted from Markdown headings to a unified three-tier XML tag schema for improved LLM parsing (~86% token reduction)
+- Persona-Based Agent Roles: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
+- Continuous Verification Gates: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
+- Real Browser Testing: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
+- Autoresearch Skill: Auto-improve agent prompts using Karpathy's iterative test-measure-improve method
+- Investigation Protocol: New `investigator` agent for bounded mid-execution research when agents hit unknowns (inspired by gstack's `/investigate`)
+- 10 Automated Hooks: Hook-level enforcement for safety, formatting, linting, testing, phase gates, and checkpoints (inspired by @zodchiii's 8 hooks principle)
 
 *Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, @zodchiii's Claude Code hooks, and Anthropic's official skill design lessons.*
 
 ## Overview
 
-This plugin provides a systematic development workflow orchestrated by a **Coordinator Agent** that:
+This plugin provides a systematic development workflow orchestrated by a Coordinator Agent that:
 
 - Assigns tasks to specialized sub-agents
 - Monitors execution - no unauthorized stops
@@ -29,7 +29,7 @@ This plugin provides a systematic development workflow orchestrated by a **Coord
 
 ### Main Entry Point
 
-**Directly invoke the `super-dev` skill:**
+Directly invoke the `super-dev` skill:
 
 ```
 Invoke the super-dev skill and describe your task
@@ -229,7 +229,7 @@ super-dev-plugin/
 | 5.5 | UI/UX Design | `super-dev:ui-ux-designer` | For features with UI (optional) |
 | 6 | Specification Writing | `super-dev:spec-writer` | Create tech spec, plan, tasks |
 | 7 | Specification Review | Coordinator | Validate all documents |
-| 8-9 | Execution | **PARALLEL**: dev + qa + docs executors | Implement with parallel agents |
+| 8-9 | Execution | PARALLEL: dev + qa + docs executors | Implement with parallel agents |
 | 9.5 | Quality Assurance | `super-dev:qa-agent` | Modality-specific testing |
 | 10-11 | Cleanup & Commit | Coordinator | Remove temp files, commit changes |
 | 12 | Final Verification | Coordinator | Verify all complete |
@@ -238,29 +238,29 @@ super-dev-plugin/
 
 ### Super-Dev Unique Features
 
-1. **Coordinator Agent** - Central orchestrator for all workflow phases
-2. **Git Worktree Requirement** - MANDATORY isolation for development
-3. **Specification-Aware Code Review** - Validates against technical specs
-4. **Parallel Execution** - Three executors run simultaneously (dev + qa + docs)
-5. **Build Queue Management** - Rust/Go serialization for resource safety
-6. **Time MCP Integration** - Freshness-aware research queries
-7. **ast-grep Integration** - Structural code analysis for assessment/debug
-8. **BDD Integration** - Mandatory Phase 2.5 for behavior scenario generation with 100% coverage gate
-9. **Investigation Protocol** - Bounded mid-execution investigation when agents hit unknowns (auto-triggered by dev-executor, qa-agent, code-reviewer)
+1. Coordinator Agent - Central orchestrator for all workflow phases
+2. Git Worktree Requirement - MANDATORY isolation for development
+3. Specification-Aware Code Review - Validates against technical specs
+4. Parallel Execution - Three executors run simultaneously (dev + qa + docs)
+5. Build Queue Management - Rust/Go serialization for resource safety
+6. Time MCP Integration - Freshness-aware research queries
+7. ast-grep Integration - Structural code analysis for assessment/debug
+8. BDD Integration - Mandatory Phase 2.5 for behavior scenario generation with 100% coverage gate
+9. Investigation Protocol - Bounded mid-execution investigation when agents hit unknowns (auto-triggered by dev-executor, qa-agent, code-reviewer)
 
 ### Additional Integrated Features
 
-1. **TDD Workflow Skill** - Comprehensive test-driven development methodology
-2. **Security Review Skill** - Security checklist and validation
-3. **Rules System** - Modular always-follow guidelines
-4. **Contexts** - Dynamic system prompt injection (dev/review/research modes)
-5. **MCP Configurations** - Pre-configured MCP server templates
-6. **Additional Agents** - planner, tdd-guide, security-reviewer, refactor-cleaner, etc.
-7. **Additional Commands** - /plan, /tdd, /e2e, /refactor-clean, etc.
+1. TDD Workflow Skill - Comprehensive test-driven development methodology
+2. Security Review Skill - Security checklist and validation
+3. Rules System - Modular always-follow guidelines
+4. Contexts - Dynamic system prompt injection (dev/review/research modes)
+5. MCP Configurations - Pre-configured MCP server templates
+6. Additional Agents - planner, tdd-guide, security-reviewer, refactor-cleaner, etc.
+7. Additional Commands - /plan, /tdd, /e2e, /refactor-clean, etc.
 
 ## Hooks (10 Total)
 
-Hooks are automatic actions that fire every time Claude edits a file, runs a command, or finishes a task. Unlike CLAUDE.md rules (~80% compliance), hooks provide **100% enforcement** — they run in the background without Claude needing to remember.
+Hooks are automatic actions that fire every time Claude edits a file, runs a command, or finishes a task. Unlike CLAUDE.md rules (~80% compliance), hooks provide 100% enforcement — they run in the background without Claude needing to remember.
 
 ### PreToolUse Hooks (block before action)
 
@@ -317,13 +317,13 @@ Hooks are defined in `hooks/hooks.json` and activated automatically when the plu
 
 The Coordinator Agent orchestrates ALL workflow phases:
 
-- **Task Assignment**: Assigns correct sub-agent per phase
-- **Monitoring**: Ensures no unauthorized stops or missing tasks
-- **Build Queue**: Manages Rust/Go build serialization
-- **Quality Gates**: Enforces checkpoints at phase boundaries
-- **Final Verification**: Verifies all artifacts complete
+- Task Assignment: Assigns correct sub-agent per phase
+- Monitoring: Ensures no unauthorized stops or missing tasks
+- Build Queue: Manages Rust/Go build serialization
+- Quality Gates: Enforces checkpoints at phase boundaries
+- Final Verification: Verifies all artifacts complete
 
-**Invoke:** `Task(subagent_type: "super-dev:team-lead")`
+Invoke: `Task(subagent_type: "super-dev:team-lead")`
 
 ### Executor Agents (Parallel Execution)
 
@@ -335,7 +335,7 @@ During Phase 8-9, THREE executors run in PARALLEL:
 | `qa-executor` | Writes and runs tests | `super-dev:qa-executor` |
 | `docs-executor` | Updates documentation in real-time | `super-dev:docs-executor` |
 
-**Build Policy (Rust/Go):** Only ONE build at a time to prevent resource conflicts.
+Build Policy (Rust/Go): Only ONE build at a time to prevent resource conflicts.
 
 ### Workflow Agents
 
@@ -455,21 +455,21 @@ Example project-specific skill template (based on Zenith production app).
 
 The `rules/` directory contains modular always-follow guidelines:
 
-- **agents.md** - When to delegate to subagents
-- **coding-style.md** - Immutability, file organization, error handling
-- **git-workflow.md** - Commit format, PR process
-- **patterns.md** - Common code patterns (API response format, custom hooks, repository pattern)
-- **performance.md** - Model selection (Haiku/Sonnet/Opus), context window management
-- **security.md** - Mandatory security checks
-- **testing.md** - TDD, 80% coverage requirement
+- agents.md - When to delegate to subagents
+- coding-style.md - Immutability, file organization, error handling
+- git-workflow.md - Commit format, PR process
+- patterns.md - Common code patterns (API response format, custom hooks, repository pattern)
+- performance.md - Model selection (Haiku/Sonnet/Opus), context window management
+- security.md - Mandatory security checks
+- testing.md - TDD, 80% coverage requirement
 
 ## Contexts
 
 The `contexts/` directory provides dynamic system prompt injection:
 
-- **dev.md** - Development mode (write code first, prefer working solutions)
-- **review.md** - Code review mode (critical analysis, specification validation)
-- **research.md** - Research mode (gather information, explore options)
+- dev.md - Development mode (write code first, prefer working solutions)
+- review.md - Code review mode (critical analysis, specification validation)
+- research.md - Research mode (gather information, explore options)
 
 ## Output Documents
 
@@ -492,5 +492,5 @@ MIT
 
 ## Credits
 
-- **super-dev-plugin** - Coordinator-driven development workflow
-- **everything-claude-code** - Additional agents, commands, skills, rules, and configurations
+- super-dev-plugin - Coordinator-driven development workflow
+- everything-claude-code - Additional agents, commands, skills, rules, and configurations

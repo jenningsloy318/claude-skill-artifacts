@@ -16,11 +16,11 @@
 </process>
 
 <topic name="Test Types">
-  **Unit Tests (Mandatory)**: Test individual functions in isolation. Cover identity cases, zero/orthogonal cases, null/error cases. Mock external dependencies (Supabase, Redis, OpenAI).
+  Unit Tests (Mandatory): Test individual functions in isolation. Cover identity cases, zero/orthogonal cases, null/error cases. Mock external dependencies (Supabase, Redis, OpenAI).
 
-  **Integration Tests (Mandatory)**: Test API endpoints and database operations. Cover success (200), validation errors (400), and fallback behavior (e.g., Redis down → substring search).
+  Integration Tests (Mandatory): Test API endpoints and database operations. Cover success (200), validation errors (400), and fallback behavior (e.g., Redis down → substring search).
 
-  **E2E Tests (Critical Flows)**: Test complete user journeys with Playwright. Cover search, navigation, page load verification.
+  E2E Tests (Critical Flows): Test complete user journeys with Playwright. Cover search, navigation, page load verification.
 </topic>
 
 <code-sample lang="typescript" concept="TDD Red-Green-Refactor cycle">

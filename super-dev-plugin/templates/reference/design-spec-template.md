@@ -19,9 +19,9 @@ gate-profile: null
 
 <section title="User Context">
   <list type="unordered">
-    <item>**Target Users**: [Persona description]</item>
-    <item>**Primary Goal**: [What users accomplish]</item>
-    <item>**Success Criteria**: [How we measure success]</item>
+    <item name="Target Users">[Persona description]</item>
+    <item name="Primary Goal">[What users accomplish]</item>
+    <item name="Success Criteria">[How we measure success]</item>
   </list>
 </section>
 

@@ -11,12 +11,12 @@
 <activation>Announce: "Careful mode ACTIVATED. Destructive commands will be blocked for this session."</activation>
 
 <constraints>
-  <constraint>**File Destruction blocked**: `rm -rf`, `rm -r /`, `find -delete` (recursive) — irreversible data loss</constraint>
-  <constraint>**Database Destruction blocked**: `DROP TABLE`, `DROP DATABASE`, `TRUNCATE`, `DELETE FROM` (without WHERE) — irreversible data loss</constraint>
-  <constraint>**Git Destruction blocked**: `git push --force`, `git push -f`, `git reset --hard`, `git branch -D`, `git clean -fd` — history/branch loss</constraint>
-  <constraint>**Kubernetes blocked**: `kubectl delete namespace`, `kubectl delete pod --all` — service disruption</constraint>
-  <constraint>**Permissions blocked**: `chmod 777`, `chmod -R 777`, `chmod +s` — security escalation</constraint>
-  <constraint>**Package blocked**: `npm unpublish`, `cargo yank` — distribution disruption</constraint>
+  <constraint name="File Destruction blocked">`rm -rf`, `rm -r /`, `find -delete` (recursive) — irreversible data loss</constraint>
+  <constraint name="Database Destruction blocked">`DROP TABLE`, `DROP DATABASE`, `TRUNCATE`, `DELETE FROM` (without WHERE) — irreversible data loss</constraint>
+  <constraint name="Git Destruction blocked">`git push --force`, `git push -f`, `git reset --hard`, `git branch -D`, `git clean -fd` — history/branch loss</constraint>
+  <constraint name="Kubernetes blocked">`kubectl delete namespace`, `kubectl delete pod --all` — service disruption</constraint>
+  <constraint name="Permissions blocked">`chmod 777`, `chmod -R 777`, `chmod +s` — security escalation</constraint>
+  <constraint name="Package blocked">`npm unpublish`, `cargo yank` — distribution disruption</constraint>
 </constraints>
 
 <allowlist>

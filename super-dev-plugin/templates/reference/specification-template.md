@@ -123,11 +123,11 @@ interface [FeatureName][EntityName] {
 
     <rule title="Naming Rules (MANDATORY)">
       <list type="unordered">
-        <item>**NO generic names** like `data`, `item`, `value`, `result`, `temp`</item>
-        <item>**NO single letters** except loop indices (i, j, k)</item>
-        <item>**NO abbreviations** except well-known ones (id, url, api)</item>
-        <item>**USE feature-specific prefixes** (e.g., `userAuth...`, `orderProcess...`)</item>
-        <item>**USE descriptive suffixes** (e.g., `...State`, `...Config`, `...Count`, `...List`)</item>
+        <item name="NO generic names">like `data`, `item`, `value`, `result`, `temp`</item>
+        <item name="NO single letters">except loop indices (i, j, k)</item>
+        <item name="NO abbreviations">except well-known ones (id, url, api)</item>
+        <item name="USE feature-specific prefixes">(e.g., `userAuth...`, `orderProcess...`)</item>
+        <item name="USE descriptive suffixes">(e.g., `...State`, `...Config`, `...Count`, `...List`)</item>
       </list>
     </rule>
 
@@ -194,11 +194,11 @@ async function [featureName][action](
 
     <rule title="Ambiguity Prevention Rules">
       <list type="unordered">
-        <item>**Every function has a descriptive name** reflecting its action and feature</item>
-        <item>**Every parameter has a descriptive name** indicating what it represents</item>
-        <item>**Return types are explicit** - no `any`, no `unknown`</item>
-        <item>**Error cases are documented** - all possible errors listed</item>
-        <item>**No optional behaviors** - if something is conditional, document the condition</item>
+        <item name="Every function has a descriptive name">reflecting its action and feature</item>
+        <item name="Every parameter has a descriptive name">indicating what it represents</item>
+        <item name="Return types are explicit">no `any`, no `unknown`</item>
+        <item name="Error cases are documented">all possible errors listed</item>
+        <item name="No optional behaviors">if something is conditional, document the condition</item>
       </list>
     </rule>
 
@@ -402,17 +402,17 @@ async function [featureName][action](
 
   <subsection title="6.2 Authentication and Authorization">
     <list type="unordered">
-      <item>**Auth required:** [yes/no]</item>
-      <item>**Permission checks:** [list of permissions]</item>
-      <item>**Role restrictions:** [roles that can access]</item>
+      <item name="Auth required">[yes/no]</item>
+      <item name="Permission checks">[list of permissions]</item>
+      <item name="Role restrictions">[roles that can access]</item>
     </list>
   </subsection>
 
   <subsection title="6.3 Data Protection">
     <list type="unordered">
-      <item>**Sensitive data:** [list fields containing PII, credentials, etc.]</item>
-      <item>**Encryption:** [at rest / in transit requirements]</item>
-      <item>**Logging:** [what to log, what to redact]</item>
+      <item name="Sensitive data">[list fields containing PII, credentials, etc.]</item>
+      <item name="Encryption">[at rest / in transit requirements]</item>
+      <item name="Logging">[what to log, what to redact]</item>
     </list>
   </subsection>
 
@@ -474,9 +474,9 @@ async function [featureName][action](
 
   <subsection title="7.2 Database Optimization">
     <list type="unordered">
-      <item>**Indexes needed:** [list of indexes with field names]</item>
-      <item>**Query optimization:** [N+1 prevention, batch operations]</item>
-      <item>**Connection pooling:** [requirements]</item>
+      <item name="Indexes needed">[list of indexes with field names]</item>
+      <item name="Query optimization">[N+1 prevention, batch operations]</item>
+      <item name="Connection pooling">[requirements]</item>
     </list>
   </subsection>
 
@@ -501,17 +501,17 @@ async function [featureName][action](
 
   <subsection title="7.4 Scalability">
     <list type="unordered">
-      <item>**Bottlenecks:** [identified bottlenecks]</item>
-      <item>**Horizontal scaling:** [considerations]</item>
-      <item>**Rate limiting:** [requirements]</item>
+      <item name="Bottlenecks">[identified bottlenecks]</item>
+      <item name="Horizontal scaling">[considerations]</item>
+      <item name="Rate limiting">[requirements]</item>
     </list>
   </subsection>
 
   <subsection title="7.5 Resource Usage">
     <list type="unordered">
-      <item>**Memory:** [expected usage, limits]</item>
-      <item>**CPU:** [expected usage, async considerations]</item>
-      <item>**Network:** [payload sizes, request frequency]</item>
+      <item name="Memory">[expected usage, limits]</item>
+      <item name="CPU">[expected usage, async considerations]</item>
+      <item name="Network">[payload sizes, request frequency]</item>
     </list>
   </subsection>
 
@@ -534,38 +534,38 @@ async function [featureName][action](
   <subsection title="9.1 Single Implementation Guarantee">
     <paragraph>This specification MUST result in exactly ONE valid implementation. To ensure this:</paragraph>
     <checklist>
-      <item>**All function names are specified** - No room for interpretation</item>
-      <item>**All parameter names are specified** - No "data", "result", or generic names</item>
-      <item>**All variable names follow conventions** - Feature-specific prefixes required</item>
-      <item>**All file paths are specified** - No ambiguity about where code goes</item>
-      <item>**All conditional behaviors are documented** - No "if needed, do X"</item>
-      <item>**All error cases are listed** - No "handle errors appropriately"</item>
-      <item>**All data structures are fully defined** - No "etc." or "and so on"</item>
+      <item name="All function names are specified">No room for interpretation</item>
+      <item name="All parameter names are specified">No "data", "result", or generic names</item>
+      <item name="All variable names follow conventions">Feature-specific prefixes required</item>
+      <item name="All file paths are specified">No ambiguity about where code goes</item>
+      <item name="All conditional behaviors are documented">No "if needed, do X"</item>
+      <item name="All error cases are listed">No "handle errors appropriately"</item>
+      <item name="All data structures are fully defined">No "etc." or "and so on"</item>
     </checklist>
   </subsection>
 
   <subsection title="9.2 Ambiguity Checklist">
     <paragraph>Review this specification against these ambiguity sources:</paragraph>
     <checklist>
-      <item>**No pronouns** - Replace "it", "they", "this" with specific nouns</item>
-      <item>**No "etc." or "and so on"** - List everything explicitly</item>
-      <item>**No "appropriate" or "suitable"** - Specify exact values</item>
-      <item>**No "handle" or "process"** - Specify exact actions</item>
-      <item>**No "if needed" or "when applicable"** - Specify exact conditions</item>
-      <item>**No generic names** - All names are feature-specific</item>
-      <item>**No optional behaviors** - Everything is required or explicitly conditional</item>
+      <item name="No pronouns">Replace "it", "they", "this" with specific nouns</item>
+      <item name='No "etc." or "and so on"'>List everything explicitly</item>
+      <item name='No "appropriate" or "suitable"'>Specify exact values</item>
+      <item name='No "handle" or "process"'>Specify exact actions</item>
+      <item name='No "if needed" or "when applicable"'>Specify exact conditions</item>
+      <item name="No generic names">All names are feature-specific</item>
+      <item name="No optional behaviors">Everything is required or explicitly conditional</item>
     </checklist>
   </subsection>
 
   <subsection title="9.3 Naming Convention Verification">
     <checklist>
-      <item>**No generic variable names** (data, item, value, result, temp, obj)</item>
-      <item>**No single-letter names** (except loop indices i, j, k)</item>
-      <item>**No abbreviations** (except id, url, api, http, etc.)</item>
-      <item>**All names use feature-specific prefixes**</item>
-      <item>**All functions use verb-noun pattern**</item>
-      <item>**All constants use UPPER_CASE**</item>
-      <item>**All booleans use is/has/should prefix**</item>
+      <item name="No generic variable names">(data, item, value, result, temp, obj)</item>
+      <item name="No single-letter names">(except loop indices i, j, k)</item>
+      <item name="No abbreviations">(except id, url, api, http, etc.)</item>
+      <item name="All names use feature-specific prefixes"></item>
+      <item name="All functions use verb-noun pattern"></item>
+      <item name="All constants use UPPER_CASE"></item>
+      <item name="All booleans use is/has/should prefix"></item>
     </checklist>
   </subsection>
 
@@ -592,10 +592,10 @@ async function [featureName][action](
 <rule title="Gate Compliance (gate-spec-trace.sh)">
   <paragraph>The output specification file MUST satisfy these automated gate checks or the workflow will be blocked:</paragraph>
   <list type="ordered">
-    <item>**BDD scenario references** - MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4.</item>
-    <item>**Testing strategy text** - MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this.</item>
-    <item>**Task list file exists** - `[doc-index]-task-list.md` must exist as a separate file in the spec directory.</item>
-    <item>**Implementation plan file exists** - `[doc-index]-implementation-plan.md` must exist as a separate file in the spec directory.</item>
+    <item name="BDD scenario references">MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4.</item>
+    <item name="Testing strategy text">MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this.</item>
+    <item name="Task list file exists">`[doc-index]-task-list.md` must exist as a separate file in the spec directory.</item>
+    <item name="Implementation plan file exists">`[doc-index]-implementation-plan.md` must exist as a separate file in the spec directory.</item>
   </list>
 </rule>
 

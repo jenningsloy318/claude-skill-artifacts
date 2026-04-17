@@ -43,30 +43,30 @@ gate-profile: gate-spec-trace.sh
   <section title="Phased Milestones">
 
     <subsection title="Phase 1: [Phase Name]">
-      <paragraph>**Objective:** [What this phase achieves and why it comes first]</paragraph>
+      <paragraph label="Objective">[What this phase achieves and why it comes first]</paragraph>
 
       <list type="ordered">
         <task id="T1.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          <paragraph>**[Task Name]**</paragraph>
+          <paragraph label="Task Name">[Task Name]</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: None</paragraph>
         </task>
         <task id="T1.2" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          <paragraph>**[Task Name]**</paragraph>
+          <paragraph label="Task Name">[Task Name]</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: T1.1</paragraph>
         </task>
       </list>
 
-      <paragraph>**Deliverables:**</paragraph>
+      <paragraph label="Deliverables"></paragraph>
       <list type="unordered">
         <item>[Deliverable 1: description]</item>
         <item>[Deliverable 2: description]</item>
       </list>
 
-      <paragraph>**Exit Criteria:**</paragraph>
+      <paragraph label="Exit Criteria"></paragraph>
       <checklist>
         <item status="open">[Criterion for Phase 1 completion]</item>
         <item status="open">[Criterion for Phase 1 completion]</item>
@@ -74,52 +74,52 @@ gate-profile: gate-spec-trace.sh
     </subsection>
 
     <subsection title="Phase 2: [Phase Name]">
-      <paragraph>**Objective:** [What this phase achieves]</paragraph>
+      <paragraph label="Objective">[What this phase achieves]</paragraph>
 
       <list type="ordered">
         <task id="T2.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          <paragraph>**[Task Name]**</paragraph>
+          <paragraph label="Task Name">[Task Name]</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: T1.2</paragraph>
         </task>
         <task id="T2.2" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          <paragraph>**[Task Name]**</paragraph>
+          <paragraph label="Task Name">[Task Name]</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: T2.1</paragraph>
         </task>
       </list>
 
-      <paragraph>**Deliverables:**</paragraph>
+      <paragraph label="Deliverables"></paragraph>
       <list type="unordered">
         <item>[Deliverable 1: description]</item>
       </list>
 
-      <paragraph>**Exit Criteria:**</paragraph>
+      <paragraph label="Exit Criteria"></paragraph>
       <checklist>
         <item status="open">[Criterion for Phase 2 completion]</item>
       </checklist>
     </subsection>
 
     <subsection title="Phase 3: [Phase Name]">
-      <paragraph>**Objective:** [What this phase achieves]</paragraph>
+      <paragraph label="Objective">[What this phase achieves]</paragraph>
 
       <list type="ordered">
         <task id="T3.1" file="[path/to/file]" risk="Low | Medium | High" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          <paragraph>**[Task Name]**</paragraph>
+          <paragraph label="Task Name">[Task Name]</paragraph>
           <paragraph>Action: [Specific action to take]</paragraph>
           <paragraph>Why: [Reason for this task]</paragraph>
           <paragraph>Dependencies: T2.1, T2.2</paragraph>
         </task>
       </list>
 
-      <paragraph>**Deliverables:**</paragraph>
+      <paragraph label="Deliverables"></paragraph>
       <list type="unordered">
         <item>[Deliverable 1: description]</item>
       </list>
 
-      <paragraph>**Exit Criteria:**</paragraph>
+      <paragraph label="Exit Criteria"></paragraph>
       <checklist>
         <item status="open">[Criterion for Phase 3 completion]</item>
       </checklist>
@@ -198,7 +198,7 @@ Phase 1 [rust]         Phase 2 [frontend]     Phase 3 [mixed]
         <cell>[which tasks can run in parallel]</cell>
       </row>
       <row>
-        <cell>**Total**</cell>
+        <cell>Total</cell>
         <cell>[total estimate]</cell>
         <cell>[total task count]</cell>
         <cell></cell>

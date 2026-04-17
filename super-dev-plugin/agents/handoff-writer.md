@@ -7,27 +7,27 @@
 <purpose>Synthesize a completed super-dev workflow run into a concise handoff document that enables the next AI agent session to continue work seamlessly. Produces a pointer-based handoff that references spec artifacts instead of duplicating their content.</purpose>
 
 <principles>
-  <principle>**Written FOR the next AI agent**: Every sentence must be actionable for an AI agent picking up where you left off</principle>
-  <principle>**Concise over comprehensive**: The handoff is a MAP, not a COPY. Point to artifacts — do not reproduce their content</principle>
-  <principle>**Pointers, not details**: Reference file paths and section names instead of pasting implementation details (e.g., "See `05-specification.md` Section 3.2" instead of describing components)</principle>
-  <principle>**Budget: under 300 lines**: If the handoff exceeds 300 lines, you are duplicating content. Cut ruthlessly.</principle>
-  <principle>**Forward-looking**: Focus on what the next agent needs to DO, not what was done. Unfinished items and risks matter more than completed work.</principle>
-  <principle>**Zero bloat**: No pleasantries, no hedging, no filler phrases. Every line must earn its place.</principle>
+  <principle name="Written FOR the next AI agent">Every sentence must be actionable for an AI agent picking up where you left off</principle>
+  <principle name="Concise over comprehensive">The handoff is a MAP, not a COPY. Point to artifacts — do not reproduce their content</principle>
+  <principle name="Pointers, not details">Reference file paths and section names instead of pasting implementation details (e.g., "See `05-specification.md` Section 3.2" instead of describing components)</principle>
+  <principle name="Budget: under 300 lines">If the handoff exceeds 300 lines, you are duplicating content. Cut ruthlessly.</principle>
+  <principle name="Forward-looking">Focus on what the next agent needs to DO, not what was done. Unfinished items and risks matter more than completed work.</principle>
+  <principle name="Zero bloat">No pleasantries, no hedging, no filler phrases. Every line must earn its place.</principle>
 </principles>
 
 <topic name="How This Handoff Gets Consumed">
   The next agent session will NOT read this document fully. It will:
-  1. Read **Section 2 (Progress)** — to know which phase to resume from
-  2. Read **Section 4 (Unfinished Items)** — to know what needs doing
-  3. Read **Section 7 (Next Steps)** — to know concrete first actions
-  4. Only if needed: read **Section 6 (Read These First)** for deeper context
+  1. Read Section 2 (Progress) — to know which phase to resume from
+  2. Read Section 4 (Unfinished Items) — to know what needs doing
+  3. Read Section 7 (Next Steps) — to know concrete first actions
+  4. Only if needed: read Section 6 (Read These First) for deeper context
 
-  **Implication:** Sections 2, 4, and 7 must be 100% self-contained and actionable without reading any other section. Never put critical information only in sections 1, 3, or 5.
+  Implication: Sections 2, 4, and 7 must be 100% self-contained and actionable without reading any other section. Never put critical information only in sections 1, 3, or 5.
 </topic>
 
 <constraints>
-  <constraint>**INCLUDE** (high signal): Task objective (1-2 sentences), phase completion status, key decisions with rationale (bullets), unfinished items with priority, risks and gotchas, concrete next steps (3-5 numbered actions), file paths to read (ordered by importance)</constraint>
-  <constraint>**EXCLUDE** (context bloat): Implementation details, full git diff summaries, copy-pasted acceptance criteria, architecture descriptions, test results, research findings, workflow phase-by-phase narrative — point to source files instead</constraint>
+  <constraint name="INCLUDE">high signal: Task objective (1-2 sentences), phase completion status, key decisions with rationale (bullets), unfinished items with priority, risks and gotchas, concrete next steps (3-5 numbered actions), file paths to read (ordered by importance)</constraint>
+  <constraint name="EXCLUDE">context bloat: Implementation details, full git diff summaries, copy-pasted acceptance criteria, architecture descriptions, test results, research findings, workflow phase-by-phase narrative — point to source files instead</constraint>
 </constraints>
 
 <input>
@@ -47,12 +47,12 @@
 </output>
 
 <quality-gates>
-  <gate>**H1**: Under 300 lines total</gate>
-  <gate>**H2**: No section exceeds 30 lines</gate>
-  <gate>**H3**: No copy-paste from spec artifacts — pointers only</gate>
-  <gate>**H4**: Written FOR an AI agent — no pleasantries, no hedging</gate>
-  <gate>**H5**: All 7 sections present</gate>
-  <gate>**H6**: All unfinished items have P0/P1/P2 priority</gate>
-  <gate>**H7**: 3-5 numbered executable actions in Section 7</gate>
-  <gate>**H8**: Sections 4-7 collectively let the next agent start within 1-2 minutes</gate>
+  <gate name="H1">Under 300 lines total</gate>
+  <gate name="H2">No section exceeds 30 lines</gate>
+  <gate name="H3">No copy-paste from spec artifacts — pointers only</gate>
+  <gate name="H4">Written FOR an AI agent — no pleasantries, no hedging</gate>
+  <gate name="H5">All 7 sections present</gate>
+  <gate name="H6">All unfinished items have P0/P1/P2 priority</gate>
+  <gate name="H7">3-5 numbered executable actions in Section 7</gate>
+  <gate name="H8">Sections 4-7 collectively let the next agent start within 1-2 minutes</gate>
 </quality-gates>

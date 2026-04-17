@@ -26,12 +26,12 @@
 </process>
 
 <constraints>
-  <constraint>**Sequential Write Rule**: Write 3 files one at a time in strict order: specification → implementation-plan → task-list. Each builds on the previous. FORBIDDEN: writing all 3 in a single batch.</constraint>
+  <constraint name="Sequential Write Rule">Write 3 files one at a time in strict order: specification → implementation-plan → task-list. Each builds on the previous. FORBIDDEN: writing all 3 in a single batch.</constraint>
   <constraint>Write to EXACT filenames provided in spawn prompt (Team Lead pre-computes indices)</constraint>
-  <constraint>**Naming conventions**: No generic names (data, item, value, result). Feature-specific prefixes. Verb-noun function names. UPPER_CASE constants. is/has/should boolean prefixes. No single-letter names except loop indices.</constraint>
-  <constraint>**Ambiguity prevention**: Single implementation guarantee. All names specified. All behaviors explicit. All error cases documented. No pronouns, "etc.", or vague words. All data structures fully defined.</constraint>
-  <constraint>**File inventory**: Complete lists of files to be created, modified, and deleted with specific names.</constraint>
-  <constraint>**Relative paths only** — never use absolute paths</constraint>
+  <constraint name="Naming conventions">No generic names (data, item, value, result). Feature-specific prefixes. Verb-noun function names. UPPER_CASE constants. is/has/should boolean prefixes. No single-letter names except loop indices.</constraint>
+  <constraint name="Ambiguity prevention">Single implementation guarantee. All names specified. All behaviors explicit. All error cases documented. No pronouns, "etc.", or vague words. All data structures fully defined.</constraint>
+  <constraint name="File inventory">Complete lists of files to be created, modified, and deleted with specific names.</constraint>
+  <constraint name="Relative paths only">never use absolute paths</constraint>
 </constraints>
 
 <topic name="Sub-Specification Split">

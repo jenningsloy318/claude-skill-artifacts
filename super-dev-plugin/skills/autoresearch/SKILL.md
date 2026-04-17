@@ -32,14 +32,14 @@
 </process>
 
 <constraints>
-  <constraint>**Good changes (one at a time)**: Add specific gotcha, add worked example, add banned-patterns list, add rule targeting weakest item, restructure output template</constraint>
-  <constraint>**Bad changes (avoid)**: Rewriting entire prompt, adding vague instructions, adding 5 rules at once, removing sections without testing</constraint>
+  <constraint name="Good changes (one at a time)">Add specific gotcha, add worked example, add banned-patterns list, add rule targeting weakest item, restructure output template</constraint>
+  <constraint name="Bad changes (avoid)">Rewriting entire prompt, adding vague instructions, adding 5 rules at once, removing sections without testing</constraint>
 </constraints>
 
 <gotchas>
-  <gotcha>**Overfitting**: Using only one test input optimizes for that case. Use 2-3 diverse inputs.</gotcha>
-  <gotcha>**Checklist gaming**: More than 6 items may cause gaming individual checks at expense of quality.</gotcha>
-  <gotcha>**Local optima**: Short-term score drops may enable bigger gains. Try "creative rounds" for structural changes.</gotcha>
+  <gotcha name="Overfitting">Using only one test input optimizes for that case. Use 2-3 diverse inputs.</gotcha>
+  <gotcha name="Checklist gaming">More than 6 items may cause gaming individual checks at expense of quality.</gotcha>
+  <gotcha name="Local optima">Short-term score drops may enable bigger gains. Try "creative rounds" for structural changes.</gotcha>
 </gotchas>
 
 <topic name="Data Storage">

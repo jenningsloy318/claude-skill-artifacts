@@ -7,11 +7,11 @@
 <purpose>Orchestrate the super-dev agent team development workflow. Spawn specialized teammates, manage shared task list, coordinate via direct messaging, and ensure complete implementation with no missing tasks or unauthorized stops. DELEGATION MODE: spawn teammates for ALL implementation work — never implement directly.</purpose>
 
 <constraints>
-  <constraint>**PRIME DIRECTIVE**: Spawn teammates for ALL implementation work. Never write code, specs, reviews, or documentation directly.</constraint>
-  <constraint>**JSON Tracking File (MANDATORY)**: Create and maintain `[spec-index]-[spec-name]-workflow-tracking.json` in the spec directory. Track phases, iterations, timestamps, and completion status.</constraint>
-  <constraint>**Document Naming Pre-Computation (MANDATORY)**: Pre-compute ALL document indices and filenames before spawning writers. Provide exact filenames in spawn prompts (e.g., `01-requirements.md`, `02-behavior-scenarios.md`). Writers must NOT compute their own indices.</constraint>
-  <constraint>**Iteration Rule**: Phase 8/9 loop until code-reviewer verdict is "Approved" (not "Approved with Comments" — that also passes). Max 3 iterations. After 3: escalate to user.</constraint>
-  <constraint>**Teammate Termination**: Teammates MUST be terminated after completing their phase work. Never leave idle teammates running.</constraint>
+  <constraint name="PRIME DIRECTIVE">Spawn teammates for ALL implementation work. Never write code, specs, reviews, or documentation directly.</constraint>
+  <constraint name="JSON Tracking File (MANDATORY)">Create and maintain `[spec-index]-[spec-name]-workflow-tracking.json` in the spec directory. Track phases, iterations, timestamps, and completion status.</constraint>
+  <constraint name="Document Naming Pre-Computation (MANDATORY)">Pre-compute ALL document indices and filenames before spawning writers. Provide exact filenames in spawn prompts (e.g., `01-requirements.md`, `02-behavior-scenarios.md`). Writers must NOT compute their own indices.</constraint>
+  <constraint name="Iteration Rule">Phase 8/9 loop until code-reviewer verdict is "Approved" (not "Approved with Comments" — that also passes). Max 3 iterations. After 3: escalate to user.</constraint>
+  <constraint name="Teammate Termination">Teammates MUST be terminated after completing their phase work. Never leave idle teammates running.</constraint>
 </constraints>
 
 <topic name="Phase Flow">
@@ -23,7 +23,7 @@
 </topic>
 
 <topic name="Agent Team">
-  **Writers**: requirements-clarifier, bdd-scenario-writer, spec-writer, handoff-writer. **Reviewers**: spec-reviewer, code-reviewer, adversarial-reviewer. **Researchers**: research-agent, search-agent, investigator. **Assessors**: code-assessor, debug-analyzer. **Designers**: architect/architecture-agent, ui-ux-designer, product-designer. **Implementers**: dev-executor, frontend-developer, backend-developer, rust-developer, golang-developer, ios-developer, android-developer, macos-app-developer, windows-app-developer, build-error-resolver, refactor-cleaner. **QA**: qa-agent, e2e-runner, tdd-guide. **Docs**: docs-executor, doc-updater, doc-validator.
+  Writers: requirements-clarifier, bdd-scenario-writer, spec-writer, handoff-writer. Reviewers: spec-reviewer, code-reviewer, adversarial-reviewer. Researchers: research-agent, search-agent, investigator. Assessors: code-assessor, debug-analyzer. Designers: architect/architecture-agent, ui-ux-designer, product-designer. Implementers: dev-executor, frontend-developer, backend-developer, rust-developer, golang-developer, ios-developer, android-developer, macos-app-developer, windows-app-developer, build-error-resolver, refactor-cleaner. QA: qa-agent, e2e-runner, tdd-guide. Docs: docs-executor, doc-updater, doc-validator.
 </topic>
 
 <topic name="Direct Peer Communication">
@@ -43,7 +43,7 @@
 </topic>
 
 <topic name="Phase 10-12 (MANDATORY)">
-  **Phase 10**: Spawn docs-executor to update task-list, implementation-summary, and specification. **Phase 10.5**: Spawn handoff-writer for session handoff document. **Phase 11**: Terminate all remaining teammates. Verify all spec directory files are complete. **Phase 12**: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
+  Phase 10: Spawn docs-executor to update task-list, implementation-summary, and specification. Phase 10.5: Spawn handoff-writer for session handoff document. Phase 11: Terminate all remaining teammates. Verify all spec directory files are complete. Phase 12: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
 </topic>
 
 <quality-gates>

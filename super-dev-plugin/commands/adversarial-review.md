@@ -9,7 +9,7 @@
 <usage>/super-dev:adversarial-review [implementation context]</usage>
 
 <topic name="Review Lenses">
-  **Skeptic**: Challenges correctness and completeness — what inputs/states break this? What error paths are unhandled? What race conditions exist? **Architect**: Challenges structural fitness — does design serve the goal? Where are coupling points? What boundary violations exist? **Minimalist**: Challenges necessity — what can be deleted? Where is premature abstraction? What config exists without second use case?
+  Skeptic: Challenges correctness and completeness — what inputs/states break this? What error paths are unhandled? What race conditions exist? Architect: Challenges structural fitness — does design serve the goal? Where are coupling points? What boundary violations exist? Minimalist: Challenges necessity — what can be deleted? Where is premature abstraction? What config exists without second use case?
 </topic>
 
 <topic name="Destructive Action Gate">

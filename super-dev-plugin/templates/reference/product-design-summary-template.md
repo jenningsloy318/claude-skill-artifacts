@@ -122,7 +122,7 @@ gate-profile: null
       <cell>Option 3</cell>
     </row>
     <row header="true">
-      <cell>**Architecture**</cell>
+      <cell>Architecture</cell>
       <cell></cell>
       <cell></cell>
       <cell></cell>
@@ -152,7 +152,7 @@ gate-profile: null
       <cell>[1-5]</cell>
     </row>
     <row header="true">
-      <cell>**UI/UX**</cell>
+      <cell>UI/UX</cell>
       <cell></cell>
       <cell></cell>
       <cell></cell>
@@ -182,7 +182,7 @@ gate-profile: null
       <cell>[1-5]</cell>
     </row>
     <row header="true">
-      <cell>**Combined**</cell>
+      <cell>Combined</cell>
       <cell></cell>
       <cell></cell>
       <cell></cell>
@@ -212,7 +212,7 @@ gate-profile: null
       <cell>[1-5]</cell>
     </row>
     <row>
-      <cell>**TOTAL**</cell>
+      <cell>TOTAL</cell>
       <cell>[sum]</cell>
       <cell>[sum]</cell>
       <cell>[sum]</cell>
@@ -247,8 +247,8 @@ gate-profile: null
 
   <subsection title="Trade-offs">
     <list type="unordered">
-      <item>**What we gain:** [architecture + UX benefits]</item>
-      <item>**What we give up:** [architecture + UX costs]</item>
+      <item name="What we gain">[architecture + UX benefits]</item>
+      <item name="What we give up">[architecture + UX costs]</item>
     </list>
   </subsection>
 </section>

@@ -22,9 +22,9 @@ gate-profile: gate-bdd.sh
       <field name="priority">P0 | P1 | P2</field>
 
       <paragraph>
-        **Given** [precondition in business language]
-        **When** [single action/event in business language]
-        **Then** [verifiable outcome in business language]
+        Given [precondition in business language]
+        When [single action/event in business language]
+        Then [verifiable outcome in business language]
       </paragraph>
     </scenario>
 
@@ -33,10 +33,10 @@ gate-profile: gate-bdd.sh
       <field name="priority">P0 | P1 | P2</field>
 
       <paragraph>
-        **Given** [precondition]
-        **When** [action]
-        **Then** [outcome]
-        **And** [additional outcome if needed]
+        Given [precondition]
+        When [action]
+        Then [outcome]
+        And [additional outcome if needed]
       </paragraph>
     </scenario>
 
@@ -72,11 +72,11 @@ gate-profile: gate-bdd.sh
 
   <section title="Coverage Summary">
     <list type="unordered">
-      <item>**Total Acceptance Criteria:** [X]</item>
-      <item>**Covered by Scenarios:** [Y]</item>
-      <item>**Uncovered:** [Z] (must be 0)</item>
-      <item>**Total Scenarios:** [N]</item>
-      <item>**Scenarios per AC (avg):** [N/X]</item>
+      <item name="Total Acceptance Criteria">[X]</item>
+      <item name="Covered by Scenarios">[Y]</item>
+      <item name="Uncovered">[Z] (must be 0)</item>
+      <item name="Total Scenarios">[N]</item>
+      <item name="Scenarios per AC (avg)">[N/X]</item>
     </list>
   </section>
 
@@ -152,7 +152,7 @@ The rendered document MUST satisfy `gate-bdd.sh`:
 
 ## Scenario Writing Rules
 
-- **Declarative style only**: Describe WHAT behavior is expected, not HOW
-- **One behavior per scenario**: Each `<scenario>` tests exactly one Given/When/Then pair
-- **Business language**: Use domain terminology; never use banned words (click, navigate, button, field, page, URL, endpoint, database, API, etc.)
-- **Scenario cadence**: 3-5 per feature area; stop at 8
+- Declarative style only: Describe WHAT behavior is expected, not HOW
+- One behavior per scenario: Each `<scenario>` tests exactly one Given/When/Then pair
+- Business language: Use domain terminology; never use banned words (click, navigate, button, field, page, URL, endpoint, database, API, etc.)
+- Scenario cadence: 3-5 per feature area; stop at 8

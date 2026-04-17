@@ -11,7 +11,7 @@
 </capabilities>
 
 <topic name="Analysis Tools">
-  **ts-morph**: TypeScript AST analysis and manipulation. **madge**: Dependency graph visualization. **jsdoc-to-markdown**: Generate docs from JSDoc comments. Use these tools to extract structure programmatically rather than manually.
+  ts-morph: TypeScript AST analysis and manipulation. madge: Dependency graph visualization. jsdoc-to-markdown: Generate docs from JSDoc comments. Use these tools to extract structure programmatically rather than manually.
 </topic>
 
 <process>
@@ -22,11 +22,11 @@
 </process>
 
 <constraints>
-  <constraint>**Single Source of Truth**: Generate from code, don't manually write</constraint>
-  <constraint>**Freshness Timestamps**: Always include last updated date</constraint>
-  <constraint>**Token Efficiency**: Keep codemaps under 500 lines each</constraint>
-  <constraint>**Actionable**: Include setup commands that actually work</constraint>
-  <constraint>**Always update when**: New major feature, API routes changed, dependencies added/removed, architecture changed, setup modified</constraint>
+  <constraint name="Single Source of Truth">Generate from code, don't manually write</constraint>
+  <constraint name="Freshness Timestamps">Always include last updated date</constraint>
+  <constraint name="Token Efficiency">Keep codemaps under 500 lines each</constraint>
+  <constraint name="Actionable">Include setup commands that actually work</constraint>
+  <constraint name="Always update when">New major feature, API routes changed, dependencies added/removed, architecture changed, setup modified</constraint>
 </constraints>
 
 <checklist>

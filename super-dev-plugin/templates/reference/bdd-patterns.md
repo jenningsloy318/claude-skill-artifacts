@@ -18,20 +18,20 @@
 </topic>
 
 <topic name="Priority Levels">
-  - **P0**: Core business behavior (happy path) — always test
-  - **P1**: Important alternative/error path — always test
-  - **P2**: Edge case or secondary behavior — always test (coverage gate is 100%)
+  - P0: Core business behavior (happy path) — always test
+  - P1: Important alternative/error path — always test
+  - P2: Edge case or secondary behavior — always test (coverage gate is 100%)
 </topic>
 
 <principles>
-  <principle>**Declarative style only**: Describe WHAT behavior is expected, not HOW (e.g., "subscriber accesses exclusive content" not "user clicks Upgrade button")</principle>
-  <principle>**One behavior per scenario**: Each scenario tests exactly one Given/When/Then pair</principle>
-  <principle>**Business language**: Use domain terminology; never use banned implementation words</principle>
-  <principle>**Scenario cadence**: 3-5 per feature area; stop at 8</principle>
+  <principle name="Declarative style only">Describe WHAT behavior is expected, not HOW (e.g., "subscriber accesses exclusive content" not "user clicks Upgrade button")</principle>
+  <principle name="One behavior per scenario">Each scenario tests exactly one Given/When/Then pair</principle>
+  <principle name="Business language">Use domain terminology; never use banned implementation words</principle>
+  <principle name="Scenario cadence">3-5 per feature area; stop at 8</principle>
 </principles>
 
 <constraints>
-  <constraint>**Banned words** in scenarios: click, navigate, type, enter, button, field, page, URL, endpoint, database, API, HTTP, JSON, SQL, CSS, selector, element, component, scroll, hover, tap, swipe, drag, drop, submit, form, redirect, render, mount, DOM, query, request, response</constraint>
+  <constraint name="Banned words">in scenarios: click, navigate, type, enter, button, field, page, URL, endpoint, database, API, HTTP, JSON, SQL, CSS, selector, element, component, scroll, hover, tap, swipe, drag, drop, submit, form, redirect, render, mount, DOM, query, request, response</constraint>
 </constraints>
 
 <topic name="Traceability Matrix">
@@ -43,6 +43,6 @@
 </topic>
 
 <checklist>
-  <check>**Per-Scenario (Q1-Q10)**: Q1 Single behavior, Q2 Declarative style, Q3 Business language, Q4 Meaningful title, Q5 Independent, Q6 Concise (3-5 steps), Q7 Concrete examples, Q8 AC traceability, Q9 No implementation leakage, Q10 Testable outcome</check>
-  <check>**Per-Document (D1-D8)**: D1 All AC covered, D2 No scenario explosion (3-8 per area), D3 Traceability matrix complete, D4 Unique IDs, D5 Priorities assigned, D6 Happy path first, D7 Error cases included, D8 No duplicate behaviors</check>
+  <check name="Per-Scenario (Q1-Q10)">Q1 Single behavior, Q2 Declarative style, Q3 Business language, Q4 Meaningful title, Q5 Independent, Q6 Concise (3-5 steps), Q7 Concrete examples, Q8 AC traceability, Q9 No implementation leakage, Q10 Testable outcome</check>
+  <check name="Per-Document (D1-D8)">D1 All AC covered, D2 No scenario explosion (3-8 per area), D3 Traceability matrix complete, D4 Unique IDs, D5 Priorities assigned, D6 Happy path first, D7 Error cases included, D8 No duplicate behaviors</check>
 </checklist>

@@ -14,13 +14,13 @@
 </process>
 
 <principles>
-  <principle>**Be Specific**: Use exact file paths, function names, variable names</principle>
-  <principle>**Consider Edge Cases**: Think about error scenarios, null values, empty states</principle>
-  <principle>**Minimize Changes**: Prefer extending existing code over rewriting</principle>
-  <principle>**Maintain Patterns**: Follow existing project conventions</principle>
-  <principle>**Enable Testing**: Structure changes to be easily testable</principle>
-  <principle>**Think Incrementally**: Each step should be verifiable</principle>
-  <principle>**Document Decisions**: Explain why, not just what</principle>
+  <principle name="Be Specific">Use exact file paths, function names, variable names</principle>
+  <principle name="Consider Edge Cases">Think about error scenarios, null values, empty states</principle>
+  <principle name="Minimize Changes">Prefer extending existing code over rewriting</principle>
+  <principle name="Maintain Patterns">Follow existing project conventions</principle>
+  <principle name="Enable Testing">Structure changes to be easily testable</principle>
+  <principle name="Think Incrementally">Each step should be verifiable</principle>
+  <principle name="Document Decisions">Explain why, not just what</principle>
 </principles>
 
 <topic name="Refactoring Plans">

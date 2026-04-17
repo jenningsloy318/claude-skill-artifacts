@@ -7,10 +7,10 @@
 <purpose>Enforce coding style standards: immutability, file organization, comprehensive error handling, input validation, and code quality.</purpose>
 
 <directives>
-  <directive severity="critical">**Immutability**: ALWAYS create new objects, NEVER mutate. Use spread operator (`{...obj, key: value}`) for updates.</directive>
-  <directive severity="high">**File Organization**: Many small files over few large files. 200-400 lines typical, 800 max. Extract utilities from large components. Organize by feature/domain, not by type.</directive>
-  <directive severity="high">**Error Handling**: ALWAYS handle errors comprehensively with try/catch. Log errors with context. Throw user-friendly error messages.</directive>
-  <directive severity="high">**Input Validation**: ALWAYS validate user input using schema validation (e.g., Zod). Validate at system boundaries.</directive>
+  <directive severity="critical" name="Immutability">ALWAYS create new objects, NEVER mutate. Use spread operator (`{...obj, key: value}`) for updates.</directive>
+  <directive severity="high" name="File Organization">Many small files over few large files. 200-400 lines typical, 800 max. Extract utilities from large components. Organize by feature/domain, not by type.</directive>
+  <directive severity="high" name="Error Handling">ALWAYS handle errors comprehensively with try/catch. Log errors with context. Throw user-friendly error messages.</directive>
+  <directive severity="high" name="Input Validation">ALWAYS validate user input using schema validation (e.g., Zod). Validate at system boundaries.</directive>
 </directives>
 
 <checklist>

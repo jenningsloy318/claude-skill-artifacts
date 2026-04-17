@@ -19,7 +19,7 @@
 
 <process>
   <step n="1" name="Security Response">If security issue found: STOP immediately</step>
-  <step n="2" name="Engage Specialist">Use **security-reviewer** agent</step>
+  <step n="2" name="Engage Specialist">Use security-reviewer agent</step>
   <step n="3" name="Fix Critical">Fix CRITICAL issues before continuing</step>
   <step n="4" name="Rotate Secrets">Rotate any exposed secrets</step>
   <step n="5" name="Review Codebase">Review entire codebase for similar issues</step>

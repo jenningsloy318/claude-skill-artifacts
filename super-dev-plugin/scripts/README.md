@@ -2,14 +2,14 @@
 
 Scripts for connecting to MCP servers configured in Claude Code.
 
-**NEW:** Shell scripts using `mcp-cli` (faster, no Python dependency)
-**LEGACY:** Python scripts using `mcp-use` (still supported)
+NEW: Shell scripts using `mcp-cli` (faster, no Python dependency)
+LEGACY: Python scripts using `mcp-use` (still supported)
 
 ## Quick Start
 
 ### Prerequisites
 
-**For Shell Scripts (Recommended):**
+For Shell Scripts (Recommended):
 ```bash
 # Install mcp-cli
 curl -fsSL https://raw.githubusercontent.com/philschmid/mcp-cli/main/install.sh | bash
@@ -19,7 +19,7 @@ sudo apt-get install jq  # Ubuntu/Debian
 brew install jq           # macOS
 ```
 
-**For Python Scripts (Legacy):**
+For Python Scripts (Legacy):
 ```bash
 # Python 3.10+ required
 # mcp-use auto-installs on first run
@@ -27,7 +27,7 @@ brew install jq           # macOS
 
 ### Usage
 
-**Shell Scripts (New):**
+Shell Scripts (New):
 ```bash
 # Web search with Exa
 ./scripts/exa/exa_search.sh --query "Next.js 15 best practices" --results 5
@@ -45,7 +45,7 @@ brew install jq           # macOS
 ./scripts/github/github_search_code.sh --query "HttpConnector language:python"
 ```
 
-**Python Scripts (Legacy):**
+Python Scripts (Legacy):
 ```bash
 # Same commands but with python3 prefix and .py extension
 python3 scripts/exa/exa_search.py --query "Next.js 15 best practices" --results 5
@@ -57,18 +57,18 @@ python3 scripts/exa/exa_code.py --query "React hooks patterns" --tokens 5000
 
 | Feature | Shell (mcp-cli) | Python (mcp-use) |
 |---------|-----------------|------------------|
-| **Installation** | Single binary (curl install) | Python 3.10+, pip |
-| **Dependencies** | jq only | mcp-use library |
-| **Server Support** | HTTP + stdio | HTTP only |
-| **Startup Time** | ~100ms | ~1-2s |
-| **Script Size** | ~30 lines | ~250 lines |
-| **Maintenance** | Simple shell scripts | Python async/await |
+| Installation | Single binary (curl install) | Python 3.10+, pip |
+| Dependencies | jq only | mcp-use library |
+| Server Support | HTTP + stdio | HTTP only |
+| Startup Time | ~100ms | ~1-2s |
+| Script Size | ~30 lines | ~250 lines |
+| Maintenance | Simple shell scripts | Python async/await |
 
-**Recommendation:** Use shell scripts for new projects. Python scripts remain for backward compatibility.
+Recommendation: Use shell scripts for new projects. Python scripts remain for backward compatibility.
 
 ## Architecture
 
-**Shell Scripts (mcp-cli):**
+Shell Scripts (mcp-cli):
 ```
 Agent (Bash) ──► Shell Script ──► mcp-cli ──► MCP Server (HTTP/stdio)
                          │
@@ -76,7 +76,7 @@ Agent (Bash) ──► Shell Script ──► mcp-cli ──► MCP Server (HTTP
                    ~/.claude.json (auto-detected)
 ```
 
-**Python Scripts (mcp-use):**
+Python Scripts (mcp-use):
 ```
 Agent (Bash) ──► Python Script ──► HttpConnector ──► MCP HTTP Server
                          │
@@ -130,7 +130,7 @@ Agent (Bash) ──► Python Script ──► HttpConnector ──► MCP HTTP 
 
 #### Exa Web Search
 
-**Shell:**
+Shell:
 ```bash
 ./scripts/exa/exa_search.sh \
   --query "React 19 new features" \
@@ -139,7 +139,7 @@ Agent (Bash) ──► Python Script ──► HttpConnector ──► MCP HTTP 
   --context-chars 15000
 ```
 
-**Python:**
+Python:
 ```bash
 python3 scripts/exa/exa_search.py \
   --query "React 19 new features" \
@@ -150,14 +150,14 @@ python3 scripts/exa/exa_search.py \
 
 #### Exa Code Context
 
-**Shell:**
+Shell:
 ```bash
 ./scripts/exa/exa_code.sh \
   --query "Next.js app router middleware" \
   --tokens 10000
 ```
 
-**Python:**
+Python:
 ```bash
 python3 scripts/exa/exa_code.py \
   --query "Next.js app router middleware" \
@@ -166,14 +166,14 @@ python3 scripts/exa/exa_code.py \
 
 #### DeepWiki - Ask a Question
 
-**Shell:**
+Shell:
 ```bash
 ./scripts/deepwiki/deepwiki_ask.sh \
   --repo "vercel/next.js" \
   --question "How do I use the App Router?"
 ```
 
-**Python:**
+Python:
 ```bash
 python3 scripts/deepwiki/deepwiki_ask.py \
   --repo "vercel/next.js" \
@@ -182,7 +182,7 @@ python3 scripts/deepwiki/deepwiki_ask.py \
 
 #### Context7 - Get Library Documentation
 
-**Shell:**
+Shell:
 ```bash
 ./scripts/context7/context7_docs.sh \
   --library-id "/vercel/next.js" \
@@ -190,7 +190,7 @@ python3 scripts/deepwiki/deepwiki_ask.py \
   --topic "routing"
 ```
 
-**Python:**
+Python:
 ```bash
 python3 scripts/context7/context7_docs.py \
   --library-id "/vercel/next.js" \
@@ -200,14 +200,14 @@ python3 scripts/context7/context7_docs.py \
 
 #### GitHub - Search Code
 
-**Shell:**
+Shell:
 ```bash
 ./scripts/github/github_search_code.sh \
   --query "HttpConnector language:python" \
   --per-page 10
 ```
 
-**Python:**
+Python:
 ```bash
 python3 scripts/github/github_search_code.py \
   --query "HttpConnector language:python" \
@@ -218,14 +218,14 @@ python3 scripts/github/github_search_code.py \
 
 ### Shell Script Template
 
-1. **Copy the template:**
+1. Copy the template:
    ```bash
    mkdir scripts/new_server
    cp scripts/templates/mcp_wrapper.sh scripts/new_server/new_tool.sh
    chmod +x scripts/new_server/new_tool.sh
    ```
 
-2. **Customize the script:**
+2. Customize the script:
    ```bash
    # Set server and tool names
    SERVER_NAME="new_server"
@@ -235,27 +235,27 @@ python3 scripts/github/github_search_code.py \
    # Implement build_json_args() for JSON construction
    ```
 
-3. **Test:**
+3. Test:
    ```bash
    ./scripts/new_server/new_tool.sh --query "test"
    ```
 
 ### Python Script Template
 
-1. **Copy the template:**
+1. Copy the template:
    ```bash
    mkdir scripts/new_server
    cp specification/11-mcp-http-connector/template_connector.py scripts/new_server/new_tool.py
    chmod +x scripts/new_server/new_tool.py
    ```
 
-2. **Customize the script:**
+2. Customize the script:
    - Update `SERVER_PATTERN` to match your MCP server name
    - Update `TOOL_NAME` to the target tool
    - Modify CLI arguments as needed
    - Map arguments to tool parameters
 
-3. **Test:**
+3. Test:
    ```bash
    python3 scripts/new_server/new_tool.py --query "test"
    ```
@@ -264,7 +264,7 @@ python3 scripts/github/github_search_code.py \
 
 All scripts output JSON:
 
-**Success:**
+Success:
 ```json
 {
   "content": [
@@ -277,7 +277,7 @@ All scripts output JSON:
 }
 ```
 
-**Error:**
+Error:
 ```json
 {
   "success": false,
@@ -290,14 +290,14 @@ All scripts output JSON:
 
 Scripts auto-discover MCP config from:
 
-**For Shell Scripts (mcp-cli):**
+For Shell Scripts (mcp-cli):
 1. `~/.claude.json` (auto-detected)
 2. `~/.mcp_servers.json`
 3. `~/.config/mcp/mcp_servers.json`
 4. `./mcp_servers.json`
 5. `$MCP_CONFIG_PATH` environment variable
 
-**For Python Scripts (mcp-use):**
+For Python Scripts (mcp-use):
 1. `~/.claude.json`
 2. `~/.claude/settings.json`
 3. `~/.claude/settings.local.json`
@@ -330,11 +330,11 @@ Expected config structure:
 
 ## Dependencies
 
-**Shell Scripts:**
+Shell Scripts:
 - `mcp-cli` - Single binary, no runtime dependencies
 - `jq` - JSON processing
 
-**Python Scripts:**
+Python Scripts:
 - Python 3.10+
 - `mcp-use` (auto-installed on first run)
 
@@ -429,28 +429,28 @@ This will check:
 | `github_search_repos` | ❌ | ✅ | Migrated |
 | `github_file_contents` | ❌ | ✅ | Migrated |
 
-**Migration Complete!** All scripts have been migrated to use mcp-cli (shell scripts). Python scripts have been removed.
+Migration Complete! All scripts have been migrated to use mcp-cli (shell scripts). Python scripts have been removed.
 
 Legend: ✅ Complete | ❌ Removed
 
 ## Resources
 
-- **mcp-cli:** https://github.com/philschmid/mcp-cli
-- **mcp-use:** https://github.com/simonw/mcp-use
-- **MCP Specification:** https://modelcontextprotocol.io/
-- **MCP Registry:** https://github.com/modelcontextprotocol/servers
+- mcp-cli: https://github.com/philschmid/mcp-cli
+- mcp-use: https://github.com/simonw/mcp-use
+- MCP Specification: https://modelcontextprotocol.io/
+- MCP Registry: https://github.com/modelcontextprotocol/servers
 
 ## Changelog
 
 ### v2.0.0 (2026-01-22) - mcp-cli Migration
 
-- **Added:** Shell script wrappers using mcp-cli
-- **Added:** Shell script template for easy script creation
-- **Added:** Migration test suite
-- **Improved:** 22x faster startup with shell scripts
-- **Improved:** No Python dependency for shell scripts
-- **Improved:** Support for both HTTP and stdio MCP servers
-- **Deprecated:** Python scripts marked as legacy (still supported)
+- Added: Shell script wrappers using mcp-cli
+- Added: Shell script template for easy script creation
+- Added: Migration test suite
+- Improved: 22x faster startup with shell scripts
+- Improved: No Python dependency for shell scripts
+- Improved: Support for both HTTP and stdio MCP servers
+- Deprecated: Python scripts marked as legacy (still supported)
 
 ### v1.0.0 - Initial Release
 

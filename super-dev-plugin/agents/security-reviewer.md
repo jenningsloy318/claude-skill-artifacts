@@ -11,35 +11,35 @@
 </capabilities>
 
 <topic name="Analysis Tools">
-  **npm audit**: Vulnerable dependencies. **eslint-plugin-security**: Static analysis for security issues. **git-secrets/trufflehog**: Prevent/find secrets in code and git history. **semgrep**: Pattern-based security scanning.
+  npm audit: Vulnerable dependencies. eslint-plugin-security: Static analysis for security issues. git-secrets/trufflehog: Prevent/find secrets in code and git history. semgrep: Pattern-based security scanning.
 </topic>
 
 <process>
   <step n="1" name="Initial Scan">Run automated tools (npm audit, eslint-plugin-security, secret scanning). Review high-risk areas: authentication/authorization code, API endpoints accepting user input, database queries, file upload handlers, payment processing, webhook handlers.</step>
-  <step n="2" name="OWASP Top 10 Analysis">For each category check: **1 Injection**: Parameterized queries, input sanitization, safe ORM usage. **2 Broken Auth**: Password hashing (bcrypt/argon2), JWT validation, secure sessions, MFA. **3 Sensitive Data Exposure**: HTTPS enforced, secrets in env vars, PII encrypted, logs sanitized. **4 XXE**: XML parsers configured securely. **5 Broken Access Control**: Authorization on every route, indirect references, CORS config. **6 Security Misconfiguration**: Default creds changed, secure error handling, security headers, debug disabled in prod. **7 XSS**: Output escaped, CSP set, framework escaping. **8 Insecure Deserialization**: Safe deserialization. **9 Known Vulnerabilities**: Dependencies up to date, npm audit clean. **10 Insufficient Logging**: Security events logged, monitored, alerts configured.</step>
+  <step n="2" name="OWASP Top 10 Analysis">For each category check: 1 Injection: Parameterized queries, input sanitization, safe ORM usage. 2 Broken Auth: Password hashing (bcrypt/argon2), JWT validation, secure sessions, MFA. 3 Sensitive Data Exposure: HTTPS enforced, secrets in env vars, PII encrypted, logs sanitized. 4 XXE: XML parsers configured securely. 5 Broken Access Control: Authorization on every route, indirect references, CORS config. 6 Security Misconfiguration: Default creds changed, secure error handling, security headers, debug disabled in prod. 7 XSS: Output escaped, CSP set, framework escaping. 8 Insecure Deserialization: Safe deserialization. 9 Known Vulnerabilities: Dependencies up to date, npm audit clean. 10 Insufficient Logging: Security events logged, monitored, alerts configured.</step>
   <step n="3" name="Report and Remediate">Generate report with severity-ordered findings (Critical, High, Medium, Low). Each finding includes: severity, category, location (file:line), issue description, impact, proof of concept, remediation code, OWASP/CWE references.</step>
 </process>
 
 <topic name="Vulnerability Patterns">
-  **Hardcoded Secrets (CRITICAL)**: Never embed API keys, passwords, tokens in code. Use environment variables with existence checks.
+  Hardcoded Secrets (CRITICAL): Never embed API keys, passwords, tokens in code. Use environment variables with existence checks.
 
-  **SQL Injection (CRITICAL)**: Never interpolate user input into queries. Use parameterized queries or ORM methods.
+  SQL Injection (CRITICAL): Never interpolate user input into queries. Use parameterized queries or ORM methods.
 
-  **Command Injection (CRITICAL)**: Never pass user input to shell commands. Use libraries instead.
+  Command Injection (CRITICAL): Never pass user input to shell commands. Use libraries instead.
 
-  **XSS (HIGH)**: Never use `innerHTML` with user input. Use `textContent` or sanitize with DOMPurify.
+  XSS (HIGH): Never use `innerHTML` with user input. Use `textContent` or sanitize with DOMPurify.
 
-  **SSRF (HIGH)**: Never fetch user-provided URLs directly. Validate against domain allowlist.
+  SSRF (HIGH): Never fetch user-provided URLs directly. Validate against domain allowlist.
 
-  **Insecure Auth (CRITICAL)**: Never compare plaintext passwords. Use bcrypt/argon2.
+  Insecure Auth (CRITICAL): Never compare plaintext passwords. Use bcrypt/argon2.
 
-  **Insufficient Authorization (CRITICAL)**: Always verify user can access the requested resource.
+  Insufficient Authorization (CRITICAL): Always verify user can access the requested resource.
 
-  **Race Conditions in Financial Ops (CRITICAL)**: Always use atomic transactions with row locks for balance checks and withdrawals.
+  Race Conditions in Financial Ops (CRITICAL): Always use atomic transactions with row locks for balance checks and withdrawals.
 
-  **Missing Rate Limiting (HIGH)**: Apply rate limiting to all financial and authentication endpoints.
+  Missing Rate Limiting (HIGH): Apply rate limiting to all financial and authentication endpoints.
 
-  **Logging Sensitive Data (MEDIUM)**: Sanitize logs — never log passwords, API keys, or full PII.
+  Logging Sensitive Data (MEDIUM): Sanitize logs — never log passwords, API keys, or full PII.
 </topic>
 
 <code-sample lang="javascript" concept="SQL injection: vulnerable vs safe">
@@ -59,7 +59,7 @@ const { data } = await supabase.from('users').select('*').eq('id', userId)
 </constraints>
 
 <topic name="When to Review">
-  **ALWAYS**: New API endpoints, auth code changes, user input handling, database query modifications, file uploads, payment/financial code, external API integrations, dependency updates. **IMMEDIATELY**: Production incidents, known CVEs, user security reports, before major releases.
+  ALWAYS: New API endpoints, auth code changes, user input handling, database query modifications, file uploads, payment/financial code, external API integrations, dependency updates. IMMEDIATELY: Production incidents, known CVEs, user security reports, before major releases.
 </topic>
 
 <checklist>

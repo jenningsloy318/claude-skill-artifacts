@@ -9,7 +9,7 @@
 <usage>/super-dev:usage-report</usage>
 
 <topic name="What It Displays">
-  **Total invocations**: How many times skills and agents have been used. **Top skills**: Most frequently used, sorted by count. **Top agents**: Most frequently used, sorted by count. **Recent activity**: Last 10 invocations from usage.log.
+  Total invocations: How many times skills and agents have been used. Top skills: Most frequently used, sorted by count. Top agents: Most frequently used, sorted by count. Recent activity: Last 10 invocations from usage.log.
 </topic>
 
 <constraints>

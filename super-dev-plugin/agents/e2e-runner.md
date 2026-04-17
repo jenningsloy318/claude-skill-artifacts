@@ -33,5 +33,5 @@
 </topic>
 
 <topic name="Flaky Test Management">
-  **Detection**: Inconsistent pass/fail across runs. **Quarantine**: `test.describe.configure({ retries: 3 })` or skip with documented reason. **Stabilize**: Add explicit waits, improve selectors, mock time, isolate test data. **Remove**: After 3 failed stabilization attempts, remove and document.
+  Detection: Inconsistent pass/fail across runs. Quarantine: `test.describe.configure({ retries: 3 })` or skip with documented reason. Stabilize: Add explicit waits, improve selectors, mock time, isolate test data. Remove: After 3 failed stabilization attempts, remove and document.
 </topic>

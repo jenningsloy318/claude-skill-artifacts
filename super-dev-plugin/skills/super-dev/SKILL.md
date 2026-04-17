@@ -7,7 +7,7 @@
   <license>MIT</license>
 </meta>
 
-<purpose>Orchestrate specialized agent teammates through research, architecture, coding, QA, code review, and documentation phases. Use for any multi-step development task requiring planning, implementation, testing, and review.</purpose>
+<purpose>Team Lead agent team workflow. The Team Lead orchestrates specialized agent teammates — it NEVER implements directly, only spawns, coordinates, and verifies. Agents execute research, architecture, coding, QA, code review, and documentation phases in parallel where possible.</purpose>
 
 <triggers>Triggers on: "implement", "build", "fix bug", "refactor", "add feature", "develop this", "help me build", "add functionality", "optimize performance", "resolve deprecation", "systematic development". Do NOT trigger on: simple questions, file searches, one-off commands, code explanations, quick edits, non-development tasks.</triggers>
 
@@ -22,7 +22,7 @@
   <phase n="5.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 5.3. UI ONLY → 5.5. BOTH → 5.4 (product-designer).</phase>
   <phase n="5.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</phase>
   <phase n="6" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</phase>
-  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. If issues found, loop to Phase 6.</phase>
+  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. If issues found, Loop Phase 6/7 until approved. Max 3 iterations</phase>
   <phase n="8" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh.</phase>
   <phase n="9" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. Loop Phase 8/9 until approved. Max 3 iterations.</phase>
   <phase n="10" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</phase>
@@ -73,6 +73,19 @@
     Before spawning ANY agent in Phase 2+, Team Lead MUST verify `pwd` is inside `.worktree/`. If not, STOP immediately.
 
     Check: `pwd | grep -q '\.worktree/'` — if fails, all gate scripts and agent work will use wrong relative paths.
+  </process>
+
+  <process name="Domain-Aware Agent Routing">
+    For Phase 8, spawn domain specialists directly instead of dev-executor:
+    <route domain="Rust" agent="rust-developer" />
+    <route domain="Go" agent="golang-developer" />
+    <route domain="Frontend" agent="frontend-developer" />
+    <route domain="Backend" agent="backend-developer" />
+    <route domain="iOS" agent="ios-developer" />
+    <route domain="Android" agent="android-developer" />
+    <route domain="Windows" agent="windows-app-developer" />
+    <route domain="macOS" agent="macos-app-developer" />
+    <route domain="Unknown" agent="dev-executor" />
   </process>
 
   <process name="Phase Enforcement">

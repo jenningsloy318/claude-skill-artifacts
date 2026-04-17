@@ -7,10 +7,10 @@
 <purpose>Evaluate the current codebase so changes align with established patterns and best practices. Prioritize signal over noise, concrete evidence, and actionable recommendations.</purpose>
 
 <principles>
-  <principle>**Pattern-first alignment**: Identify and document current project patterns before proposing changes</principle>
-  <principle>**Evidence-based**: Cite exact files and lines for all findings</principle>
-  <principle>**Actionable output**: Provide clear, prioritized recommendations with effort and impact</principle>
-  <principle>**Efficiency**: Focus on scoped areas, avoid restating what linters already enforce</principle>
+  <principle name="Pattern-first alignment">Identify and document current project patterns before proposing changes</principle>
+  <principle name="Evidence-based">Cite exact files and lines for all findings</principle>
+  <principle name="Actionable output">Provide clear, prioritized recommendations with effort and impact</principle>
+  <principle name="Efficiency">Focus on scoped areas, avoid restating what linters already enforce</principle>
 </principles>
 
 <input>
@@ -20,11 +20,11 @@
 </input>
 
 <search-strategy>
-  **Text Pattern Search**: Function definitions (`function\s+\w+`), class definitions (`class\s+\w+`), imports (`^import\s+`), errors (`throw|Error|panic`), config values (`process\.env\.\w+`), TODO/FIXME, console logs, type definitions.
+  Text Pattern Search: Function definitions (`function\s+\w+`), class definitions (`class\s+\w+`), imports (`^import\s+`), errors (`throw|Error|panic`), config values (`process\.env\.\w+`), TODO/FIXME, console logs, type definitions.
 
-  **Structural Analysis**: React components (function + JSX return), async/try-catch handlers, state hooks, common patterns (Singleton/Factory/Observer), Rust impl blocks/trait implementations, Go interfaces/goroutines.
+  Structural Analysis: React components (function + JSX return), async/try-catch handlers, state hooks, common patterns (Singleton/Factory/Observer), Rust impl blocks/trait implementations, Go interfaces/goroutines.
 
-  **File Coverage Tracking**: Enumerate sources, track analyzed vs total files, report coverage, list exclusions with reasons.
+  File Coverage Tracking: Enumerate sources, track analyzed vs total files, report coverage, list exclusions with reasons.
 </search-strategy>
 
 <process>

@@ -19,14 +19,14 @@
 </workflow>
 
 <constraints>
-  <constraint>**Tests BEFORE code** — no code without tests. This is not optional.</constraint>
-  <constraint>**All public functions**: Must have unit tests</constraint>
-  <constraint>**All API endpoints**: Must have integration tests</constraint>
-  <constraint>**Critical user flows**: Must have E2E tests</constraint>
-  <constraint>**Edge cases**: null, empty, invalid types, boundaries, errors, race conditions, large data, special characters</constraint>
-  <constraint>**Tests must be independent** — no shared state between tests</constraint>
-  <constraint>**Coverage must be 80%+** (branches, functions, lines, statements)</constraint>
-  <constraint>**Mock external dependencies** — Supabase, Redis, OpenAI, network calls</constraint>
+  <constraint name="Tests BEFORE code">No code without tests. This is not optional.</constraint>
+  <constraint name="All public functions">Must have unit tests</constraint>
+  <constraint name="All API endpoints">Must have integration tests</constraint>
+  <constraint name="Critical user flows">Must have E2E tests</constraint>
+  <constraint name="Edge cases">null, empty, invalid types, boundaries, errors, race conditions, large data, special characters</constraint>
+  <constraint name="Tests must be independent">No shared state between tests</constraint>
+  <constraint name="Coverage must be 80%+">Branches, functions, lines, statements</constraint>
+  <constraint name="Mock external dependencies">Supabase, Redis, OpenAI, network calls</constraint>
 </constraints>
 
 <anti-patterns>

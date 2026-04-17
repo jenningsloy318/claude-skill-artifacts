@@ -85,22 +85,22 @@ gate-profile: adversarial-review
 
   <subsection title="High">
     <finding id="AF-001" lens="Skeptic" vector="V2" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Recommendation:</strong> [concrete action, not vague advice]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Recommendation">[concrete action, not vague advice]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="Medium">
     <finding id="AF-002" lens="Architect" vector="V7" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Recommendation:</strong> [concrete action]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Recommendation">[concrete action]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="Low">
     <finding id="AF-003" lens="Minimalist" vector="V7" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Recommendation:</strong> [concrete action]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Recommendation">[concrete action]</paragraph>
     </finding>
   </subsection>
 </section>
@@ -173,9 +173,9 @@ gate-profile: adversarial-review
 <section title="Lead Judgment">
   <paragraph>For each finding: accept or reject with a one-line rationale.</paragraph>
   <list type="unordered">
-    <item><strong>AF-001:</strong> [accept/reject] -- [rationale]</item>
-    <item><strong>AF-002:</strong> [accept/reject] -- [rationale]</item>
-    <item><strong>AF-003:</strong> [accept/reject] -- [rationale]</item>
+    <item name="AF-001">[accept/reject] -- [rationale]</item>
+    <item name="AF-002">[accept/reject] -- [rationale]</item>
+    <item name="AF-003">[accept/reject] -- [rationale]</item>
   </list>
 </section>
 

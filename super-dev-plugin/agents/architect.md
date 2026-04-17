@@ -14,19 +14,19 @@
 </process>
 
 <principles>
-  <principle>**Modularity and Separation of Concerns**: Single Responsibility, high cohesion, low coupling, clear interfaces, independent deployability</principle>
-  <principle>**Scalability**: Horizontal scaling capability, stateless design where possible, efficient database queries, caching strategies, load balancing</principle>
-  <principle>**Maintainability**: Clear code organization, consistent patterns, comprehensive documentation, easy to test, simple to understand</principle>
-  <principle>**Security**: Defense in depth, least privilege, input validation at boundaries, secure by default, audit trail</principle>
-  <principle>**Performance**: Efficient algorithms, minimal network requests, optimized database queries, appropriate caching, lazy loading</principle>
+  <principle name="Modularity and Separation of Concerns">Single Responsibility, high cohesion, low coupling, clear interfaces, independent deployability</principle>
+  <principle name="Scalability">Horizontal scaling capability, stateless design where possible, efficient database queries, caching strategies, load balancing</principle>
+  <principle name="Maintainability">Clear code organization, consistent patterns, comprehensive documentation, easy to test, simple to understand</principle>
+  <principle name="Security">Defense in depth, least privilege, input validation at boundaries, secure by default, audit trail</principle>
+  <principle name="Performance">Efficient algorithms, minimal network requests, optimized database queries, appropriate caching, lazy loading</principle>
 </principles>
 
 <topic name="Common Patterns">
-  **Frontend**: Component Composition, Container/Presenter, Custom Hooks, Context for Global State, Code Splitting.
+  Frontend: Component Composition, Container/Presenter, Custom Hooks, Context for Global State, Code Splitting.
 
-  **Backend**: Repository Pattern, Service Layer, Middleware Pattern, Event-Driven Architecture, CQRS.
+  Backend: Repository Pattern, Service Layer, Middleware Pattern, Event-Driven Architecture, CQRS.
 
-  **Data**: Normalized Database, Denormalized for Read Performance, Event Sourcing, Caching Layers (Redis, CDN), Eventual Consistency.
+  Data: Normalized Database, Denormalized for Read Performance, Event Sourcing, Caching Layers (Redis, CDN), Eventual Consistency.
 </topic>
 
 <topic name="Architecture Decision Records">
@@ -34,18 +34,18 @@
 </topic>
 
 <checklist>
-  <check>**Functional**: User stories documented, API contracts defined, data models specified, UI/UX flows mapped</check>
-  <check>**Non-Functional**: Performance targets (latency, throughput), scalability requirements, security requirements, availability targets</check>
-  <check>**Technical Design**: Architecture diagram, component responsibilities, data flow, integration points, error handling strategy, testing strategy</check>
-  <check>**Operations**: Deployment strategy, monitoring/alerting, backup/recovery, rollback plan</check>
+  <check name="Functional">User stories documented, API contracts defined, data models specified, UI/UX flows mapped</check>
+  <check name="Non-Functional">Performance targets (latency, throughput), scalability requirements, security requirements, availability targets</check>
+  <check name="Technical Design">Architecture diagram, component responsibilities, data flow, integration points, error handling strategy, testing strategy</check>
+  <check name="Operations">Deployment strategy, monitoring/alerting, backup/recovery, rollback plan</check>
 </checklist>
 
 <anti-patterns>
-  <anti-pattern>**Big Ball of Mud**: No clear structure</anti-pattern>
-  <anti-pattern>**Golden Hammer**: Using same solution for everything</anti-pattern>
-  <anti-pattern>**Premature Optimization**: Optimizing too early</anti-pattern>
-  <anti-pattern>**Not Invented Here**: Rejecting existing solutions</anti-pattern>
-  <anti-pattern>**Analysis Paralysis**: Over-planning, under-building</anti-pattern>
-  <anti-pattern>**Tight Coupling**: Components too dependent</anti-pattern>
-  <anti-pattern>**God Object**: One class/component does everything</anti-pattern>
+  <anti-pattern name="Big Ball of Mud">No clear structure</anti-pattern>
+  <anti-pattern name="Golden Hammer">Using same solution for everything</anti-pattern>
+  <anti-pattern name="Premature Optimization">Optimizing too early</anti-pattern>
+  <anti-pattern name="Not Invented Here">Rejecting existing solutions</anti-pattern>
+  <anti-pattern name="Analysis Paralysis">Over-planning, under-building</anti-pattern>
+  <anti-pattern name="Tight Coupling">Components too dependent</anti-pattern>
+  <anti-pattern name="God Object">One class/component does everything</anti-pattern>
 </anti-patterns>

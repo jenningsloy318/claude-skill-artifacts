@@ -9,7 +9,7 @@
 <usage>/super-dev:e2e [feature or user flow to test]</usage>
 
 <topic name="What It Does">
-  **Test Generation**: Create Playwright tests from requirements and BDD scenarios. **Cross-Browser**: Run across Chrome, Firefox, Safari (WebKit). **Artifact Management**: Capture screenshots on failure, videos for critical flows, traces for debugging. **Flaky Test Handling**: Detect, quarantine, and stabilize intermittent failures.
+  Test Generation: Create Playwright tests from requirements and BDD scenarios. Cross-Browser: Run across Chrome, Firefox, Safari (WebKit). Artifact Management: Capture screenshots on failure, videos for critical flows, traces for debugging. Flaky Test Handling: Detect, quarantine, and stabilize intermittent failures.
 </topic>
 
 <process>

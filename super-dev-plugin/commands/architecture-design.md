@@ -9,7 +9,7 @@
 <usage>/super-dev:architecture-design [feature description]</usage>
 
 <topic name="Design Output">
-  **Module Decomposition**: Components with responsibilities, interfaces, dependencies. **ADRs**: MADR 3.0.0 format with status, context, decision drivers, 3+ considered options, evaluation matrix. **Data Flow**: Diagrams showing how data moves through the system. **API Contracts**: Interface definitions between modules.
+  Module Decomposition: Components with responsibilities, interfaces, dependencies. ADRs: MADR 3.0.0 format with status, context, decision drivers, 3+ considered options, evaluation matrix. Data Flow: Diagrams showing how data moves through the system. API Contracts: Interface definitions between modules.
 </topic>
 
 <output>

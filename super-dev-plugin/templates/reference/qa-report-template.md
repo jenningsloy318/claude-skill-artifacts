@@ -89,10 +89,10 @@ gate-profile: gate-build.sh
 
     <subsection title="Coverage Summary">
       <list type="unordered">
-        <item>**Total Scenarios:** [N]</item>
-        <item>**Covered (with passing test):** [M]</item>
-        <item>**Uncovered:** [N-M] (must be 0 for Phase 9 gate)</item>
-        <item>**Coverage:** [M/N * 100]%</item>
+        <item name="Total Scenarios">[N]</item>
+        <item name="Covered (with passing test)">[M]</item>
+        <item name="Uncovered">[N-M] (must be 0 for Phase 9 gate)</item>
+        <item name="Coverage">[M/N * 100]%</item>
       </list>
     </subsection>
   </section>
@@ -195,14 +195,14 @@ gate-profile: gate-build.sh
 
     <subsection title="DEF-001: [Defect Title]">
       <list type="unordered">
-        <item>**Severity:** Critical | High | Medium | Low</item>
-        <item>**Scenario:** SCENARIO-XXX (or N/A)</item>
-        <item>**Test Case:** [test name]</item>
-        <item>**Steps to Reproduce:** [steps]</item>
-        <item>**Expected:** [expected behavior]</item>
-        <item>**Actual:** [actual behavior]</item>
-        <item>**Status:** Fixed | Open | Deferred</item>
-        <item>**Evidence:** [screenshot/log path or inline snippet]</item>
+        <item name="Severity">Critical | High | Medium | Low</item>
+        <item name="Scenario">SCENARIO-XXX (or N/A)</item>
+        <item name="Test Case">[test name]</item>
+        <item name="Steps to Reproduce">[steps]</item>
+        <item name="Expected">[expected behavior]</item>
+        <item name="Actual">[actual behavior]</item>
+        <item name="Status">Fixed | Open | Deferred</item>
+        <item name="Evidence">[screenshot/log path or inline snippet]</item>
       </list>
     </subsection>
 
@@ -224,11 +224,11 @@ gate-profile: gate-build.sh
 
   <section title="Artifacts">
     <list type="unordered">
-      <item>**Test traces:** [path or N/A]</item>
-      <item>**Screenshots:** [path or N/A]</item>
-      <item>**Network logs:** [path or N/A]</item>
-      <item>**JUnit XML:** [path or N/A]</item>
-      <item>**Coverage report:** [path or N/A]</item>
+      <item name="Test traces">[path or N/A]</item>
+      <item name="Screenshots">[path or N/A]</item>
+      <item name="Network logs">[path or N/A]</item>
+      <item name="JUnit XML">[path or N/A]</item>
+      <item name="Coverage report">[path or N/A]</item>
     </list>
   </section>
 

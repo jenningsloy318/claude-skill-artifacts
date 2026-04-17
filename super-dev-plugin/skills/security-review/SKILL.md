@@ -16,16 +16,16 @@
 </workflow>
 
 <constraints>
-  <constraint>**CRITICAL**: No hardcoded secrets — use environment variables</constraint>
-  <constraint>**CRITICAL**: Parameterized queries only — no string interpolation in SQL</constraint>
-  <constraint>**CRITICAL**: No shell command injection — use libraries, not exec()</constraint>
-  <constraint>**CRITICAL**: Hashed password comparison only — never plaintext</constraint>
-  <constraint>**CRITICAL**: Authorization check on every protected route</constraint>
-  <constraint>**CRITICAL**: Atomic transactions for financial operations with row locks</constraint>
-  <constraint>**HIGH**: Rate limiting on all financial and auth endpoints</constraint>
-  <constraint>**HIGH**: XSS prevention — never innerHTML with user input</constraint>
-  <constraint>**HIGH**: SSRF prevention — validate URLs against domain allowlist</constraint>
-  <constraint>**MEDIUM**: Sanitize logs — never log passwords, API keys, or full PII</constraint>
+  <constraint name="CRITICAL">No hardcoded secrets — use environment variables</constraint>
+  <constraint name="CRITICAL">Parameterized queries only — no string interpolation in SQL</constraint>
+  <constraint name="CRITICAL">No shell command injection — use libraries, not exec()</constraint>
+  <constraint name="CRITICAL">Hashed password comparison only — never plaintext</constraint>
+  <constraint name="CRITICAL">Authorization check on every protected route</constraint>
+  <constraint name="CRITICAL">Atomic transactions for financial operations with row locks</constraint>
+  <constraint name="HIGH">Rate limiting on all financial and auth endpoints</constraint>
+  <constraint name="HIGH">XSS prevention — never innerHTML with user input</constraint>
+  <constraint name="HIGH">SSRF prevention — validate URLs against domain allowlist</constraint>
+  <constraint name="MEDIUM">Sanitize logs — never log passwords, API keys, or full PII</constraint>
 </constraints>
 
 <principles>

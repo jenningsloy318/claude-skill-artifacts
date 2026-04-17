@@ -11,27 +11,27 @@
 </topic>
 
 <topic name="Six Forcing Questions">
-  Ask before anything else (informed by clarify output): 1) **Who exactly is this for?** Name the specific persona and context. 2) **What is the job to be done?** What outcome are they hiring this feature for? 3) **Why now?** What changed? What happens if we don't build it? 4) **What's the simplest version?** If shipping in 1 day, what would you build? 5) **What are we explicitly NOT building?** Define non-goals upfront. 6) **How will we know it works?** What observable behavior proves success?
+  Ask before anything else (informed by clarify output): 1) Who exactly is this for? Name the specific persona and context. 2) What is the job to be done? What outcome are they hiring this feature for? 3) Why now? What changed? What happens if we don't build it? 4) What's the simplest version? If shipping in 1 day, what would you build? 5) What are we explicitly NOT building? Define non-goals upfront. 6) How will we know it works? What observable behavior proves success?
 </topic>
 
 <principles>
-  <principle>**Move from reactive to proactive**: Understand intent and anticipate needs, don't just collect requests</principle>
-  <principle>**Design Thinking**: Empathize, Define, Ideate, Prototype</principle>
-  <principle>**5 Whys**: Ask "Why?" iteratively to reach root cause</principle>
-  <principle>**Jobs to Be Done**: Understand functional, emotional, and social jobs</principle>
-  <principle>**User Story Mapping**: Map Activity → Tasks → Stories</principle>
-  <principle>**Impact Mapping**: Connect WHY → WHO → HOW → WHAT</principle>
+  <principle name="Move from reactive to proactive">Understand intent and anticipate needs, don't just collect requests</principle>
+  <principle name="Design Thinking">Empathize, Define, Ideate, Prototype</principle>
+  <principle name="5 Whys">Ask "Why?" iteratively to reach root cause</principle>
+  <principle name="Jobs to Be Done">Understand functional, emotional, and social jobs</principle>
+  <principle name="User Story Mapping">Map Activity → Tasks → Stories</principle>
+  <principle name="Impact Mapping">Connect WHY → WHO → HOW → WHAT</principle>
 </principles>
 
 <process>
   <step n="0" name="Invoke Clarify Skill">Invoke `clarify` skill to decompose raw request into Facts, Desires, and Confusions. Drill down ambiguous terms via Socratic questioning (max 3 rounds). Apply Polanyi extraction if tacit knowledge detected.</step>
-  <step n="1" name="Multi-Layer Questioning">**Layer 1 Surface**: What exactly is requested? Current behavior? Success criteria? **Layer 2 Root Cause (5 Whys)**: Why need this? Why insufficient? Why now? Why this approach? Why business matters? **Layer 3 JTBD**: What job? When needed? What used currently? Frustrations? Perfect done? **Layer 4 Workflow**: Before/after/who else/data flow/edge cases. **Layer 5 Impact**: Business outcome, beneficiaries, behavior change, metrics. **Layer 6 Alternatives**: Other solutions, assumptions, minimum viable.</step>
+  <step n="1" name="Multi-Layer Questioning">Layer 1 Surface: What exactly is requested? Current behavior? Success criteria? Layer 2 Root Cause (5 Whys): Why need this? Why insufficient? Why now? Why this approach? Why business matters? Layer 3 JTBD: What job? When needed? What used currently? Frustrations? Perfect done? Layer 4 Workflow: Before/after/who else/data flow/edge cases. Layer 5 Impact: Business outcome, beneficiaries, behavior change, metrics. Layer 6 Alternatives: Other solutions, assumptions, minimum viable.</step>
   <step n="2" name="Proactive Anticipation">After gathering requirements, probe for: downstream effects, integration needs, sharing/collaboration, automation opportunities, analytics/reporting, error handling, scale considerations.</step>
   <step n="3" name="Write Requirements Document">Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/requirements-template.md`. Include 5 Whys analysis, JTBD, workflow context, solution options, acceptance criteria, recommendations.</step>
 </process>
 
 <topic name="Bug Fix Requirements">
-  **Reproduction steps are MANDATORY** — ask first: exact steps that trigger error, expected vs actual behavior, full error message, consistent vs intermittent. Only proceed without repro steps if error is visible in stack trace, user provides comprehensive context, or it's an obvious code error.
+  Reproduction steps are MANDATORY — ask first: exact steps that trigger error, expected vs actual behavior, full error message, consistent vs intermittent. Only proceed without repro steps if error is visible in stack trace, user provides comprehensive context, or it's an obvious code error.
 </topic>
 
 <output>

@@ -89,51 +89,51 @@ gate-profile: code-review
     </row>
   </table>
 
-  <paragraph><strong>Coverage:</strong> [M/N] scenarios covered</paragraph>
-  <paragraph><strong>Gate:</strong> PASS / FAIL</paragraph>
+  <paragraph label="Coverage">[M/N] scenarios covered</paragraph>
+  <paragraph label="Gate">PASS / FAIL</paragraph>
 </section>
 
 <section title="Findings">
   <rule name="critical-text-guard">
-    NEVER use `**Critical**` as bold text inside finding bodies. The gate regex `\*\*Critical\*\*` scans the ENTIRE file — any `**Critical**` text outside the summary table triggers CR3 FAIL. The `### Critical` section heading is safe (no bold markers). Only use bold for `**Issue:**`, `**Suggestion:**`, `**Rationale:**` labels.
+    NEVER use `**Critical**` as bold text inside finding bodies. The gate regex `\*\*Critical\*\*` scans the ENTIRE file — any `**Critical**` text outside the summary table triggers CR3 FAIL. The `### Critical` section heading is safe (no bold markers). Use `label` attributes on `<paragraph>` tags for field labels (e.g., `<paragraph label="Issue">`).
   </rule>
   <subsection title="Critical">
     <finding id="F-001" dimension="[Dimension]" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Suggestion:</strong> [concrete fix]</paragraph>
-      <paragraph><strong>Rationale:</strong> [why it matters]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Suggestion">[concrete fix]</paragraph>
+      <paragraph label="Rationale">[why it matters]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="High">
     <finding id="F-002" dimension="[Dimension]" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Suggestion:</strong> [fix]</paragraph>
-      <paragraph><strong>Rationale:</strong> [why]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Suggestion">[fix]</paragraph>
+      <paragraph label="Rationale">[why]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="Medium">
     <finding id="F-XXX" dimension="[Dimension]" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Suggestion:</strong> [fix]</paragraph>
-      <paragraph><strong>Rationale:</strong> [why]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Suggestion">[fix]</paragraph>
+      <paragraph label="Rationale">[why]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="Low">
     <finding id="F-XXX" dimension="[Dimension]" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Suggestion:</strong> [fix]</paragraph>
-      <paragraph><strong>Rationale:</strong> [why]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Suggestion">[fix]</paragraph>
+      <paragraph label="Rationale">[why]</paragraph>
     </finding>
   </subsection>
 
   <subsection title="Info">
     <finding id="F-XXX" dimension="[Dimension]" location="file:line">
-      <paragraph><strong>Issue:</strong> [description]</paragraph>
-      <paragraph><strong>Suggestion:</strong> [fix]</paragraph>
-      <paragraph><strong>Rationale:</strong> [why]</paragraph>
+      <paragraph label="Issue">[description]</paragraph>
+      <paragraph label="Suggestion">[fix]</paragraph>
+      <paragraph label="Rationale">[why]</paragraph>
     </finding>
   </subsection>
 </section>
@@ -152,8 +152,8 @@ gate-profile: code-review
 
 <section title="Verdict">
   <field name="verdict">[Approved / Approved with Comments / Changes Requested / Blocked]</field>
-  <paragraph><strong>Reasoning:</strong> [brief technical assessment]</paragraph>
-  <paragraph><strong>Blocking Issues:</strong> [F-XXX IDs or "None"]</paragraph>
+  <paragraph label="Reasoning">[brief technical assessment]</paragraph>
+  <paragraph label="Blocking Issues">[F-XXX IDs or "None"]</paragraph>
   <rule name="verdict-consistency">
     The verdict here MUST exactly match the `status` field in the metadata section above. The gate takes `head -1` of the first matching line — if metadata and verdict disagree, the gate judges by whichever renders first (metadata). Always keep them identical.
   </rule>

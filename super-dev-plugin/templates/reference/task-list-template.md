@@ -23,28 +23,28 @@ gate-profile: gate-docs-drift.sh
     <subsection title="Phase 1: [Phase/Milestone Name]">
       <checklist>
         <item status="done" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T1.1** [Task description]
+          T1.1 [Task description]
           - Completed: [timestamp]
           - Files: [files modified]
           - Dependencies: None
           - Notes: [any notes]
         </item>
         <item status="done" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T1.2** [Task description]
+          T1.2 [Task description]
           - Completed: [timestamp]
           - Files: [files modified]
           - Dependencies: T1.1
           - Notes: [any notes]
         </item>
         <item status="in-progress" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T1.3** [Task description]
+          T1.3 [Task description]
           - Started: [timestamp]
           - Files: [files being modified]
           - Dependencies: T1.2
           - Notes: [any notes]
         </item>
         <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T1.4** [Task description]
+          T1.4 [Task description]
           - Dependencies: None
         </item>
       </checklist>
@@ -53,11 +53,11 @@ gate-profile: gate-docs-drift.sh
     <subsection title="Phase 2: [Phase/Milestone Name]">
       <checklist>
         <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T2.1** [Task description]
+          T2.1 [Task description]
           - Dependencies: T1.2
         </item>
         <item status="pending" domain="[rust|go|frontend|backend|ios|android|windows|macos|mixed]">
-          **T2.2** [Task description]
+          T2.2 [Task description]
           - Dependencies: T2.1
         </item>
       </checklist>
@@ -69,10 +69,10 @@ gate-profile: gate-docs-drift.sh
 
   <section title="Progress">
     <list type="unordered">
-      <item>**Completed:** [X]/[Y] tasks</item>
-      <item>**Current:** [Task ID currently in progress]</item>
-      <item>**Status:** In Progress | Complete</item>
-      <item>**Blocked:** [Task ID if any] - [reason]</item>
+      <item name="Completed">[X]/[Y] tasks</item>
+      <item name="Current">[Task ID currently in progress]</item>
+      <item name="Status">In Progress | Complete</item>
+      <item name="Blocked">[Task ID if any] - [reason]</item>
     </list>
   </section>
 
@@ -102,12 +102,12 @@ gate-profile: gate-docs-drift.sh
   <section title="Technical Decisions Log">
     <list type="ordered">
       <item>
-        **[Decision]** (Task [T1.1])
+        [Decision] (Task [T1.1])
         - Rationale: [why this approach was chosen]
         - Alternatives considered: [what else was evaluated]
       </item>
       <item>
-        **[Decision]** (Task [T2.1])
+        [Decision] (Task [T2.1])
         - Rationale: [why this approach was chosen]
         - Alternatives considered: [what else was evaluated]
       </item>
@@ -117,7 +117,7 @@ gate-profile: gate-docs-drift.sh
   <section title="Challenges and Resolutions">
     <list type="ordered">
       <item>
-        **[Challenge]** (Task [T1.2])
+        [Challenge] (Task [T1.2])
         - Impact: [what was affected]
         - Resolution: [how it was resolved]
       </item>
@@ -128,7 +128,7 @@ gate-profile: gate-docs-drift.sh
     <paragraph>Document any implementation choices that diverge from the original specification:</paragraph>
     <list type="unordered">
       <item>
-        **[Section X.Y]** (Task [T1.3])
+        [Section X.Y] (Task [T1.3])
         <quote>[What the spec originally said]</quote>
         Changed to: [What was actually implemented]
         Reason: [Why the change was necessary]

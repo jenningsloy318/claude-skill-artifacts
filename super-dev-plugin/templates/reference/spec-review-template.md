@@ -153,23 +153,23 @@ gate-profile: spec-review
 <section title="Findings Detail">
   [For each finding:]
 
-  **SR-XXX** | [Dimension] | [Severity]
-  **Section:** [spec section where issue found]
-  **Issue:** [what is wrong]
-  **Impact:** [what will go wrong during implementation if not fixed]
-  **Recommendation:** [specific fix]
+  SR-XXX | [Dimension] | [Severity]
+  Section: [spec section where issue found]
+  Issue: [what is wrong]
+  Impact: [what will go wrong during implementation if not fixed]
+  Recommendation: [specific fix]
 </section>
 
 <section title="Verdict">
-  **Verdict:** [Approved / Approved with Revisions / Revisions Needed / Rejected]
+  Verdict: [Approved / Approved with Revisions / Revisions Needed / Rejected]
 
-  **Verdict Logic:**
+  Verdict Logic:
   - Critical findings: [count]
   - High findings: [count]
   - Dimensions with issues: [list]
   - Grounding failures: [count]
 
-  **Gate Compliance:**
+  Gate Compliance:
   - Verdict determination follows deterministic logic:
     - Critical > 0 → Rejected
     - High > 3 OR any dimension 0% → Revisions Needed

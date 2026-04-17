@@ -74,8 +74,8 @@ gate-profile: none
 
 <section title="Key Decisions">
   <list type="unordered">
-    <item><strong>[Decision 1]</strong>: [choice] -- why: [1-line rationale]</item>
-    <item><strong>[Decision 2]</strong>: [choice] -- why: [1-line rationale]</item>
+    <item name="[Decision 1]">[choice] -- why: [1-line rationale]</item>
+    <item name="[Decision 2]">[choice] -- why: [1-line rationale]</item>
   </list>
   <reference target="[doc-index]-specification.md" section="[N]">
     Full context in specification document Section [N]

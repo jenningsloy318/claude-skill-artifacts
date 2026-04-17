@@ -11,7 +11,7 @@
 </capabilities>
 
 <topic name="Detection Tools">
-  **knip**: Find unused files, exports, dependencies, types. **depcheck**: Identify unused npm dependencies. **ts-prune**: Find unused TypeScript exports. **eslint**: Check for unused disable-directives and variables.
+  knip: Find unused files, exports, dependencies, types. depcheck: Identify unused npm dependencies. ts-prune: Find unused TypeScript exports. eslint: Check for unused disable-directives and variables.
 </topic>
 
 <process>
@@ -22,8 +22,8 @@
 </process>
 
 <checklist>
-  <check>**Before removing**: Run detection tools, grep for all references, check dynamic imports, review git history, check public API, run tests, create backup branch, document in DELETION_LOG.md</check>
-  <check>**After each removal**: Build succeeds, tests pass, no console errors, changes committed, DELETION_LOG.md updated</check>
+  <check name="Before removing">Run detection tools, grep for all references, check dynamic imports, review git history, check public API, run tests, create backup branch, document in DELETION_LOG.md</check>
+  <check name="After each removal">Build succeeds, tests pass, no console errors, changes committed, DELETION_LOG.md updated</check>
 </checklist>
 
 <constraints>

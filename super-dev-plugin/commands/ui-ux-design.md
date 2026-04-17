@@ -9,7 +9,7 @@
 <usage>/super-dev:ui-ux-design [feature description]</usage>
 
 <topic name="Design Output">
-  **Wireframes**: Visual (Pencil MCP .pen files) or ASCII diagrams for all screens. **Design Tokens**: Typography, spacing, colors, border radius, breakpoints in YAML. **Interactions**: State transitions, animations, error handling UX. **Accessibility**: WCAG 2.1 AA compliance, keyboard navigation, screen reader support. **Responsive**: Behavior at all breakpoints (mobile, tablet, desktop).
+  Wireframes: Visual (Pencil MCP .pen files) or ASCII diagrams for all screens. Design Tokens: Typography, spacing, colors, border radius, breakpoints in YAML. Interactions: State transitions, animations, error handling UX. Accessibility: WCAG 2.1 AA compliance, keyboard navigation, screen reader support. Responsive: Behavior at all breakpoints (mobile, tablet, desktop).
 </topic>
 
 <output>

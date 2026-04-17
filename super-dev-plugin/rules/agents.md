@@ -11,8 +11,8 @@
 </topic>
 
 <directives>
-  <directive severity="high">**Immediate agent usage** — no user prompt needed: Complex features → planner, Code written/modified → code-reviewer, Bug fix or new feature → tdd-guide, Architectural decision → architect</directive>
-  <directive severity="high">**Parallel Task execution** — ALWAYS use parallel execution for independent operations. Never run sequentially when tasks are independent.</directive>
-  <directive severity="critical">**TERMINATE IMMEDIATELY AFTER COMPLETION**: Verify output is complete, terminate the agent, close tmux pane if applicable. Prevents resource accumulation. Exception: parallel agents (e.g., dev-executor + qa-agent) — wait for ALL to complete before terminating.</directive>
-  <directive severity="medium">**Multi-perspective analysis** for complex problems: use split role sub-agents (factual reviewer, senior engineer, security expert, consistency reviewer, redundancy checker)</directive>
+  <directive severity="high" name="Immediate agent usage">No user prompt needed: Complex features → planner, Code written/modified → code-reviewer, Bug fix or new feature → tdd-guide, Architectural decision → architect</directive>
+  <directive severity="high" name="Parallel Task execution">ALWAYS use parallel execution for independent operations. Never run sequentially when tasks are independent.</directive>
+  <directive severity="critical" name="TERMINATE IMMEDIATELY AFTER COMPLETION">Verify output is complete, terminate the agent, close tmux pane if applicable. Prevents resource accumulation. Exception: parallel agents (e.g., dev-executor + qa-agent) — wait for ALL to complete before terminating.</directive>
+  <directive severity="medium" name="Multi-perspective analysis">For complex problems: use split role sub-agents (factual reviewer, senior engineer, security expert, consistency reviewer, redundancy checker)</directive>
 </directives>

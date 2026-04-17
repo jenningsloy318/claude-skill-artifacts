@@ -17,15 +17,15 @@
 </process>
 
 <topic name="Common Error Patterns">
-  **Type Inference**: Add type annotations where implicit `any`. **Null/Undefined**: Use optional chaining (`?.`) or null checks. **Missing Properties**: Add to interface (optional if not always present). **Import Errors**: Check tsconfig paths, use relative imports, install missing packages. **Type Mismatch**: Parse strings to numbers, change type annotations. **Generic Constraints**: Add `extends` constraints. **React Hooks**: Move to top level (no conditional hooks). **Async/Await**: Add `async` keyword. **Module Not Found**: Install dependency and `@types/` package.
+  Type Inference: Add type annotations where implicit `any`. Null/Undefined: Use optional chaining (`?.`) or null checks. Missing Properties: Add to interface (optional if not always present). Import Errors: Check tsconfig paths, use relative imports, install missing packages. Type Mismatch: Parse strings to numbers, change type annotations. Generic Constraints: Add `extends` constraints. React Hooks: Move to top level (no conditional hooks). Async/Await: Add `async` keyword. Module Not Found: Install dependency and `@types/` package.
 </topic>
 
 <constraints>
-  <constraint>**DO**: Add type annotations, null checks, fix imports/exports, add missing dependencies, update type definitions, fix configs</constraint>
-  <constraint>**DON'T**: Refactor unrelated code, change architecture, rename variables (unless causing error), add features, change logic flow (unless fixing error), optimize performance, improve code style</constraint>
-  <constraint>**Minimal diff**: If error is on 1 line, change only that 1 line. Do not refactor the surrounding file.</constraint>
+  <constraint name="DO">Add type annotations, null checks, fix imports/exports, add missing dependencies, update type definitions, fix configs</constraint>
+  <constraint name="DON'T">Refactor unrelated code, change architecture, rename variables (unless causing error), add features, change logic flow (unless fixing error), optimize performance, improve code style</constraint>
+  <constraint name="Minimal diff">If error is on 1 line, change only that 1 line. Do not refactor the surrounding file.</constraint>
 </constraints>
 
 <topic name="When to Use">
-  **USE when**: `npm run build` fails, `npx tsc --noEmit` shows errors, type errors blocking development, import/module resolution errors, config errors, dependency version conflicts. **DON'T USE when**: Code needs refactoring (refactor-cleaner), architecture changes (architect), new features (planner), failing tests (tdd-guide), security issues (security-reviewer).
+  USE when: `npm run build` fails, `npx tsc --noEmit` shows errors, type errors blocking development, import/module resolution errors, config errors, dependency version conflicts. DON'T USE when: Code needs refactoring (refactor-cleaner), architecture changes (architect), new features (planner), failing tests (tdd-guide), security issues (security-reviewer).
 </topic>

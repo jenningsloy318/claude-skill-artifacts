@@ -19,25 +19,25 @@
 </topic>
 
 <constraints>
-  <constraint>**MCP Scripts**: Use wrapper scripts via Bash (Exa, DeepWiki, Context7, GitHub) per `${CLAUDE_PLUGIN_ROOT}/scripts/README.md`. Exception: `mcp__time-mcp__current_time` allowed directly.</constraint>
-  <constraint>**Time MCP**: Always add current date/time as context</constraint>
-  <constraint>**ast-grep**: Prefer AST-based pattern matching for structural code searches</constraint>
-  <constraint>**Git Rules**: Never create GitHub Actions. Don't `git add -A` — selective staging only. Only commit files you edited. Always generate proper commit messages.</constraint>
-  <constraint>**Git Worktree (CRITICAL MANDATORY)**: ALL development MUST be in a worktree. Verify with `test -f .git`. If not in worktree, create: `git worktree add .worktree/[spec-index]-[spec-name]`. Branch name MUST match worktree name.</constraint>
-  <constraint>**Git Safety**: Stash before major operations. Commit after every completed task (small, atomic). Verify `git status` clean between phases. Clean working tree at end of session.</constraint>
-  <constraint>**Documentation Updates**: Commit docs WITH code. Mark tasks complete immediately. Update implementation summary after each milestone. Update spec when code deviates (same commit).</constraint>
+  <constraint name="MCP Scripts">Use wrapper scripts via Bash (Exa, DeepWiki, Context7, GitHub) per `${CLAUDE_PLUGIN_ROOT}/scripts/README.md`. Exception: `mcp__time-mcp__current_time` allowed directly.</constraint>
+  <constraint name="Time MCP">Always add current date/time as context</constraint>
+  <constraint name="ast-grep">Prefer AST-based pattern matching for structural code searches</constraint>
+  <constraint name="Git Rules">Never create GitHub Actions. Don't `git add -A` — selective staging only. Only commit files you edited. Always generate proper commit messages.</constraint>
+  <constraint name="Git Worktree (CRITICAL MANDATORY)">ALL development MUST be in a worktree. Verify with `test -f .git`. If not in worktree, create: `git worktree add .worktree/[spec-index]-[spec-name]`. Branch name MUST match worktree name.</constraint>
+  <constraint name="Git Safety">Stash before major operations. Commit after every completed task (small, atomic). Verify `git status` clean between phases. Clean working tree at end of session.</constraint>
+  <constraint name="Documentation Updates">Commit docs WITH code. Mark tasks complete immediately. Update implementation summary after each milestone. Update spec when code deviates (same commit).</constraint>
 </constraints>
 
 <principles>
-  <principle>**First Principles Analysis**: For complex features and bugs, break down to fundamental truths</principle>
-  <principle>**Incremental Development**: Small commits, each must compile and pass tests</principle>
-  <principle>**Learn from Existing Code**: Study 3 similar features before implementing</principle>
-  <principle>**Pragmatic over Dogmatic**: Adapt to project's actual situation</principle>
-  <principle>**Clear Intent over Clever Code**: Simple, clear solutions</principle>
-  <principle>**New Requirements**: Don't rush to code — discuss solution first, use ASCII diagrams, confirm before developing</principle>
-  <principle>**Bug Reports**: ALWAYS ask for reproduction steps before fixing</principle>
-  <principle>**Decision Priority**: Testability → Readability → Consistency → Simplicity → Reversibility</principle>
-  <principle>**Error Handling**: Stop after 3 attempts. Record failures. Research 2-3 alternatives. Question assumptions.</principle>
+  <principle name="First Principles Analysis">For complex features and bugs, break down to fundamental truths</principle>
+  <principle name="Incremental Development">Small commits, each must compile and pass tests</principle>
+  <principle name="Learn from Existing Code">Study 3 similar features before implementing</principle>
+  <principle name="Pragmatic over Dogmatic">Adapt to project's actual situation</principle>
+  <principle name="Clear Intent over Clever Code">Simple, clear solutions</principle>
+  <principle name="New Requirements">Don't rush to code — discuss solution first, use ASCII diagrams, confirm before developing</principle>
+  <principle name="Bug Reports">ALWAYS ask for reproduction steps before fixing</principle>
+  <principle name="Decision Priority">Testability → Readability → Consistency → Simplicity → Reversibility</principle>
+  <principle name="Error Handling">Stop after 3 attempts. Record failures. Research 2-3 alternatives. Question assumptions.</principle>
 </principles>
 
 <gotchas>

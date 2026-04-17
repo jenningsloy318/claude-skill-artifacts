@@ -38,12 +38,12 @@ gate-profile: gate-requirements.sh
 
     <subsection title="Job to Be Done">
       <paragraph>
-        **When** [situation/context]
-        **I want to** [motivation/goal]
-        **So I can** [expected outcome]
+        When [situation/context]
+        I want to [motivation/goal]
+        So I can [expected outcome]
       </paragraph>
 
-      <paragraph>**Job Type:**</paragraph>
+      <paragraph label="Job Type"></paragraph>
       <list type="unordered">
         <item>Functional: [practical task]</item>
         <item>Emotional: [how they want to feel]</item>
@@ -198,9 +198,9 @@ gate-profile: gate-requirements.sh
 
   <section title="Acceptance Criteria">
     <checklist>
-      <item status="open">**AC-01**: [Criterion 1]</item>
-      <item status="open">**AC-02**: [Criterion 2]</item>
-      <item status="open">**AC-03**: [Criterion 3]</item>
+      <item status="open" name="AC-01">[Criterion 1]</item>
+      <item status="open" name="AC-02">[Criterion 2]</item>
+      <item status="open" name="AC-03">[Criterion 3]</item>
     </checklist>
     <rule>
       MANDATORY RENDERING: Each item MUST render as EITHER:
@@ -215,9 +215,9 @@ gate-profile: gate-requirements.sh
   <section title="Recommendations">
     <paragraph>Based on the analysis, I recommend:</paragraph>
     <list type="ordered">
-      <item>**Immediate**: [What to build now]</item>
-      <item>**Next**: [What to consider for follow-up]</item>
-      <item>**Future**: [What to keep in mind for roadmap]</item>
+      <item name="Immediate">[What to build now]</item>
+      <item name="Next">[What to consider for follow-up]</item>
+      <item name="Future">[What to keep in mind for roadmap]</item>
     </list>
   </section>
 

@@ -7,10 +7,10 @@
 <purpose>Systematic root cause analysis for software bugs and errors. Follow a structured process: gather evidence, reproduce, trace execution paths, form and verify hypotheses, and deliver actionable fixes with test plans.</purpose>
 
 <principles>
-  <principle>**First Principles Analysis**: Break down bugs to fundamental truths — what actually happens vs. what should happen</principle>
-  <principle>**Evidence-Based Reasoning**: Form hypotheses from concrete evidence, not assumptions; verify each with supporting/contradicting data</principle>
-  <principle>**Systematic Investigation**: Follow structured process — gather evidence, reproduce, trace execution, verify root cause — never skip steps</principle>
-  <principle>**Minimal Reproduction**: Reduce complex issues to minimal reproducible cases</principle>
+  <principle name="First Principles Analysis">Break down bugs to fundamental truths — what actually happens vs. what should happen</principle>
+  <principle name="Evidence-Based Reasoning">Form hypotheses from concrete evidence, not assumptions; verify each with supporting/contradicting data</principle>
+  <principle name="Systematic Investigation">Follow structured process — gather evidence, reproduce, trace execution, verify root cause — never skip steps</principle>
+  <principle name="Minimal Reproduction">Reduce complex issues to minimal reproducible cases</principle>
 </principles>
 
 <input>
@@ -21,11 +21,11 @@
 </input>
 
 <search-strategy>
-  **Text Pattern Search (Grep)**: Error messages (`"[exact error text]"`), functions from stack trace (`fn\s+function_name`), error types (`Error|Exception|panic|unwrap`), logging statements, config values, state mutations.
+  Text Pattern Search (Grep): Error messages (`"[exact error text]"`), functions from stack trace (`fn\s+function_name`), error types (`Error|Exception|panic|unwrap`), logging statements, config values, state mutations.
 
-  **Structural Analysis (ast-grep)**: Call hierarchy, error propagation, state mutations, null checks, async patterns.
+  Structural Analysis (ast-grep): Call hierarchy, error propagation, state mutations, null checks, async patterns.
 
-  **Coverage for Debugging Scope**: Identify scope from stack trace, search all relevant files, track what was searched, report coverage percentage.
+  Coverage for Debugging Scope: Identify scope from stack trace, search all relevant files, track what was searched, report coverage percentage.
 </search-strategy>
 
 <process>
