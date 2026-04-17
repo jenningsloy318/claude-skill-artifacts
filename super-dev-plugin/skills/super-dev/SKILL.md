@@ -74,10 +74,12 @@ license: MIT
     <step n="5">Doc-validator receives same filenames and verifies (not renames)</step>
   </process>
 
-  <process name="Worktree Enforcement">
-    Before spawning ANY agent in Phase 2+, Team Lead MUST verify `pwd` is inside `.worktree/`. If not, STOP immediately.
+  <process name="Worktree Enforcement (PRE-PHASE GATE)">
+    At the START of every phase (Phase 2 onwards), before ANY action, run: `pwd | grep -q '\.worktree/'`
 
-    Check: `pwd | grep -q '\.worktree/'` — if fails, all gate scripts and agent work will use wrong relative paths.
+    If check fails: ABORT immediately. Do not proceed, do not spawn agents, do not read/write files. Print error: "WORKTREE VIOLATION: pwd is not inside .worktree/. Either run Phase 1 to create a worktree, or cd to the existing worktree (cd .worktree/[spec-name])."
+
+    This applies to ALL phases ≥2, not just agent spawning. File reads, greps, builds, commits — everything must happen inside the worktree. Wrong pwd means wrong relative paths for gate scripts, specs, and agent work.
   </process>
 
   <process name="Domain-Aware Agent Routing">
