@@ -9,10 +9,10 @@
 <triggers>Triggers on: adding authentication, handling user input, working with secrets, creating API endpoints, implementing payment/sensitive features</triggers>
 
 <workflow>
-  1. **Automated Scan**: Run npm audit, eslint-plugin-security, grep for hardcoded secrets, check exposed env vars.
-  2. **OWASP Top 10**: Check each category — injection, broken auth, sensitive data exposure, XXE, broken access control, security misconfiguration, XSS, insecure deserialization, vulnerable components, insufficient logging.
-  3. **Domain-Specific Checks**: Financial security (atomic transactions, balance checks, rate limiting), blockchain security (wallet signatures, private keys, slippage protection), authentication (JWT validation, session management), database (RLS, parameterized queries), API (auth required, input validation, CORS).
-  4. **Report**: Findings by severity (Critical/High/Medium/Low) with: description, impact, proof of concept, remediation code, OWASP/CWE references.
+  <step n="1" name="Automated Scan">Run npm audit, eslint-plugin-security, grep for hardcoded secrets, check exposed env vars.</step>
+  <step n="2" name="OWASP Top 10">Check each category — injection, broken auth, sensitive data exposure, XXE, broken access control, security misconfiguration, XSS, insecure deserialization, vulnerable components, insufficient logging.</step>
+  <step n="3" name="Domain-Specific Checks">Financial security (atomic transactions, balance checks, rate limiting), blockchain security (wallet signatures, private keys, slippage protection), authentication (JWT validation, session management), database (RLS, parameterized queries), API (auth required, input validation, CORS).</step>
+  <step n="4" name="Report">Findings by severity (Critical/High/Medium/Low) with: description, impact, proof of concept, remediation code, OWASP/CWE references.</step>
 </workflow>
 
 <constraints>

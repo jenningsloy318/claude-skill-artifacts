@@ -9,13 +9,13 @@
 <triggers>Triggers on: feature implementation, bug fixes, refactoring, "write tests first", "TDD"</triggers>
 
 <workflow>
-  1. **Scaffold Interface**: Define the public API (function signatures, types, interfaces) before any implementation.
-  2. **Write Tests (RED)**: Write failing tests that describe expected behavior. Cover: happy paths, error paths, edge cases (null, empty, boundaries), integration points.
-  3. **Run Tests — Verify FAIL**: Execute test suite to confirm tests fail as expected.
-  4. **Implement (GREEN)**: Write minimum code to make tests pass. No extra logic beyond what tests require.
-  5. **Run Tests — Verify PASS**: Execute test suite to confirm all tests pass.
-  6. **Refactor (IMPROVE)**: Remove duplication, improve naming, optimize. Re-run tests to verify no regressions.
-  7. **Check Coverage**: Run coverage report. Verify 80%+ across branches, functions, lines, statements. Write additional tests if below threshold.
+  <step n="1" name="Scaffold Interface">Define the public API (function signatures, types, interfaces) before any implementation.</step>
+  <step n="2" name="Write Tests (RED)">Write failing tests that describe expected behavior. Cover: happy paths, error paths, edge cases (null, empty, boundaries), integration points.</step>
+  <step n="3" name="Run Tests — Verify FAIL">Execute test suite to confirm tests fail as expected.</step>
+  <step n="4" name="Implement (GREEN)">Write minimum code to make tests pass. No extra logic beyond what tests require.</step>
+  <step n="5" name="Run Tests — Verify PASS">Execute test suite to confirm all tests pass.</step>
+  <step n="6" name="Refactor (IMPROVE)">Remove duplication, improve naming, optimize. Re-run tests to verify no regressions.</step>
+  <step n="7" name="Check Coverage">Run coverage report. Verify 80%+ across branches, functions, lines, statements. Write additional tests if below threshold.</step>
 </workflow>
 
 <constraints>

@@ -29,9 +29,18 @@
 </allowlist>
 
 <workflow>
-  When blocked command detected: 1) STOP — do not execute. 2) WARN — "BLOCKED by careful mode: [command]. Reason: [category]". 3) SUGGEST — offer safer alternative. 4) ASK — "Override for this specific command? (yes/no)".
+  <step n="1" name="Blocked Command Detection">STOP — do not execute.</step>
+  <step n="2" name="Warn">BLOCKED by careful mode: [command]. Reason: [category].</step>
+  <step n="3" name="Suggest">Offer safer alternative.</step>
+  <step n="4" name="Ask">Override for this specific command? (yes/no).</step>
 
-  Safer alternatives: `rm -rf` → `mv to /tmp backup`, `DROP TABLE` → `ALTER TABLE RENAME TO deprecated`, `git push --force` → `--force-with-lease`, `git reset --hard` → `git stash push` first, `DELETE FROM` → `SELECT COUNT` first to verify scope.
+  <alternatives>
+    <alt blocked="rm -rf" safer="mv to /tmp backup" />
+    <alt blocked="DROP TABLE" safer="ALTER TABLE RENAME TO deprecated" />
+    <alt blocked="git push --force" safer="--force-with-lease" />
+    <alt blocked="git reset --hard" safer="git stash push first" />
+    <alt blocked="DELETE FROM" safer="SELECT COUNT first to verify scope" />
+  </alternatives>
 </workflow>
 
 <gotchas>

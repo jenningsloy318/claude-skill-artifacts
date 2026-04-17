@@ -11,11 +11,11 @@
 <activation>Announce: "Running verification. I will test the feature interactively and capture evidence."</activation>
 
 <workflow>
-  1. **Detect tools**: Check for Playwright MCP (`mcp__playwright__*`) or Chrome DevTools MCP (`mcp__chrome-devtools__*`). Fall back to CLI verification if unavailable.
-  2. **Plan verification steps**: From requirements/BDD scenarios, determine what to verify. Each step needs: action, expected result, assertion type.
-  3. **Execute steps**: Navigate to feature, interact with UI, capture screenshots at each step, assert expected outcomes.
-  4. **Record evidence**: Save screenshots, network logs, console output, assertion results.
-  5. **Report**: Pass/fail for each step with evidence links.
+  <step n="1" name="Detect Tools">Check for Playwright MCP (`mcp__playwright__*`) or Chrome DevTools MCP (`mcp__chrome-devtools__*`). Fall back to CLI verification if unavailable.</step>
+  <step n="2" name="Plan Verification Steps">From requirements/BDD scenarios, determine what to verify. Each step needs: action, expected result, assertion type.</step>
+  <step n="3" name="Execute Steps">Navigate to feature, interact with UI, capture screenshots at each step, assert expected outcomes.</step>
+  <step n="4" name="Record Evidence">Save screenshots, network logs, console output, assertion results.</step>
+  <step n="5" name="Report">Pass/fail for each step with evidence links.</step>
 </workflow>
 
 <constraints>

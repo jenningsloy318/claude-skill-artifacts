@@ -9,12 +9,12 @@
 <triggers>Triggers on: "/super-dev:adversarial-review", Phase 9 invocation by Team Lead</triggers>
 
 <workflow>
-  1. **Scope and Intent**: Determine what to review. State intent. Assess change size for reviewer count (Small: 1 Skeptic, Medium: 2 Skeptic+Architect, Large: 3 all lenses).
-  2. **Skeptic Lens**: Challenge correctness — V1 false assumptions, V2 edge cases, V3 failure modes, V4 adversarial input, V5 safety/compliance, V6 grounding audit, V8 behavior coverage.
-  3. **Architect Lens**: Challenge structural fitness — V1 architectural assumptions, V3 graceful degradation, V5 security boundaries, V7 dependencies.
-  4. **Minimalist Lens**: Challenge necessity — V7 dependency justification, unnecessary abstractions, premature configuration.
-  5. **Destructive Action Gate**: Always-on scan for: DAT (data destruction), IRR (irreversible state), PRD (production impact), PRM (permission escalation), SEC (secret operations). No safeguard → HALT finding.
-  6. **Verdict**: HALT findings → CONTESTED minimum (multiple HALTs → REJECT). No high-severity → PASS. High with disagreement → CONTESTED. High with consensus → REJECT.
+  <step n="1" name="Scope and Intent">Determine what to review. State intent. Assess change size for reviewer count (Small: 1 Skeptic, Medium: 2 Skeptic+Architect, Large: 3 all lenses).</step>
+  <step n="2" name="Skeptic Lens">Challenge correctness — V1 false assumptions, V2 edge cases, V3 failure modes, V4 adversarial input, V5 safety/compliance, V6 grounding audit, V8 behavior coverage.</step>
+  <step n="3" name="Architect Lens">Challenge structural fitness — V1 architectural assumptions, V3 graceful degradation, V5 security boundaries, V7 dependencies.</step>
+  <step n="4" name="Minimalist Lens">Challenge necessity — V7 dependency justification, unnecessary abstractions, premature configuration.</step>
+  <step n="5" name="Destructive Action Gate">Always-on scan for: DAT (data destruction), IRR (irreversible state), PRD (production impact), PRM (permission escalation), SEC (secret operations). No safeguard → HALT finding.</step>
+  <step n="6" name="Verdict">HALT findings → CONTESTED minimum (multiple HALTs → REJECT). No high-severity → PASS. High with disagreement → CONTESTED. High with consensus → REJECT.</step>
 </workflow>
 
 <constraints>

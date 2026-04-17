@@ -12,7 +12,15 @@
 <triggers>Triggers on: "autoresearch", "auto-improve", "optimize agent", "tune prompt", "improve skill quality"</triggers>
 
 <workflow>
-  1. Run agent on test input. 2. Score output against checklist (yes/no). 3. Record baseline score (average of 3 runs). 4. Analyze weakest checklist items. 5. Make ONE small change to agent prompt. 6. Re-run agent on same test input (3 runs). 7. Score again. 8. If improved → KEEP change. If dropped → REVERT. 9. Repeat until 95%+ score 3 times in a row OR max rounds reached (default: 10).
+  <step n="1">Run agent on test input.</step>
+  <step n="2">Score output against checklist (yes/no).</step>
+  <step n="3">Record baseline score (average of 3 runs).</step>
+  <step n="4">Analyze weakest checklist items.</step>
+  <step n="5">Make ONE small change to agent prompt.</step>
+  <step n="6">Re-run agent on same test input (3 runs).</step>
+  <step n="7">Score again.</step>
+  <step n="8">If improved → KEEP change. If dropped → REVERT.</step>
+  <step n="9">Repeat until 95%+ score 3 times in a row OR max rounds reached (default: 10).</step>
 </workflow>
 
 <process>

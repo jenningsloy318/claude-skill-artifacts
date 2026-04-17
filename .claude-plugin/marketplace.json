@@ -38,7 +38,7 @@
       "name": "super-dev",
       "source": "./super-dev-plugin",
       "description": "Coordinator-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
-      "version": "2.3.38",
+      "version": "2.3.39",
       "author": {
         "name": "Jennings Liu",
         "url": "https://github.com/jenningsloy318"

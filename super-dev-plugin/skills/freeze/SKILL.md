@@ -25,11 +25,9 @@
 </allowlist>
 
 <workflow>
-  **Setup**: 1) Auto-detect worktree path if in worktree. 2) Ask user: "Which directory to restrict to? (default: cwd)". 3) Store freeze directory for session.
-
-  **When blocked edit detected**: 1) STOP — do not execute. 2) WARN — "BLOCKED by freeze mode: Cannot edit [path]. Only edits in [freeze_dir] allowed." 3) ASK — "Override for this specific file? (yes/no)".
-
-  **Common use cases**: Debugging (add logs without fixing unrelated code), feature isolation (only touch feature dir), review mode (read anything, don't change outside PR scope), worktree safety.
+  <step n="1" name="Setup">Auto-detect worktree path if in worktree. Ask user: "Which directory to restrict to? (default: cwd)". Store freeze directory for session.</step>
+  <step n="2" name="Blocked Edit">STOP — do not execute. WARN — "BLOCKED by freeze mode: Cannot edit [path]. Only edits in [freeze_dir] allowed." ASK — "Override for this specific file? (yes/no)".</step>
+  <step n="3" name="Common Use Cases">Debugging (add logs without fixing unrelated code), feature isolation (only touch feature dir), review mode (read anything, don't change outside PR scope), worktree safety.</step>
 </workflow>
 
 <gotchas>
