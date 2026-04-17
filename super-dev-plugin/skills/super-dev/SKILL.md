@@ -21,9 +21,9 @@ license: MIT
   <phase n="5.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 5.3. UI ONLY → 5.5. BOTH → 5.4 (product-designer).</phase>
   <phase n="5.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</phase>
   <phase n="6" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</phase>
-  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. If issues found, Loop Phase 6/7 until approved. Max 3 iterations</phase>
+  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</phase>
   <phase n="8" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh.</phase>
-  <phase n="9" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. Loop Phase 8/9 until approved. Max 3 iterations.</phase>
+  <phase n="9" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</phase>
   <phase n="10" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</phase>
   <phase n="10.5" name="Handoff Writing">Spawn handoff-writer. MANDATORY — do not skip.</phase>
   <phase n="11" name="Team Cleanup">Verify all teammates terminated, worktree preserved.</phase>
@@ -96,6 +96,20 @@ license: MIT
     <route domain="Unknown" agent="dev-executor" />
   </process>
 
+  <process name="Spec Iteration Loop (Phase 6/7)">
+    <step n="1" name="Trigger">Phase 7 spec-reviewer reports issues or gate-spec-review.sh fails.</step>
+    <step n="2" name="Spawn Fix">Team Lead spawns spec-writer + doc-validator (parallel) with reviewer findings as input. Team Lead NEVER edits specs directly.</step>
+    <step n="3" name="Re-review">After spec-writer completes, spawn spec-reviewer + doc-validator (parallel) again.</step>
+    <step n="4" name="Exit Criteria">Loop exits when: spec-reviewer approves AND gate-spec-review.sh passes. Max 3 iterations. After 3: escalate to user with findings summary.</step>
+  </process>
+
+  <process name="Implementation Iteration Loop (Phase 8/9)">
+    <step n="1" name="Trigger">Phase 9 code-reviewer verdict is not "Approved" or adversarial-reviewer returns REJECT.</step>
+    <step n="2" name="Spawn Fix">Team Lead spawns domain specialist(s) + qa-agent (parallel) with review findings as input. Team Lead NEVER fixes code directly.</step>
+    <step n="3" name="Re-review">After specialists complete, spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
+    <step n="4" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations. After 3: escalate to user with review findings.</step>
+  </process>
+
   <process name="Phase Enforcement">
     <entry phase="0" action="Invoke dev-rules skill" agents="none" />
     <entry phase="1" action="Setup: worktree, spec dir, JSON, team" agents="none" />
@@ -126,7 +140,7 @@ license: MIT
 <constraints>
   <constraint name="Delegation Mode">Team Lead spawns teammates for ALL work. Never implements directly.</constraint>
   <constraint name="Sequential Phases">Each phase depends on previous phase completing successfully.</constraint>
-  <constraint name="Iteration Rule">Phase 8/9 loop until code-reviewer approves. Max 3 iterations.</constraint>
+  <constraint name="Iteration Rules">Phase 6/7: follow Spec Iteration Loop process. Phase 8/9: follow Implementation Iteration Loop process. Both loops: max 3 iterations, Team Lead MUST spawn sub-agents for fixes (never fix directly), escalate to user after 3 failures.</constraint>
   <constraint name="Version Bump">Every modification to super-dev-plugin files requires patch version bump in plugin.json and marketplace.json.</constraint>
   <constraint name="Phase 0+1 Gate">Phase 0 (dev rules) and Phase 1 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
   <constraint name="No Early Code Analysis">Do NOT read code, grep, glob, or explore the codebase before Phase 5 (Code Assessment). Phases 0-4 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Phase 5 is the FIRST agent allowed to examine the codebase.</constraint>
