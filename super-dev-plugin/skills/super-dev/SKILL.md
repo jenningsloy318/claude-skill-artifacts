@@ -136,6 +136,19 @@
   <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Phase 8 (specialists + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
 </constraints>
 
+<rules>
+  <rule name="agent-team" mandatory="true">ALL work MUST use agent team. Create team via TeamCreate before spawning any agents.</rule>
+  <rule name="team-lead-delegation" mandatory="true">Team Lead NEVER implements directly. Only assigns tasks, spawns agents, coordinates, and verifies output.</rule>
+  <rule name="git-workflow" mandatory="true">Commit format, PR workflow, feature implementation workflow</rule>
+  <rule name="coding-style" mandatory="true">Immutability, file organization, error handling, input validation</rule>
+  <rule name="testing" mandatory="true">80% coverage, TDD workflow, BDD practices</rule>
+  <rule name="security" mandatory="true">No hardcoded secrets, input validation, injection prevention</rule>
+  <rule name="agents" mandatory="true">Agent usage, parallel execution, immediate termination</rule>
+  <rule name="patterns" mandatory="false">API response format, custom hooks, repository pattern</rule>
+  <rule name="performance" mandatory="false">Model selection, context management, build troubleshooting</rule>
+  <rule name="rust-project" mandatory="false">Rust workspace structure, build commands, crate conventions (only for Rust projects)</rule>
+</rules>
+
 <references>
   <ref>Plugin root: `${CLAUDE_PLUGIN_ROOT}` — agents, commands, rules, contexts, skills, templates, scripts</ref>
   <ref>Plugin data: `${CLAUDE_PLUGIN_DATA}` — global stats, learned patterns, autoresearch results</ref>
