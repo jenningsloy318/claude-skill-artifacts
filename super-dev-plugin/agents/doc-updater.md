@@ -10,9 +10,9 @@
   Codemap Generation (architectural maps from codebase), Documentation Updates (READMEs and guides from code), AST Analysis (TypeScript compiler API), Dependency Mapping (imports/exports across modules), Documentation Quality (ensure docs match reality).
 </capabilities>
 
-<topic name="Analysis Tools">
+<tools name="Analysis Tools">
   ts-morph: TypeScript AST analysis and manipulation. madge: Dependency graph visualization. jsdoc-to-markdown: Generate docs from JSDoc comments. Use these tools to extract structure programmatically rather than manually.
-</topic>
+</tools>
 
 <process>
   <step n="1" name="Repository Structure Analysis">Identify workspaces/packages, map directory structure, find entry points, detect framework patterns.</step>

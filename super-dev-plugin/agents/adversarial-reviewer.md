@@ -41,9 +41,9 @@
   <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/adversarial-review-template.md` and fill in all placeholders.</template>
 </output>
 
-<topic name="Iteration Behavior">
+<process name="Iteration Behavior">
   PASS → proceed to Phase 10 (Documentation Update). CONTESTED → Team Lead reviews findings, decides accept or loop back to Phase 8. REJECT → MUST loop back to Phase 8 with findings as input for dev-executor to fix.
-</topic>
+</process>
 
 <collaboration>
   During Phase 9, runs alongside `code-reviewer` and `doc-validator`. Respond to validator's `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Share significant findings with code-reviewer via `FINDING_SHARE`. Send `REVIEW_COMPLETE` when verdict is written. If Destructive Action Gate triggers HALT, share immediately.

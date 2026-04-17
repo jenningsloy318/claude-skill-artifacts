@@ -21,9 +21,9 @@
   <field name="spec_directory" required="true">Specification directory path</field>
 </input>
 
-<topic name="Gate Script Map">
+<reference name="Gate Script Map">
   `gate-requirements` → `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-requirements.sh`, `gate-bdd` → `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-bdd.sh`, `gate-spec-trace` → `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-spec-trace.sh`, `gate-spec-review` → `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-spec-review.sh`, `gate-review` → `${CLAUDE_PLUGIN_ROOT}/scripts/gates/gate-review.sh`. All take `<spec_directory>` as argument. If `CLAUDE_PLUGIN_ROOT` is not set, use the path provided by Team Lead.
-</topic>
+</reference>
 
 <process>
   <step n="0" name="Filename Verification">Build full expected path `${spec_directory}/${expected_filename}`. Check if file exists. If wrong-named file found, rename to expected and message writer. NEVER compute the next index yourself — Team Lead already assigned exact filename.</step>
@@ -34,7 +34,7 @@
   <step n="5" name="Re-Validate Loop">When writer signals fix, re-run gate script (ALWAYS re-run, never trust LLM judgment). Loop until exit 0 or max 3 iterations. After 3 failures, escalate to Team Lead as VALIDATION BLOCKED.</step>
 </process>
 
-<topic name="Gate Fix Reference">
+<reference name="Gate Fix Reference">
   gate-requirements (Phase 2): R1 Acceptance Criteria heading, R2 Min 2 AC items (regex `^\s*-\s*\[[ x]\]` OR `^\s*-\s*\*{0,2}AC-[0-9]`), R3 Non-functional keywords, R4 Summary section, R5 Content over 500 chars. Common trap: ACs in tables do NOT match R2.
 
   gate-bdd (Phase 2.5): B1 SCENARIO-IDs, B2 Given/When/Then at least 3 lines, B3 AC references, B4 Scenario count at least AC count, B5 Content over 300 chars.
@@ -46,4 +46,4 @@
   gate-review-code (Phase 9): CR1 Verdict exists, CR2 Approved verdict, CR3 No critical findings.
 
   gate-review-adversarial (Phase 9): AR1 Verdict exists (PASS/CONTESTED/REJECT/HALT), AR2 Passing verdict (PASS or CONTESTED, no REJECT).
-</topic>
+</reference>

@@ -8,9 +8,9 @@
 
 <usage>/super-dev:debug-analysis [bug description or error details]</usage>
 
-<topic name="Analysis Process">
+<process name="Analysis Process">
   Evidence Collection: Parse error messages and stack traces, identify affected components, collect logs. Pattern Search: Search for similar error patterns (grep/ast-grep), find related code, identify recent changes. Root Cause Analysis: Trace execution flow, identify failure points, analyze data flow, check edge cases. Reproduction: Document exact steps, note required conditions, create test scenarios.
-</topic>
+</process>
 
 <arguments>
   Error messages or stack traces, description of unexpected behavior, steps already attempted, context about when the issue occurs.

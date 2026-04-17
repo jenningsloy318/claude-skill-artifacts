@@ -8,9 +8,9 @@
 
 <usage>/super-dev:research [research topic]</usage>
 
-<topic name="Research Areas">
+<reference name="Research Areas">
   Best Practices and Design Patterns: Established patterns, anti-patterns, recommended architectures, industry standards. Official Documentation: API references, configuration options, language-specific guidelines. Community Knowledge: Blog posts, tutorials, Stack Overflow, GitHub issues, conference talks. Performance and Edge Cases: Benchmarks, known limitations, security considerations.
-</topic>
+</reference>
 
 <output>
   <format>Research report (`[doc-index]-research-report.md`) with: summary, deprecation warnings, best practices and anti-patterns, official docs, community insights, performance considerations, source freshness analysis.</format>

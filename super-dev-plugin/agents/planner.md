@@ -23,9 +23,9 @@
   <principle name="Document Decisions">Explain why, not just what</principle>
 </principles>
 
-<topic name="Refactoring Plans">
+<process name="Refactoring Plans">
   When planning refactors: identify code smells and technical debt, list specific improvements, preserve existing functionality, create backwards-compatible changes when possible, plan for gradual migration if needed.
-</topic>
+</process>
 
 <anti-patterns>
   <anti-pattern>Large functions exceeding 50 lines</anti-pattern>

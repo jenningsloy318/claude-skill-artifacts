@@ -38,21 +38,21 @@ describe('searchMarkets', () => {
 // Run test → verify FAILS → implement → verify PASSES → refactor
 </code-sample>
 
-<topic name="CLI Testing">
+<process name="CLI Testing">
   Command enumeration from help output. Value matrix per parameter (valid, boundary, malformed). Sandbox execution (isolated temp dir). Assertions: exit codes, stdout regex, stderr traps, golden-file diffs.
-</topic>
+</process>
 
-<topic name="Desktop UI Testing">
+<process name="Desktop UI Testing">
   Platform-specific accessibility APIs (AT-SPI Linux, Accessibility API macOS, UI Automation Windows). Control tree discovery. Interaction sequences (menu nav, dialogs, keyboard shortcuts). Assertions: screenshot comparison (phash), accessibility tree hash.
-</topic>
+</process>
 
-<topic name="Web App Testing">
+<process name="Web App Testing">
   Environment setup (kill existing dev servers, pristine browser context). Monitoring: console errors, network status (no 4xx/5xx), accessibility (axe-core), performance (LCP, FID, CLS, TTI). Route crawling. Form testing (happy + error paths). Trace recording (trace.zip per test).
-</topic>
+</process>
 
-<topic name="Proactive CodeRabbit">
+<process name="Proactive CodeRabbit">
   Run `coderabbit --prompt-only` proactively in background starting when dev agent begins implementation. Parse issues by severity. Report to dev agent. Verify fixes. Report final PASSED status.
-</topic>
+</process>
 
 <output>
   <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/qa-report-template.md` and fill in all placeholders.</template>

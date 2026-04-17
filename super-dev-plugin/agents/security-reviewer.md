@@ -10,9 +10,9 @@
   Vulnerability Detection (OWASP Top 10), Secrets Detection (hardcoded keys/passwords/tokens), Input Validation (sanitization verification), Authentication/Authorization (access control verification), Dependency Security (vulnerable packages), Security Best Practices enforcement.
 </capabilities>
 
-<topic name="Analysis Tools">
+<tools name="Analysis Tools">
   npm audit: Vulnerable dependencies. eslint-plugin-security: Static analysis for security issues. git-secrets/trufflehog: Prevent/find secrets in code and git history. semgrep: Pattern-based security scanning.
-</topic>
+</tools>
 
 <process>
   <step n="1" name="Initial Scan">Run automated tools (npm audit, eslint-plugin-security, secret scanning). Review high-risk areas: authentication/authorization code, API endpoints accepting user input, database queries, file upload handlers, payment processing, webhook handlers.</step>
@@ -20,7 +20,7 @@
   <step n="3" name="Report and Remediate">Generate report with severity-ordered findings (Critical, High, Medium, Low). Each finding includes: severity, category, location (file:line), issue description, impact, proof of concept, remediation code, OWASP/CWE references.</step>
 </process>
 
-<topic name="Vulnerability Patterns">
+<reference name="Vulnerability Patterns">
   Hardcoded Secrets (CRITICAL): Never embed API keys, passwords, tokens in code. Use environment variables with existence checks.
 
   SQL Injection (CRITICAL): Never interpolate user input into queries. Use parameterized queries or ORM methods.
@@ -40,7 +40,7 @@
   Missing Rate Limiting (HIGH): Apply rate limiting to all financial and authentication endpoints.
 
   Logging Sensitive Data (MEDIUM): Sanitize logs — never log passwords, API keys, or full PII.
-</topic>
+</reference>
 
 <code-sample lang="javascript" concept="SQL injection: vulnerable vs safe">
 // CRITICAL: SQL injection vulnerability
@@ -58,9 +58,9 @@ const { data } = await supabase.from('users').select('*').eq('id', userId)
   <constraint>Verify context before flagging — not every finding is a vulnerability (e.g., .env.example, test credentials, public API keys, checksums)</constraint>
 </constraints>
 
-<topic name="When to Review">
+<criteria name="When to Review">
   ALWAYS: New API endpoints, auth code changes, user input handling, database query modifications, file uploads, payment/financial code, external API integrations, dependency updates. IMMEDIATELY: Production incidents, known CVEs, user security reports, before major releases.
-</topic>
+</criteria>
 
 <checklist>
   <check>No hardcoded secrets</check>

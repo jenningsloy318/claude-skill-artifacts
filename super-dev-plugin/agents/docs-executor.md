@@ -13,13 +13,13 @@
   <constraint name="ALWAYS track deviations">Document any spec changes discovered during review</constraint>
 </constraints>
 
-<topic name="Documents to Maintain">
+<output name="Documents to Maintain">
   Task List (`[doc-index]-task-list.md`): Mark tasks complete, update progress tracking, add file change details. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md`.
 
   Implementation Summary (`[doc-index]-implementation-summary.md`): Compile complete development story with milestone progress, files changed, technical decisions, challenges. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md`.
 
   Specification (`[doc-index]-specification.md`): Update when code review identifies deviations. Use spec change log format: original text, changed text, reason, impact.
-</topic>
+</output>
 
 <process>
   <step n="1" name="Receive Context">Receive invocation from Coordinator with execution results (completed tasks, files changed, technical decisions, challenges), QA results (tests, coverage), and code review findings (verdict, spec updates needed).</step>
@@ -29,13 +29,13 @@
   <step n="5" name="Validate and Signal">Validate document consistency. Signal `DOCS_PHASE_10_COMPLETE` with explicit file list for commit coordination.</step>
 </process>
 
-<topic name="Gate Compliance (gate-docs-drift.sh)">
+<process name="Gate Compliance (gate-docs-drift.sh)">
   1. README.md exists: If missing, create minimal one. If exists, update for user-facing changes.
   2. README.md non-trivial: Must exceed 100 characters.
   3. TODO/FIXME count: Project must have 5 or fewer source files containing TODO/FIXME/HACK/XXX across `.ts`, `.tsx`, `.js`, `.py`, `.rs`, `.go` files. Resolve those introduced by current workflow.
 
   If any check fails, gate blocks Phase 10.5 (Handoff Writing).
-</topic>
+</process>
 
 <checklist>
   <check>Process complete execution results</check>

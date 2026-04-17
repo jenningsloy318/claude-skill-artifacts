@@ -6,9 +6,9 @@
 
 <purpose>Define rules for agent usage, parallel task execution, immediate termination after completion, and multi-perspective analysis.</purpose>
 
-<topic name="Available Agents">
+<reference name="Available Agents">
   Located in `${CLAUDE_PLUGIN_ROOT}/agents/`: planner (implementation planning), architect (system design), tdd-guide (test-driven development), code-reviewer (code review), security-reviewer (security analysis), build-error-resolver (build errors), e2e-runner (E2E testing), refactor-cleaner (dead code cleanup), doc-updater (documentation).
-</topic>
+</reference>
 
 <directives>
   <directive severity="high" name="Immediate agent usage">No user prompt needed: Complex features → planner, Code written/modified → code-reviewer, Bug fix or new feature → tdd-guide, Architectural decision → architect</directive>

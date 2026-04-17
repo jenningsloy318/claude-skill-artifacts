@@ -8,9 +8,9 @@
 
 <usage>/super-dev:code-assessment [feature/area to assess]</usage>
 
-<topic name="Assessment Areas">
+<reference name="Assessment Areas">
   Architecture: Module organization, design patterns, code structure, integration boundaries. Standards Compliance: Coding style, naming conventions, error handling, testing practices. Framework Usage: Frameworks/libraries, version compatibility, integration patterns, custom configs. Technical Debt: Complexity hotspots, duplication, outdated patterns, performance concerns.
-</topic>
+</reference>
 
 <arguments>
   Feature or area to implement, specific concerns, integration requirements.

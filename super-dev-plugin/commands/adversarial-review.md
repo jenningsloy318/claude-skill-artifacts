@@ -8,13 +8,13 @@
 
 <usage>/super-dev:adversarial-review [implementation context]</usage>
 
-<topic name="Review Lenses">
+<reference name="Review Lenses">
   Skeptic: Challenges correctness and completeness — what inputs/states break this? What error paths are unhandled? What race conditions exist? Architect: Challenges structural fitness — does design serve the goal? Where are coupling points? What boundary violations exist? Minimalist: Challenges necessity — what can be deleted? Where is premature abstraction? What config exists without second use case?
-</topic>
+</reference>
 
-<topic name="Destructive Action Gate">
+<reference name="Destructive Action Gate">
   Always-on checkpoint scanning for irreversible operations: data destruction (DROP TABLE, rm -rf), irreversible state (force push, DROP COLUMN), production impact (prod deploy, DNS changes), permission escalation (chmod 777, disable auth), secret operations (delete API keys).
-</topic>
+</reference>
 
 <output>
   <format>Adversarial review report with: lens-tagged findings (Skeptic/V1-V8, Architect/V1-V7, Minimalist/V7), destructive action gate results, verdict (PASS/CONTESTED/REJECT).</format>

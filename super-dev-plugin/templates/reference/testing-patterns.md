@@ -14,11 +14,11 @@
   <principle name="Modality-Aware Testing">Apply quality gates consistently across CLI, Desktop UI, and Web applications</principle>
 </principles>
 
-<topic name="Test Planning">
+<process name="Test Planning">
   Every test plan must include: application name, modality (CLI/Desktop UI/Web App), version, date, risk assessment table (area, probability, impact, mitigation), and coverage targets (happy path, boundary conditions, error handling, edge cases, security, accessibility).
 
   Test Authoring Strategy: Unit tests cover core logic and edge/boundary conditions with mocked external dependencies. Integration tests verify component interactions with real databases and test transaction boundaries. Coverage targets: Overall ≥ 80%, new/changed code ≥ 90%, critical paths 100%.
-</topic>
+</process>
 
 <process>
   <step n="1" name="Receive DEV_COMPLETE">Receive DEV_COMPLETE signal with files_changed list</step>
@@ -28,7 +28,7 @@
   <step n="5" name="Handle Failures">Max 3 attempts. Classify: code bug → notify dev; test bug → fix tests; flaky → stabilize; env → document/workaround. If unresolved → emit TEST_BLOCKED with evidence.</step>
 </process>
 
-<topic name="CLI Testing">
+<process name="CLI Testing">
   Command Enumeration: Parse help output to discover all commands, flags (short/long), required/optional arguments, defaults, and environment variables.
 
   Value Matrix: For each parameter test valid values, boundary values, and malformed values.
@@ -36,9 +36,9 @@
   Sandbox Execution: Create isolated temp directory, copy fixtures, execute with timeout, capture stdout/stderr/exit code, cleanup.
 
   Assertions: Exit code assertions (0 success, 1 invalid args, 2 file not found, 126 permission denied, 127 command not found, 124 timeout). Stdout regex assertions for output format verification. Stderr trap assertions for meaningful error messages and no stack traces in production. Golden-file diff for known-good output comparison.
-</topic>
+</process>
 
-<topic name="Desktop UI Testing">
+<process name="Desktop UI Testing">
   Platform Tools: Linux uses AT-SPI with `accerciser`/`python-atspi`. macOS uses Accessibility API with `Accessibility Inspector`/`pyatom`. Windows uses UI Automation with `inspect.exe`/`pywinauto`.
 
   Application Launch: Use isolated environments — Xvfb on Linux, tart/UTM VM on macOS, Windows Sandbox/VM on Windows.
@@ -48,9 +48,9 @@
   Interaction Sequences: Menu navigation (click menu → submenu → item → verify action/state). Dialog interactions (trigger → verify appears → fill inputs → OK/Cancel → verify applied/reverted). Keyboard shortcuts (verify shortcut triggers action matching menu equivalent, test with focus in different areas).
 
   Assertions: Pixel-perfect screenshot comparison using perceptual hashing (phash) with configurable threshold. Accessibility tree hash for deterministic control tree verification.
-</topic>
+</process>
 
-<topic name="Web App Testing">
+<process name="Web App Testing">
   Environment Setup: Kill existing dev servers on common ports (3000, 3001, 5173, 8080). Start dev server and wait for ready. Use pristine browser context with isolated cookies/storage/cache.
 
   Monitoring: Console error monitoring (capture console.error/warn, flag uncaught exceptions). Network status monitoring (track XHR/Fetch, verify no 4xx/5xx, check timing and CORS). Accessibility violations via axe-core. Performance metrics via DevTools traces (LCP, FID, CLS, TTI).
@@ -60,15 +60,15 @@
   Form Testing: Auto-fill forms with test data. Exercise happy paths (valid data → submit → verify success) and error paths (invalid data → verify validation messages, empty submit → verify required messages, test field interdependencies).
 
   Trace Recording: Record trace.zip per test including timeline, network waterfall, screenshots, JavaScript profile, layout/paint events.
-</topic>
+</process>
 
-<topic name="Static Code Analysis">
+<process name="Static Code Analysis">
   CodeRabbit CLI: Run `coderabbit --prompt-only` proactively in background starting as soon as dev agent begins implementation. Do NOT wait for implementation to complete.
 
   When to run: All new features, bug fixes, refactoring, any code changes beyond trivial. Start as soon as first files are created/modified.
 
   Issue handling: Parse severity/file/line/description from output. Report critical/high issues to dev agent. After fixes, re-run to verify resolution. Report final PASSED status with issue counts.
-</topic>
+</process>
 
 <quality-gates>
   <gate name="Before Testing">Test plan generated from requirements, oracle strategies defined, sandbox/isolated environment prepared</gate>
@@ -76,21 +76,21 @@
   <gate name="After Testing">Coverage targets met (≥80% overall, ≥90% new code), test report generated with defects, feedback artifacts ready, traces/screenshots archived</gate>
 </quality-gates>
 
-<topic name="Coverage Tracking">
+<process name="Coverage Tracking">
   Targets: Overall 80% minimum (85%+ preferred), new/changed code 90% minimum (95%+ preferred), critical paths 100%.
 
   Measurement per language: JavaScript/TypeScript via c8/nyc with `--coverage`. Python via pytest-cov. Rust via tarpaulin. Go via `go test -coverprofile`.
 
   Enforcement: Fail build if coverage drops below threshold using `nyc --check-coverage` (JS), `pytest --cov-fail-under` (Python), `cargo tarpaulin --fail-under` (Rust).
-</topic>
+</process>
 
-<topic name="Failure Handling">
+<process name="Failure Handling">
   Classification: Code Bug (implementation error → report to dev), Test Bug (flawed test → fix immediately), Flaky Test (intermittent → stabilize with isolation/mock/retry), Environment (infrastructure → document workaround).
 
   Retry strategy: Classify root cause. If code bug → notify dev-executor. If test bug → fix immediately. If flaky → max 3 retries with stabilization. If env → document and emit TEST_BLOCKED.
 
   TEST_BLOCKED emission: After max retries, emit with full evidence: test case ID, attempt count, classification, error messages, logs, screenshots, traces.
-</topic>
+</process>
 
 <constraints>
   <constraint>Write tests before implementation (TDD)</constraint>

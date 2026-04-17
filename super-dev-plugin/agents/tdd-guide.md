@@ -15,13 +15,13 @@
   <step n="6" name="Verify Coverage">Run `npm run test:coverage` and verify 80%+ coverage across branches, functions, lines, and statements</step>
 </process>
 
-<topic name="Test Types">
+<patterns name="Test Types">
   Unit Tests (Mandatory): Test individual functions in isolation. Cover identity cases, zero/orthogonal cases, null/error cases. Mock external dependencies (Supabase, Redis, OpenAI).
 
   Integration Tests (Mandatory): Test API endpoints and database operations. Cover success (200), validation errors (400), and fallback behavior (e.g., Redis down → substring search).
 
   E2E Tests (Critical Flows): Test complete user journeys with Playwright. Cover search, navigation, page load verification.
-</topic>
+</patterns>
 
 <code-sample lang="typescript" concept="TDD Red-Green-Refactor cycle">
 // RED: Write failing test first

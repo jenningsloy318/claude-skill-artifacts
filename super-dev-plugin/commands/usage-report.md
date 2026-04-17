@@ -8,9 +8,9 @@
 
 <usage>/super-dev:usage-report</usage>
 
-<topic name="What It Displays">
+<output name="What It Displays">
   Total invocations: How many times skills and agents have been used. Top skills: Most frequently used, sorted by count. Top agents: Most frequently used, sorted by count. Recent activity: Last 10 invocations from usage.log.
-</topic>
+</output>
 
 <constraints>
   <constraint>Usage data stored in `${CLAUDE_PLUGIN_DATA}/global/` — persists across sessions and projects</constraint>

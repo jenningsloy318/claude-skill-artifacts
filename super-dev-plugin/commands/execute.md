@@ -8,9 +8,9 @@
 
 <usage>/super-dev:execute [specification directory path]</usage>
 
-<topic name="Parallel Execution">
+<process name="Parallel Execution">
   Dev Executor: Reads task-list for tasks, implements features per specs, invokes specialist agents (rust-developer, frontend-developer, etc.), follows established patterns. QA Agent: Creates unit tests, writes integration tests, verifies build success, tests against requirements. Build Queue: Rust/Go projects: one build at a time via coordinator. JS/Python: concurrent.
-</topic>
+</process>
 
 <arguments>
   Path to specification directory, any specific implementation focus areas.

@@ -21,17 +21,17 @@
   <principle name="Performance">Efficient algorithms, minimal network requests, optimized database queries, appropriate caching, lazy loading</principle>
 </principles>
 
-<topic name="Common Patterns">
+<reference name="Common Patterns">
   Frontend: Component Composition, Container/Presenter, Custom Hooks, Context for Global State, Code Splitting.
 
   Backend: Repository Pattern, Service Layer, Middleware Pattern, Event-Driven Architecture, CQRS.
 
   Data: Normalized Database, Denormalized for Read Performance, Event Sourcing, Caching Layers (Redis, CDN), Eventual Consistency.
-</topic>
+</reference>
 
-<topic name="Architecture Decision Records">
+<reference name="Architecture Decision Records">
   For significant decisions, create ADRs with: Context (motivating issue), Decision (proposed change), Consequences (positive, negative, alternatives considered), Status, Date.
-</topic>
+</reference>
 
 <checklist>
   <check name="Functional">User stories documented, API contracts defined, data models specified, UI/UX flows mapped</check>

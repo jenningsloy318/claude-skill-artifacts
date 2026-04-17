@@ -16,9 +16,9 @@
   <step n="3" name="Verify Build">Run `npx tsc --noEmit`, `npm run build`, `npx eslint .`. Confirm no new errors introduced. Verify dev server runs.</step>
 </process>
 
-<topic name="Common Error Patterns">
+<reference name="Common Error Patterns">
   Type Inference: Add type annotations where implicit `any`. Null/Undefined: Use optional chaining (`?.`) or null checks. Missing Properties: Add to interface (optional if not always present). Import Errors: Check tsconfig paths, use relative imports, install missing packages. Type Mismatch: Parse strings to numbers, change type annotations. Generic Constraints: Add `extends` constraints. React Hooks: Move to top level (no conditional hooks). Async/Await: Add `async` keyword. Module Not Found: Install dependency and `@types/` package.
-</topic>
+</reference>
 
 <constraints>
   <constraint name="DO">Add type annotations, null checks, fix imports/exports, add missing dependencies, update type definitions, fix configs</constraint>
@@ -26,6 +26,6 @@
   <constraint name="Minimal diff">If error is on 1 line, change only that 1 line. Do not refactor the surrounding file.</constraint>
 </constraints>
 
-<topic name="When to Use">
+<criteria name="When to Use">
   USE when: `npm run build` fails, `npx tsc --noEmit` shows errors, type errors blocking development, import/module resolution errors, config errors, dependency version conflicts. DON'T USE when: Code needs refactoring (refactor-cleaner), architecture changes (architect), new features (planner), failing tests (tdd-guide), security issues (security-reviewer).
-</topic>
+</criteria>

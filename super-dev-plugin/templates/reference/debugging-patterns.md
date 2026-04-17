@@ -21,15 +21,15 @@
   <step n="5" name="Document Findings">Document all available evidence, reproducible steps with rate and minimal repro, code execution path with line numbers, multiple hypotheses considered, verified root cause with evidence, actionable fix and test plan, related issues and prevention steps.</step>
 </process>
 
-<topic name="Code Search Strategy">
+<process name="Code Search Strategy">
   Text Pattern Search (Grep): Search for exact error text, function names from stack trace, error types (`Error|Exception|panic|unwrap`), logging statements, config values, state mutations.
 
   Structural Analysis (ast-grep): Use for call hierarchy (find all callers), error propagation tracing, state mutation locations, missing null checks, async pattern analysis.
 
   Coverage for Debugging Scope: Identify scope from stack trace, search all relevant files, track what was searched, report coverage percentage.
-</topic>
+</process>
 
-<topic name="Common Bug Patterns">
+<pattern name="Common Bug Patterns">
   Null/Undefined Reference: Symptoms include `TypeError: Cannot read property` or `NullPointerException`. Check variable initialization, optional chaining usage, object construction, API response structure.
 
   Race Conditions: Symptoms include intermittent failures, different results each run. Add logging at critical points, reproduce with controlled timing, check shared state access, verify synchronization.
@@ -37,7 +37,7 @@
   Off-by-One Errors: Symptoms include index out of bounds, loop count errors. Check loop conditions, verify array indexing (0-based vs 1-based), trace iteration counts.
 
   Type Errors: Symptoms include type mismatch or implicit any errors. Check type annotations, verify type assertions, trace type conversions.
-</topic>
+</pattern>
 
 <constraints>
   <constraint>Start with evidence, not assumptions</constraint>
@@ -57,11 +57,11 @@
   <anti-pattern>Fixing without adding regression tests</anti-pattern>
 </anti-patterns>
 
-<topic name="Debugging Tools">
+<tools name="Debugging Tools">
   Logging Strategies: Use structured logging with consistent formats, appropriate log levels (DEBUG, INFO, WARN, ERROR), include relevant context variables, avoid logging in hot loops.
 
   Breakpoint Strategies: Line breakpoints (pause at specific line), conditional breakpoints (pause when condition met), exception breakpoints (pause on throw), watchpoints (pause when variable modified).
-</topic>
+</tools>
 
 <references>
   <ref>Extracted from `super-dev:debug-analyzer` agent. For full agent behavior during Phase 4, invoke with subagent_type "super-dev:debug-analyzer".</ref>

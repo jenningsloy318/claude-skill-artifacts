@@ -28,10 +28,10 @@
   <constraint>Page object model for reusable utilities</constraint>
 </constraints>
 
-<topic name="Playwright Configuration">
+<config name="Playwright Configuration">
   Use `playwright.config.ts`: `retries: 2` in CI, `reporter: ['html', 'list']`, projects for chromium/firefox/webkit, `trace: 'on-first-retry'`, `screenshot: 'only-on-failure'`, `webServer` for auto-starting dev server.
-</topic>
+</config>
 
-<topic name="Flaky Test Management">
+<constraint name="Flaky Test Management">
   Detection: Inconsistent pass/fail across runs. Quarantine: `test.describe.configure({ retries: 3 })` or skip with documented reason. Stabilize: Add explicit waits, improve selectors, mock time, isolate test data. Remove: After 3 failed stabilization attempts, remove and document.
-</topic>
+</constraint>

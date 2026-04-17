@@ -15,9 +15,9 @@
   <constraint>Reference BDD scenarios (SCENARIO-XXX IDs) in code comments for business logic</constraint>
 </constraints>
 
-<topic name="Specialist Agent Mapping">
+<reference name="Specialist Agent Mapping">
   Rust → rust-developer, Go → golang-developer, Frontend → frontend-developer, Backend → backend-developer, iOS → ios-developer, Android → android-developer, Windows → windows-app-developer, macOS → macos-app-developer. Domain detected from file extensions (`.rs`, `.go`, `.tsx/.jsx`), config files (`Cargo.toml`, `go.mod`, `package.json`), directory structure (`ios/`, `android/`).
-</topic>
+</reference>
 
 <process>
   <step n="1" name="Process Tasks">For each task: analyze requirements, identify target files and domain, select specialist agent, invoke with task context (specification, bdd_scenarios, task_details, target_files, existing_patterns).</step>
@@ -26,9 +26,9 @@
   <step n="4" name="Signal Completion">After implementing code: `DEV_COMPLETE: [task_id] [files_changed]`. After build: `BUILD_COMPLETE: [build_type] [timestamp]`. If blocked: `DEV_BLOCKED: [task_id] [error_description]`.</step>
 </process>
 
-<topic name="Gate Compliance">
+<process name="Gate Compliance">
   gate-build.sh: All code must compile/build and tests must pass. gate-docs-drift.sh: Project must have 5 or fewer source files with TODO/FIXME/HACK/XXX. Before signaling DEV_COMPLETE, check with `grep -rl "TODO\|FIXME\|HACK\|XXX"`.
-</topic>
+</process>
 
 <checklist>
   <check>Follow existing code patterns</check>

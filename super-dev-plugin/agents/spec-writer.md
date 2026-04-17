@@ -34,9 +34,9 @@
   <constraint name="Relative paths only">never use absolute paths</constraint>
 </constraints>
 
-<topic name="Sub-Specification Split">
+<process name="Sub-Specification Split">
   Split into sub-specifications when: 4+ distinct functional areas, 15+ tasks, multiple independent components, multiple technology domains, or total effort exceeds 2 days. Create master-specification, master-implementation-plan, master-task-list, plus sub-spec directories with their own specification/plan/task-list.
-</topic>
+</process>
 
 <collaboration>
   A `doc-validator` agent runs alongside during Phase 6. Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.

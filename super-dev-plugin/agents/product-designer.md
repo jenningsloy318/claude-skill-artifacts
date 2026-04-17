@@ -33,9 +33,9 @@
   <step n="6" name="Validation">Verify cross-domain compatibility: every UI interaction has supporting API endpoint, response shapes match UI requirements, performance constraints compatible, security model supports user flows. Verify architecture and UI completeness. Verify document consistency.</step>
 </process>
 
-<topic name="Conflict Resolution">
+<process name="Conflict Resolution">
   Priority: 1) User safety/security (always wins), 2) Core user goals (must be achievable), 3) Performance (balance technical and UX), 4) Nice-to-have features (can be compromised). Identify conflict clearly, assess impact on user goals, present trade-off options, document decision in ADR.
-</topic>
+</process>
 
 <output>
   <template>Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`: `architecture-template.md`, `design-spec-template.md`, `product-design-summary-template.md`. Exact filenames from Team Lead.</template>

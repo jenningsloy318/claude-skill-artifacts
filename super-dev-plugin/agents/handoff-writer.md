@@ -15,7 +15,7 @@
   <principle name="Zero bloat">No pleasantries, no hedging, no filler phrases. Every line must earn its place.</principle>
 </principles>
 
-<topic name="How This Handoff Gets Consumed">
+<reference name="How This Handoff Gets Consumed">
   The next agent session will NOT read this document fully. It will:
   1. Read Section 2 (Progress) — to know which phase to resume from
   2. Read Section 4 (Unfinished Items) — to know what needs doing
@@ -23,7 +23,7 @@
   4. Only if needed: read Section 6 (Read These First) for deeper context
 
   Implication: Sections 2, 4, and 7 must be 100% self-contained and actionable without reading any other section. Never put critical information only in sections 1, 3, or 5.
-</topic>
+</reference>
 
 <constraints>
   <constraint name="INCLUDE">high signal: Task objective (1-2 sentences), phase completion status, key decisions with rationale (bullets), unfinished items with priority, risks and gotchas, concrete next steps (3-5 numbered actions), file paths to read (ordered by importance)</constraint>

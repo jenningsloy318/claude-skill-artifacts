@@ -31,12 +31,18 @@
   <phase n="11.5" name="User Confirmation">Present summary to user for confirmation before merge.</phase>
   <phase n="12" name="Commit and Merge">Git operations: commit spec directory + code, merge to main.</phase>
   <phase n="13" name="Final Verification">Verify completion, worktree preserved for reference.</phase>
-
-  <constraint name="MANDATORY Phase 9-12 Transition">Execute in strict order: Phase 10 → gate-docs-drift.sh → Phase 10.5 → Phase 11 → Phase 11.5 → Phase 12. Jumping Phase 9 → Phase 12 is a CRITICAL violation.</constraint>
-  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Phase 8 (specialists + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
 </workflow>
 
 <processes>
+  <process name="Specification Setup (Phase 1)">
+    <step n="1" name="Spec Index">Find highest `[XX]` prefix in `specification/` directory. Next index = max + 1 (zero-padded).</step>
+    <step n="2" name="Spec Name">Derive from user request (e.g., "add auth" → `add-auth`). Kebab-case, lowercase.</step>
+    <step n="3" name="Spec Directory">Create `specification/[spec-index]-[spec-name]/` (e.g., `specification/22-xml-restructure/`).</step>
+    <step n="4" name="Worktree">Create `.worktree/[spec-index]-[spec-name]` with matching branch name `[spec-index]-[spec-name]`.</step>
+    <step n="5" name="Agent Team">Create team named `super-dev-[spec-name]` (e.g., `super-dev-xml-restructure`). All agents spawn into this team.</step>
+    <step n="6" name="Workflow JSON">Create `[spec-index]-[spec-name]-workflow-tracking.json` in spec directory. Track phases, iterations, timestamps.</step>
+  </process>
+
   <process name="First-Run Configuration">
     <step n="1" name="Detect">Derive project key: `PROJECT_NAME="$(basename "$(git rev-parse --show-toplevel)")"`. Check `${CLAUDE_PLUGIN_DATA}/projects/${PROJECT_NAME}/config.json`.</step>
     <step n="2" name="Auto-detect">Language (package.json→Node, Cargo.toml→Rust, go.mod→Go, pyproject.toml→Python). Framework (next.config.*→Next.js, vite.config.*→Vite). Package manager (bun.lockb, pnpm-lock.yaml, yarn.lock). Test runner (jest.config.*, vitest.config.*, playwright.config.*).</step>
@@ -122,11 +128,12 @@
   <constraint name="Version Bump">Every modification to super-dev-plugin files requires patch version bump in plugin.json and marketplace.json.</constraint>
   <constraint name="Phase 0+1 Gate">Phase 0 (dev rules) and Phase 1 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
   <constraint name="No Early Code Analysis">Do NOT read code, grep, glob, or explore the codebase before Phase 5 (Code Assessment). Phases 0-4 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Phase 5 is the FIRST agent allowed to examine the codebase.</constraint>
-  <constraint name="Pre-computed Filenames">All spec artifacts use pre-computed filenames from Team Lead.</constraint>
   <constraint name="Gate Scripts">Gate scripts must pass between phases.</constraint>
   <constraint name="Parallel Doc-validator Rule">Phases 2, 2.5, 6, 7, 9: ALWAYS spawn doc-validator alongside writer/reviewer. Both in same action. Spawning only writer is a VIOLATION.</constraint>
   <constraint name="Delegation Rule">If a phase requires work (2-11), Team Lead MUST spawn agents via Task tool. NEVER do work directly.</constraint>
   <constraint name="Direct Peer Communication">Agents in same phase communicate directly (FINDING_SHARE, FINDING_ACK, REVIEW_COMPLETE, VALIDATION FAILED/PASS).</constraint>
+  <constraint name="MANDATORY Phase 9-12 Transition">Execute in strict order: Phase 10 → gate-docs-drift.sh → Phase 10.5 → Phase 11 → Phase 11.5 → Phase 12. Jumping Phase 9 → Phase 12 is a CRITICAL violation.</constraint>
+  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Phase 8 (specialists + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
 </constraints>
 
 <references>

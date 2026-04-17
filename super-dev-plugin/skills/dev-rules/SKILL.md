@@ -10,13 +10,13 @@
 
 <activation>Announce: "I'm applying the dev-rules skill to ensure we follow project standards and best practices."</activation>
 
-<topic name="Session Continuity">
+<process name="Session Continuity">
   At session start, scan `specification/` directories (highest index first) for `[doc-index]-handoff.md`. If found, present prior context: what was done, key decisions, unfinished items, risks, recommended first steps. This informs requirements awareness, code assessment, and avoids redundant work.
-</topic>
+</process>
 
-<topic name="Figma MCP Integration">
+<process name="Figma MCP Integration">
   1) `get_design_context` first (if truncated, `get_metadata` then re-fetch specific nodes). 2) `get_screenshot` for visual reference. 3) Only then download assets and implement. 4) Translate into project conventions — reuse existing tokens/components. 5) Validate 1:1 visual parity.
-</topic>
+</process>
 
 <constraints>
   <constraint name="MCP Scripts">Use wrapper scripts via Bash (Exa, DeepWiki, Context7, GitHub) per `${CLAUDE_PLUGIN_ROOT}/scripts/README.md`. Exception: `mcp__time-mcp__current_time` allowed directly.</constraint>

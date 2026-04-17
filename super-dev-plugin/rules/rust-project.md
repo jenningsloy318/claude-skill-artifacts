@@ -16,6 +16,6 @@
   <directive severity="medium" name="Documentation">`///` doc comments, verify with `cargo doc`</directive>
 </directives>
 
-<topic name="Common Crates">
+<reference name="Common Crates">
   Async: `tokio`. Errors: `thiserror`, `anyhow`. Serialization: `serde`, `serde_json`. HTTP client: `reqwest`. HTTP server: `axum`. CLI: `clap`. Logging: `tracing`, `tracing-subscriber`. Config: `config`, `serde_yaml`.
-</topic>
+</reference>

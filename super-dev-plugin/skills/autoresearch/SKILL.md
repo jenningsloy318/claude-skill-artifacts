@@ -42,6 +42,6 @@
   <gotcha name="Local optima">Short-term score drops may enable bigger gains. Try "creative rounds" for structural changes.</gotcha>
 </gotchas>
 
-<topic name="Data Storage">
+<config name="Data Storage">
   Results stored in `${CLAUDE_PLUGIN_DATA}/autoresearch/`: `[agent-name]-results.json` and `[agent-name]-changelog.md`.
-</topic>
+</config>

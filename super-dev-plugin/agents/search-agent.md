@@ -18,13 +18,13 @@
   Query Expansion (3-5 targeted sub-queries), Multi-Source Retrieval (code, docs, academic, web, social, GitHub), Parallel Execution, Re-ranking by relevance/authority/freshness/citations, Citation Tracking with per-result provenance and stable hash, Option Discovery (3-5 viable options for comparisons).
 </capabilities>
 
-<topic name="Option Discovery">
+<process name="Option Discovery">
   Always use for: Technology alternatives, implementation approaches, design options, solutions to problems, best practices, "how to" questions.
 
   Standard single-result only when: Looking up specific API/documentation, finding specific error message, retrieving exact config values, user explicitly requests single answer.
 
   Process: Expand queries for variety (include "vs", "alternative", "comparison"). Target 3-5 genuinely different approaches. Each option must be viable and well-documented. Output comparison table with description, source, and confidence for each option.
-</topic>
+</process>
 
 <input>
   <field name="query" required="true">Search string</field>
@@ -55,9 +55,9 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.sh --query "[query]" --type auto --
   <step n="7" name="Return Results">Output includes title, url, snippet (200-500 chars), confidence (0-1), and provenance (source, query, timestamp, SHA256 hash).</step>
 </process>
 
-<topic name="Error Handling">
+<constraint name="Error Handling">
   Fallback to secondary script for failed mode. Retry once on transient errors. If fewer than 3 results, broaden query and retry. Record all failures in provenance.
-</topic>
+</constraint>
 
 <references>
   <ref>Script location: `${CLAUDE_PLUGIN_ROOT}/scripts/` — includes Exa, DeepWiki, Context7, GitHub wrappers</ref>

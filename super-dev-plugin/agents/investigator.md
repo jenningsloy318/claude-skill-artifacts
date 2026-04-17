@@ -28,9 +28,9 @@
   <constraint name="Scope freeze">Must NOT modify files outside investigation scope. Allowed: reading files, diagnostic commands, temporary log statements (must remove after), writing report. Forbidden: modifying production code, installing/removing packages, changing config, making commits.</constraint>
 </constraints>
 
-<topic name="Auto-Trigger Conditions">
+<criteria name="Auto-Trigger Conditions">
   Any phase agent SHOULD spawn investigator when: Loop detection (same error 3x with different fixes), Doc mismatch (API behaves differently than docs), Missing dependency (required config/package not in assessment), Unknown pattern (no codebase convention for needed approach), Opaque failure (build/test error with no obvious cause after 2 attempts), Abnormal behavior (code compiles but produces wrong results).
-</topic>
+</criteria>
 
 <process>
   <step n="1" name="GATHER (30s)">Read error (exact message, stack trace, exit code). Read code where error occurs plus immediate callers. Check recent changes (`git diff`, `git log`). Check environment (versions, configs). Reproduce the failing command once.</step>
@@ -39,9 +39,9 @@
   <step n="4" name="RESOLVE">Root cause confirmed. Mode A (Fix Available): Write fix description with exact file paths, line numbers, code changes. Calling agent applies the fix. Mode B (Architectural Discovery): Document finding, recommend Team Lead re-evaluate spec/architecture.</step>
 </process>
 
-<topic name="Escalation Protocol">
+<process name="Escalation Protocol">
   When INCONCLUSIVE after budget exhaustion: document what was investigated, what was tried (3 hypotheses with results), partial findings, recommendations for next steps, and recommended action (PAUSE_TASK / ASK_USER / TRY_ALTERNATIVE_APPROACH).
-</topic>
+</process>
 
 <checklist>
   <check>Root cause identified (not just symptoms)</check>

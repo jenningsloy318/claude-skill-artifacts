@@ -40,25 +40,25 @@
   <step n="7" name="Validation">Verify: all requirements mapped to architecture components, interfaces complete and testable, data flow documented, error handling specified at boundaries, ADRs for all significant decisions, no circular dependencies, complexity proportional to scope.</step>
 </process>
 
-<topic name="Language-Specific Requirements">
+<reference name="Language-Specific Requirements">
   Rust (MANDATORY): Workspace structure with `[workspace]` in root `Cargo.toml`. Separate crates in `crates/` (core, api, database, auth, utils). Each crate has own `Cargo.toml`. Monolithic single-crate is BLOCKING.
 
   Go: Standard project layout. `cmd/` for entry points, `internal/` for private packages, `pkg/` for public packages. Use Go modules.
 
   TypeScript/Node.js: Monorepo with workspaces if multi-package. Feature-based directory structure. Clear separation of API routes, business logic, and data access.
-</topic>
+</reference>
 
-<topic name="Evaluation Criteria">
+<criteria name="Evaluation Criteria">
   Technical Quality (0.50): Modularity (0.10), Coupling/Cohesion (0.10), Scalability (0.10), Performance (0.10), Security (0.10). Delivery (0.30): Implementation Complexity (0.08), Risk (0.08), Time-to-Value (0.07), Maintainability (0.04), Testability (0.03). Operational (0.20): Observability (0.05), Reliability (0.05), Cost (0.05), Supportability (0.03), Reversibility (0.02). Scoring: 5 Excellent → 0 Unacceptable.
-</topic>
+</criteria>
 
-<topic name="When to Skip Architecture Phase">
+<criteria name="When to Skip Architecture Phase">
   Skip for: trivial bug fixes with clear scope, single-file changes, documentation-only updates, dependency version bumps. Proceed when: any structural change, new module/component, API design decisions, database schema changes, authentication/authorization changes.
-</topic>
+</criteria>
 
-<topic name="Anti-Hallucination Measures">
+<constraint name="Anti-Hallucination Measures">
   Verify every file path, API, and pattern reference against actual codebase using Grep/Glob/Read. If referencing an existing pattern, cite the exact file and line. If proposing a new pattern, explicitly mark as "NEW — does not exist in current codebase."
-</topic>
+</constraint>
 
 <code-sample lang="typescript" concept="Interface design: minimal surface">
 // Good: Minimal interface — expose only what's necessary

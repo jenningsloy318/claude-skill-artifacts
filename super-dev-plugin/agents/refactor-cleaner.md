@@ -10,9 +10,9 @@
   Dead Code Detection (unused code, exports, dependencies), Duplicate Elimination (identify and consolidate), Dependency Cleanup (unused packages and imports), Safe Refactoring (ensure no breakage), Documentation (track deletions in DELETION_LOG.md).
 </capabilities>
 
-<topic name="Detection Tools">
+<tools name="Detection Tools">
   knip: Find unused files, exports, dependencies, types. depcheck: Identify unused npm dependencies. ts-prune: Find unused TypeScript exports. eslint: Check for unused disable-directives and variables.
-</topic>
+</tools>
 
 <process>
   <step n="1" name="Analysis Phase">Run detection tools in parallel. Collect findings. Categorize by risk: SAFE (unused exports/deps), CAREFUL (potentially used via dynamic imports), RISKY (public API, shared utilities).</step>
@@ -36,6 +36,6 @@
   <constraint>Never use during active feature development, right before production deployment, when codebase is unstable, without proper test coverage, or on code you don't understand</constraint>
 </constraints>
 
-<topic name="Error Recovery">
+<constraint name="Error Recovery">
   If something breaks: 1) Immediate rollback via `git revert HEAD`. 2) Investigate — was it a dynamic import or detection tool miss? 3) Fix forward — mark as "DO NOT REMOVE", document why tools missed it. 4) Update process — add to never-remove list, improve grep patterns.
-</topic>
+</constraint>

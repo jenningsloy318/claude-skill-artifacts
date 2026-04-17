@@ -8,9 +8,9 @@
 
 <usage>/super-dev:documentation [specification directory path]</usage>
 
-<topic name="Documentation Updates">
+<output name="Documentation Updates">
   Task List: Mark completed tasks, add new tasks discovered, update status. Implementation Summary: Record technical decisions, challenges, solutions, deviations. Specification: Update with `[UPDATED: YYYY-MM-DD]` marker for implementation differences. User Documentation: README updates, usage examples, configuration guides, troubleshooting. Developer Documentation: API docs, integration guides, development setup, contribution guidelines.
-</topic>
+</output>
 
 <arguments>
   Path to specification directory, optional documentation focus type, special requirements.

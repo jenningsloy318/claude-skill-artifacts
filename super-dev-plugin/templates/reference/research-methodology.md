@@ -21,7 +21,7 @@
   <step n="5" name="Synthesize Findings">Compile all findings into structured recommendations. Prioritize by relevance and authority. Cross-reference multiple sources. Identify consensus patterns. Note disagreements or alternatives.</step>
 </process>
 
-<topic name="Search Tools">
+<tools name="Search Tools">
   Firecrawl MCP (MANDATORY — run first): Run before any other search. No source limits. Use `firecrawl_search` for discovery, `firecrawl_scrape` for content extraction, `firecrawl_extract` for structured data.
 
   Exa (Web and Code Search — Supplementary): Web search via `${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.sh`, code context search via `${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.sh`.
@@ -31,13 +31,13 @@
   Context7 (Library Documentation): Resolve library ID via `${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.sh`, get docs via `${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.sh`.
 
   GitHub (Code and Repo Search): Search code via `${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh`, search repos via `${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_repos.sh`, get file contents via `${CLAUDE_PLUGIN_ROOT}/scripts/github/github_file_contents.sh`.
-</topic>
+</tools>
 
-<topic name="Time MCP Integration">
+<process name="Time MCP Integration">
   Before ANY research, get current timestamp via `mcp__time-mcp__current_time`. Enhance all queries with year context (e.g., "React hooks best practices 2025"). Apply recency scoring to all sources.
-</topic>
+</process>
 
-<topic name="Option Presentation">
+<process name="Option Presentation">
   CRITICAL: Always present 3-5 options with detailed comparisons for decision points.
 
   Always present options for: Technology/library selection, framework choices, architecture patterns, implementation approaches, design decisions, tool selection, API/client library choices.
@@ -45,11 +45,11 @@
   Single answer only when: Looking up specific API documentation, finding exact configuration values, retrieving specific error messages, user explicitly requests single answer.
 
   Each option must include: description (1-2 sentences), strengths with source citations, weaknesses with source citations, best-for use cases, and source links. Include a comparison matrix scoring Learning Curve, Community Size, Performance, Maturity, Documentation Quality, and Maintenance Activity. End with a recommendation, rationale, trade-offs, and alternative suggestion.
-</topic>
+</process>
 
-<topic name="Evaluation Criteria">
+<criteria name="Evaluation Criteria">
   When comparing options, score on: Learning Curve (High weight), Community Size (High), Performance (High), Maturity (High), Documentation Quality (High), Maintenance Activity (High). Scoring rubric: 5 Excellent, 4 Good, 3 Acceptable, 2 Fair, 1 Poor, 0 Unacceptable.
-</topic>
+</criteria>
 
 <constraints>
   <constraint>Firecrawl MCP MUST be run first before any other search tool</constraint>

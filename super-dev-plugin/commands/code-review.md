@@ -8,9 +8,9 @@
 
 <usage>/super-dev:code-review [code changes context]</usage>
 
-<topic name="Review Focus Areas">
+<reference name="Review Focus Areas">
   Correctness: Logic matches specifications, edge cases handled, error handling comprehensive, data flow correct. Security: No hardcoded secrets, proper input validation, auth checks, injection prevention. Performance: Efficient algorithms, no unnecessary queries, proper caching, resource optimization. Maintainability: Follows project patterns, readable code, adequate comments, modular components.
-</topic>
+</reference>
 
 <arguments>
   Context of changes made, specification references, specific areas of concern.

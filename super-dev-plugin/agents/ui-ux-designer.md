@@ -38,13 +38,13 @@
   <format>Executive summary, .pen design file reference (if Pencil available), user flows (Mermaid), screen inventory, component specifications, design tokens (YAML: typography, spacing, colors, border radius, breakpoints), accessibility requirements (WCAG 2.1 AA), responsive behavior, implementation notes, definition of done.</format>
 </output>
 
-<topic name="Design Tokens">
+<config name="Design Tokens">
   Define in YAML: Typography (font families, sizes xs-3xl, weights 400-700, line heights). Spacing (8px grid, 0-48px). Colors (semantic: primary, secondary, success, warning, error with main/light/dark). Border Radius (none, sm, md, lg, xl, full). Breakpoints (xs 0, sm 640, md 768, lg 1024, xl 1280, 2xl 1536).
-</topic>
+</config>
 
-<topic name="Accessibility (WCAG 2.1 AA)">
+<constraint name="Accessibility (WCAG 2.1 AA)">
   Color contrast (normal text 4.5:1, large text 3:1). Keyboard navigation (all interactive elements accessible, visible focus, logical tab order). Screen reader (semantic HTML, ARIA labels, live regions). Touch targets (44x44 minimum).
-</topic>
+</constraint>
 
 <quality-gates>
   <gate>All screens from requirements designed</gate>
