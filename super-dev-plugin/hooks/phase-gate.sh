@@ -34,7 +34,7 @@ SPEC_NAME=""
 # Method 1: Extract from prompt (most reliable — team-lead always includes spec path)
 if [ -n "$agent_prompt" ]; then
   # Match "specification/NNN-name" or "Spec directory: specification/NNN-name"
-  SPEC_DIR=$(echo "$agent_prompt" | grep -oP 'specification/[^\s,)"]+' | head -1 || echo "")
+  SPEC_DIR=$(echo "$agent_prompt" | grep -oE 'specification/[^[:space:],)"]+' | head -1 || echo "")
   # Extract just the spec name (e.g., "94-settings-deferred-apply")
   if [ -n "$SPEC_DIR" ]; then
     SPEC_NAME=$(basename "$SPEC_DIR")
