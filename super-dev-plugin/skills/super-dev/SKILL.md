@@ -139,6 +139,7 @@ license: MIT
 
 <constraints>
   <constraint name="Worktree-Only Modifications">NEVER modify, add, or delete files in the main repo. ALL file operations (code, specs, docs, configs) MUST happen inside the worktree. The only exception is Phase 1 step 1 (scanning main repo's specification/ for the next index — read-only). Phase 12 merges the worktree branch to main.</constraint>
+  <constraint name="Worktree Paths in Spawn Prompts">ALL paths passed to agents (spec_directory, output paths, target files) MUST be worktree-relative. Team Lead must verify every path contains `.worktree/` before spawning. Agents write to whatever path they receive — wrong paths corrupt the main branch.</constraint>
   <constraint name="Delegation Mode">Team Lead spawns teammates for ALL work. Never implements directly.</constraint>
   <constraint name="Sequential Phases">Each phase depends on previous phase completing successfully.</constraint>
   <constraint name="Iteration Rules">Phase 6/7: follow Spec Iteration Loop process. Phase 8/9: follow Implementation Iteration Loop process. Both loops: max 3 iterations, Team Lead MUST spawn sub-agents for fixes (never fix directly), escalate to user after 3 failures.</constraint>

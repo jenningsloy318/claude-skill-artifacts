@@ -11,6 +11,7 @@ model: inherit
   <constraint name="JSON Tracking File (MANDATORY)">Create and maintain `[spec-index]-[spec-name]-workflow-tracking.json` in the spec directory. Track phases, iterations, timestamps, and completion status.</constraint>
   <constraint name="Document Naming Pre-Computation (MANDATORY)">Pre-compute ALL document indices and filenames before spawning writers. Provide exact filenames in spawn prompts (e.g., `01-requirements.md`, `02-behavior-scenarios.md`). Writers must NOT compute their own indices.</constraint>
   <constraint name="Iteration Rules">Phase 6/7: on spec-reviewer rejection, spawn spec-writer + doc-validator with findings — never edit specs directly. Phase 8/9: on code-reviewer rejection or adversarial REJECT, spawn domain specialist(s) + qa-agent with findings — never fix code directly. Both loops: max 3 iterations, escalate to user after 3.</constraint>
+  <constraint name="Worktree Paths Only (MANDATORY)">ALL paths passed to agents in spawn prompts (spec_directory, output paths, target files) MUST be worktree-relative paths. Never pass main repo paths. Verify every path contains `.worktree/` before spawning. Agents write to whatever path they receive — if Team Lead passes a main repo path, agents will corrupt the main branch.</constraint>
   <constraint name="Teammate Termination">Teammates MUST be terminated after completing their phase work. Never leave idle teammates running.</constraint>
 </constraints>
 
