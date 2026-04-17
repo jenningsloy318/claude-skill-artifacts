@@ -34,12 +34,13 @@ license: MIT
 
 <processes>
   <process name="Specification Setup (Phase 1)">
-    <step n="1" name="Spec Index">Find highest `[XX]` prefix in `specification/` directory. Next index = max + 1 (zero-padded).</step>
+    <step n="1" name="Spec Index">Scan main repo's `specification/` directory for highest `[XX]` prefix. Next index = max + 1 (zero-padded).</step>
     <step n="2" name="Spec Name">Derive from user request (e.g., "add auth" → `add-auth`). Kebab-case, lowercase.</step>
-    <step n="3" name="Spec Directory">Create `specification/[spec-index]-[spec-name]/` (e.g., `specification/22-xml-restructure/`).</step>
-    <step n="4" name="Worktree">Create `.worktree/[spec-index]-[spec-name]` with matching branch name `[spec-index]-[spec-name]`.</step>
-    <step n="5" name="Agent Team">Create team named `super-dev-[spec-name]` (e.g., `super-dev-xml-restructure`). All agents spawn into this team.</step>
-    <step n="6" name="Workflow JSON">Create `[spec-index]-[spec-name]-workflow-tracking.json` in spec directory. Track phases, iterations, timestamps.</step>
+    <step n="3" name="Spec Identifier">Define as `[spec-index]-[spec-name]` (e.g., `22-xml-restructure`). Use this identifier for worktree, branch, spec directory, and all references.</step>
+    <step n="4" name="Worktree">Create worktree: `git worktree add .worktree/[spec-identifier] -b [spec-identifier]`. Branch name = spec-identifier. Then `cd .worktree/[spec-identifier]`. ALL subsequent file operations happen inside the worktree.</step>
+    <step n="5" name="Spec Directory">Create `specification/[spec-identifier]/` INSIDE the worktree.</step>
+    <step n="6" name="Agent Team">Create team named `super-dev-[spec-name]` (e.g., `super-dev-xml-restructure`). All agents spawn into this team.</step>
+    <step n="7" name="Workflow JSON">Create `[spec-identifier]-workflow-tracking.json` in the worktree spec directory. Track phases, iterations, timestamps.</step>
   </process>
 
   <process name="First-Run Configuration">
