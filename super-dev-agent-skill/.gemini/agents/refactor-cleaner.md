@@ -8,7 +8,7 @@ tools:
   - edit_file
   - run_shell_command
   - grep_search
-model: gemini-2.5-pro
+model: inherit
 temperature: 0.2
 max_turns: 25
 ---

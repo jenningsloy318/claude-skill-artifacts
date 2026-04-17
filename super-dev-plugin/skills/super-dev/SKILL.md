@@ -1,11 +1,10 @@
-<meta>
-  <name>super-dev</name>
-  <type>skill</type>
-  <description>Multi-step development orchestrator for implementing features, fixing bugs, refactoring, optimizing performance, and resolving deprecations</description>
-  <author>Jennings Liu</author>
-  <version>2.7.0</version>
-  <license>MIT</license>
-</meta>
+---
+name: super-dev
+description: Multi-step development orchestrator for implementing features, fixing bugs, refactoring, optimizing performance, and resolving deprecations
+author: Jennings Liu
+version: 2.7.0
+license: MIT
+---
 
 <purpose>Team Lead agent team workflow. The Team Lead orchestrates specialized agent teammates — it NEVER implements directly, only spawns, coordinates, and verifies. Agents execute research, architecture, coding, QA, code review, and documentation phases in parallel where possible.</purpose>
 
@@ -61,7 +60,7 @@
       <gate after="9 → 10" script="gate-review.sh" run_by="doc-validator" checks="Code review approved, adversarial PASS" />
       <gate after="10 → 10.5" script="gate-docs-drift.sh" run_by="team-lead" checks="Docs exist, no excessive TODOs" />
     </step>
-    <step n="2" name="Execution">`bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/&lt;gate-name&gt;.sh &lt;spec-dir&gt;`</step>
+    <step n="2" name="Execution">`bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>`</step>
     <step n="3" name="Failure Handling">Gate fails → report which checks failed → spawn appropriate agent to fix → re-run gate → proceed only on PASS (exit 0).</step>
   </process>
 

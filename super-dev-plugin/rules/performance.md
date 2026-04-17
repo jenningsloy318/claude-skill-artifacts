@@ -1,8 +1,7 @@
-<meta>
-  <name>performance</name>
-  <type>rule</type>
-  <description>Performance optimization rules for model selection, context management, and build troubleshooting</description>
-</meta>
+---
+name: performance
+description: Performance optimization rules for model selection, context management, and build troubleshooting
+---
 
 <purpose>Guide performance optimization through model selection strategy, context window management, and build troubleshooting escalation.</purpose>
 

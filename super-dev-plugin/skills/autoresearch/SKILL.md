@@ -1,11 +1,10 @@
-<meta>
-  <name>autoresearch</name>
-  <type>skill</type>
-  <description>Auto-improve any agent prompt using Karpathy's autoresearch method with iterative test-measure-improve loops</description>
-  <author>Jennings Liu</author>
-  <version>1.0.0</version>
-  <license>MIT</license>
-</meta>
+---
+name: autoresearch
+description: Auto-improve any agent prompt using Karpathy's autoresearch method with iterative test-measure-improve loops
+author: Jennings Liu
+version: 1.0.0
+license: MIT
+---
 
 <purpose>Based on Andrej Karpathy's autoresearch method. Instead of manually improving agent prompts, run an iterative loop: try a small change, score the result, keep improvements, revert regressions. Systematically increase agent output quality.</purpose>
 

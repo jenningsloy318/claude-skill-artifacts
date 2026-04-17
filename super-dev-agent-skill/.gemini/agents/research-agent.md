@@ -7,7 +7,7 @@ tools:
   - write_file
   - web_search
   - web_fetch
-model: gemini-2.5-pro
+model: inherit
 temperature: 0.4
 max_turns: 25
 ---

@@ -1,8 +1,7 @@
-<meta>
-  <name>dev</name>
-  <type>context</type>
-  <description>Development context for active implementation, coding, and building features</description>
-</meta>
+---
+name: dev
+description: Development context for active implementation, coding, and building features
+---
 
 <purpose>Active development context focused on implementation, coding, and building features.</purpose>
 

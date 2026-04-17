@@ -1,5 +1,6 @@
 ---
 description: Code assessment specialist. Evaluates existing codebase architecture, patterns, frameworks, and conventions. Produces assessment reports to inform implementation decisions.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

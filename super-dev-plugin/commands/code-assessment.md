@@ -1,8 +1,7 @@
-<meta>
-  <name>code-assessment</name>
-  <type>command</type>
-  <description>Assess existing codebase for architecture, standards, and framework patterns</description>
-</meta>
+---
+name: code-assessment
+description: Assess existing codebase for architecture, standards, and framework patterns
+---
 
 <purpose>Activate the code-assessor agent to evaluate codebase architecture, standards compliance, framework patterns, and technical debt. Maps existing patterns before implementing changes.</purpose>
 

@@ -1,5 +1,6 @@
 ---
 description: Research specialist for finding best practices, technologies, and implementation approaches. Presents 3-5 options with trade-offs for user selection.
+model: inherit
 mode: subagent
 temperature: 0.4
 tools:

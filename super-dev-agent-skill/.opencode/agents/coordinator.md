@@ -1,5 +1,6 @@
 ---
 description: Team Lead orchestrator for the super-dev workflow. Manages all workflow phases, coordinates specialized agents, monitors execution, and ensures quality gates.
+model: inherit
 mode: primary
 temperature: 0.2
 tools:

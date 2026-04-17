@@ -1,8 +1,7 @@
-<meta>
-  <name>security</name>
-  <type>rule</type>
-  <description>Security guidelines for mandatory checks before commits</description>
-</meta>
+---
+name: security
+description: Security guidelines for mandatory checks before commits
+---
 
 <purpose>Enforce mandatory security checks before any commit to prevent vulnerabilities from reaching production.</purpose>
 

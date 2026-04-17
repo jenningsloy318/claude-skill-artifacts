@@ -1,8 +1,7 @@
-<meta>
-  <name>testing</name>
-  <type>rule</type>
-  <description>Testing requirements including minimum coverage, TDD workflow, and BDD practices</description>
-</meta>
+---
+name: testing
+description: Testing requirements including minimum coverage, TDD workflow, and BDD practices
+---
 
 <purpose>Enforce minimum 80% test coverage, test-driven development workflow, and behavior-driven development practices for all features.</purpose>
 

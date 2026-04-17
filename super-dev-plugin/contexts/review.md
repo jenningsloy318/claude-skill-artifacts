@@ -1,8 +1,7 @@
-<meta>
-  <name>review</name>
-  <type>context</type>
-  <description>Code review context for PR review, code analysis, quality, and security</description>
-</meta>
+---
+name: review
+description: Code review context for PR review, code analysis, quality, and security
+---
 
 <purpose>Code review context focused on PR review, code analysis, quality, security, and maintainability.</purpose>
 

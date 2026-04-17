@@ -1,8 +1,7 @@
-<meta>
-  <name>patterns</name>
-  <type>rule</type>
-  <description>Common patterns for API responses, custom hooks, repository pattern, and skeleton projects</description>
-</meta>
+---
+name: patterns
+description: Common patterns for API responses, custom hooks, repository pattern, and skeleton projects
+---
 
 <purpose>Define standard patterns for API responses, custom hooks, data access, and new project initialization.</purpose>
 

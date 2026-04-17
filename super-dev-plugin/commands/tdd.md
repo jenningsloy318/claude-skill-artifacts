@@ -1,8 +1,7 @@
-<meta>
-  <name>tdd</name>
-  <type>command</type>
-  <description>Enforce test-driven development workflow with scaffold interfaces, tests FIRST, then minimal implementation to pass</description>
-</meta>
+---
+name: tdd
+description: Enforce test-driven development workflow with scaffold interfaces, tests FIRST, then minimal implementation to pass
+---
 
 <purpose>Invoke the tdd-guide agent to enforce test-driven development methodology. Scaffold interfaces, generate tests FIRST, then implement minimal code to pass. Ensure 80%+ coverage.</purpose>
 

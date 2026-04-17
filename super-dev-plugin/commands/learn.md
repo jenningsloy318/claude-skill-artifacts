@@ -1,8 +1,7 @@
-<meta>
-  <name>learn</name>
-  <type>command</type>
-  <description>Extract reusable patterns from the current session and save as skills</description>
-</meta>
+---
+name: learn
+description: Extract reusable patterns from the current session and save as skills
+---
 
 <purpose>Analyze the current session for non-trivial patterns worth saving as skills. Extract error resolution patterns, debugging techniques, workarounds, and project-specific patterns.</purpose>
 

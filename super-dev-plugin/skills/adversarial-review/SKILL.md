@@ -1,8 +1,7 @@
-<meta>
-  <name>adversarial-review</name>
-  <type>skill</type>
-  <description>Multi-lens adversarial review with Skeptic, Architect, and Minimalist lenses and 7+ attack vectors</description>
-</meta>
+---
+name: adversarial-review
+description: Multi-lens adversarial review with Skeptic, Architect, and Minimalist lenses and 7+ attack vectors
+---
 
 <purpose>Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity. Apply Skeptic, Architect, and Minimalist lenses with attack vectors (V1-V8) and a Destructive Action Gate. Produce a verdict (PASS/CONTESTED/REJECT).</purpose>
 

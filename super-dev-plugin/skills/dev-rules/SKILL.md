@@ -1,8 +1,7 @@
-<meta>
-  <name>dev-rules</name>
-  <type>skill</type>
-  <description>Core development rules and philosophy for coding standards, git practices, and quality guidelines</description>
-</meta>
+---
+name: dev-rules
+description: Core development rules and philosophy for coding standards, git practices, and quality guidelines
+---
 
 <purpose>Define coding standards and practices that MUST be followed for all development work. Establish session continuity, git safety, documentation discipline, and development philosophy at the start of any task.</purpose>
 

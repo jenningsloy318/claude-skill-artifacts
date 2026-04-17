@@ -1,8 +1,7 @@
-<meta>
-  <name>security-review</name>
-  <type>skill</type>
-  <description>Comprehensive security review skill for authentication, user input, secrets, API endpoints, and OWASP Top 10</description>
-</meta>
+---
+name: security-review
+description: Comprehensive security review skill for authentication, user input, secrets, API endpoints, and OWASP Top 10
+---
 
 <purpose>Provide comprehensive security checklist and patterns when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.</purpose>
 

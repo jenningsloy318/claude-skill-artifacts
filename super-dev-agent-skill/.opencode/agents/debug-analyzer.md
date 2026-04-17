@@ -1,5 +1,6 @@
 ---
 description: Debug analysis specialist. Performs systematic root cause analysis using evidence collection, hypothesis verification, and structured debugging methodology.
+model: inherit
 mode: subagent
 temperature: 0.2
 tools:

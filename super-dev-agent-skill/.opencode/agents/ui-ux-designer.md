@@ -1,5 +1,6 @@
 ---
 description: UI/UX design specialist. Creates design specifications, wireframes, and interaction flows. Presents 3-5 design options.
+model: inherit
 mode: subagent
 temperature: 0.4
 tools:

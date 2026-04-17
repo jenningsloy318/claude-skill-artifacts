@@ -1,8 +1,7 @@
-<meta>
-  <name>research</name>
-  <type>context</type>
-  <description>Research context for exploration, investigation, and learning before acting</description>
-</meta>
+---
+name: research
+description: Research context for exploration, investigation, and learning before acting
+---
 
 <purpose>Research context focused on exploration, investigation, and learning. Understand before acting.</purpose>
 

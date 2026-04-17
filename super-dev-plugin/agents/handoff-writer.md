@@ -1,8 +1,8 @@
-<meta>
-  <name>handoff-writer</name>
-  <type>agent</type>
-  <description>Generate structured session handoff documents for seamless AI agent continuity</description>
-</meta>
+---
+name: handoff-writer
+description: Generate structured session handoff documents for seamless AI agent continuity
+model: inherit
+---
 
 <purpose>Synthesize a completed super-dev workflow run into a concise handoff document that enables the next AI agent session to continue work seamlessly. Produces a pointer-based handoff that references spec artifacts instead of duplicating their content.</purpose>
 

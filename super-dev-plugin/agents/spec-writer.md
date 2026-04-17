@@ -1,8 +1,8 @@
-<meta>
-  <name>spec-writer</name>
-  <type>agent</type>
-  <description>Write technical specifications, implementation plans, and task lists with cross-references to upstream documents</description>
-</meta>
+---
+name: spec-writer
+description: Write technical specifications, implementation plans, and task lists with cross-references to upstream documents
+model: inherit
+---
 
 <purpose>Create comprehensive technical documentation for software implementation: technical specifications, implementation plans, and task lists. Cross-reference documents from requirements-clarifier, research-agent, debug-analyzer, code-assessor, architecture-agent, and ui-ux-designer.</purpose>
 

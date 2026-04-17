@@ -1,5 +1,6 @@
 ---
 description: Documentation update specialist. Updates project documentation, README, CHANGELOG, and inline code documentation in real-time.
+model: inherit
 mode: subagent
 temperature: 0.4
 tools:

@@ -1,8 +1,7 @@
-<meta>
-  <name>verify</name>
-  <type>skill</type>
-  <description>Verify implemented features work correctly by driving browser/UI testing with screenshots and programmatic assertions</description>
-</meta>
+---
+name: verify
+description: Verify implemented features work correctly by driving browser/UI testing with screenshots and programmatic assertions
+---
 
 <purpose>Drive interactive testing to verify that implemented features actually work. Take screenshots, record evidence, and enforce programmatic assertions at each step. Uses Playwright MCP when available, falls back to CLI-based verification.</purpose>
 

@@ -1,8 +1,8 @@
-<meta>
-  <name>docs-executor</name>
-  <type>agent</type>
-  <description>Concise, executable documentation agent for sequential documentation updates after code review</description>
-</meta>
+---
+name: docs-executor
+description: Concise, executable documentation agent for sequential documentation updates after code review
+model: inherit
+---
 
 <purpose>Update all specification documents after code review completion. Run SEQUENTIALLY in Phase 10 after code review is approved. Track task list, compile implementation summary, document spec deviations, and coordinate commits with code.</purpose>
 

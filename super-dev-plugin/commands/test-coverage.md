@@ -1,8 +1,7 @@
-<meta>
-  <name>test-coverage</name>
-  <type>command</type>
-  <description>Analyze test coverage and generate missing tests to reach 80%+ coverage</description>
-</meta>
+---
+name: test-coverage
+description: Analyze test coverage and generate missing tests to reach 80%+ coverage
+---
 
 <purpose>Run tests with coverage, analyze the report, identify files below 80% threshold, and generate unit/integration/E2E tests for under-covered code paths.</purpose>
 

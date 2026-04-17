@@ -1,5 +1,6 @@
 ---
 description: Dead code cleanup and refactoring specialist. Identifies and removes unused code, consolidates duplicates, and simplifies complex code.
+model: inherit
 mode: subagent
 temperature: 0.2
 tools:

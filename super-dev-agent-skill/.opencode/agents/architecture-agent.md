@@ -1,5 +1,6 @@
 ---
 description: Architecture design specialist. Designs system architecture, creates Architecture Decision Records (ADRs), and presents 3-5 architecture options.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

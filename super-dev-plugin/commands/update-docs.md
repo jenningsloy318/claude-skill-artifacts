@@ -1,8 +1,7 @@
-<meta>
-  <name>update-docs</name>
-  <type>command</type>
-  <description>Sync documentation from source-of-truth (package.json and .env.example)</description>
-</meta>
+---
+name: update-docs
+description: Sync documentation from source-of-truth (package.json and .env.example)
+---
 
 <purpose>Read package.json scripts and .env.example to generate docs/CONTRIB.md (development workflow, scripts, environment setup, testing) and docs/RUNBOOK.md (deployment, monitoring, common issues, rollback). Identify obsolete documentation not modified in 90+ days.</purpose>
 

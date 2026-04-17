@@ -1,8 +1,7 @@
-<meta>
-  <name>refactor-clean</name>
-  <type>command</type>
-  <description>Safely identify and remove dead code with test verification</description>
-</meta>
+---
+name: refactor-clean
+description: Safely identify and remove dead code with test verification
+---
 
 <purpose>Run dead code analysis tools (knip, depcheck, ts-prune), categorize findings by severity, propose safe deletions, and verify with tests before and after each deletion.</purpose>
 

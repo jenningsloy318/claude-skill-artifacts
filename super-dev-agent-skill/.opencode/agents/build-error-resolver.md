@@ -1,5 +1,6 @@
 ---
 description: Build error resolution specialist. Fixes compilation errors, type errors, and build failures with minimal changes.
+model: inherit
 mode: subagent
 temperature: 0.1
 tools:

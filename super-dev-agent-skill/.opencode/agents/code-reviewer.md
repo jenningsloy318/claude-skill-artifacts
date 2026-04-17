@@ -1,5 +1,6 @@
 ---
 description: Code review specialist. Performs specification-aware code review focusing on correctness, security, performance, and maintainability.
+model: inherit
 mode: subagent
 temperature: 0.1
 tools:

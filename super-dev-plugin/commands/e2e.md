@@ -1,8 +1,7 @@
-<meta>
-  <name>e2e</name>
-  <type>command</type>
-  <description>Generate and run end-to-end tests with Playwright including test journeys, screenshots, videos, and traces</description>
-</meta>
+---
+name: e2e
+description: Generate and run end-to-end tests with Playwright including test journeys, screenshots, videos, and traces
+---
 
 <purpose>Invoke the e2e-runner agent to generate, maintain, and execute end-to-end tests using Playwright. Creates test journeys, runs tests across browsers, captures artifacts, quarantines flaky tests, and ensures critical user flows work.</purpose>
 

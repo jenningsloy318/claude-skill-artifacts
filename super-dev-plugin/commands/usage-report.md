@@ -1,8 +1,7 @@
-<meta>
-  <name>usage-report</name>
-  <type>command</type>
-  <description>View skill and agent usage statistics for the super-dev plugin</description>
-</meta>
+---
+name: usage-report
+description: View skill and agent usage statistics for the super-dev plugin
+---
 
 <purpose>Read `${CLAUDE_PLUGIN_DATA}/global/stats.json` and `${CLAUDE_PLUGIN_DATA}/global/usage.log` to display total invocations, top skills, top agents, and recent activity.</purpose>
 

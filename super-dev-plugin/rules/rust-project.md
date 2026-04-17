@@ -1,8 +1,7 @@
-<meta>
-  <name>rust-project</name>
-  <type>rule</type>
-  <description>Rust workspace structure, build commands, and crate conventions for all Rust projects</description>
-</meta>
+---
+name: rust-project
+description: Rust workspace structure, build commands, and crate conventions for all Rust projects
+---
 
 <purpose>Enforce workspace structure, standard build commands, and crate conventions for all Rust projects.</purpose>
 

@@ -6,7 +6,7 @@ tools:
   - read_file
   - write_file
   - edit_file
-model: gemini-2.5-pro
+model: inherit
 temperature: 0.4
 max_turns: 25
 ---

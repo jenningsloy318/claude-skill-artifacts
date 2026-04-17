@@ -1,8 +1,8 @@
-<meta>
-  <name>bdd-scenario-writer</name>
-  <type>agent</type>
-  <description>Write BDD behavior scenarios in Gherkin-like markdown from requirements acceptance criteria</description>
-</meta>
+---
+name: bdd-scenario-writer
+description: Write BDD behavior scenarios in Gherkin-like markdown from requirements acceptance criteria
+model: inherit
+---
 
 <purpose>Transform acceptance criteria into structured behavior specifications using Given/When/Then format in markdown. Produce traceable scenarios mapped to acceptance criteria with quality validation.</purpose>
 

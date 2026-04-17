@@ -1,8 +1,7 @@
-<meta>
-  <name>git-workflow</name>
-  <type>rule</type>
-  <description>Git commit message format, PR workflow, and feature implementation workflow</description>
-</meta>
+---
+name: git-workflow
+description: Git commit message format, PR workflow, and feature implementation workflow
+---
 
 <purpose>Define git commit conventions, PR workflow, and feature implementation workflow including TDD approach and code review.</purpose>
 

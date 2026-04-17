@@ -1,8 +1,7 @@
-<meta>
-  <name>coding-style</name>
-  <type>rule</type>
-  <description>Coding style rules for immutability, file organization, error handling, and input validation</description>
-</meta>
+---
+name: coding-style
+description: Coding style rules for immutability, file organization, error handling, and input validation
+---
 
 <purpose>Enforce coding style standards: immutability, file organization, comprehensive error handling, input validation, and code quality.</purpose>
 

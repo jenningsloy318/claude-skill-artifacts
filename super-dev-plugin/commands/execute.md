@@ -1,8 +1,7 @@
-<meta>
-  <name>execute</name>
-  <type>command</type>
-  <description>Execute development and QA in parallel using specialized agents</description>
-</meta>
+---
+name: execute
+description: Execute development and QA in parallel using specialized agents
+---
 
 <purpose>Activate dev-executor and qa-agent in PARALLEL for Phase 8 implementation. Dev-executor implements code according to specifications. QA-agent writes and runs tests. Build queue managed for Rust/Go projects.</purpose>
 

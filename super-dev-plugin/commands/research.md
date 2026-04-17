@@ -1,8 +1,7 @@
-<meta>
-  <name>research</name>
-  <type>command</type>
-  <description>Conduct comprehensive research on best practices, patterns, and documentation</description>
-</meta>
+---
+name: research
+description: Conduct comprehensive research on best practices, patterns, and documentation
+---
 
 <purpose>Activate the research-agent to research best practices, documentation, and patterns with Time MCP integration for recency awareness. Firecrawl MCP first, then supplementary search tools.</purpose>
 

@@ -1,8 +1,7 @@
-<meta>
-  <name>freeze</name>
-  <type>skill</type>
-  <description>Directory freeze guardrail that restricts file edits to a specific directory for the current session</description>
-</meta>
+---
+name: freeze
+description: Directory freeze guardrail that restricts file edits to a specific directory for the current session
+---
 
 <purpose>Session-scoped directory restriction that blocks file edits outside a specified directory. Activate when debugging to prevent accidentally "fixing" unrelated code.</purpose>
 

@@ -1,8 +1,7 @@
-<meta>
-  <name>code-review</name>
-  <type>command</type>
-  <description>Perform specification-aware code review focused on correctness, security, performance, and maintainability</description>
-</meta>
+---
+name: code-review
+description: Perform specification-aware code review focused on correctness, security, performance, and maintainability
+---
 
 <purpose>Activate the code-reviewer agent to review code against specification. Assess correctness, security, performance, and maintainability. Runs in parallel with adversarial review in Phase 9.</purpose>
 

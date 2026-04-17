@@ -1,8 +1,7 @@
-<meta>
-  <name>ui-ux-design</name>
-  <type>command</type>
-  <description>Create UI/UX design specifications for features with user interfaces</description>
-</meta>
+---
+name: ui-ux-design
+description: Create UI/UX design specifications for features with user interfaces
+---
 
 <purpose>Activate the ui-ux-designer agent for Phase 5.5 UI/UX design. Produces wireframes (Pencil MCP or ASCII), design tokens, interaction patterns, accessibility requirements, and responsive behavior specs.</purpose>
 

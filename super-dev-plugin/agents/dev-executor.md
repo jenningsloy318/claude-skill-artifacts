@@ -1,8 +1,8 @@
-<meta>
-  <name>dev-executor</name>
-  <type>agent</type>
-  <description>Fallback development executor agent for implementing code changes when domain-specific specialists cannot be determined</description>
-</meta>
+---
+name: dev-executor
+description: Fallback development executor agent for implementing code changes when domain-specific specialists cannot be determined
+model: inherit
+---
 
 <purpose>Fallback implementation agent used when the Team Lead cannot determine a clear domain for the task list. Detect domains internally, invoke appropriate specialist sub-agents, manage build queues, and coordinate task completion. For known domains, the Team Lead spawns specialists directly — bypassing this agent.</purpose>
 

@@ -1,8 +1,7 @@
-<meta>
-  <name>update-codemaps</name>
-  <type>command</type>
-  <description>Analyze codebase structure and update architecture documentation</description>
-</meta>
+---
+name: update-codemaps
+description: Analyze codebase structure and update architecture documentation
+---
 
 <purpose>Scan all source files for imports, exports, and dependencies. Generate token-lean codemaps (architecture.md, backend.md, frontend.md, data.md). Calculate diff from previous version, request approval if changes exceed 30%, add freshness timestamps.</purpose>
 

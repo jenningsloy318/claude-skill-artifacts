@@ -1,5 +1,6 @@
 ---
 description: Security audit and review specialist. Identifies security vulnerabilities, checks for OWASP top 10 issues, and provides remediation recommendations.
+model: inherit
 mode: subagent
 temperature: 0.1
 tools:

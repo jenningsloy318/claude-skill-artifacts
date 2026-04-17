@@ -1,8 +1,7 @@
-<meta>
-  <name>debug-analysis</name>
-  <type>command</type>
-  <description>Perform systematic root cause analysis for bugs and errors</description>
-</meta>
+---
+name: debug-analysis
+description: Perform systematic root cause analysis for bugs and errors
+---
 
 <purpose>Activate the debug-analyzer agent for systematic root cause analysis with evidence collection, pattern search, and reproducible steps.</purpose>
 

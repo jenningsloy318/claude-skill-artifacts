@@ -1,8 +1,7 @@
-<meta>
-  <name>agents</name>
-  <type>rule</type>
-  <description>Agent orchestration rules for usage, parallel execution, and termination</description>
-</meta>
+---
+name: agents
+description: Agent orchestration rules for usage, parallel execution, and termination
+---
 
 <purpose>Define rules for agent usage, parallel task execution, immediate termination after completion, and multi-perspective analysis.</purpose>
 

@@ -1,8 +1,7 @@
-<meta>
-  <name>tdd-workflow</name>
-  <type>skill</type>
-  <description>Test-driven development workflow enforcing tests FIRST with 80%+ coverage</description>
-</meta>
+---
+name: tdd-workflow
+description: Test-driven development workflow enforcing tests FIRST with 80%+ coverage
+---
 
 <purpose>Enforce test-driven development methodology for writing new features, fixing bugs, or refactoring code. Scaffold interfaces, generate tests FIRST, then implement minimal code to pass. Ensure 80%+ coverage including unit, integration, and E2E tests.</purpose>
 

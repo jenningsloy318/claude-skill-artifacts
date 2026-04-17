@@ -1,5 +1,6 @@
 ---
 description: Implementation executor for the super-dev workflow. Implements code according to specifications, follows existing patterns, and coordinates with QA.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

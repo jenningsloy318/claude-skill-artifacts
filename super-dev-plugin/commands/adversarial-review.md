@@ -1,8 +1,7 @@
-<meta>
-  <name>adversarial-review</name>
-  <type>command</type>
-  <description>Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity</description>
-</meta>
+---
+name: adversarial-review
+description: Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity
+---
 
 <purpose>Activate the adversarial-reviewer agent for Phase 9 multi-lens review. Challenges implementation from Skeptic (correctness), Architect (structural fitness), and Minimalist (necessity) perspectives. Runs in parallel with code review. Produces verdict (PASS/CONTESTED/REJECT).</purpose>
 

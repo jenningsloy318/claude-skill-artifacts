@@ -7,7 +7,7 @@ tools:
   - write_file
   - edit_file
   - run_shell_command
-model: gemini-2.5-pro
+model: inherit
 temperature: 0.1
 max_turns: 20
 ---

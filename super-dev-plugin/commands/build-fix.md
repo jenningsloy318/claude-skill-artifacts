@@ -1,8 +1,7 @@
-<meta>
-  <name>build-fix</name>
-  <type>command</type>
-  <description>Incrementally fix TypeScript and build errors one at a time</description>
-</meta>
+---
+name: build-fix
+description: Incrementally fix TypeScript and build errors one at a time
+---
 
 <purpose>Run build, parse error output, and fix errors one at a time. Show error context, explain the issue, propose and apply fix, re-run build, verify resolution. Stop if fix introduces new errors, same error persists after 3 attempts, or user requests pause.</purpose>
 

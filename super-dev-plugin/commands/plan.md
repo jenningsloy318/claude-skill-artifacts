@@ -1,8 +1,7 @@
-<meta>
-  <name>plan</name>
-  <type>command</type>
-  <description>Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code.</description>
-</meta>
+---
+name: plan
+description: "Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code."
+---
 
 <purpose>Invoke the planner agent to create a comprehensive implementation plan before writing any code. Analyzes requirements, reviews architecture, creates detailed step breakdowns with dependencies and risks, and waits for user confirmation.</purpose>
 

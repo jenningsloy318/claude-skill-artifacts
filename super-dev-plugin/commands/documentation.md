@@ -1,8 +1,7 @@
-<meta>
-  <name>documentation</name>
-  <type>command</type>
-  <description>Update documentation sequentially after code review and approval</description>
-</meta>
+---
+name: documentation
+description: Update documentation sequentially after code review and approval
+---
 
 <purpose>Activate the docs-executor agent to update all documentation after successful code review. Updates task list, implementation summary, specifications, and generates user/developer documentation.</purpose>
 

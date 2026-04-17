@@ -1,8 +1,7 @@
-<meta>
-  <name>golang</name>
-  <type>command</type>
-  <description>Invoke the Go development specialist for writing, reviewing, or refactoring Go code with modern Go 1.24+ best practices</description>
-</meta>
+---
+name: golang
+description: Invoke the Go development specialist for writing, reviewing, or refactoring Go code with modern Go 1.24+ best practices
+---
 
 <purpose>Spawn the golang-developer agent for Go-specific tasks. Enforces Go 1.24+ features (iterators, enhanced ServeMux, os.Root), idiomatic patterns (functional options, interface design, error wrapping), quality gates (golangci-lint v2, 80%+ coverage), and performance best practices.</purpose>
 

@@ -1,5 +1,6 @@
 ---
 description: QA testing specialist. Plans and executes comprehensive testing including unit, integration, and E2E tests. Works in parallel with dev-executor.
+model: inherit
 mode: subagent
 temperature: 0.2
 tools:

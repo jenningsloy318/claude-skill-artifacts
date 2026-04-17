@@ -1,8 +1,8 @@
-<meta>
-  <name>search-agent</name>
-  <type>agent</type>
-  <description>Perform intelligent multi-source search with query expansion, parallel retrieval, re-ranking, and strict citation tracking</description>
-</meta>
+---
+name: search-agent
+description: Perform intelligent multi-source search with query expansion, parallel retrieval, re-ranking, and strict citation tracking
+model: inherit
+---
 
 <purpose>Execute concise, repeatable searches with high precision/recall and auditable provenance. Search across code, documentation, academic papers, and web resources with mandatory Firecrawl MCP first, then supplementary tools.</purpose>
 

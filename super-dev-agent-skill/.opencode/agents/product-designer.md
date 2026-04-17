@@ -1,5 +1,6 @@
 ---
 description: Orchestrates architecture-agent and ui-ux-designer for holistic software design. Use when features require both backend architecture and UI/UX design decisions that must be coordinated together.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

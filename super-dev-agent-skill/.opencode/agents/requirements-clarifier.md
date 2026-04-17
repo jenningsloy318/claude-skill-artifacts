@@ -1,5 +1,6 @@
 ---
 description: Requirements clarification specialist. Gathers complete requirements through structured questioning, defines acceptance criteria, and produces comprehensive requirements documents.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

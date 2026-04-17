@@ -1,5 +1,6 @@
 ---
 description: Specification writing specialist. Creates comprehensive technical specifications, implementation plans, and task lists.
+model: inherit
 mode: subagent
 temperature: 0.3
 tools:

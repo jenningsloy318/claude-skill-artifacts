@@ -1,8 +1,7 @@
-<meta>
-  <name>careful</name>
-  <type>skill</type>
-  <description>Safety guardrail that blocks destructive commands for the current session</description>
-</meta>
+---
+name: careful
+description: Safety guardrail that blocks destructive commands for the current session
+---
 
 <purpose>Session-scoped safety guardrail that blocks destructive commands. Activate when working near production systems, sensitive data, or critical infrastructure.</purpose>
 
