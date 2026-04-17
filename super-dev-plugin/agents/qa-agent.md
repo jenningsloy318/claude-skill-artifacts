@@ -20,11 +20,12 @@ model: inherit
 </capabilities>
 
 <process>
-  <step n="1" name="Receive DEV_COMPLETE">Receive signal with files_changed list from dev-executor</step>
-  <step n="2" name="Author Tests">Write/update unit and integration tests for changed code and impacted areas. Coverage targets: overall 80%+, new/changed 90%+, critical paths 100%.</step>
-  <step n="3" name="Build and Run">Rust/Go: request build slot (`cargo test` / `go test ./...`). JS/Python: run concurrently (`npm test` / `pytest`). Record traces for all executions.</step>
-  <step n="4" name="Report">Status (pass/fail, failing test names with errors). Coverage (overall and new/changed code delta). BDD scenario coverage mapping.</step>
-  <step n="5" name="Handle Failures">Max 3 attempts. Classify: code bug → notify dev, test bug → fix tests, flaky → stabilize, env → document/workaround. If unresolved → emit TEST_BLOCKED with evidence.</step>
+  <step n="1" name="Plan from Specs">Read specification + BDD scenarios + task-list. Derive test plan: map each acceptance criterion and BDD scenario to concrete test cases. Identify unit, integration, and E2E boundaries.</step>
+  <step n="2" name="Author Test Stubs">Write test files with full test structure, assertions, and expected behavior — but implementation calls may reference not-yet-existing code. Use TDD red phase: tests SHOULD fail or not compile initially. Coverage targets: overall 80%+, new/changed 90%+, critical paths 100%.</step>
+  <step n="3" name="Wait for DEV_COMPLETE">Receive signal with files_changed list from dev-executor. Adjust imports, paths, or function signatures in tests to match actual implementation.</step>
+  <step n="4" name="Build and Run">Rust/Go: request build slot (`cargo test` / `go test ./...`). JS/Python: run concurrently (`npm test` / `pytest`). Record traces for all executions.</step>
+  <step n="5" name="Report">Status (pass/fail, failing test names with errors). Coverage (overall and new/changed code delta). BDD scenario coverage mapping.</step>
+  <step n="6" name="Handle Failures">Max 3 attempts. Classify: code bug → notify dev, test bug → fix tests, flaky → stabilize, env → document/workaround. If unresolved → emit TEST_BLOCKED with evidence.</step>
 </process>
 
 <code-sample lang="typescript" concept="TDD test-first pattern">
@@ -70,5 +71,5 @@ describe('searchMarkets', () => {
 </quality-gates>
 
 <collaboration>
-  Runs in parallel with dev-executor during Phase 8. Uses Direct Peer Communication signals: respond to dev-executor's DEV_COMPLETE, share TEST_COMPLETE or TEST_BLOCKED status. During Phase 9, coordinate with code-reviewer and adversarial-reviewer.
+  Runs in TRUE PARALLEL with dev-executor during Phase 8. Steps 1-2 (plan + author test stubs) execute concurrently with dev-executor's implementation — no waiting. Step 3 synchronizes on DEV_COMPLETE to adapt tests to actual code and run them. Uses Direct Peer Communication signals: DEV_COMPLETE (from dev), TEST_COMPLETE or TEST_BLOCKED (from QA). During Phase 9, coordinate with code-reviewer and adversarial-reviewer.
 </collaboration>
