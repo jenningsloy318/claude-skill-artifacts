@@ -12,13 +12,27 @@
 <triggers>Triggers on: "implement", "build", "fix bug", "refactor", "add feature", "develop this", "help me build", "add functionality", "optimize performance", "resolve deprecation", "systematic development". Do NOT trigger on: simple questions, file searches, one-off commands, code explanations, quick edits, non-development tasks.</triggers>
 
 <workflow>
-  **Phase 0**: Apply dev rules (dev-rules skill). **Phase 1**: Specification setup (worktree, spec dir, workflow JSON, team creation). **Phase 2**: Requirements clarification (requirements-clarifier + doc-validator). **Phase 2.5**: BDD scenarios (bdd-scenario-writer + doc-validator, user confirmation required). **Phase 3**: Research (research-agent with Firecrawl MCP first). **Phase 4**: Debug analysis (debug-analyzer, if bug fix). **Phase 5**: Code assessment (code-assessor). **Phase 5.3**: Architecture design (architecture-agent or product-designer). **Phase 5.5**: UI/UX design (ui-ux-designer, if UI feature). **Phase 6**: Specification writing (spec-writer + doc-validator). **Phase 7**: Specification review (spec-reviewer + doc-validator). **Phase 8**: Implementation (domain specialists + qa-agent, parallel). **Phase 9**: Code review + adversarial review (parallel with doc-validator). **Phase 10**: Documentation update (docs-executor). **Phase 10.5**: Handoff writing (handoff-writer). **Phase 11**: Team cleanup. **Phase 12**: Commit and merge. **Phase 13**: Complete.
+  <phase n="0" name="Apply Dev Rules">Invoke dev-rules skill. MUST complete before any other action.</phase>
+  <phase n="1" name="Specification Setup">Create worktree, spec dir, workflow JSON, agent team. MUST complete before any codebase exploration or agent spawning.</phase>
+  <phase n="2" name="Requirements Clarification">Spawn requirements-clarifier + doc-validator (parallel). Gate: gate-requirements.sh.</phase>
+  <phase n="2.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). User confirmation required. Gate: gate-bdd.sh.</phase>
+  <phase n="3" name="Research">Spawn research-agent. Firecrawl MCP first, then supplementary scripts. Present 3-5 options to user.</phase>
+  <phase n="4" name="Debug Analysis">Spawn debug-analyzer. Only for bug fixes — skip otherwise.</phase>
+  <phase n="5" name="Code Assessment">Spawn code-assessor. FIRST phase allowed to read/grep/explore the codebase.</phase>
+  <phase n="5.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 5.3. UI ONLY → 5.5. BOTH → 5.4 (product-designer).</phase>
+  <phase n="5.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</phase>
+  <phase n="6" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</phase>
+  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. If issues found, loop to Phase 6.</phase>
+  <phase n="8" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh.</phase>
+  <phase n="9" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. Loop Phase 8/9 until approved. Max 3 iterations.</phase>
+  <phase n="10" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</phase>
+  <phase n="10.5" name="Handoff Writing">Spawn handoff-writer. MANDATORY — do not skip.</phase>
+  <phase n="11" name="Team Cleanup">Verify all teammates terminated, worktree preserved.</phase>
+  <phase n="11.5" name="User Confirmation">Present summary to user for confirmation before merge.</phase>
+  <phase n="12" name="Commit and Merge">Git operations: commit spec directory + code, merge to main.</phase>
+  <phase n="13" name="Final Verification">Verify completion, worktree preserved for reference.</phase>
 
-  **Phase 5.3/5.4/5.5 Selection**: Architecture ONLY → 5.3 (architecture-agent). UI ONLY → 5.5 (ui-ux-designer). BOTH → 5.4 (product-designer).
-
-  **Iteration Rule**: Loop Phase 8/9 until code-reviewer approves, adversarial review PASS, BDD coverage 100%. Max 3 iterations.
-
-  **MANDATORY Phase 9 → 12 Transition**: After Phase 9 passes, execute in strict order: Phase 10 (docs-executor) → gate-docs-drift.sh → Phase 10.5 (handoff-writer) → Phase 11 (cleanup) → Phase 11.5 (user confirmation) → Phase 12 (commit). Jumping Phase 9 → Phase 12 is a CRITICAL violation.
+  <constraint>**MANDATORY Phase 9 → 12 Transition**: Execute in strict order: Phase 10 → gate-docs-drift.sh → Phase 10.5 → Phase 11 → Phase 11.5 → Phase 12. Jumping Phase 9 → Phase 12 is a CRITICAL violation.</constraint>
 </workflow>
 
 <process name="First-Run Configuration">
@@ -120,7 +134,8 @@
   <constraint>**Sequential phases**: Each phase depends on previous phase completing successfully</constraint>
   <constraint>**Iteration Rule**: Phase 8/9 loop until code-reviewer approves. Max 3 iterations.</constraint>
   <constraint>**Version bump**: Every modification to super-dev-plugin files requires patch version bump in plugin.json and marketplace.json</constraint>
-  <constraint>**No early code analysis**: Do not analyze codebase before Phase 5 (Code Assessment)</constraint>
+  <constraint>**Phase 0+1 gate**: Phase 0 (dev rules) and Phase 1 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
+  <constraint>**No early code analysis**: Do NOT read code, grep, glob, or explore the codebase before Phase 5 (Code Assessment). Phases 0-4 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Phase 5 is the FIRST agent allowed to examine the codebase.</constraint>
   <constraint>All spec artifacts use pre-computed filenames from Team Lead</constraint>
   <constraint>Gate scripts must pass between phases</constraint>
 </constraints>
