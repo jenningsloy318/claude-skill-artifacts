@@ -1,90 +1,27 @@
----
-name: super-dev:debug-analysis
-description: Perform systematic root cause analysis for bugs and errors
----
+<meta>
+  <name>debug-analysis</name>
+  <type>command</type>
+  <description>Perform systematic root cause analysis for bugs and errors</description>
+</meta>
 
-# Phase 4: Debug Analysis
+<purpose>Activate the debug-analyzer agent for systematic root cause analysis with evidence collection, pattern search, and reproducible steps.</purpose>
 
-Execute systematic root cause analysis with evidence collection and reproducible steps.
+<usage>/super-dev:debug-analysis [bug description or error details]</usage>
 
-## Usage
+<topic name="Analysis Process">
+  **Evidence Collection**: Parse error messages and stack traces, identify affected components, collect logs. **Pattern Search**: Search for similar error patterns (grep/ast-grep), find related code, identify recent changes. **Root Cause Analysis**: Trace execution flow, identify failure points, analyze data flow, check edge cases. **Reproduction**: Document exact steps, note required conditions, create test scenarios.
+</topic>
 
-```
-/super-dev:debug-analysis [bug description or error details]
-```
+<arguments>
+  Error messages or stack traces, description of unexpected behavior, steps already attempted, context about when the issue occurs.
+</arguments>
 
-## What This Command Does
+<output>
+  <format>Debug analysis report (`[doc-index]-debug-analysis.md`) with: issue summary, evidence, root cause analysis, reproduction steps, proposed solutions, related findings.</format>
+</output>
 
-When invoked, this command activates the `super-dev:debug-analyzer` to:
-
-1. **Collects evidence**: Gathers all relevant error information
-2. **Analyzes patterns**: Searches codebase for related issues
-3. **Identifies root causes**: Finds the underlying problem
-4. **Creates reproduction steps**: Documents how to reproduce the issue
-5. **Proposes solutions**: Recommends specific fixes
-6. **Documents findings**: Creates `[doc-index]-debug-analysis.md`
-
-## Analysis Process
-
-### Evidence Collection
-- Parse error messages and stack traces
-- Identify affected components
-- Note environmental factors
-- Collect logs and output
-
-### Pattern Search (grep/ast-grep Enhanced)
-- Search for similar error patterns
-- Find related code sections
-- Identify recent changes
-- Track error frequency
-
-### Root Cause Analysis
-- Trace through execution flow
-- Identify failure points
-- Analyze data flow
-- Check edge cases
-
-### Reproduction Steps
-- Document exact steps to reproduce
-- Note required conditions
-- Identify variable factors
-- Create test scenarios
-
-## Arguments
-
-`$ARGUMENTS` should contain:
-- Error messages or stack traces
-- Description of unexpected behavior
-- Steps already attempted
-- Context about when the issue occurs
-
-## Output
-
-Creates `[doc-index]-debug-analysis.md` with:
-- Summary of the issue
-- Evidence collected
-- Root cause analysis
-- Reproduction steps
-- Proposed solutions
-- Related findings
-
-## Examples
-
-```
-/super-dev:debug-analysis TypeError: Cannot read property 'user' of undefined
-/super-dev:debug-analysis Memory usage grows continuously with large files
-/super-dev:debug-analysis Build fails on production but not development
-```
-
-## Tools Used
-
-- **grep**: Text pattern search
-- **ast-grep**: Structural AST-based code search
-- **Task tool**: For exploring codebase patterns
-
-## Notes
-
-- Only used for bugs and errors (skip for new features)
-- Requires clear error description or logs
-- Produces actionable fix recommendations
-- Documents findings for future reference
+<constraints>
+  <constraint>Only used for bugs and errors (skip for new features)</constraint>
+  <constraint>Requires clear error description or logs</constraint>
+  <constraint>Produces actionable fix recommendations</constraint>
+</constraints>

@@ -5,7 +5,6 @@ doc-type: task-list
 gate-profile: gate-docs-drift.sh
 ---
 
-```xml
 <document type="task-list">
 
   <metadata>
@@ -139,7 +138,6 @@ gate-profile: gate-docs-drift.sh
   </section>
 
 </document>
-```
 
 ## Rendering Rules
 

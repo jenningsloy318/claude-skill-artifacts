@@ -47,7 +47,7 @@ fi
 
 # Check for any TODO/FIXME comments left in code
 cd "$PROJECT_DIR"
-todo_count=$(grep -rl "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.py" --include="*.rs" --include="*.go" . 2>/dev/null | wc -l | tr -d ' ')
+todo_count=$(grep -rl "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.py" --include="*.rs" --include="*.go" . 2>/dev/null || true | wc -l | tr -d ' ')
 if [ "$todo_count" -gt 5 ]; then
     check "No excessive TODO/FIXME comments (found: ${todo_count} files)" "false"
 else

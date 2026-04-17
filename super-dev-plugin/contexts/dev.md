@@ -1,20 +1,24 @@
-# Development Context
+<meta>
+  <name>dev</name>
+  <type>context</type>
+  <description>Development context for active implementation, coding, and building features</description>
+</meta>
 
-Mode: Active development
-Focus: Implementation, coding, building features
+<purpose>Active development context focused on implementation, coding, and building features.</purpose>
 
-## Behavior
-- Write code first, explain after
-- Prefer working solutions over perfect solutions
-- Run tests after changes
-- Keep commits atomic
+<mode>Active development</mode>
 
-## Priorities
-1. Get it working
-2. Get it right
-3. Get it clean
+<constraints>
+  <constraint>Write code first, explain after</constraint>
+  <constraint>Prefer working solutions over perfect solutions</constraint>
+  <constraint>Run tests after changes</constraint>
+  <constraint>Keep commits atomic</constraint>
+</constraints>
 
-## Tools to favor
-- Edit, Write for code changes
-- Bash for running tests/builds
-- Grep, Glob for finding code
+<priorities>
+  <priority n="1">Get it working</priority>
+  <priority n="2">Get it right</priority>
+  <priority n="3">Get it clean</priority>
+</priorities>
+
+<tools>Edit, Write for code changes. Bash for running tests/builds. Grep, Glob for finding code.</tools>

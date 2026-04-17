@@ -1,119 +1,48 @@
-# BDD Patterns Reference
+<meta>
+  <name>bdd-patterns</name>
+  <type>template</type>
+  <description>BDD scenario writing patterns, Gherkin-like syntax conventions, and quality checklists for behavior-driven development</description>
+</meta>
 
-## Gherkin-Like Syntax (Markdown)
+<purpose>Reference for writing BDD behavior scenarios using Given/When/Then format in markdown, with scenario ID conventions, priority levels, traceability matrices, and per-scenario/per-document quality checklists.</purpose>
 
-BDD scenarios use Given/When/Then format in markdown (NOT .feature files):
+<topic name="Gherkin-Like Syntax">
+  BDD scenarios use Given/When/Then format in markdown (NOT .feature files). Each scenario follows this structure: `SCENARIO-XXX: [Meaningful Behavior Title]` with acceptance criteria reference (`AC-XX`), priority (`P0/P1/P2`), and Given/When/Then/And steps in business language.
+</topic>
 
-### Scenario Structure
+<topic name="Scenario ID Convention">
+  - Format: `SCENARIO-001`, `SCENARIO-002`, ..., `SCENARIO-NNN`
+  - Sequential, zero-padded to 3 digits
+  - Unique within a single `[doc-index]-behavior-scenarios.md`
+  - Referenced in tests: `describe('SCENARIO-001: ...')` or `// SCENARIO-001`
+</topic>
 
-```
-### SCENARIO-XXX: [Meaningful Behavior Title]
-**Acceptance Criteria:** AC-XX from requirements
-**Priority:** P0/P1/P2
+<topic name="Priority Levels">
+  - **P0**: Core business behavior (happy path) — always test
+  - **P1**: Important alternative/error path — always test
+  - **P2**: Edge case or secondary behavior — always test (coverage gate is 100%)
+</topic>
 
-**Given** [precondition in business language]
-**When** [single action/event in business language]
-**Then** [verifiable outcome in business language]
-**And** [additional outcome if needed]
-```
+<principles>
+  <principle>**Declarative style only**: Describe WHAT behavior is expected, not HOW (e.g., "subscriber accesses exclusive content" not "user clicks Upgrade button")</principle>
+  <principle>**One behavior per scenario**: Each scenario tests exactly one Given/When/Then pair</principle>
+  <principle>**Business language**: Use domain terminology; never use banned implementation words</principle>
+  <principle>**Scenario cadence**: 3-5 per feature area; stop at 8</principle>
+</principles>
 
-### Scenario ID Convention
+<constraints>
+  <constraint>**Banned words** in scenarios: click, navigate, type, enter, button, field, page, URL, endpoint, database, API, HTTP, JSON, SQL, CSS, selector, element, component, scroll, hover, tap, swipe, drag, drop, submit, form, redirect, render, mount, DOM, query, request, response</constraint>
+</constraints>
 
-- Format: `SCENARIO-001`, `SCENARIO-002`, ..., `SCENARIO-NNN`
-- Sequential, zero-padded to 3 digits
-- Unique within a single `[doc-index]-behavior-scenarios.md`
-- Referenced in tests: `describe('SCENARIO-001: ...')` or `// SCENARIO-001`
+<topic name="Traceability Matrix">
+  Every behavior-scenarios document MUST include a traceability matrix mapping each Acceptance Criterion to its covering Scenario IDs. Zero uncovered items allowed.
+</topic>
 
-### Priority Levels
+<topic name="Test Reference Patterns">
+  BDD scenarios are referenced in tests using language-specific conventions: JavaScript/TypeScript uses `describe('SCENARIO-XXX: ...')`, Python uses `def test_scenario_xxx_...()`, Rust uses `fn scenario_xxx_...()`, Go uses `func TestScenarioXxx_...(t *testing.T)`.
+</topic>
 
-| Priority | Meaning | Test in Phase 8 |
-|----------|---------|-----------------|
-| P0 | Core business behavior (happy path) | Always |
-| P1 | Important alternative/error path | Always |
-| P2 | Edge case or secondary behavior | Always (coverage gate is 100%) |
-
-## Writing Guidelines
-
-### DO: Declarative Style
-
-```
-**Given** a premium subscriber with an active plan
-**When** the subscriber accesses exclusive content
-**Then** the content is displayed without restrictions
-```
-
-### DON'T: Imperative Style
-
-```
-**Given** the user is on the pricing page
-**When** the user clicks the "Upgrade" button
-**And** the user enters their credit card number
-**Then** the page redirects to /dashboard
-```
-
-### Banned Words
-
-click, navigate, type, enter, button, field, page, URL, endpoint,
-database, API, HTTP, JSON, SQL, CSS, selector, element, component,
-scroll, hover, tap, swipe, drag, drop, submit, form, redirect,
-render, mount, DOM, query, request, response
-
-## Traceability Matrix Pattern
-
-```markdown
-| Acceptance Criterion | Scenario IDs | Coverage |
-|---------------------|-------------|----------|
-| AC-01: [description] | SCENARIO-001, SCENARIO-002 | Covered |
-| AC-02: [description] | SCENARIO-003 | Covered |
-```
-
-## Test Reference Patterns
-
-### JavaScript/TypeScript
-```javascript
-describe('SCENARIO-001: Registered user accesses account', () => {
-  it('should grant access with valid credentials', () => { ... });
-});
-```
-
-### Python
-```python
-def test_scenario_001_registered_user_accesses_account():
-    """SCENARIO-001: Registered user accesses account with valid credentials"""
-    ...
-```
-
-### Rust
-```rust
-#[test]
-fn scenario_001_registered_user_accesses_account() { ... }
-```
-
-### Go
-```go
-func TestScenario001_RegisteredUserAccessesAccount(t *testing.T) { ... }
-```
-
-## Quality Checklists
-
-### Per-Scenario (Q1-Q10)
-- Q1: Single behavior (one When/Then pair)
-- Q2: Declarative style (WHAT not HOW)
-- Q3: Business language (no jargon)
-- Q4: Meaningful title
-- Q5: Independent (self-contained)
-- Q6: Concise (3-5 steps)
-- Q7: Concrete examples
-- Q8: AC traceability (AC-ID reference)
-- Q9: No implementation leakage
-- Q10: Testable outcome
-
-### Per-Document (D1-D8)
-- D1: All AC covered
-- D2: No scenario explosion (3-8 per area)
-- D3: Traceability matrix complete
-- D4: Unique IDs
-- D5: Priorities assigned
-- D6: Happy path first
-- D7: Error cases included
-- D8: No duplicate behaviors
+<checklist>
+  <check>**Per-Scenario (Q1-Q10)**: Q1 Single behavior, Q2 Declarative style, Q3 Business language, Q4 Meaningful title, Q5 Independent, Q6 Concise (3-5 steps), Q7 Concrete examples, Q8 AC traceability, Q9 No implementation leakage, Q10 Testable outcome</check>
+  <check>**Per-Document (D1-D8)**: D1 All AC covered, D2 No scenario explosion (3-8 per area), D3 Traceability matrix complete, D4 Unique IDs, D5 Priorities assigned, D6 Happy path first, D7 Error cases included, D8 No duplicate behaviors</check>
+</checklist>

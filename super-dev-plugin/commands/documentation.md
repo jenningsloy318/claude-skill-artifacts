@@ -1,98 +1,31 @@
----
-name: super-dev:update-documentation
-description: Update documentation sequentially after code review and approval
----
+<meta>
+  <name>documentation</name>
+  <type>command</type>
+  <description>Update documentation sequentially after code review and approval</description>
+</meta>
 
-# Phase 10: Documentation Update
+<purpose>Activate the docs-executor agent to update all documentation after successful code review. Updates task list, implementation summary, specifications, and generates user/developer documentation.</purpose>
 
-Update all documentation sequentially after successful code review and implementation.
+<usage>/super-dev:documentation [specification directory path]</usage>
 
-## Usage
+<topic name="Documentation Updates">
+  **Task List**: Mark completed tasks, add new tasks discovered, update status. **Implementation Summary**: Record technical decisions, challenges, solutions, deviations. **Specification**: Update with `[UPDATED: YYYY-MM-DD]` marker for implementation differences. **User Documentation**: README updates, usage examples, configuration guides, troubleshooting. **Developer Documentation**: API docs, integration guides, development setup, contribution guidelines.
+</topic>
 
-```
-/super-dev:documentation [specification directory path]
-```
+<arguments>
+  Path to specification directory, optional documentation focus type, special requirements.
+</arguments>
 
-## What This Command Does
+<quality-gates>
+  <gate>All implemented features documented</gate>
+  <gate>Task list reflects actual completion state</gate>
+  <gate>Implementation summary is current</gate>
+  <gate>Specification changes documented</gate>
+  <gate>User documentation clear and accurate</gate>
+  <gate>Developer documentation complete</gate>
+</quality-gates>
 
-When invoked, this command activates the `super-dev:docs-executor` to:
-
-1. **Updates task list**: Marks completed tasks and documents outcomes
-2. **Updates implementation summary**: Records technical decisions and challenges
-3. **Updates specifications**: Documents deviations from original specs
-4. **Creates user documentation**: Generates user-facing documentation
-5. **Creates developer documentation**: Documents API and integration details
-6. **Ensures consistency**: Verifies all documentation is aligned
-
-## Documentation Updates
-
-### 1. Task List (`[doc-index]-task-list.md`)
-- Mark completed tasks with `[x]`
-- Add any new tasks discovered during implementation
-- Update task status and progress
-- Note any blocked or deferred tasks
-
-### 2. Implementation Summary (`[doc-index]-implementation-summary.md`)
-- Add completed work to "Code Changes" section
-- Document technical decisions made
-- Record challenges and solutions
-- Note any deviations from plan
-- Update status at milestone boundaries
-
-### 3. Specification (`[doc-index]-specification.md`)
-- Update sections with `[UPDATED: YYYY-MM-DD]` marker
-- Document implementation differences
-- Explain why changes were necessary
-- Keep spec aligned with actual implementation
-
-### 4. User Documentation
-- README updates
-- Usage examples
-- Configuration guides
-- Troubleshooting sections
-
-### 5. Developer Documentation
-- API documentation
-- Integration guides
-- Development setup instructions
-- Contribution guidelines
-
-## Quality Gates
-
-Before completing this phase, ensure:
-- [ ] All implemented features are documented
-- [ ] Task list reflects actual completion state
-- [ ] Implementation summary is current
-- [ ] Specification changes are documented
-- [ ] User documentation is clear and accurate
-- [ ] Developer documentation is complete
-
-## Arguments
-
-`$ARGUMENTS` should specify:
-- Path to specification directory
-- Type of documentation to focus on (optional)
-- Any special documentation requirements
-
-## Output
-
-Updates/creates:
-- Updated `[doc-index]-task-list.md`
-- Updated `[doc-index]-implementation-summary.md`
-- Updated `[doc-index]-specification.md`
-- User documentation files
-- Developer documentation files
-
-## Examples
-
-```
-/super-dev:documentation specification/12-user-authentication
-/super-dev:documentation ./specs/payment-processing --focus user-docs
-```
-
-## Notes
-
-- Critical for maintaining project knowledge
-- Enables future maintenance and development
-- Ensures documentation matches implementation
-- Must be completed before final commit
+<constraints>
+  <constraint>Must be completed before final commit</constraint>
+  <constraint>Ensures documentation matches implementation</constraint>
+</constraints>

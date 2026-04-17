@@ -1,31 +1,18 @@
-# Update Documentation
+<meta>
+  <name>update-docs</name>
+  <type>command</type>
+  <description>Sync documentation from source-of-truth (package.json and .env.example)</description>
+</meta>
 
-Sync documentation from source-of-truth:
+<purpose>Read package.json scripts and .env.example to generate docs/CONTRIB.md (development workflow, scripts, environment setup, testing) and docs/RUNBOOK.md (deployment, monitoring, common issues, rollback). Identify obsolete documentation not modified in 90+ days.</purpose>
 
-1. Read package.json scripts section
-   - Generate scripts reference table
-   - Include descriptions from comments
+<process>
+  <step n="1" name="Extract">Read package.json scripts section. Read .env.example for environment variables.</step>
+  <step n="2" name="Generate CONTRIB">Development workflow, available scripts, environment setup, testing procedures.</step>
+  <step n="3" name="Generate RUNBOOK">Deployment procedures, monitoring and alerts, common issues and fixes, rollback procedures.</step>
+  <step n="4" name="Audit">Find docs not modified in 90+ days. List for manual review. Show diff summary.</step>
+</process>
 
-2. Read .env.example
-   - Extract all environment variables
-   - Document purpose and format
-
-3. Generate docs/CONTRIB.md with:
-   - Development workflow
-   - Available scripts
-   - Environment setup
-   - Testing procedures
-
-4. Generate docs/RUNBOOK.md with:
-   - Deployment procedures
-   - Monitoring and alerts
-   - Common issues and fixes
-   - Rollback procedures
-
-5. Identify obsolete documentation:
-   - Find docs not modified in 90+ days
-   - List for manual review
-
-6. Show diff summary
-
-Single source of truth: package.json and .env.example
+<constraints>
+  <constraint>Single source of truth: package.json and .env.example</constraint>
+</constraints>

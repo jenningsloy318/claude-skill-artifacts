@@ -1,55 +1,14 @@
-# Common Patterns
+<meta>
+  <name>patterns</name>
+  <type>rule</type>
+  <description>Common patterns for API responses, custom hooks, repository pattern, and skeleton projects</description>
+</meta>
 
-## API Response Format
+<purpose>Define standard patterns for API responses, custom hooks, data access, and new project initialization.</purpose>
 
-```typescript
-interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
-  meta?: {
-    total: number
-    page: number
-    limit: number
-  }
-}
-```
-
-## Custom Hooks Pattern
-
-```typescript
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
-
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay)
-    return () => clearTimeout(handler)
-  }, [value, delay])
-
-  return debouncedValue
-}
-```
-
-## Repository Pattern
-
-```typescript
-interface Repository<T> {
-  findAll(filters?: Filters): Promise<T[]>
-  findById(id: string): Promise<T | null>
-  create(data: CreateDto): Promise<T>
-  update(id: string, data: UpdateDto): Promise<T>
-  delete(id: string): Promise<void>
-}
-```
-
-## Skeleton Projects
-
-When implementing new functionality:
-1. Search for battle-tested skeleton projects
-2. Use parallel agents to evaluate options:
-   - Security assessment
-   - Extensibility analysis
-   - Relevance scoring
-   - Implementation planning
-3. Clone best match as foundation
-4. Iterate within proven structure
+<directives>
+  <directive severity="high">**API Response Format**: Consistent structure with `success` (boolean), `data` (optional), `error` (optional string), and `meta` (optional: total, page, limit)</directive>
+  <directive severity="high">**Custom Hooks Pattern**: Extract reusable stateful logic into hooks (e.g., `useDebounce` with useState + useEffect + setTimeout/clearTimeout)</directive>
+  <directive severity="high">**Repository Pattern**: Abstract data access behind interfaces with findAll, findById, create, update, delete methods. Use generics for type safety.</directive>
+  <directive severity="medium">**Skeleton Projects**: When implementing new functionality, search for battle-tested skeleton projects, evaluate options in parallel (security, extensibility, relevance, implementation plan), clone best match as foundation, iterate within proven structure.</directive>
+</directives>

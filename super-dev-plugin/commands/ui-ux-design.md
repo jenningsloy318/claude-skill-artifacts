@@ -1,204 +1,24 @@
----
-name: super-dev:ui-ux-design
-description: Create UI/UX design specifications for features with user interfaces
----
+<meta>
+  <name>ui-ux-design</name>
+  <type>command</type>
+  <description>Create UI/UX design specifications for features with user interfaces</description>
+</meta>
 
-# Phase 5.5: UI/UX Design
+<purpose>Activate the ui-ux-designer agent for Phase 5.5 UI/UX design. Produces wireframes (Pencil MCP or ASCII), design tokens, interaction patterns, accessibility requirements, and responsive behavior specs.</purpose>
 
-Create comprehensive UI/UX design specifications for features requiring user interfaces.
+<usage>/super-dev:ui-ux-design [feature description]</usage>
 
-## Usage
+<topic name="Design Output">
+  **Wireframes**: Visual (Pencil MCP .pen files) or ASCII diagrams for all screens. **Design Tokens**: Typography, spacing, colors, border radius, breakpoints in YAML. **Interactions**: State transitions, animations, error handling UX. **Accessibility**: WCAG 2.1 AA compliance, keyboard navigation, screen reader support. **Responsive**: Behavior at all breakpoints (mobile, tablet, desktop).
+</topic>
 
-```
-/super-dev:ui-ux-design [UI requirements and user context]
-```
+<output>
+  <format>Design specification (`[doc-index]-design-spec.md`) with: executive summary, screen inventory, component specifications, design tokens, accessibility requirements, responsive behavior, implementation notes.</format>
+</output>
 
-## What This Command Does
-
-When invoked, this command activates the `super-dev:ui-ux-designer` to:
-
-1. **Detects Pencil MCP**: Checks if Pencil MCP tools (`mcp__pencil__*`) are available
-2. **Analyzes user needs**: Understands user context and requirements
-3. **Creates wireframes**: Designs interface layouts (.pen file if Pencil MCP available, ASCII fallback otherwise)
-4. **Defines interactions**: Specifies user flows and interactions
-5. **Establishes design tokens**: Creates consistent design system
-6. **Plans responsive design**: Ensures cross-device compatibility
-7. **Validates visually**: Uses `get_screenshot` for visual validation (Pencil MCP mode)
-8. **Creates design spec**: Generates `[doc-index]-design-spec.md`
-
-## Pencil MCP Enforcement (MANDATORY)
-
-**Before any design work begins, the agent MUST check for Pencil MCP availability.**
-
-| Pencil MCP Available? | Design Tool | Output Format |
-|----------------------|-------------|---------------|
-| Yes | Pencil MCP (.pen files) | .pen file + design-spec.md |
-| No | ASCII wireframes | design-spec.md only |
-
-When Pencil MCP is available:
-- MUST create .pen design file with all screens and components
-- MUST validate visually using `get_screenshot` after each major step
-- MUST use `get_guidelines` and `get_style_guide` for design rules
-- FORBIDDEN to produce ASCII-only wireframes as final deliverables
-
-## Design Process
-
-### User Analysis
-- Identify user personas and use cases
-- Map user journeys and flows
-- Define user goals and pain points
-- Analyze accessibility needs
-
-### Interface Design
-- Create wireframes and mockups
-- Design component hierarchy
-- Plan information architecture
-- Define navigation patterns
-
-### Interaction Design
-- Map user flows
-- Design interaction patterns
-- Define micro-interactions
-- Plan state transitions
-
-### Design System
-- Define color palette and typography
-- Create component library
-- Establish spacing and sizing tokens
-- Document design guidelines
-
-### Responsive Design
-- Plan mobile-first approach
-- Define breakpoints
-- Design adaptive layouts
-- Ensure touch-friendly interfaces
-
-### Option Generation and Evaluation
-
-Definitions (concise):
-- No Wheel Reinvention: Prefer reusing mature open-source UI components and design systems over building custom solutions.
-- Glue Code: Minimal integration adapters/layers that connect reused UI components to the existing framework and data flows.
-- Interface-first Modularity: Define component/module contracts (interfaces, events) before implementations; ensure components are replaceable and composable.
-
-Enforcement principles:
-- No Wheel Reinvention: Maximize reuse of mature open-source UI components and design systems; avoid rebuilding from scratch.
-- Glue Code: Use AI to generate minimal "glue code" to integrate reused components into the existing framework and data flows.
-- Modularity: Interface-first (contract-first); define component/module interfaces and events before implementation. Components should be replaceable and composable.
-
-For any significant UI/UX decision, propose at least 3 viable options and evaluate them across multiple dimensions. Provide a comparative summary, a final recommendation with rationale, and a documented reversibility plan.
-
-Default criteria weights (total equals 1.0; adjust as needed):
-- Delivery (0.30)
-  - Implementation Feasibility: 0.05
-  - Complexity: 0.08
-  - Risk: 0.07
-  - Time-to-Value: 0.07
-  - Maintainability: 0.05
-  - Testability: 0.03
-- Technical/UI System (0.45)
-  - Accessibility: 0.10
-  - Performance: 0.08
-  - Design System Alignment: 0.07
-  - Scalability of UI Patterns: 0.05
-  - Consistency: 0.05
-  - Observability (telemetry from UI): 0.03
-  - Reliability (error-state handling): 0.03
-  - Supportability (docs/training): 0.02
-  - Reversibility: 0.02
-- Experiential (0.25)
-  - Usability: 0.10
-  - Learnability: 0.05
-  - Discoverability: 0.05
-  - Aesthetic Fit: 0.05
-
-Normalized scoring rubric:
-- Score each criterion 0–5 (0 = unacceptable, 3 = acceptable baseline, 5 = excellent)
-- Weighted total option score = sum(score_i × weight_i)
-- Prefer higher total scores; if selecting a lower-scoring option, explicitly document the trade-offs and optimization goal
-
-Evaluation matrix template:
-| Criteria | Weight | Option 1 | Option 2 | Option 3 |
-|----------|--------|----------|----------|----------|
-| Accessibility | 0.10 | [0–5] | [0–5] | [0–5] |
-| Performance | 0.08 | [0–5] | [0–5] | [0–5] |
-| Design System Alignment | 0.07 | [0–5] | [0–5] | [0–5] |
-| Implementation Feasibility | 0.05 | [0–5] | [0–5] | [0–5] |
-| Scalability of UI Patterns | 0.05 | [0–5] | [0–5] | [0–5] |
-| Consistency | 0.05 | [0–5] | [0–5] | [0–5] |
-| Complexity | 0.08 | [0–5] | [0–5] | [0–5] |
-| Risk | 0.07 | [0–5] | [0–5] | [0–5] |
-| Time-to-Value | 0.07 | [0–5] | [0–5] | [0–5] |
-| Maintainability | 0.05 | [0–5] | [0–5] | [0–5] |
-| Testability | 0.03 | [0–5] | [0–5] | [0–5] |
-| Usability | 0.10 | [0–5] | [0–5] | [0–5] |
-| Learnability | 0.05 | [0–5] | [0–5] | [0–5] |
-| Discoverability | 0.05 | [0–5] | [0–5] | [0–5] |
-| Aesthetic Fit | 0.05 | [0–5] | [0–5] | [0–5] |
-| Observability | 0.03 | [0–5] | [0–5] | [0–5] |
-| Reliability | 0.03 | [0–5] | [0–5] | [0–5] |
-| Supportability | 0.02 | [0–5] | [0–5] | [0–5] |
-| Reversibility | 0.02 | [0–5] | [0–5] | [0–5] |
-
-Scoring helper (conceptual):
-- Total(option) = sum over all criteria of score × weight
-- Rank options by total descending
-- Document the final recommendation and the reversibility plan (triggers, rollback approach, cost/time estimate)
-
-Validation gates (must be satisfied before completion):
-- Reuse Gate: Document selected open-source UI components/design system parts, justification, licenses, and how they map to the UI specification. If not reusing, provide documented, approved exceptions.
-- Glue Code Gate: Provide the list of adapters/integration layers, their responsibilities, and how they are tested (unit + integration).
-- Interface-first Gate: Include finalized component contracts (props, events, states), interaction flows, and stability guidelines before implementation details.
-
-## When to Use This Phase
-
-- Features with user interfaces
-- Major UI changes or redesigns
-- New user workflows
-- Components requiring specific UX considerations
-- Accessibility improvements
-
-## Arguments
-
-`$ARGUMENTS` should include:
-- UI requirements and constraints
-- Target users and use cases
-- Brand or design guidelines
-- Platform considerations (web, mobile, desktop)
-
-## Output
-
-**When Pencil MCP is available:**
-- `.pen` design file with all screens, components, states, and interactions
-- Exported PNG/PDF screen images via `export_nodes`
-- `[index]-design-spec.md` referencing the .pen file
-
-**When Pencil MCP is NOT available (fallback):**
-- `[index]-design-spec.md` with ASCII wireframes
-
-Both outputs include:
-- User personas and journeys
-- Wireframes and layouts
-- Component specifications
-- Interaction designs
-- Design tokens and guidelines
-- Responsive design plans
-- ≥3 UI/UX options and comparative evaluation
-- Final recommendation with rationale and reversibility plan
-- Reuse plan: selected open-source components, rationale, and integration approach
-- Interface-first specification: component contracts, events, and adapter/glue code plan
-
-## Examples
-
-```
-/super-dev:ui-ux-design User dashboard with analytics charts
-/super-dev:ui-ux-design Mobile checkout flow
-/super-dev:ui-ux-design Settings page redesign
-```
-
-## Notes
-
-- Optional phase - skip for backend-only features
-- Follows existing design system when available
-- Ensures accessibility compliance
-- Creates implementation-ready specifications
-- Requires ≥3 options with multi-dimensional evaluation and a documented reversibility plan
+<constraints>
+  <constraint>3-5 design options presented with comparison matrix</constraint>
+  <constraint>User selection required before finalizing</constraint>
+  <constraint>WCAG 2.1 AA compliance mandatory</constraint>
+  <constraint>Checks for Pencil MCP availability for visual wireframes</constraint>
+</constraints>

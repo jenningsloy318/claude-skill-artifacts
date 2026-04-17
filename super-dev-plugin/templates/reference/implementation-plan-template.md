@@ -5,7 +5,6 @@ doc-type: implementation-plan
 gate-profile: gate-spec-trace.sh
 ---
 
-```xml
 <document type="implementation-plan">
 
   <metadata>
@@ -258,7 +257,6 @@ Phase 1 [rust]         Phase 2 [frontend]     Phase 3 [mixed]
   </section>
 
 </document>
-```
 
 ## Usage Notes
 

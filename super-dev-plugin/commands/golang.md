@@ -1,45 +1,20 @@
----
-name: super-dev:go-quality
-description: Invoke the Go development specialist for writing, reviewing, or refactoring Go code with modern Go 1.24+ best practices.
----
+<meta>
+  <name>golang</name>
+  <type>command</type>
+  <description>Invoke the Go development specialist for writing, reviewing, or refactoring Go code with modern Go 1.24+ best practices</description>
+</meta>
 
-# /super-dev:go-quality — Go Development
+<purpose>Spawn the golang-developer agent for Go-specific tasks. Enforces Go 1.24+ features (iterators, enhanced ServeMux, os.Root), idiomatic patterns (functional options, interface design, error wrapping), quality gates (golangci-lint v2, 80%+ coverage), and performance best practices.</purpose>
 
-Invoke the **golang-developer** agent for Go-specific tasks.
+<usage>/super-dev:go-quality [task description]</usage>
 
-## Usage
+<constraints>
+  <constraint>Agent enforces Go 1.24+ features, idiomatic patterns, and quality gates</constraint>
+  <constraint>Runs golangci-lint v2 with modernize before declaring complete</constraint>
+</constraints>
 
-```
-/super-dev:go-quality <task description>
-```
-
-## What It Does
-
-Spawns the `super-dev:golang-developer` agent with your task. The agent enforces:
-
-- **Go 1.24+** features: iterators (`iter.Seq`), enhanced ServeMux routing, `os.Root`, Swiss Table maps, `omitzero`, tool directives
-- **Idiomatic patterns**: functional options, interface design, error wrapping, graceful shutdown, errgroup
-- **Quality gates**: `golangci-lint` v2 with `modernize`, ≥80% test coverage, `go vet`, table-driven tests
-- **Performance**: preallocate slices, `sync.Pool`, `b.Loop()` benchmarks, pprof profiling
-
-## Examples
-
-```
-/super-dev:go-quality implement a REST API for user management with JWT auth
-/super-dev:go-quality review this handler for idiomatic Go patterns
-/super-dev:go-quality refactor the database layer to use repository pattern
-/super-dev:go-quality add table-driven tests for the auth service
-```
-
-## Execution
-
-```yaml
-agent: super-dev:golang-developer
-mode: bypassPermissions
-input: |
-  Task: $ARGUMENTS
-
-  Apply all Go 1.24+ best practices. Use enhanced ServeMux for routing,
-  structured logging (slog), explicit error handling with wrapping,
-  and table-driven tests. Run golangci-lint v2 before declaring complete.
-```
+<examples>
+  <example>/super-dev:go-quality implement a REST API for user management with JWT auth</example>
+  <example>/super-dev:go-quality review this handler for idiomatic Go patterns</example>
+  <example>/super-dev:go-quality refactor the database layer to use repository pattern</example>
+</examples>

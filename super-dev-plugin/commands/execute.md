@@ -1,91 +1,21 @@
----
-name: super-dev:execute
-description: Execute development and QA in parallel using specialized agents
----
+<meta>
+  <name>execute</name>
+  <type>command</type>
+  <description>Execute development and QA in parallel using specialized agents</description>
+</meta>
 
-# Phase 8: Implementation
+<purpose>Activate dev-executor and qa-agent in PARALLEL for Phase 8 implementation. Dev-executor implements code according to specifications. QA-agent writes and runs tests. Build queue managed for Rust/Go projects.</purpose>
 
-Execute development implementation and quality assurance in parallel using specialized agents.
+<usage>/super-dev:execute [specification directory path]</usage>
 
-## Usage
+<topic name="Parallel Execution">
+  **Dev Executor**: Reads task-list for tasks, implements features per specs, invokes specialist agents (rust-developer, frontend-developer, etc.), follows established patterns. **QA Agent**: Creates unit tests, writes integration tests, verifies build success, tests against requirements. **Build Queue**: Rust/Go projects: one build at a time via coordinator. JS/Python: concurrent.
+</topic>
 
-```
-/super-dev:execute [specification directory path]
-```
+<arguments>
+  Path to specification directory, any specific implementation focus areas.
+</arguments>
 
-## What This Command Does
-
-When invoked, this command activates TWO agents in PARALLEL:
-
-1. **Dev Executor** (`super-dev:dev-executor`)
-   - Implements code according to specifications
-   - Invokes specialist developer agents as needed
-   - Follows established patterns and standards
-
-2. **QA Agent** (`super-dev:qa-agent`)
-   - Writes tests for all implemented code
-   - Verifies builds and functionality
-   - Ensures quality standards are met
-
-## Parallel Execution Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                PARALLEL EXECUTION & QA                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌─────────────┐  ┌─────────────┐                           │
-│  │dev-executor │  │   qa-agent  │                           │
-│  │             │  │             │                           │
-│  │ Implements  │  │ Writes and  │                           │
-│  │ code        │  │ runs tests  │                           │
-│  │             │  │             │                           │
-│  └─────────────┘  └─────────────┘                           │
-│                          │                                   │
-│                   BUILD QUEUE                                │
-│              (Rust/Go: one at a time)                       │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Build Policy
-
-For Rust and Go projects:
-- Only ONE build at a time
-- Coordinator manages build queue
-- Prevents resource conflicts
-
-## Execution Process
-
-### Dev Executor
-- Reads `[doc-index]-task-list.md` for tasks
-- Implements features according to specifications
-- Invokes specialist agents (rust-developer, frontend-developer, etc.)
-- Follows established code patterns
-
-### QA Agent
-- Creates unit tests for new code
-- Writes integration tests
-- Verifies build success
-- Tests functionality against requirements
-
-**Note**: Documentation updates are handled in Phase 10 via the `/super-dev:documentation` command.
-
-## Arguments
-
-`$ARGUMENTS` should specify:
-- Path to specification directory
-- Any specific implementation focus areas
-
-## Output
-
-Creates/updates:
-- Implemented code files
-- Test suites
-
-## Notes
-
-- Parallel execution maximizes efficiency
-- Quality gates enforced throughout
-- Build queue managed for resource-intensive projects
-- Documentation updates are handled separately in Phase 10
+<output>
+  <format>Implemented code files and test suites. Documentation updates handled separately in Phase 10.</format>
+</output>

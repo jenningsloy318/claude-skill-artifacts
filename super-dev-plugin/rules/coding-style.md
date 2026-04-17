@@ -1,70 +1,25 @@
-# Coding Style
+<meta>
+  <name>coding-style</name>
+  <type>rule</type>
+  <description>Coding style rules for immutability, file organization, error handling, and input validation</description>
+</meta>
 
-## Immutability (CRITICAL)
+<purpose>Enforce coding style standards: immutability, file organization, comprehensive error handling, input validation, and code quality.</purpose>
 
-ALWAYS create new objects, NEVER mutate:
+<directives>
+  <directive severity="critical">**Immutability**: ALWAYS create new objects, NEVER mutate. Use spread operator (`{...obj, key: value}`) for updates.</directive>
+  <directive severity="high">**File Organization**: Many small files over few large files. 200-400 lines typical, 800 max. Extract utilities from large components. Organize by feature/domain, not by type.</directive>
+  <directive severity="high">**Error Handling**: ALWAYS handle errors comprehensively with try/catch. Log errors with context. Throw user-friendly error messages.</directive>
+  <directive severity="high">**Input Validation**: ALWAYS validate user input using schema validation (e.g., Zod). Validate at system boundaries.</directive>
+</directives>
 
-```javascript
-// WRONG: Mutation
-function updateUser(user, name) {
-  user.name = name  // MUTATION!
-  return user
-}
-
-// CORRECT: Immutability
-function updateUser(user, name) {
-  return {
-    ...user,
-    name
-  }
-}
-```
-
-## File Organization
-
-MANY SMALL FILES > FEW LARGE FILES:
-- High cohesion, low coupling
-- 200-400 lines typical, 800 max
-- Extract utilities from large components
-- Organize by feature/domain, not by type
-
-## Error Handling
-
-ALWAYS handle errors comprehensively:
-
-```typescript
-try {
-  const result = await riskyOperation()
-  return result
-} catch (error) {
-  console.error('Operation failed:', error)
-  throw new Error('Detailed user-friendly message')
-}
-```
-
-## Input Validation
-
-ALWAYS validate user input:
-
-```typescript
-import { z } from 'zod'
-
-const schema = z.object({
-  email: z.string().email(),
-  age: z.number().int().min(0).max(150)
-})
-
-const validated = schema.parse(input)
-```
-
-## Code Quality Checklist
-
-Before marking work complete:
-- [ ] Code is readable and well-named
-- [ ] Functions are small (<50 lines)
-- [ ] Files are focused (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Proper error handling
-- [ ] No console.log statements
-- [ ] No hardcoded values
-- [ ] No mutation (immutable patterns used)
+<checklist>
+  <check>Code is readable and well-named</check>
+  <check>Functions are small (less than 50 lines)</check>
+  <check>Files are focused (less than 800 lines)</check>
+  <check>No deep nesting (greater than 4 levels)</check>
+  <check>Proper error handling</check>
+  <check>No console.log statements</check>
+  <check>No hardcoded values</check>
+  <check>No mutation (immutable patterns used)</check>
+</checklist>

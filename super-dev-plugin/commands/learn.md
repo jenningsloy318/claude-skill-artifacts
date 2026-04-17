@@ -1,70 +1,20 @@
-# /learn - Extract Reusable Patterns
+<meta>
+  <name>learn</name>
+  <type>command</type>
+  <description>Extract reusable patterns from the current session and save as skills</description>
+</meta>
 
-Analyze the current session and extract any patterns worth saving as skills.
+<purpose>Analyze the current session for non-trivial patterns worth saving as skills. Extract error resolution patterns, debugging techniques, workarounds, and project-specific patterns.</purpose>
 
-## Trigger
+<process>
+  <step n="1" name="Review">Review the session for extractable patterns</step>
+  <step n="2" name="Identify">Identify the most valuable/reusable insight: error resolution patterns (what error, root cause, fix), debugging techniques (non-obvious steps, tool combinations), workarounds (library quirks, API limitations), project-specific patterns (conventions, architecture decisions)</step>
+  <step n="3" name="Draft">Draft the skill file with: pattern name, context, problem, solution, example, trigger conditions</step>
+  <step n="4" name="Save">Ask user to confirm. Save to `${CLAUDE_PLUGIN_DATA}/learned/[pattern-name].md`</step>
+</process>
 
-Run `/learn` at any point during a session when you've solved a non-trivial problem.
-
-## What to Extract
-
-Look for:
-
-1. **Error Resolution Patterns**
-   - What error occurred?
-   - What was the root cause?
-   - What fixed it?
-   - Is this reusable for similar errors?
-
-2. **Debugging Techniques**
-   - Non-obvious debugging steps
-   - Tool combinations that worked
-   - Diagnostic patterns
-
-3. **Workarounds**
-   - Library quirks
-   - API limitations
-   - Version-specific fixes
-
-4. **Project-Specific Patterns**
-   - Codebase conventions discovered
-   - Architecture decisions made
-   - Integration patterns
-
-## Output Format
-
-Create a skill file at `${CLAUDE_PLUGIN_DATA}/learned/[pattern-name].md`:
-
-```markdown
-# [Descriptive Pattern Name]
-
-**Extracted:** [Date]
-**Context:** [Brief description of when this applies]
-
-## Problem
-[What problem this solves - be specific]
-
-## Solution
-[The pattern/technique/workaround]
-
-## Example
-[Code example if applicable]
-
-## When to Use
-[Trigger conditions - what should activate this skill]
-```
-
-## Process
-
-1. Review the session for extractable patterns
-2. Identify the most valuable/reusable insight
-3. Draft the skill file
-4. Ask user to confirm before saving
-5. Save to `${CLAUDE_PLUGIN_DATA}/learned/`
-
-## Notes
-
-- Don't extract trivial fixes (typos, simple syntax errors)
-- Don't extract one-time issues (specific API outages, etc.)
-- Focus on patterns that will save time in future sessions
-- Keep skills focused - one pattern per skill
+<constraints>
+  <constraint>Don't extract trivial fixes (typos, syntax errors) or one-time issues (API outages)</constraint>
+  <constraint>Focus on patterns that save time in future sessions</constraint>
+  <constraint>One pattern per skill — keep focused</constraint>
+</constraints>

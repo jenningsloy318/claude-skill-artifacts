@@ -1,26 +1,30 @@
-# Research Context
+<meta>
+  <name>research</name>
+  <type>context</type>
+  <description>Research context for exploration, investigation, and learning before acting</description>
+</meta>
 
-Mode: Exploration, investigation, learning
-Focus: Understanding before acting
+<purpose>Research context focused on exploration, investigation, and learning. Understand before acting.</purpose>
 
-## Behavior
-- Read widely before concluding
-- Ask clarifying questions
-- Document findings as you go
-- Don't write code until understanding is clear
+<mode>Exploration, investigation, learning</mode>
 
-## Research Process
-1. Understand the question
-2. Explore relevant code/docs
-3. Form hypothesis
-4. Verify with evidence
-5. Summarize findings
+<constraints>
+  <constraint>Read widely before concluding</constraint>
+  <constraint>Ask clarifying questions</constraint>
+  <constraint>Document findings as you go</constraint>
+  <constraint>Don't write code until understanding is clear</constraint>
+</constraints>
 
-## Tools to favor
-- Read for understanding code
-- Grep, Glob for finding patterns
-- WebSearch, WebFetch for external docs
-- Task with Explore agent for codebase questions
+<process>
+  <step n="1" name="Understand">Understand the question</step>
+  <step n="2" name="Explore">Explore relevant code and docs</step>
+  <step n="3" name="Hypothesize">Form hypothesis</step>
+  <step n="4" name="Verify">Verify with evidence</step>
+  <step n="5" name="Summarize">Summarize findings</step>
+</process>
 
-## Output
-Findings first, recommendations second
+<tools>Read for understanding code. Grep, Glob for finding patterns. WebSearch, WebFetch for external docs. Task with Explore agent for codebase questions.</tools>
+
+<constraints>
+  <constraint>Findings first, recommendations second</constraint>
+</constraints>

@@ -1,83 +1,28 @@
----
-name: super-dev:code-review
-description: Perform specification-aware code review focused on correctness, security, performance, and maintainability
----
+<meta>
+  <name>code-review</name>
+  <type>command</type>
+  <description>Perform specification-aware code review focused on correctness, security, performance, and maintainability</description>
+</meta>
 
-# Phase 9: Code Review (runs parallel with Adversarial Review)
+<purpose>Activate the code-reviewer agent to review code against specification. Assess correctness, security, performance, and maintainability. Runs in parallel with adversarial review in Phase 9.</purpose>
 
-Perform specification-aware code review focused on correctness, security, performance, and maintainability.
+<usage>/super-dev:code-review [code changes context]</usage>
 
-## Usage
+<topic name="Review Focus Areas">
+  **Correctness**: Logic matches specifications, edge cases handled, error handling comprehensive, data flow correct. **Security**: No hardcoded secrets, proper input validation, auth checks, injection prevention. **Performance**: Efficient algorithms, no unnecessary queries, proper caching, resource optimization. **Maintainability**: Follows project patterns, readable code, adequate comments, modular components.
+</topic>
 
-```
-/super-dev:code-review [code changes context]
-```
+<arguments>
+  Context of changes made, specification references, specific areas of concern.
+</arguments>
 
-## What This Command Does
+<output>
+  <format>Review report with: overall verdict (Approved/Needs Changes/Blocked), findings by severity (Critical/High/Medium/Low), line references and suggestions, acceptance criteria status.</format>
+</output>
 
-When invoked, this command activates the `super-dev:code-reviewer` agent to:
-
-1. **Reviews code against specification**: Ensures implementation matches requirements
-2. **Assesses correctness**: Verifies logic is sound and bug-free
-3. **Security analysis**: Identifies potential vulnerabilities
-4. **Performance evaluation**: Checks for performance bottlenecks
-5. **Maintainability check**: Ensures code follows best practices
-6. **Generates review report**: Provides actionable feedback
-
-### Output: Creates `[doc-index]-code-review.md`
-
-## Review Focus Areas
-
-### Correctness
-- Logic implementation matches specifications
-- Edge cases are handled properly
-- Error handling is comprehensive
-- Data flow is correct
-
-### Security
-- No hardcoded secrets or API keys
-- Proper input validation
-- Authentication/authorization checks
-- SQL injection and XSS prevention
-
-### Performance
-- Efficient algorithms and data structures
-- No unnecessary database queries
-- Proper caching strategies
-- Resource usage optimization
-
-### Maintainability
-- Code follows project patterns
-- Clear and readable code structure
-- Adequate comments and documentation
-- Modular and reusable components
-
-## Arguments
-
-`$ARGUMENTS` should include:
-- Context of changes made
-- Specification references
-- Any specific areas of concern
-
-## Output
-
-Creates a review report with:
-- Overall verdict (Approved, Needs Changes, Blocked)
-- Findings categorized by severity (Critical, High, Medium, Low)
-- Specific line references and suggestions
-- Acceptance criteria status
-
-## Examples
-
-```
-/super-dev:code-review Authentication system implementation
-/super-dev:code-review Payment processing module changes
-```
-
-## Notes
-
-- Specification-aware review using requirements and design docs
-- Runs in parallel with adversarial review in Phase 9
-- Iterative: Loop back to execution if blocking issues found
-- Only proceed when both code review approved AND adversarial review PASS
-- Ensures code quality before final documentation
+<constraints>
+  <constraint>Specification-aware review using requirements and design docs</constraint>
+  <constraint>Runs in parallel with adversarial review in Phase 9</constraint>
+  <constraint>Iterative: loops back to execution if blocking issues found</constraint>
+  <constraint>Proceed only when both code review approved AND adversarial review PASS</constraint>
+</constraints>

@@ -1,343 +1,99 @@
----
-name: architecture-patterns
-description: Software architecture patterns, principles, and best practices for system design. Reference for Phase 5.3 (Architecture Design) in super-dev workflow.
----
+<meta>
+  <name>architecture-patterns</name>
+  <type>template</type>
+  <description>Software architecture patterns, principles, and best practices for system design</description>
+</meta>
 
-# Architecture Patterns Reference
+<purpose>Reference for software architecture design during Phase 5.3 (Architecture Design) of the super-dev workflow. Covers SOLID principles, module decomposition, data access, communication, state management, caching, and deployment patterns.</purpose>
 
-Reference documentation for software architecture design. Use this during Phase 5.3 (Architecture Design) of the super-dev workflow.
+<principles>
+  <principle>**YAGNI**: Design only architecture explicitly required. No speculative modules or over-engineering. Each decision must serve documented requirements.</principle>
+  <principle>**SOLID**: Single Responsibility (one reason to change), Open/Closed (extend not modify), Liskov Substitution (subtypes substitutable), Interface Segregation (many specific over one general), Dependency Inversion (depend on abstractions).</principle>
+  <principle>**Boring Architecture First**: Prefer proven, familiar patterns. Standard 3-tier, MVC, or Clean Architecture unless requirements demand otherwise. Simple over clever.</principle>
+  <principle>**No Wheel Reinvention**: Prefer reusing mature open-source components over building custom solutions.</principle>
+  <principle>**Glue Code**: Minimal integration adapters/layers that connect reused components to existing systems.</principle>
+  <principle>**Interface-first Modularity**: Define contracts (interfaces/ports) before implementations.</principle>
+</principles>
 
-## Core Principles
+<topic name="Decision Framework">
+  Evaluate architecture options across weighted criteria:
 
-### YAGNI (You Aren't Gonna Need It)
-- Design only architecture explicitly required
-- No speculative modules or over-engineering
-- Each architectural decision must serve documented requirements
+  **Technical Quality (0.50)**: Modularity (0.10), Coupling/Cohesion (0.10), Scalability (0.10), Performance (0.10), Security (0.10).
 
-### SOLID Principles
-- **S**ingle Responsibility - Each module has one reason to change
-- **O**pen/Closed - Open for extension, closed for modification
-- **L**iskov Substitution - Subtypes must be substitutable
-- **I**nterface Segregation - Many specific interfaces over one general
-- **D**ependency Inversion - Depend on abstractions, not concretions
+  **Delivery (0.30)**: Implementation Complexity (0.08), Risk (0.08), Time-to-Value (0.07), Maintainability (0.04), Testability (0.03).
 
-### Boring Architecture First
-- Prefer proven, familiar patterns over novel approaches
-- Standard 3-tier, MVC, or Clean Architecture unless requirements demand otherwise
-- Simple > Clever: If a simple solution works, don't add layers
+  **Operational (0.20)**: Observability (0.05), Reliability (0.05), Cost (0.05), Supportability (0.03), Reversibility (0.02).
 
-### Key Definitions
-- **No Wheel Reinvention**: Prefer reusing mature open-source components over building custom solutions
-- **Glue Code**: Minimal integration adapters/layers that connect reused components to existing systems
-- **Interface-first Modularity**: Define contracts (interfaces/ports) before implementations
+  **Scoring**: 5 Excellent, 4 Good, 3 Acceptable, 2 Fair, 1 Poor, 0 Unacceptable.
+</topic>
 
-## Decision Framework
+<topic name="Module Decomposition Patterns">
+  **Domain-Driven Design (DDD)**: Bounded Contexts define business capability boundaries. Aggregates group related entities as consistency boundaries. Ubiquitous Language within contexts. Context Mapping defines relationships. Best for complex business domains, large teams, long-lived projects.
 
-### Evaluation Criteria
+  **Layered Architecture**: Presentation → Business Logic → Data Access → Database/External. Best for traditional CRUD applications, small to medium teams, clear separation of concerns.
 
-| Category | Criteria | Description | Weight |
-|----------|----------|-------------|--------|
-| **Technical Quality** | Modularity | How well-separated are concerns? | 0.10 |
-| | Coupling/Cohesion | How loosely coupled/highly cohesive? | 0.10 |
-| | Scalability | Growth capacity and scaling strategy | 0.10 |
-| | Performance | Response times, throughput, efficiency | 0.10 |
-| | Security | Authentication, authorization, data protection | 0.10 |
-| **Delivery** | Implementation Complexity | How difficult to implement? | 0.08 |
-| | Risk | Technical, schedule, and dependency risks | 0.08 |
-| | Time-to-Value | How quickly can we deliver value? | 0.07 |
-| | Maintainability | Ease of future changes | 0.04 |
-| | Testability | How easy to test? | 0.03 |
-| **Operational** | Observability | Logging, metrics, tracing, debugging | 0.05 |
-| | Reliability | Uptime, fault tolerance, recovery | 0.05 |
-| | Cost | Infrastructure, licensing, operational costs | 0.05 |
-| | Supportability | Documentation, community, expertise | 0.03 |
-| | Reversibility | How easy to change/rollback? | 0.02 |
+  **Hexagonal/Clean Architecture**: Core entities → Use Cases → Adapters (Web, DB, API). Best for complex business logic, multiple delivery mechanisms, testability-critical systems.
 
-**Scoring Rubric:**
-- 5 = Excellent (best possible outcome)
-- 4 = Good (above average)
-- 3 = Acceptable (meets baseline requirements)
-- 2 = Fair (below average, may need workarounds)
-- 1 = Poor (significant concerns)
-- 0 = Unacceptable (cannot be used)
+  **Microservices**: Independent services with separate databases, connected via API Gateway/Message Bus. Best for large teams with independent deployment needs, different scalability per service, technology diversity. Trade-offs: increased operational complexity, distributed transactions.
+</topic>
 
-## Architectural Patterns
+<topic name="Data Access Patterns">
+  **Repository Pattern**: Centralized data access logic behind an interface (findById, save, delete). Easy to mock for testing, swappable data sources.
 
-### Module Decomposition Patterns
+  **Data Mapper vs Active Record**: Choose Data Mapper when complex business logic in domain models, need to decouple from database schema, or multiple data sources for same entity.
 
-#### Domain-Driven Design (DDD)
-- **Bounded Contexts**: Define business capability boundaries
-- **Aggregates**: Group related entities as consistency boundaries
-- **Ubiquitous Language**: Shared language within bounded contexts
-- **Context Mapping**: Define relationships between contexts
+  **CQRS**: Separate write model (Commands) from read model (Queries). Best for high read/write ratio workloads, complex query requirements, eventual consistency acceptable.
+</topic>
 
-**When to use:**
-- Complex business domains with many rules
-- Large teams requiring clear boundaries
-- Long-lived projects with evolving requirements
+<topic name="Communication Patterns">
+  **REST API**: Resource-based URLs, HTTP verbs, stateless. Best for standard CRUD, public APIs.
 
-#### Layered Architecture
-```
-┌─────────────────────────┐
-│   Presentation Layer    │  UI, API controllers
-├─────────────────────────┤
-│    Business Logic       │  Application services, use cases
-├─────────────────────────┤
-│    Data Access Layer    │  Repositories, DAOs
-├─────────────────────────┤
-│    Database/External    │  Storage, third-party services
-└─────────────────────────┘
-```
+  **GraphQL**: Schema-driven, single endpoint, typed queries, client-controlled data shape. Best for complex data requirements, mobile clients.
 
-**When to use:**
-- Traditional CRUD applications
-- Small to medium teams
-- Clear separation of concerns needed
+  **gRPC**: Protocol Buffers, strong typing, bidirectional streaming. Best for microservice communication, high-performance needs.
 
-#### Hexagonal/Clean Architecture
-```
-         ┌──────────────┐
-         │   Entities   │  Core business rules
-         └──────┬───────┘
-                │
-         ┌──────┴───────┐
-         │  Use Cases   │  Application business rules
-         └──────┬───────┘
-                │
-    ┌───────────┼───────────┐
-    │           │           │
-┌───┴───┐  ┌───┴───┐  ┌───┴────┐
-│  Web  │  │  DB   │  │  API   │  Adapters/Interfaces
-└───────┘  └───────┘  └────────┘
-```
+  **Message Queues** (RabbitMQ, SQS, Kafka): Asynchronous, event-driven, decoupled producers/consumers. Best for eventual consistency, background processing, fan-out.
+</topic>
 
-**When to use:**
-- Complex business logic
-- Multiple delivery mechanisms (web, API, CLI)
-- Testability is critical
+<topic name="State Management Patterns">
+  **Client-Side**: Local component state (useState — simple, isolated), Context/Redux (global shared state — complex, many consumers), Server State via React Query/SWR (caching, synchronization).
 
-#### Microservices
-```
-┌──────────┐  ┌──────────┐  ┌──────────┐
-│ Service A│  │ Service B│  │ Service C│  Independent services
-└────┬─────┘  └────┬─────┘  └────┬─────┘
-     │             │             │
-     └─────────────┼─────────────┘
-                   │
-            ┌──────┴──────┐
-            │ API Gateway │
-            │ Message Bus │
-            └─────────────┘
-```
+  **Server-Side**: Session store in-memory or Redis (user session data), Database for persistent state (PostgreSQL, MongoDB), Cache layer via Redis/Memcached (frequently accessed data).
+</topic>
 
-**When to use:**
-- Large teams requiring independent deployment
-- Different scalability needs per service
-- Technology diversity required
-**Trade-offs:** Increased operational complexity, distributed transactions
+<topic name="Caching Strategies">
+  **Cache-Aside (Lazy Loading)**: Check cache → if miss, load from DB, write to cache, return → if hit, return cached.
 
-### Data Access Patterns
+  **Write-Through**: Write to cache → write to DB synchronously → return.
 
-#### Repository Pattern
-```typescript
-interface UserRepository {
-  findById(id: string): Promise<User | null>;
-  save(user: User): Promise<void>;
-  delete(id: string): Promise<void>;
-}
-```
+  **Write-Behind (Write-Back)**: Write to cache → return immediately → async write to DB.
+</topic>
 
-**Benefits:**
-- Centralized data access logic
-- Easy to mock for testing
-- Swappable data sources
+<topic name="Error Handling Patterns">
+  **Circuit Breaker**: Track failures, open circuit when threshold exceeded (reject fast), half-open to test recovery. Prevents cascading failures.
 
-#### Data Mapper (vs Active Record)
-- **Data Mapper**: Separate mapping logic from domain model
-- **Active Record**: Model contains data access methods
+  **Retry with Exponential Backoff**: Retry failed operations with increasing delays (1s, 2s, 4s). Cap at max attempts. Prevents overwhelming failing services.
+</topic>
 
-**Choose Data Mapper when:**
-- Complex business logic in domain models
-- Need to decouple from database schema
-- Multiple data sources for same entity
+<topic name="Deployment Architectures">
+  **Monolith**: Single deployable unit, shared database. Pros: simpler deployment, easier local dev. Cons: scaling limitations, technology lock-in.
 
-#### CQRS (Command Query Responsibility Segregation)
-```typescript
-// Write side (Commands)
-interface UserWriteModel {
-  create(command: CreateUserCommand): Promise<void>;
-  update(command: UpdateUserCommand): Promise<void>;
-}
+  **Microservices**: Independent services, separate databases. Pros: independent scaling, technology diversity. Cons: operational complexity, distributed transactions.
 
-// Read side (Queries)
-interface UserReadModel {
-  findById(id: string): Promise<UserViewDto>;
-  search(query: UserSearchQuery): Promise<UserViewDto[]>;
-}
-```
+  **Serverless (FaaS)**: Event-driven, function-as-a-service. Pros: zero scaling management, pay-per-use. Cons: cold starts, vendor lock-in.
+</topic>
 
-**When to use:**
-- High read/write ratio workloads
-- Complex query requirements
-- Eventual consistency acceptable
+<topic name="Architecture Decision Records">
+  Use MADR 3.0.0 format: Status (Proposed/Accepted/Deprecated), Context (motivating issue), Decision (proposed change), Consequences (positive, negative, risks, mitigation).
+</topic>
 
-### Communication Patterns
+<topic name="Common Trade-offs">
+  **SQL vs NoSQL**: ACID needed → SQL; Schema flexibility → NoSQL.
+  **Monolith vs Microservices**: Small team → Monolith; Independent scaling → Microservices.
+  **Sync vs Async**: Immediate response → Sync; Background work → Async.
+  **Stateful vs Stateless**: Simple → Stateless; Session required → Stateful.
+</topic>
 
-#### REST API
-- Resource-based URLs: `/api/v1/users/{id}`
-- HTTP verbs: GET, POST, PUT, PATCH, DELETE
-- Stateless communication
-**Best for:** Standard CRUD operations, public APIs
-
-#### GraphQL
-- Schema-driven: Single endpoint, typed queries
-- Clients control data shape
-- Introspection and documentation
-**Best for:** Complex data requirements, mobile clients
-
-#### gRPC
-- Protocol Buffers for efficient serialization
-- Strong typing and code generation
-- Bidirectional streaming
-**Best for:** Microservice communication, high-performance needs
-
-#### Message Queues (RabbitMQ, SQS, Kafka)
-- Asynchronous communication
-- Event-driven architecture
-- Decoupled producers/consumers
-**Best for:** Eventual consistency, background processing, fan-out
-
-### State Management Patterns
-
-#### Client-Side State
-- **Local Component State**: useState, setState (simple, isolated)
-- **Context/Redux**: Global shared state (complex state, many consumers)
-- **Server State**: React Query, SWR (caching, synchronization)
-
-#### Server-Side State
-- **Session Store**: In-memory, Redis (user session data)
-- **Database**: Persistent state (PostgreSQL, MongoDB)
-- **Cache Layer**: Redis, Memcached (frequently accessed data)
-
-### Caching Strategies
-
-#### Cache-Aside (Lazy Loading)
-```
-1. Check cache
-2. If miss: load from DB, write to cache, return
-3. If hit: return cached data
-```
-
-#### Write-Through
-```
-1. Write to cache
-2. Write to DB (synchronous)
-3. Return
-```
-
-#### Write-Behind (Write-Back)
-```
-1. Write to cache
-2. Return immediately
-3. Async write to DB
-```
-
-### Error Handling Patterns
-
-#### Circuit Breaker
-```typescript
-class CircuitBreaker {
-  private failures = 0;
-  private state: 'CLOSED' | 'OPEN' | 'HALF_OPEN' = 'CLOSED';
-
-  async execute(fn: () => Promise): Promise {
-    if (this.state === 'OPEN') throw new Error('Circuit open');
-    try {
-      const result = await fn();
-      this.onSuccess();
-      return result;
-    } catch (error) {
-      this.onFailure();
-      throw error;
-    }
-  }
-}
-```
-
-#### Retry with Exponential Backoff
-```typescript
-async function retryWithBackoff(
-  fn: () => Promise,
-  maxAttempts = 3,
-  baseDelay = 1000
-): Promise {
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    try {
-      return await fn();
-    } catch (error) {
-      if (attempt === maxAttempts - 1) throw error;
-      await delay(baseDelay * Math.pow(2, attempt));
-    }
-  }
-}
-```
-
-### Deployment Architectures
-
-#### Monolith
-- Single deployable unit
-- Shared database
-- **Pros:** Simpler deployment, easier local development
-- **Cons:** Scaling limitations, technology lock-in
-
-#### Microservices
-- Independent deployable services
-- Separate databases per service
-- **Pros:** Independent scaling, technology diversity
-- **Cons:** Operational complexity, distributed transactions
-
-#### Serverless (FaaS)
-- Function-as-a-Service (AWS Lambda, Cloudflare Workers)
-- Event-driven execution
-- **Pros:** Zero scaling management, pay-per-use
-- **Cons:** Cold starts, vendor lock-in
-
-## Architecture Decision Records (ADR)
-
-### MADR 3.0.0 Template
-
-```markdown
-# ADR-[number]: [Title]
-
-## Status
-Proposed | Accepted | Deprecated | Superseded by [ADR-number]
-
-## Context
-[What is the issue that we're seeing that is motivating this decision or change?]
-
-## Decision
-[What is the change that we're proposing and/or doing?]
-
-## Consequences
-- **Positive:** [What will be easier or better?]
-- **Negative:** [What will be harder or worse?]
-- **Risks:** [What might go wrong?]
-- **Mitigation:** [How will we mitigate the risks?]
-```
-
-## Common Architectural Trade-offs
-
-| Decision | When to Choose | Trade-offs |
-|----------|----------------|------------|
-| **SQL vs NoSQL** | ACID needed → SQL<br>Schema flexibility → NoSQL | SQL: Schema rigidity<br>NoSQL: Weaker consistency |
-| **Monolith vs Microservices** | Small team → Monolith<br>Independent scaling → Microservices | Monolith: Deployment coupling<br>Microservices: Distributed complexity |
-| **Sync vs Async** | Immediate response → Sync<br>Background work → Async | Sync: Blocking, timeout risk<br>Async: Complexity, eventual consistency |
-| **Stateful vs Stateless** | Simple → Stateless<br>Session required → Stateful | Stateless: Easier scaling<br>Stateful: Sticky sessions needed |
-
-## Reference
-
-This is a reference document extracted from the `super-dev:architecture-agent`. For full agent behavior during Phase 5.3, invoke:
-
-```
-Task(subagent_type: "super-dev:architecture-agent", prompt: "Design architecture for: [feature]")
-```
+<references>
+  <ref>Extracted from `super-dev:architecture-agent`. For full agent behavior during Phase 5.3, invoke with subagent_type "super-dev:architecture-agent".</ref>
+</references>

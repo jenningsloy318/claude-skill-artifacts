@@ -4,7 +4,8 @@ A comprehensive team-lead-driven development workflow plugin for Claude Code wit
 
 **Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
 
-**v2.3.0 — Enhanced with 2026 AI Development Best Practices:**
+**v2.3.36 — XML-Tagged Instruction Format:**
+- **XML-Tagged Structure**: All 85 instruction files (agents, commands, rules, contexts, skills, reference docs) converted from Markdown headings to a unified three-tier XML tag schema for improved LLM parsing (~86% token reduction)
 - **Persona-Based Agent Roles**: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
 - **Continuous Verification Gates**: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
 - **Real Browser Testing**: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
@@ -86,9 +87,11 @@ The Coordinator Agent will orchestrate all 13 phases automatically.
 
 ## Plugin Structure
 
+All instruction files (agents, commands, rules, contexts, skills, reference docs) use a unified XML-tagged format with a three-tier tag schema (`<meta>`, semantic content blocks, type-specific tags). README files and JSON/shell files remain in their original formats.
+
 ```
 super-dev-plugin/
-├── agents/                    # Specialized agents (30 total)
+├── agents/                    # Specialized agents (30 total, XML-tagged)
 │   ├── team-lead.md              # Central Team Lead Agent (super-dev unique)
 │   ├── dev-executor.md             # Development Executor
 │   ├── qa-executor.md              # QA Executor
@@ -127,7 +130,7 @@ super-dev-plugin/
 │   ├── macos-app-developer.md
 │   └── windows-app-developer.md
 │
-├── commands/                   # Slash commands (17 total)
+├── commands/                   # Slash commands (17 total, XML-tagged)
 │   # super-dev commands:
 │   ├── architecture-design.md
 │   ├── code-assessment.md
@@ -148,7 +151,7 @@ super-dev-plugin/
 │   ├── update-codemaps.md
 │   └── update-docs.md
 │
-├── skills/                     # Skills (6 items)
+├── skills/                     # Skills (6 items, XML-tagged)
 │   # super-dev skills:
 │   ├── super-dev/                 # Main orchestrator skill
 │   └── dev-rules/                 # Core development rules and philosophy
@@ -169,10 +172,10 @@ super-dev-plugin/
 │       ├── frontend-patterns.md      # React, Next.js patterns
 │       ├── coding-standards.md       # Language best practices
 │       ├── bdd-patterns.md            # BDD scenario writing patterns and reference
-│       ├── *-template.md              # XML-tagged document templates (12 files)
+│       ├── *-template.md              # XML-tagged document templates (14 files)
 │       └── project-guidelines-example.md
 │
-├── rules/                      # Always-follow guidelines (NEW - 7 files)
+├── rules/                      # Always-follow guidelines (NEW - 7 files, XML-tagged)
 │   ├── agents.md                 # When to delegate to subagents
 │   ├── coding-style.md           # Immutability, file organization
 │   ├── git-workflow.md           # Commit format, PR process
@@ -181,7 +184,7 @@ super-dev-plugin/
 │   ├── security.md               # Mandatory security checks
 │   └── testing.md                # TDD, coverage requirements
 │
-├── contexts/                   # Dynamic system prompt injection (NEW)
+├── contexts/                   # Dynamic system prompt injection (NEW, XML-tagged)
 │   ├── dev.md                    # Development mode context
 │   ├── review.md                 # Code review mode context
 │   └── research.md               # Research/exploration mode context
@@ -402,7 +405,7 @@ Security checklist and validation:
 
 ## Reference Materials
 
-The `templates/reference/` directory contains reference documentation:
+The `templates/reference/` directory contains reference documentation (XML-tagged format):
 
 ### architecture-patterns
 
@@ -422,7 +425,7 @@ Multi-source research, option presentation, Time MCP integration, and synthesis 
 
 ### Document Templates (XML-tagged)
 
-12 XML-tagged document templates in `templates/reference/*-template.md`. Each agent loads its template at runtime for consistent document formatting. Templates cover: requirements, behavior-scenarios, specification, implementation-plan, task-list, handoff, code-review, adversarial-review, implementation-summary, architecture, design-spec, product-design-summary.
+14 XML-tagged document templates in `templates/reference/*-template.md`. Each agent loads its template at runtime for consistent document formatting. Templates cover: requirements, behavior-scenarios, specification, implementation-plan, task-list, handoff, code-review, adversarial-review, implementation-summary, architecture, design-spec, product-design-summary, spec-review, qa-report.
 
 ### testing-patterns
 

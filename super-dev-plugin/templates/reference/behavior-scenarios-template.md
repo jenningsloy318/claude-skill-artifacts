@@ -5,7 +5,6 @@ doc-type: behavior-scenarios
 gate-profile: gate-bdd.sh
 ---
 
-```xml
 <document type="behavior-scenarios">
 
   <metadata>
@@ -138,7 +137,6 @@ gate-profile: gate-bdd.sh
   </section>
 
 </document>
-```
 
 ## Gate Compliance Notes
 

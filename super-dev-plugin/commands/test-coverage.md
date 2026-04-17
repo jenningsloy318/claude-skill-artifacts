@@ -1,27 +1,18 @@
-# Test Coverage
+<meta>
+  <name>test-coverage</name>
+  <type>command</type>
+  <description>Analyze test coverage and generate missing tests to reach 80%+ coverage</description>
+</meta>
 
-Analyze test coverage and generate missing tests:
+<purpose>Run tests with coverage, analyze the report, identify files below 80% threshold, and generate unit/integration/E2E tests for under-covered code paths.</purpose>
 
-1. Run tests with coverage: npm test --coverage or pnpm test --coverage
+<process>
+  <step n="1" name="Run Coverage">Run tests with coverage: `npm test --coverage` or `pnpm test --coverage`</step>
+  <step n="2" name="Analyze">Analyze coverage report (coverage/coverage-summary.json). Identify files below 80%.</step>
+  <step n="3" name="Generate Tests">For each under-covered file: analyze untested code paths, generate unit/integration/E2E tests.</step>
+  <step n="4" name="Verify">Verify new tests pass. Show before/after coverage metrics. Ensure 80%+ overall.</step>
+</process>
 
-2. Analyze coverage report (coverage/coverage-summary.json)
-
-3. Identify files below 80% coverage threshold
-
-4. For each under-covered file:
-   - Analyze untested code paths
-   - Generate unit tests for functions
-   - Generate integration tests for APIs
-   - Generate E2E tests for critical flows
-
-5. Verify new tests pass
-
-6. Show before/after coverage metrics
-
-7. Ensure project reaches 80%+ overall coverage
-
-Focus on:
-- Happy path scenarios
-- Error handling
-- Edge cases (null, undefined, empty)
-- Boundary conditions
+<constraints>
+  <constraint>Focus on: happy path scenarios, error handling, edge cases (null, undefined, empty), boundary conditions</constraint>
+</constraints>

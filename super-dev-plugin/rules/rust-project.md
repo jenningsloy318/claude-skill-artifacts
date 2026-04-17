@@ -1,52 +1,21 @@
----
-description: Rust workspace structure, build commands, and crate conventions for all Rust projects.
-globs: ["**/Cargo.toml", "**/*.rs"]
----
+<meta>
+  <name>rust-project</name>
+  <type>rule</type>
+  <description>Rust workspace structure, build commands, and crate conventions for all Rust projects</description>
+</meta>
 
-# Rust Project Rules
+<purpose>Enforce workspace structure, standard build commands, and crate conventions for all Rust projects.</purpose>
 
-## Workspace Structure
+<directives>
+  <directive severity="critical">**ALWAYS use workspace structure** with `[workspace]` and `members` in root `Cargo.toml`. Monolithic single-crate structure is BLOCKING.</directive>
+  <directive severity="high">**Build from workspace root**: `cargo check` (fast check, prefer over build), `cargo build -p crate-name` (specific crate), `cargo test --workspace` (test everything), `cargo fmt && cargo clippy` (format + lint)</directive>
+  <directive severity="high">**Error handling**: `thiserror` for error types, `anyhow` for context</directive>
+  <directive severity="high">**Async**: `tokio` runtime, avoid `spawn_blocking` unless necessary</directive>
+  <directive severity="high">**No `unsafe`**: Avoid unless absolutely necessary and documented with `// SAFETY:` comment</directive>
+  <directive severity="medium">**Logging**: `tracing` for structured logging with spans</directive>
+  <directive severity="medium">**Documentation**: `///` doc comments, verify with `cargo doc`</directive>
+</directives>
 
-For all Rust projects, ALWAYS use a workspace structure:
-
-```toml
-[workspace]
-members = [
-    "crate1",
-    "crate2",
-    "binaries/my-binary",
-]
-```
-
-## Build & Test Commands
-
-Always run from workspace root:
-```bash
-cargo check                        # Fast check (prefer over build)
-cargo build -p crate-name          # Build specific crate
-cargo test --workspace             # Test everything
-cargo test -p crate-name           # Test specific crate
-cargo fmt && cargo clippy           # Format + lint
-```
-
-## Guidelines
-
-1. **Error Handling**: `thiserror` for error types, `anyhow` for context
-2. **Async**: `tokio` runtime, avoid `spawn_blocking` unless necessary
-3. **Testing**: `#[test]` attributes, organize tests in `tests/`
-4. **Documentation**: `///` doc comments, verify with `cargo doc`
-5. **Logging**: `tracing` for structured logging with spans
-6. **No `unsafe`**: Avoid unless absolutely necessary and documented
-
-## Common Crates
-
-| Use Case | Crate |
-|----------|-------|
-| Async runtime | `tokio` |
-| Error handling | `thiserror`, `anyhow` |
-| Serialization | `serde`, `serde_json` |
-| HTTP client | `reqwest` |
-| HTTP server | `axum` |
-| CLI | `clap` |
-| Logging | `tracing`, `tracing-subscriber` |
-| Configuration | `config`, `serde_yaml` |
+<topic name="Common Crates">
+  Async: `tokio`. Errors: `thiserror`, `anyhow`. Serialization: `serde`, `serde_json`. HTTP client: `reqwest`. HTTP server: `axum`. CLI: `clap`. Logging: `tracing`, `tracing-subscriber`. Config: `config`, `serde_yaml`.
+</topic>

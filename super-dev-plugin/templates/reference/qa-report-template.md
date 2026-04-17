@@ -5,7 +5,6 @@ doc-type: qa-report
 gate-profile: gate-build.sh
 ---
 
-```xml
 <document type="qa-report">
 
   <metadata>
@@ -234,7 +233,6 @@ gate-profile: gate-build.sh
   </section>
 
 </document>
-```
 
 ## Rendering Rules
 

@@ -47,11 +47,11 @@ gate-profile: spec-review
 
 <section title="D1: Completeness">
   <checklist>
-    - [ ] All ACs from requirements have corresponding spec sections
-    - [ ] All SCENARIO-XXX referenced or addressed
-    - [ ] Error handling specified per operation
-    - [ ] NFRs addressed
-    - [ ] Edge cases accounted for
+    <item status="open">All ACs from requirements have corresponding spec sections</item>
+    <item status="open">All SCENARIO-XXX referenced or addressed</item>
+    <item status="open">Error handling specified per operation</item>
+    <item status="open">NFRs addressed</item>
+    <item status="open">Edge cases accounted for</item>
   </checklist>
   <findings>
     [SR-001 format findings or "No issues found"]
@@ -60,10 +60,10 @@ gate-profile: spec-review
 
 <section title="D2: Consistency">
   <checklist>
-    - [ ] Data model names consistent across sections
-    - [ ] API paths match between spec and plan
-    - [ ] Terminology consistent
-    - [ ] Task list aligns with spec sections
+    <item status="open">Data model names consistent across sections</item>
+    <item status="open">API paths match between spec and plan</item>
+    <item status="open">Terminology consistent</item>
+    <item status="open">Task list aligns with spec sections</item>
   </checklist>
   <findings>
     [SR-002+ format findings or "No issues found"]
@@ -72,10 +72,10 @@ gate-profile: spec-review
 
 <section title="D3: Feasibility">
   <checklist>
-    - [ ] Architecture fits project patterns
-    - [ ] Stack capabilities sufficient
-    - [ ] No circular dependencies
-    - [ ] External dependencies available
+    <item status="open">Architecture fits project patterns</item>
+    <item status="open">Stack capabilities sufficient</item>
+    <item status="open">No circular dependencies</item>
+    <item status="open">External dependencies available</item>
   </checklist>
   <findings>
     [findings or "No issues found"]
@@ -84,10 +84,10 @@ gate-profile: spec-review
 
 <section title="D4: Testability">
   <checklist>
-    - [ ] ACs have measurable pass/fail criteria
-    - [ ] Testing strategy specifies concrete types
-    - [ ] Performance thresholds are numeric
-    - [ ] Error scenarios have testable behaviors
+    <item status="open">ACs have measurable pass/fail criteria</item>
+    <item status="open">Testing strategy specifies concrete types</item>
+    <item status="open">Performance thresholds are numeric</item>
+    <item status="open">Error scenarios have testable behaviors</item>
   </checklist>
   <findings>
     [findings or "No issues found"]
@@ -96,10 +96,10 @@ gate-profile: spec-review
 
 <section title="D5: Traceability">
   <checklist>
-    - [ ] AC → spec section mapping complete
-    - [ ] SCENARIO-XXX → task mapping complete
-    - [ ] No orphan tasks or spec sections
-    - [ ] Cross-reference IDs consistent
+    <item status="open">AC → spec section mapping complete</item>
+    <item status="open">SCENARIO-XXX → task mapping complete</item>
+    <item status="open">No orphan tasks or spec sections</item>
+    <item status="open">Cross-reference IDs consistent</item>
   </checklist>
   <findings>
     [findings or "No issues found"]
@@ -128,10 +128,10 @@ gate-profile: spec-review
 
 <section title="D7: Complexity Fitness">
   <checklist>
-    - [ ] File count proportional to scope
-    - [ ] Abstractions justified (2+ implementors)
-    - [ ] No unnecessary patterns
-    - [ ] Simplest viable approach chosen
+    <item status="open">File count proportional to scope</item>
+    <item status="open">Abstractions justified (2+ implementors)</item>
+    <item status="open">No unnecessary patterns</item>
+    <item status="open">Simplest viable approach chosen</item>
   </checklist>
   <findings>
     [findings or "No issues found"]
@@ -140,10 +140,10 @@ gate-profile: spec-review
 
 <section title="D8: Ambiguity Detection">
   <checklist>
-    - [ ] API schemas fully defined
-    - [ ] State transitions explicit
-    - [ ] Error responses specified
-    - [ ] Default values stated
+    <item status="open">API schemas fully defined</item>
+    <item status="open">State transitions explicit</item>
+    <item status="open">Error responses specified</item>
+    <item status="open">Default values stated</item>
   </checklist>
   <findings>
     [findings or "No issues found"]

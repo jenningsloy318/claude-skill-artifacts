@@ -5,7 +5,6 @@ doc-type: requirements
 gate-profile: gate-requirements.sh
 ---
 
-```xml
 <document type="requirements">
 
   <metadata>
@@ -223,7 +222,6 @@ gate-profile: gate-requirements.sh
   </section>
 
 </document>
-```
 
 ## Gate Compliance Notes
 
