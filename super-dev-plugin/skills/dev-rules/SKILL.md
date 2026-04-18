@@ -33,8 +33,6 @@ description: Core development rules and philosophy for coding standards, git pra
   <principle name="Learn from Existing Code">Study 3 similar features before implementing</principle>
   <principle name="Pragmatic over Dogmatic">Adapt to project's actual situation</principle>
   <principle name="Clear Intent over Clever Code">Simple, clear solutions</principle>
-  <principle name="New Requirements">Don't rush to code — discuss solution first, use ASCII diagrams, confirm before developing</principle>
-  <principle name="Bug Reports">ALWAYS ask for reproduction steps before fixing</principle>
   <principle name="Decision Priority">Testability → Readability → Consistency → Simplicity → Reversibility</principle>
   <principle name="Error Handling">Stop after 3 attempts. Record failures. Research 2-3 alternatives. Question assumptions.</principle>
 </principles>
