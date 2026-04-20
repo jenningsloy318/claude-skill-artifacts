@@ -98,16 +98,32 @@ license: MIT
 
   <process name="Spec Iteration Loop (Phase 6/7)">
     <step n="1" name="Trigger">Phase 7 spec-reviewer reports issues or gate-spec-review.sh fails.</step>
-    <step n="2" name="Spawn Fix">Team Lead spawns spec-writer + doc-validator (parallel) with reviewer findings as input. Team Lead NEVER edits specs directly.</step>
-    <step n="3" name="Re-review">After spec-writer completes, spawn spec-reviewer + doc-validator (parallel) again.</step>
-    <step n="4" name="Exit Criteria">Loop exits when: spec-reviewer approves AND gate-spec-review.sh passes. Max 3 iterations. After 3: escalate to user with findings summary.</step>
+    <step n="2" name="STOP">FREEZE — Do NOT open any spec file with Edit or Write. The Team Lead's ONLY action is to follow steps 3-5.</step>
+    <step n="3" name="Spawn Fix">Team Lead spawns spec-writer + doc-validator (parallel) with reviewer findings as input. Include exact quotes from the reviewer's findings in the prompt.</step>
+    <step n="4" name="Re-review">After spec-writer completes, spawn spec-reviewer + doc-validator (parallel) again.</step>
+    <step n="5" name="Exit Criteria">Loop exits when: spec-reviewer approves AND gate-spec-review.sh passes. Max 3 iterations. After 3: escalate to user with findings summary.</step>
   </process>
 
   <process name="Implementation Iteration Loop (Phase 8/9)">
     <step n="1" name="Trigger">Phase 9 code-reviewer verdict is not "Approved" or adversarial-reviewer returns REJECT.</step>
-    <step n="2" name="Spawn Fix">Team Lead spawns domain specialist(s) + qa-agent (parallel) with review findings as input. Team Lead NEVER fixes code directly.</step>
-    <step n="3" name="Re-review">After specialists complete, spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
-    <step n="4" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations. After 3: escalate to user with review findings.</step>
+    <step n="2" name="STOP">FREEZE — Do NOT open any file with Edit or Write. Do NOT run any fix command in Bash. The Team Lead's ONLY action is to follow steps 3-7.</step>
+    <step n="3" name="Extract">Read the review findings from code-review and adversarial-review reports. List every finding with: file path, line number, severity, description.</step>
+    <step n="4" name="Compose Prompt">Write a sub-agent prompt that includes: (a) exact file paths and line numbers from review, (b) the specific finding and why it failed, (c) the expected fix or acceptance criteria. Do NOT paraphrase — quote the reviewer's words.</step>
+    <step n="5" name="Spawn Fix">Spawn domain specialist(s) + qa-agent (parallel) with the composed prompt. This is the ONLY way to fix code — Team Lead never edits directly.</step>
+    <step n="6" name="Wait and Verify">Wait for all spawned agents to complete. Run gate-build.sh to verify build and tests pass.</step>
+    <step n="7" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
+    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations. After 3: escalate to user with review findings.</step>
+
+    <anti-patterns name="VIOLATIONS — any of these is a workflow breach">
+      - Team Lead opens a code file with Edit after Phase 9 fails
+      - Team Lead runs a fix command in Bash after Phase 9 fails
+      - Team Lead reasons "it's a small fix" or "quick change" to justify direct edits
+      - Team Lead skips spawning because the fix seems trivial
+    </anti-patterns>
+
+    <self-check name="Before ANY Edit/Write after Phase 9">
+      Ask: "Am I the Team Lead? Is this a Phase 8/9 iteration?" → If YES to both: STOP and spawn a sub-agent instead.
+    </self-check>
   </process>
 
   <process name="Phase Enforcement">
