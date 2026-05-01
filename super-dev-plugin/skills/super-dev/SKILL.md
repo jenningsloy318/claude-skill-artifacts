@@ -16,6 +16,7 @@ license: MIT
   <phase n="2" name="Requirements Clarification">Spawn requirements-clarifier + doc-validator (parallel). Gate: gate-requirements.sh.</phase>
   <phase n="2.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). User confirmation required. Gate: gate-bdd.sh.</phase>
   <phase n="3" name="Research">Spawn research-agent. Firecrawl MCP first, then supplementary scripts. Present 3-5 options to user.</phase>
+  <phase n="3.5" name="Deep Research">Conditional: only if Phase 3 report identifies issues, flaws, or ambiguities. Spawn research-agent in deep-research mode targeting specific issues. Loop until all issues are clearly understood (max 3 iterations).</phase>
   <phase n="4" name="Debug Analysis">Spawn debug-analyzer. Only for bug fixes — skip otherwise.</phase>
   <phase n="5" name="Code Assessment">Spawn code-assessor. FIRST phase allowed to read/grep/explore the codebase.</phase>
   <phase n="5.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 5.3. UI ONLY → 5.5. BOTH → 5.4 (product-designer).</phase>
@@ -126,12 +127,23 @@ license: MIT
     </self-check>
   </process>
 
+  <process name="Research Deep-Dive Loop (Phase 3.5)">
+    <step n="1" name="Trigger">Phase 3 research report contains an ISSUES, FLAWS, AMBIGUITIES, or CONCERNS section listing unresolved items.</step>
+    <step n="2" name="Extract">Team Lead reads Phase 3 report, extracts each flagged issue with: topic, description, why it's unclear, what specifically needs deeper investigation.</step>
+    <step n="3" name="Spawn Deep Research">Spawn research-agent in deep-research mode. Prompt MUST include: (a) the specific issues extracted from Phase 3, (b) what is already known vs what remains unclear, (c) instruction to investigate root causes, resolution paths, and alternative approaches for each issue.</step>
+    <step n="4" name="Review Output">Team Lead reads the deep-research report. Check: are all flagged issues now clearly understood? Are there new issues or ambiguities surfaced?</step>
+    <step n="5" name="Loop Decision">If remaining unclear items or new ambiguities found → extract them and go to step 3 (next iteration). If all issues are clearly understood → proceed to Phase 4/5.</step>
+    <step n="6" name="Exit Criteria">Loop exits when: ALL issues have clear resolution paths with sufficient evidence. Max 3 iterations. After 3: present remaining ambiguities to user for decision.</step>
+    <step n="7" name="Document Naming">Each iteration produces a separate document: `[XX]-deep-research-report-N.md` where N is the iteration number (1, 2, 3). Pre-compute filenames before spawning.</step>
+  </process>
+
   <process name="Phase Enforcement">
     <entry phase="0" action="Invoke dev-rules skill" agents="none" />
     <entry phase="1" action="Setup: worktree, spec dir, JSON, team" agents="none" />
     <entry phase="2" action="Task tool" agents="requirements-clarifier + doc-validator (parallel)" />
     <entry phase="2.5" action="Task tool, present to user" agents="bdd-scenario-writer + doc-validator (parallel)" />
     <entry phase="3" action="Task tool, present options" agents="research-agent" />
+    <entry phase="3.5" action="Conditional loop, targeted deep research" agents="research-agent (deep-research mode)" />
     <entry phase="4" action="Task tool (bugs only)" agents="debug-analyzer" />
     <entry phase="5" action="Task tool" agents="code-assessor" />
     <entry phase="5.3/5.4/5.5" action="Task tool, present options" agents="architecture-agent / product-designer / ui-ux-designer" />

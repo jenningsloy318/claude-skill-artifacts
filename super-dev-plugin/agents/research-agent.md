@@ -54,8 +54,22 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --p
   <step n="3" name="Supplementary Searches">Run Exa, DeepWiki, Context7, GitHub scripts as needed by search mode (code, docs, academic, web, social).</step>
   <step n="4" name="Version Awareness">Check latest stable versions. Note breaking changes. Verify deprecation status. Score sources by recency.</step>
   <step n="5" name="Synthesize and Present Options">Compile findings into structured report. Present 3-5 options with comparison matrix (Learning Curve, Community, Performance, Maturity, Documentation, Maintenance). Include recommendation, rationale, trade-offs. Cite all sources.</step>
+  <step n="6" name="Flag Issues and Ambiguities">Identify any contradictions between sources, unresolved questions, architectural concerns, potential flaws in recommended approaches, or areas needing deeper investigation. List each in a dedicated ISSUES/AMBIGUITIES section with: topic, what is known, what remains unclear, and suggested investigation direction.</step>
+</process>
+
+<process name="Deep Research Mode">
+  <trigger>Team Lead spawns with explicit list of issues/flaws/ambiguities from a prior research report that need targeted investigation.</trigger>
+
+  <step n="1" name="Parse Issues">Read each flagged issue from the spawn prompt. For each: identify the core question, what is already known, and what specifically needs resolution.</step>
+  <step n="2" name="Targeted Search Strategy">For each issue, craft 3-5 specific search queries targeting: root causes, known solutions, alternative approaches, community experiences with the same problem, official guidance or RFCs.</step>
+  <step n="3" name="Firecrawl Deep Dive">Run `firecrawl_search` with highly specific queries per issue. Scrape relevant results. Use `firecrawl_extract` for structured data from technical docs. Use `firecrawl_agent` to investigate industry-standard resolutions.</step>
+  <step n="4" name="Supplementary Deep Dive">Run targeted Exa, DeepWiki, Context7, GitHub searches focused on each specific issue. Look for: GitHub issues/PRs discussing the same problem, library changelogs explaining breaking changes, conference talks addressing the concern.</step>
+  <step n="5" name="Resolution Analysis">For each issue: determine if it is (a) resolved with clear path, (b) partially resolved with trade-offs, or (c) still ambiguous needing further investigation. Document evidence for each determination.</step>
+  <step n="6" name="New Insights">Record any new paths, alternative approaches, or insights discovered during deep research that were not visible in the initial pass. These may change the recommended approach from Phase 3.</step>
+  <step n="7" name="Remaining Ambiguities">Explicitly list any issues that remain unclear after this deep dive, with explanation of why (conflicting sources, no authoritative guidance, edge case not documented, etc.).</step>
 </process>
 
 <output>
-  <format>Research report with: date, research period, technologies, freshness score, summary (3-5 bullet points), options comparison (REQUIRED), deprecation warnings, best practices (recommended patterns with source citations), anti-patterns (with alternatives), implementation considerations (performance, security, compatibility), references (primary, secondary, community).</format>
+  <format name="Standard Research Report">Research report with: date, research period, technologies, freshness score, summary (3-5 bullet points), options comparison (REQUIRED), deprecation warnings, best practices (recommended patterns with source citations), anti-patterns (with alternatives), implementation considerations (performance, security, compatibility), ISSUES/AMBIGUITIES section (flagged items needing deeper investigation), references (primary, secondary, community).</format>
+  <format name="Deep Research Report">Per-issue analysis with: issue title, prior understanding (what was known), investigation summary (searches performed, sources found), resolution status (resolved/partially-resolved/still-ambiguous), evidence (cited sources supporting conclusion), resolution path (concrete next steps or approach), new insights (anything discovered that changes prior recommendations), remaining ambiguities (what is still unclear and why).</format>
 </output>
