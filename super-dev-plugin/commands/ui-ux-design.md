@@ -3,7 +3,7 @@ name: ui-ux-design
 description: Create UI/UX design specifications for features with user interfaces
 ---
 
-<purpose>Activate the ui-ux-designer agent for Phase 5.5 UI/UX design. Produces wireframes (Pencil MCP or ASCII), design tokens, interaction patterns, accessibility requirements, and responsive behavior specs.</purpose>
+<purpose>Activate the ui-ux-designer agent for Stage 6.5 UI/UX design. Produces wireframes (Pencil MCP or ASCII), design tokens, interaction patterns, accessibility requirements, and responsive behavior specs.</purpose>
 
 <usage>/super-dev:ui-ux-design [feature description]</usage>
 

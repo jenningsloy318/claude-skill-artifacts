@@ -25,7 +25,7 @@ gate-profile: none
 <section title="Progress">
   <table>
     <row header="true">
-      <cell>Phase</cell>
+      <cell>Stage</cell>
       <cell>Status</cell>
       <cell>Notes</cell>
     </row>

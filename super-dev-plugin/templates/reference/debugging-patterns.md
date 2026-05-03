@@ -4,7 +4,7 @@
   <description>Systematic debugging methodology, evidence collection, root cause analysis, and bug investigation techniques</description>
 </meta>
 
-<purpose>Reference for systematic root cause analysis and bug investigation during Phase 4 (Debug Analysis) of the super-dev workflow.</purpose>
+<purpose>Reference for systematic root cause analysis and bug investigation during Stage 5 (Debug Analysis) of the super-dev workflow.</purpose>
 
 <principles>
   <principle name="First Principles Analysis">Break down bugs to fundamental truths — what actually happens vs. what should happen — then build understanding from there</principle>
@@ -64,5 +64,5 @@
 </tools>
 
 <references>
-  <ref>Extracted from `super-dev:debug-analyzer` agent. For full agent behavior during Phase 4, invoke with subagent_type "super-dev:debug-analyzer".</ref>
+  <ref>Extracted from `super-dev:debug-analyzer` agent. For full agent behavior during Stage 5, invoke with subagent_type "super-dev:debug-analyzer".</ref>
 </references>

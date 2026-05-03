@@ -4,7 +4,7 @@
   <description>UI/UX design patterns, principles, and best practices for user interface design</description>
 </meta>
 
-<purpose>Reference for user interface and experience design during Phase 5.5 (UI/UX Design) of the super-dev workflow. Covers layout patterns, navigation, components, interaction patterns, state handling, design tokens, accessibility, and responsive design.</purpose>
+<purpose>Reference for user interface and experience design during Stage 6.5 (UI/UX Design) of the super-dev workflow. Covers layout patterns, navigation, components, interaction patterns, state handling, design tokens, accessibility, and responsive design.</purpose>
 
 <principles>
   <principle name="YAGNI">Design only screens/components explicitly required. No speculative UI variants. Each UI element must serve documented requirements.</principle>
@@ -108,5 +108,5 @@
 </pattern>
 
 <references>
-  <ref>Extracted from `super-dev:ui-ux-designer` agent. For full agent behavior during Phase 5.5, invoke with subagent_type "super-dev:ui-ux-designer".</ref>
+  <ref>Extracted from `super-dev:ui-ux-designer` agent. For full agent behavior during Stage 6.5, invoke with subagent_type "super-dev:ui-ux-designer".</ref>
 </references>

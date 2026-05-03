@@ -14,9 +14,47 @@ gate-profile: gate-docs-drift.sh
     <field name="status">In Progress | Complete</field>
     <field name="spec-reference">[path to [doc-index]-specification.md]</field>
     <field name="plan-reference">[path to [doc-index]-implementation-plan.md]</field>
+    <field name="total-phases">[number of phases from implementation plan]</field>
     <field name="total-tasks">[total count]</field>
     <field name="completed-tasks">[completed count]</field>
   </metadata>
+
+  <section title="Phase Overview">
+    <paragraph>High-level phase status tracking. Parsed by gate-implementation-complete.sh to enforce completeness before Stage 11.</paragraph>
+    <table>
+      <row header="true">
+        <cell>Phase</cell>
+        <cell>Name</cell>
+        <cell>Tasks</cell>
+        <cell>Completed</cell>
+        <cell>Status</cell>
+      </row>
+      <row>
+        <cell>Phase 1</cell>
+        <cell>[Phase Name]</cell>
+        <cell>T1.1, T1.2, T1.3, T1.4</cell>
+        <cell>[X]/[Y]</cell>
+        <cell>pending | in_progress | complete</cell>
+      </row>
+      <row>
+        <cell>Phase 2</cell>
+        <cell>[Phase Name]</cell>
+        <cell>T2.1, T2.2</cell>
+        <cell>[X]/[Y]</cell>
+        <cell>pending | in_progress | complete</cell>
+      </row>
+    </table>
+    <paragraph>A phase is "complete" when ALL its tasks are done AND code review passes. Updated by Team Lead during Stage 9/10 loop.</paragraph>
+  </section>
+
+  <section title="Progress">
+    <list type="unordered">
+      <item name="Completed">[X]/[Y] tasks</item>
+      <item name="Current">[Task ID currently in progress]</item>
+      <item name="Status">In Progress | Complete</item>
+      <item name="Blocked">[Task ID if any] - [reason]</item>
+    </list>
+  </section>
 
   <section title="Tasks">
 
@@ -65,15 +103,6 @@ gate-profile: gate-docs-drift.sh
 
     <!-- Repeat for each phase/milestone from the implementation plan. -->
 
-  </section>
-
-  <section title="Progress">
-    <list type="unordered">
-      <item name="Completed">[X]/[Y] tasks</item>
-      <item name="Current">[Task ID currently in progress]</item>
-      <item name="Status">In Progress | Complete</item>
-      <item name="Blocked">[Task ID if any] - [reason]</item>
-    </list>
   </section>
 
   <section title="File Change Tracking">

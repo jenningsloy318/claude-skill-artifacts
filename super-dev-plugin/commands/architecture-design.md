@@ -3,7 +3,7 @@ name: architecture-design
 description: Design architecture and create Architecture Decision Records (ADRs) for complex features
 ---
 
-<purpose>Activate the architecture-agent (or product-designer for features needing both architecture and UI) for Phase 5.3 architecture design. Produces module decomposition, interfaces, ADRs, data flow diagrams, and evaluation matrices.</purpose>
+<purpose>Activate the architecture-agent (or product-designer for features needing both architecture and UI) for Stage 6.3 architecture design. Produces module decomposition, interfaces, ADRs, data flow diagrams, and evaluation matrices.</purpose>
 
 <usage>/super-dev:architecture-design [feature description]</usage>
 

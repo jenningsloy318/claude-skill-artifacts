@@ -4,7 +4,7 @@
   <description>Comprehensive research methodology for software development including multi-source search, version awareness, option presentation, and synthesis techniques</description>
 </meta>
 
-<purpose>Reference for systematic research before software implementation during Phase 3 (Research) of the super-dev workflow. Covers search tools, version awareness, option presentation format, and research output structure.</purpose>
+<purpose>Reference for systematic research before software implementation during Stage 4 (Research) of the super-dev workflow. Covers search tools, version awareness, option presentation format, and research output structure.</purpose>
 
 <principles>
   <principle name="Multi-Source Research">Search across code, documentation, academic papers, and community resources for comprehensive understanding</principle>
@@ -70,5 +70,5 @@
 </anti-patterns>
 
 <references>
-  <ref>Extracted from `super-dev:research-agent`. For full agent behavior during Phase 3, invoke with subagent_type "super-dev:research-agent".</ref>
+  <ref>Extracted from `super-dev:research-agent`. For full agent behavior during Stage 4, invoke with subagent_type "super-dev:research-agent".</ref>
 </references>

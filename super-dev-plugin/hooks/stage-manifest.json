@@ -1,70 +1,70 @@
 {
-  "version": "1.1.0",
-  "description": "Maps super-dev agent types to required prerequisite artifacts from previous phases. Uses glob patterns (*-doctype.md) for dynamic incremental naming.",
+  "version": "2.0.0",
+  "description": "Maps super-dev agent types to required prerequisite artifacts from previous stages. Uses glob patterns (*-doctype.md) for dynamic incremental naming.",
   "gates": {
     "super-dev:bdd-scenario-writer": {
-      "phase": "2.5",
-      "description": "BDD Scenario Writing requires completed requirements",
+      "stage": "3.5",
+      "description": "BDD Scenario Writing (Stage 3.5) requires completed requirements",
       "requires": ["[doc-index]-requirements.md"],
       "sections": {
         "[doc-index]-requirements.md": ["Acceptance Criteria"]
       }
     },
     "super-dev:research-agent": {
-      "phase": "3",
-      "description": "Research requires completed requirements and BDD scenarios",
+      "stage": "4",
+      "description": "Research (Stage 4) requires completed requirements and BDD scenarios",
       "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {
         "[doc-index]-behavior-scenarios.md": ["Scenario", "Given"]
       }
     },
     "super-dev:debug-analyzer": {
-      "phase": "4",
-      "description": "Debug analysis requires completed requirements",
+      "stage": "5",
+      "description": "Debug analysis (Stage 5) requires completed requirements",
       "requires": ["[doc-index]-requirements.md"],
       "sections": {}
     },
     "super-dev:code-assessor": {
-      "phase": "5",
-      "description": "Code assessment requires research report",
+      "stage": "6",
+      "description": "Code assessment (Stage 6) requires research report",
       "requires": ["[doc-index]-research-report.md"],
       "sections": {}
     },
     "super-dev:architecture-agent": {
-      "phase": "5.3",
-      "description": "Architecture design requires assessment",
+      "stage": "6.3",
+      "description": "Architecture design (Stage 6.3) requires assessment",
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:product-designer": {
-      "phase": "5.4",
-      "description": "Product design requires assessment with both arch and UI",
+      "stage": "6.4",
+      "description": "Product design (Stage 6.4) requires assessment with both arch and UI",
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:ui-ux-designer": {
-      "phase": "5.5",
-      "description": "UI/UX design requires assessment",
+      "stage": "6.5",
+      "description": "UI/UX design (Stage 6.5) requires assessment",
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-writer": {
-      "phase": "6",
-      "description": "Spec writing requires assessment and design documents",
+      "stage": "7",
+      "description": "Spec writing (Stage 7) requires assessment and design documents",
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-reviewer": {
-      "phase": "7",
-      "description": "Spec review requires specification, implementation plan, and task list",
+      "stage": "8",
+      "description": "Spec review (Stage 8) requires specification, implementation plan, and task list",
       "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
       "sections": {
         "[doc-index]-specification.md": ["Testing Strategy"]
       }
     },
     "super-dev:dev-executor": {
-      "phase": "8",
-      "description": "Execution requires complete specification, plan, and task list",
+      "stage": "9",
+      "description": "Execution (Stage 9) requires complete specification, plan, and task list",
       "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
@@ -72,32 +72,33 @@
       }
     },
     "super-dev:qa-agent": {
-      "phase": "8",
-      "description": "QA requires complete specification and BDD scenarios",
+      "stage": "9",
+      "description": "QA (Stage 9) requires complete specification and BDD scenarios",
       "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {}
     },
     "super-dev:code-reviewer": {
-      "phase": "9",
-      "description": "Code review requires specification (after execution)",
+      "stage": "10",
+      "description": "Code review (Stage 10) requires specification (after execution)",
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:adversarial-reviewer": {
-      "phase": "9",
-      "description": "Adversarial review requires specification (after execution)",
+      "stage": "10",
+      "description": "Adversarial review (Stage 10) requires specification (after execution)",
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:docs-executor": {
-      "phase": "10",
-      "description": "Documentation requires specification and implementation summary",
-      "requires": ["[doc-index]-specification.md"],
-      "sections": {}
+      "stage": "11",
+      "description": "Documentation (Stage 11) requires specification, all implementation phases complete, and gate-implementation-complete.sh PASS",
+      "requires": ["[doc-index]-specification.md", "[doc-index]-workflow-tracking.json"],
+      "sections": {},
+      "gate": "gate-implementation-complete.sh"
     },
     "super-dev:handoff-writer": {
-      "phase": "10.5",
-      "description": "Handoff requires specification directory with all artifacts",
+      "stage": "11.5",
+      "description": "Handoff (Stage 11.5) requires specification directory with all artifacts",
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     }

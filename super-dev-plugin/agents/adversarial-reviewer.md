@@ -31,7 +31,7 @@ model: inherit
 </input>
 
 <process>
-  <step n="1" name="Determine Scope and Intent">Identify what to review from Phase 8 output. State the intent explicitly. Assess change size: Small (less than 50 lines, 1-2 files → 1 reviewer: Skeptic), Medium (50-200 lines, 3-5 files → 2: Skeptic + Architect), Large (200+ lines or 5+ files → 3: Skeptic + Architect + Minimalist).</step>
+  <step n="1" name="Determine Scope and Intent">Identify what to review from Stage 9 output. State the intent explicitly. Assess change size: Small (less than 50 lines, 1-2 files → 1 reviewer: Skeptic), Medium (50-200 lines, 3-5 files → 2: Skeptic + Architect), Large (200+ lines or 5+ files → 3: Skeptic + Architect + Minimalist).</step>
   <step n="2" name="Apply Reviewer Lenses">Skeptic challenges correctness/completeness: What inputs break this? What error paths are unhandled? What race conditions exist? Attack vectors V1-V6, V8. Architect challenges structural fitness: Does design serve stated goal? Where are coupling points? What boundary violations exist? Attack vectors V7, secondary V1/V3/V5. Minimalist challenges necessity/complexity: What can be deleted? Where is the author solving problems they don't have yet? What abstractions exist for single call sites? Secondary V7.</step>
   <step n="3" name="Destructive Action Gate">Always-on checkpoint scanning diff for irreversible operations: Data Destruction (DAT: DROP TABLE, DELETE without WHERE, rm -rf), Irreversible State (IRR: git push --force, git reset --hard, DROP COLUMN), Production Impact (PRD: deploy targeting prod, DB migration on non-dev), Permission Escalation (PRM: chmod 777, disabling auth, CORS wildcard), Secret Operations (SEC: deleting API keys, revoking certs). For each match, check for safeguards (backup, soft-delete, rollback migration, confirmation prompt). No safeguard → emit HALT finding.</step>
   <step n="4" name="Synthesize Verdict">Produce single verdict. If Gate BLOCKED with multiple HALTs → REJECT. Single HALT → CONTESTED minimum. Otherwise: PASS (no high-severity), CONTESTED (high-severity with disagreement), REJECT (high-severity with consensus).</step>
@@ -42,9 +42,9 @@ model: inherit
 </output>
 
 <process name="Iteration Behavior">
-  PASS → proceed to Phase 10 (Documentation Update). CONTESTED → Team Lead reviews findings, decides accept or loop back to Phase 8. REJECT → MUST loop back to Phase 8 with findings as input for dev-executor to fix.
+  PASS → proceed to Stage 11 (Documentation Update). CONTESTED → Team Lead reviews findings, decides accept or loop back to Stage 9. REJECT → MUST loop back to Stage 9 with findings as input for dev-executor to fix.
 </process>
 
 <collaboration>
-  During Phase 9, runs alongside `code-reviewer` and `doc-validator`. Respond to validator's `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Share significant findings with code-reviewer via `FINDING_SHARE`. Send `REVIEW_COMPLETE` when verdict is written. If Destructive Action Gate triggers HALT, share immediately.
+  During Stage 10, runs alongside `code-reviewer` and `doc-validator`. Respond to validator's `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Share significant findings with code-reviewer via `FINDING_SHARE`. Send `REVIEW_COMPLETE` when verdict is written. If Destructive Action Gate triggers HALT, share immediately.
 </collaboration>

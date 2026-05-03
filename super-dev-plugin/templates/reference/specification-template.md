@@ -35,28 +35,60 @@ gate-profile: gate-spec-trace
 
 </section>
 
-<section title="2. Background">
+<section title="2. Implementation Phases">
+  <paragraph>High-level phase breakdown for this specification. Each phase maps to a Stage 9/10 iteration cycle. ALL phases MUST be implemented and reviewed before proceeding to documentation (enforced by gate-implementation-complete.sh).</paragraph>
+  <reference type="cross-document">See `[doc-index]-implementation-plan.md` for detailed phased milestones and dependency graphs.</reference>
+  <reference type="cross-document">See `[doc-index]-task-list.md` for full task breakdown with file paths and acceptance criteria.</reference>
+  <table>
+    <row header="true">
+      <cell>Phase</cell>
+      <cell>Name</cell>
+      <cell>Scope</cell>
+      <cell>Domain</cell>
+    </row>
+    <row>
+      <cell>Phase 1</cell>
+      <cell>[Phase Name]</cell>
+      <cell>[Brief scope description]</cell>
+      <cell>[rust|go|frontend|backend|mixed]</cell>
+    </row>
+    <row>
+      <cell>Phase 2</cell>
+      <cell>[Phase Name]</cell>
+      <cell>[Brief scope description]</cell>
+      <cell>[rust|go|frontend|backend|mixed]</cell>
+    </row>
+    <row>
+      <cell>Phase 3</cell>
+      <cell>[Phase Name]</cell>
+      <cell>[Brief scope description]</cell>
+      <cell>[rust|go|frontend|backend|mixed]</cell>
+    </row>
+  </table>
+</section>
 
-  <subsection title="2.1 Context">
+<section title="3. Background">
+
+  <subsection title="3.1 Context">
     <paragraph>[Reference research report findings]</paragraph>
     <quote source="Research Report">[key finding]</quote>
   </subsection>
 
-  <subsection title="2.2 Current State">
+  <subsection title="3.2 Current State">
     <paragraph>[Reference assessment findings]</paragraph>
     <quote source="Assessment">[key finding]</quote>
   </subsection>
 
-  <subsection title="2.3 Problem Statement">
+  <subsection title="3.3 Problem Statement">
     <paragraph>[Reference debug analysis if applicable]</paragraph>
     <quote source="Debug Analysis">[root cause]</quote>
   </subsection>
 
 </section>
 
-<section title="3. Technical Design">
+<section title="4. Technical Design">
 
-  <subsection title="3.1 Architecture">
+  <subsection title="4.1 Architecture">
     <diagram type="ascii">
 ┌─────────────────┐     ┌─────────────────┐
 │   Component A   │────▶│   Component B   │
@@ -71,7 +103,7 @@ gate-profile: gate-spec-trace
     </diagram>
   </subsection>
 
-  <subsection title="3.2 Components">
+  <subsection title="4.2 Components">
 
     <subsection title="Component 1: [Name]">
       <field name="purpose">[description]</field>
@@ -101,7 +133,7 @@ interface [SpecificComponentName] {
 
   </subsection>
 
-  <subsection title="3.3 Data Model (MANDATORY: Specific Field Names)">
+  <subsection title="4.3 Data Model (MANDATORY: Specific Field Names)">
     <code lang="typescript">
 /**
  * [FeatureName][EntityName] - [Brief description]
@@ -134,7 +166,7 @@ interface [FeatureName][EntityName] {
     <paragraph>[Database changes if applicable]</paragraph>
   </subsection>
 
-  <subsection title="3.4 API Design">
+  <subsection title="4.4 API Design">
 
     <subsection title="Endpoint 1: [Method] [Path]">
       <field name="function-name">`[feature][Action]` (e.g., `userLogin`, `orderCreate`)</field>
@@ -169,7 +201,7 @@ interface [FeatureName][EntityName] {
 
   </subsection>
 
-  <subsection title="3.5 Function Specifications (MANDATORY: No Ambiguity)">
+  <subsection title="4.5 Function Specifications (MANDATORY: No Ambiguity)">
 
     <subsection title="Function: [FeatureName][Action] (e.g., UserAuthenticate)">
       <code lang="typescript">
@@ -204,7 +236,7 @@ async function [featureName][action](
 
   </subsection>
 
-  <subsection title="3.6 Variable Naming Conventions (MANDATORY)">
+  <subsection title="4.6 Variable Naming Conventions (MANDATORY)">
     <table>
       <row header="true">
         <cell>Variable Type</cell>
@@ -251,7 +283,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="3.7 Error Handling">
+  <subsection title="4.7 Error Handling">
     <table>
       <row header="true">
         <cell>Error Case</cell>
@@ -276,9 +308,9 @@ async function [featureName][action](
 
 </section>
 
-<section title="4. Implementation Approach">
+<section title="5. Implementation Approach">
 
-  <subsection title="4.1 Technology Stack">
+  <subsection title="5.1 Technology Stack">
     <list type="unordered">
       <item>Language: [language]</item>
       <item>Framework: [framework]</item>
@@ -286,7 +318,7 @@ async function [featureName][action](
     </list>
   </subsection>
 
-  <subsection title="4.2 Dependencies">
+  <subsection title="5.2 Dependencies">
     <table>
       <row header="true">
         <cell>Dependency</cell>
@@ -301,7 +333,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="4.3 Configuration">
+  <subsection title="5.3 Configuration">
     <code lang="text">
 [Configuration changes needed]
     </code>
@@ -309,9 +341,9 @@ async function [featureName][action](
 
 </section>
 
-<section title="5. Testing Strategy">
+<section title="6. Testing Strategy">
 
-  <subsection title="5.1 Unit Tests">
+  <subsection title="6.1 Unit Tests">
     <table>
       <row header="true">
         <cell>Component</cell>
@@ -334,11 +366,11 @@ async function [featureName][action](
     </rule>
   </subsection>
 
-  <subsection title="5.2 Integration Tests">
+  <subsection title="6.2 Integration Tests">
     <paragraph>[Integration test approach]</paragraph>
   </subsection>
 
-  <subsection title="5.3 Edge Cases">
+  <subsection title="6.3 Edge Cases">
     <table>
       <row header="true">
         <cell>Edge Case</cell>
@@ -353,7 +385,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="5.4 BDD Scenario References">
+  <subsection title="6.4 BDD Scenario References">
     <paragraph>Tests MUST reference BDD scenario IDs from `[doc-index]-behavior-scenarios.md`:</paragraph>
 
     <table>
@@ -383,9 +415,9 @@ async function [featureName][action](
 
 </section>
 
-<section title="6. Security Considerations">
+<section title="7. Security Considerations">
 
-  <subsection title="6.1 Input Validation">
+  <subsection title="7.1 Input Validation">
     <table>
       <row header="true">
         <cell>Input</cell>
@@ -400,7 +432,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="6.2 Authentication and Authorization">
+  <subsection title="7.2 Authentication and Authorization">
     <list type="unordered">
       <item name="Auth required">[yes/no]</item>
       <item name="Permission checks">[list of permissions]</item>
@@ -408,7 +440,7 @@ async function [featureName][action](
     </list>
   </subsection>
 
-  <subsection title="6.3 Data Protection">
+  <subsection title="7.3 Data Protection">
     <list type="unordered">
       <item name="Sensitive data">[list fields containing PII, credentials, etc.]</item>
       <item name="Encryption">[at rest / in transit requirements]</item>
@@ -416,7 +448,7 @@ async function [featureName][action](
     </list>
   </subsection>
 
-  <subsection title="6.4 OWASP Considerations">
+  <subsection title="7.4 OWASP Considerations">
     <table>
       <row header="true">
         <cell>Risk</cell>
@@ -453,9 +485,9 @@ async function [featureName][action](
 
 </section>
 
-<section title="7. Performance Considerations">
+<section title="8. Performance Considerations">
 
-  <subsection title="7.1 Complexity Analysis">
+  <subsection title="8.1 Complexity Analysis">
     <table>
       <row header="true">
         <cell>Operation</cell>
@@ -472,7 +504,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="7.2 Database Optimization">
+  <subsection title="8.2 Database Optimization">
     <list type="unordered">
       <item name="Indexes needed">[list of indexes with field names]</item>
       <item name="Query optimization">[N+1 prevention, batch operations]</item>
@@ -480,7 +512,7 @@ async function [featureName][action](
     </list>
   </subsection>
 
-  <subsection title="7.3 Caching Strategy">
+  <subsection title="8.3 Caching Strategy">
     <table>
       <row header="true">
         <cell>Data</cell>
@@ -499,7 +531,7 @@ async function [featureName][action](
     </table>
   </subsection>
 
-  <subsection title="7.4 Scalability">
+  <subsection title="8.4 Scalability">
     <list type="unordered">
       <item name="Bottlenecks">[identified bottlenecks]</item>
       <item name="Horizontal scaling">[considerations]</item>
@@ -507,7 +539,7 @@ async function [featureName][action](
     </list>
   </subsection>
 
-  <subsection title="7.5 Resource Usage">
+  <subsection title="8.5 Resource Usage">
     <list type="unordered">
       <item name="Memory">[expected usage, limits]</item>
       <item name="CPU">[expected usage, async considerations]</item>
@@ -517,21 +549,22 @@ async function [featureName][action](
 
 </section>
 
-<section title="8. Rollout Plan">
+<section title="9. Rollout Plan">
   <list type="ordered">
     <item>[Step 1]</item>
     <item>[Step 2]</item>
   </list>
 
-  <subsection title="8.1 Implementation Plan">
-    <reference type="cross-document">See `[doc-index]-implementation-plan.md` for phased implementation milestones.</reference>
+  <subsection title="9.1 Implementation Plan">
+    <reference type="cross-document">See `[doc-index]-implementation-plan.md` for detailed phased milestones and dependency graphs.</reference>
     <reference type="cross-document">See `[doc-index]-task-list.md` for full task breakdown with file paths and acceptance criteria.</reference>
+    <paragraph>Implementation phases are defined in Section 2 above.</paragraph>
   </subsection>
 </section>
 
-<section title="9. Unambiguous Implementation Requirements (MANDATORY)">
+<section title="10. Unambiguous Implementation Requirements (MANDATORY)">
 
-  <subsection title="9.1 Single Implementation Guarantee">
+  <subsection title="10.1 Single Implementation Guarantee">
     <paragraph>This specification MUST result in exactly ONE valid implementation. To ensure this:</paragraph>
     <checklist>
       <item name="All function names are specified">No room for interpretation</item>
@@ -544,7 +577,7 @@ async function [featureName][action](
     </checklist>
   </subsection>
 
-  <subsection title="9.2 Ambiguity Checklist">
+  <subsection title="10.2 Ambiguity Checklist">
     <paragraph>Review this specification against these ambiguity sources:</paragraph>
     <checklist>
       <item name="No pronouns">Replace "it", "they", "this" with specific nouns</item>
@@ -557,7 +590,7 @@ async function [featureName][action](
     </checklist>
   </subsection>
 
-  <subsection title="9.3 Naming Convention Verification">
+  <subsection title="10.3 Naming Convention Verification">
     <checklist>
       <item name="No generic variable names">(data, item, value, result, temp, obj)</item>
       <item name="No single-letter names">(except loop indices i, j, k)</item>
@@ -571,14 +604,14 @@ async function [featureName][action](
 
 </section>
 
-<section title="10. Open Questions">
+<section title="11. Open Questions">
   <checklist>
     <item>[Question 1]</item>
     <item>[Question 2]</item>
   </checklist>
 </section>
 
-<section title="11. References (MUST include canonical links to source documents)">
+<section title="12. References (MUST include canonical links to source documents)">
   <list type="unordered">
     <item>Requirements (super-dev:requirements-clarifier): [link]</item>
     <item>Research Report (super-dev:research-agent): [link]</item>
@@ -592,8 +625,8 @@ async function [featureName][action](
 <rule title="Gate Compliance (gate-spec-trace.sh)">
   <paragraph>The output specification file MUST satisfy these automated gate checks or the workflow will be blocked:</paragraph>
   <list type="ordered">
-    <item name="BDD scenario references">MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 5.4.</item>
-    <item name="Testing strategy text">MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 5 heading satisfies this.</item>
+    <item name="BDD scenario references">MUST contain at least 1 `SCENARIO-[0-9]+` pattern (e.g., `SCENARIO-001`). Cross-reference scenarios in Section 6.4.</item>
+    <item name="Testing strategy text">MUST contain at least one of: "testing strategy", "test plan", "test approach", "test coverage", "unit test", "integration test" (case-insensitive). Section 6 heading satisfies this.</item>
     <item name="Task list file exists">`[doc-index]-task-list.md` must exist as a separate file in the spec directory.</item>
     <item name="Implementation plan file exists">`[doc-index]-implementation-plan.md` must exist as a separate file in the spec directory.</item>
   </list>

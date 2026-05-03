@@ -12,6 +12,7 @@ gate-profile: gate-spec-trace.sh
     <field name="date">[timestamp]</field>
     <field name="author">super-dev:planner</field>
     <field name="status">Draft | Review | Approved</field>
+    <field name="total-phases">[number of implementation phases, e.g., 3]</field>
     <field name="spec-reference">[path to [doc-index]-specification.md]</field>
     <field name="requirements-reference">[path to [doc-index]-requirements.md]</field>
   </metadata>
@@ -38,6 +39,46 @@ gate-profile: gate-spec-trace.sh
         <item>[Assumption 2]: [rationale]</item>
       </list>
     </subsection>
+  </section>
+
+  <section title="Phase Definition">
+    <paragraph>High-level definition of all implementation phases. Each phase is independently verifiable and maps to a Stage 9/10 iteration cycle. Parsed by gate-implementation-complete.sh.</paragraph>
+    <table>
+      <row header="true">
+        <cell>Phase</cell>
+        <cell>Name</cell>
+        <cell>Objective</cell>
+        <cell>Tasks</cell>
+        <cell>Domain</cell>
+        <cell>Status</cell>
+      </row>
+      <row>
+        <cell>Phase 1</cell>
+        <cell>[Phase Name]</cell>
+        <cell>[One-line objective]</cell>
+        <cell>T1.1, T1.2</cell>
+        <cell>[rust|go|frontend|backend|mixed]</cell>
+        <cell>pending</cell>
+      </row>
+      <row>
+        <cell>Phase 2</cell>
+        <cell>[Phase Name]</cell>
+        <cell>[One-line objective]</cell>
+        <cell>T2.1, T2.2</cell>
+        <cell>[rust|go|frontend|backend|mixed]</cell>
+        <cell>pending</cell>
+      </row>
+      <row>
+        <cell>Phase 3</cell>
+        <cell>[Phase Name]</cell>
+        <cell>[One-line objective]</cell>
+        <cell>T3.1</cell>
+        <cell>[rust|go|frontend|backend|mixed]</cell>
+        <cell>pending</cell>
+      </row>
+    </table>
+    <paragraph>Status values: pending | in_progress | complete. Updated by Team Lead during Stage 9/10 loop.</paragraph>
+    <paragraph>ALL phases must reach "complete" before Stage 11 (enforced by gate-implementation-complete.sh).</paragraph>
   </section>
 
   <section title="Phased Milestones">
@@ -261,8 +302,11 @@ Phase 1 [rust]         Phase 2 [frontend]     Phase 3 [mixed]
 ## Usage Notes
 
 - Decompose complex work into **3-5 phases**; each phase should be independently verifiable
+- The `total-phases` metadata field MUST match the number of Phase rows in "Phase Definition"
+- The "Phase Definition" table MUST list every phase upfront — this is parsed by gate-implementation-complete.sh
+- "Phased Milestones" section provides the detailed breakdown for each phase defined above
 - Every `<task>` must specify a `file` attribute with the target file path, a `risk` level, and a `domain` attribute (rust, go, frontend, backend, ios, android, windows, macos, or mixed)
-- The `domain` attribute enables the Team Lead to detect cross-domain dependencies and decide between full parallel vs staggered parallel spawning in Phase 8
+- The `domain` attribute enables the Team Lead to detect cross-domain dependencies and decide between full parallel vs staggered parallel spawning in Stage 9
 - The dependency graph should reflect the actual task dependency chain, with domain labels on phases to visualize cross-domain boundaries
 - Update the timeline table as estimates are refined during execution
 - Cross-reference the `<reference>` tag to link back to requirements acceptance criteria

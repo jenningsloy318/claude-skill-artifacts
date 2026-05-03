@@ -52,7 +52,7 @@ model: inherit
   Technical Quality (0.50): Modularity (0.10), Coupling/Cohesion (0.10), Scalability (0.10), Performance (0.10), Security (0.10). Delivery (0.30): Implementation Complexity (0.08), Risk (0.08), Time-to-Value (0.07), Maintainability (0.04), Testability (0.03). Operational (0.20): Observability (0.05), Reliability (0.05), Cost (0.05), Supportability (0.03), Reversibility (0.02). Scoring: 5 Excellent → 0 Unacceptable.
 </criteria>
 
-<criteria name="When to Skip Architecture Phase">
+<criteria name="When to Skip Architecture Stage">
   Skip for: trivial bug fixes with clear scope, single-file changes, documentation-only updates, dependency version bumps. Proceed when: any structural change, new module/component, API design decisions, database schema changes, authentication/authorization changes.
 </criteria>
 

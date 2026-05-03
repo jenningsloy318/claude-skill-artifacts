@@ -3,7 +3,7 @@ name: execute
 description: Execute development and QA in parallel using specialized agents
 ---
 
-<purpose>Activate dev-executor and qa-agent in PARALLEL for Phase 8 implementation. Dev-executor implements code according to specifications. QA-agent writes and runs tests. Build queue managed for Rust/Go projects.</purpose>
+<purpose>Activate dev-executor and qa-agent in PARALLEL for Stage 9 implementation. Dev-executor implements code according to specifications. QA-agent writes and runs tests. Build queue managed for Rust/Go projects.</purpose>
 
 <usage>/super-dev:execute [specification directory path]</usage>
 
@@ -16,5 +16,5 @@ description: Execute development and QA in parallel using specialized agents
 </arguments>
 
 <output>
-  <format>Implemented code files and test suites. Documentation updates handled separately in Phase 10.</format>
+  <format>Implemented code files and test suites. Documentation updates handled separately in Stage 11.</format>
 </output>

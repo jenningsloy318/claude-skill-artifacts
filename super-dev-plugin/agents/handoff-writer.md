@@ -17,7 +17,7 @@ model: inherit
 
 <reference name="How This Handoff Gets Consumed">
   The next agent session will NOT read this document fully. It will:
-  1. Read Section 2 (Progress) — to know which phase to resume from
+  1. Read Section 2 (Progress) — to know which stage to resume from
   2. Read Section 4 (Unfinished Items) — to know what needs doing
   3. Read Section 7 (Next Steps) — to know concrete first actions
   4. Only if needed: read Section 6 (Read These First) for deeper context
@@ -26,8 +26,8 @@ model: inherit
 </reference>
 
 <constraints>
-  <constraint name="INCLUDE">high signal: Task objective (1-2 sentences), phase completion status, key decisions with rationale (bullets), unfinished items with priority, risks and gotchas, concrete next steps (3-5 numbered actions), file paths to read (ordered by importance)</constraint>
-  <constraint name="EXCLUDE">context bloat: Implementation details, full git diff summaries, copy-pasted acceptance criteria, architecture descriptions, test results, research findings, workflow phase-by-phase narrative — point to source files instead</constraint>
+  <constraint name="INCLUDE">high signal: Task objective (1-2 sentences), stage completion status, key decisions with rationale (bullets), unfinished items with priority, risks and gotchas, concrete next steps (3-5 numbered actions), file paths to read (ordered by importance)</constraint>
+  <constraint name="EXCLUDE">context bloat: Implementation details, full git diff summaries, copy-pasted acceptance criteria, architecture descriptions, test results, research findings, workflow stage-by-stage narrative — point to source files instead</constraint>
 </constraints>
 
 <input>
@@ -37,7 +37,7 @@ model: inherit
 </input>
 
 <process>
-  <step n="1" name="Gather Context">Read workflow tracking JSON for phase completion status and iteration count. Scan ALL spec directory artifacts — note only key decisions, unfinished items, risks. Run `git log --oneline main..HEAD` for commit count (do NOT list individual files). Identify deferred items from code review and adversarial review.</step>
+  <step n="1" name="Gather Context">Read workflow tracking JSON for stage completion status and iteration count. Scan ALL spec directory artifacts — note only key decisions, unfinished items, risks. Run `git log --oneline main..HEAD` for commit count (do NOT list individual files). Identify deferred items from code review and adversarial review.</step>
   <step n="2" name="Write the Handoff">Write to the EXACT filename provided in spawn prompt's `OUTPUT FILENAME` field. For each section ask: "Can the next agent get this from a source file?" If yes, point to the file instead.</step>
   <step n="3" name="Validate Conciseness">Verify: under 300 lines total, no section exceeds 30 lines, no copy-pasted content from spec artifacts, every file path is relative to project root, "Next Steps" has 3-5 concrete numbered actions.</step>
 </process>

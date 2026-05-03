@@ -3,7 +3,7 @@ name: code-review
 description: Perform specification-aware code review focused on correctness, security, performance, and maintainability
 ---
 
-<purpose>Activate the code-reviewer agent to review code against specification. Assess correctness, security, performance, and maintainability. Runs in parallel with adversarial review in Phase 9.</purpose>
+<purpose>Activate the code-reviewer agent to review code against specification. Assess correctness, security, performance, and maintainability. Runs in parallel with adversarial review in Stage 10.</purpose>
 
 <usage>/super-dev:code-review [code changes context]</usage>
 
@@ -21,7 +21,7 @@ description: Perform specification-aware code review focused on correctness, sec
 
 <constraints>
   <constraint>Specification-aware review using requirements and design docs</constraint>
-  <constraint>Runs in parallel with adversarial review in Phase 9</constraint>
+  <constraint>Runs in parallel with adversarial review in Stage 10</constraint>
   <constraint>Iterative: loops back to execution if blocking issues found</constraint>
   <constraint>Proceed only when both code review approved AND adversarial review PASS</constraint>
 </constraints>

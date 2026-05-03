@@ -3,7 +3,7 @@ name: adversarial-review
 description: Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity
 ---
 
-<purpose>Activate the adversarial-reviewer agent for Phase 9 multi-lens review. Challenges implementation from Skeptic (correctness), Architect (structural fitness), and Minimalist (necessity) perspectives. Runs in parallel with code review. Produces verdict (PASS/CONTESTED/REJECT).</purpose>
+<purpose>Activate the adversarial-reviewer agent for Stage 10 multi-lens review. Challenges implementation from Skeptic (correctness), Architect (structural fitness), and Minimalist (necessity) perspectives. Runs in parallel with code review. Produces verdict (PASS/CONTESTED/REJECT).</purpose>
 
 <usage>/super-dev:adversarial-review [implementation context]</usage>
 
@@ -20,6 +20,6 @@ description: Perform multi-lens adversarial review to challenge implementation c
 </output>
 
 <constraints>
-  <constraint>Runs in parallel with code review in Phase 9</constraint>
-  <constraint>PASS → Phase 10. CONTESTED → Team Lead decides. REJECT → loop back to Phase 8.</constraint>
+  <constraint>Runs in parallel with code review in Stage 10</constraint>
+  <constraint>PASS → Stage 11. CONTESTED → Team Lead decides. REJECT → loop back to Stage 9.</constraint>
 </constraints>

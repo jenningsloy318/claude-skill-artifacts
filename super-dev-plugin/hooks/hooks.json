@@ -46,7 +46,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/phase-gate.sh"
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/stage-gate.sh"
         }
       ]
     }

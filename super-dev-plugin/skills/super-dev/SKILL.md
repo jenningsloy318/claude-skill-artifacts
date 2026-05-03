@@ -6,42 +6,48 @@ version: 2.7.0
 license: MIT
 ---
 
-<purpose>Team Lead agent team workflow. The Team Lead orchestrates specialized agent teammates — it NEVER implements directly, only spawns, coordinates, and verifies. Agents execute research, architecture, coding, QA, code review, and documentation phases in parallel where possible.</purpose>
+<purpose>Team Lead agent team workflow. The Team Lead orchestrates specialized agent teammates — it NEVER implements directly, only spawns, coordinates, and verifies. Agents execute research, architecture, coding, QA, code review, and documentation stages in parallel where possible.</purpose>
 
 <triggers>Triggers on: "implement", "build", "fix bug", "refactor", "add feature", "develop this", "help me build", "add functionality", "optimize performance", "resolve deprecation", "systematic development". Do NOT trigger on: simple questions, file searches, one-off commands, code explanations, quick edits, non-development tasks.</triggers>
 
+<terminology>
+  "Stage" = a workflow step in the super-dev orchestration (Stage 1–14).
+  "Phase" = an incremental implementation step defined in the implementation-plan (Phase 1, 2, 3…).
+  These are distinct concepts. Stages are the orchestration lifecycle. Phases are subdivisions of the actual coding work within Stage 9.
+</terminology>
+
 <workflow>
-  <phase n="0" name="Apply Dev Rules">Invoke dev-rules skill. MUST complete before any other action.</phase>
-  <phase n="1" name="Specification Setup">Create worktree, spec dir, workflow JSON, agent team. MUST complete before any codebase exploration or agent spawning.</phase>
-  <phase n="2" name="Requirements Clarification">Spawn requirements-clarifier + doc-validator (parallel). Gate: gate-requirements.sh.</phase>
-  <phase n="2.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). User confirmation required. Gate: gate-bdd.sh.</phase>
-  <phase n="3" name="Research">Spawn research-agent. Firecrawl MCP first, then supplementary scripts. Present 3-5 options to user.</phase>
-  <phase n="3.5" name="Deep Research">Conditional: only if Phase 3 report identifies issues, flaws, or ambiguities. Spawn research-agent in deep-research mode targeting specific issues. Loop until all issues are clearly understood (max 3 iterations).</phase>
-  <phase n="4" name="Debug Analysis">Spawn debug-analyzer. Only for bug fixes — skip otherwise.</phase>
-  <phase n="5" name="Code Assessment">Spawn code-assessor. FIRST phase allowed to read/grep/explore the codebase.</phase>
-  <phase n="5.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 5.3. UI ONLY → 5.5. BOTH → 5.4 (product-designer).</phase>
-  <phase n="5.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</phase>
-  <phase n="6" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</phase>
-  <phase n="7" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</phase>
-  <phase n="8" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh.</phase>
-  <phase n="9" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</phase>
-  <phase n="10" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</phase>
-  <phase n="10.5" name="Handoff Writing">Spawn handoff-writer. MANDATORY — do not skip.</phase>
-  <phase n="11" name="Team Cleanup">Verify all teammates terminated, worktree preserved.</phase>
-  <phase n="11.5" name="User Confirmation">Present summary to user for confirmation before merge.</phase>
-  <phase n="12" name="Commit and Merge">Git operations: commit spec directory + code, merge to main.</phase>
-  <phase n="13" name="Final Verification">Verify completion, worktree preserved for reference.</phase>
+  <stage n="1" name="Apply Dev Rules">Invoke dev-rules skill. MUST complete before any other action.</stage>
+  <stage n="2" name="Specification Setup">Create worktree, spec dir, workflow JSON, agent team. MUST complete before any codebase exploration or agent spawning.</stage>
+  <stage n="3" name="Requirements Clarification">Spawn requirements-clarifier + doc-validator (parallel). Gate: gate-requirements.sh.</stage>
+  <stage n="3.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). User confirmation required. Gate: gate-bdd.sh.</stage>
+  <stage n="4" name="Research">Spawn research-agent. Firecrawl MCP first, then supplementary scripts. Present 3-5 options to user.</stage>
+  <stage n="4.5" name="Deep Research">Conditional: only if Stage 4 report identifies issues, flaws, or ambiguities. Spawn research-agent in deep-research mode targeting specific issues. Loop until all issues are clearly understood (max 3 iterations).</stage>
+  <stage n="5" name="Debug Analysis">Spawn debug-analyzer. Only for bug fixes — skip otherwise.</stage>
+  <stage n="6" name="Code Assessment">Spawn code-assessor. FIRST stage allowed to read/grep/explore the codebase.</stage>
+  <stage n="6.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 6.3. UI ONLY → 6.5. BOTH → 6.4 (product-designer).</stage>
+  <stage n="6.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</stage>
+  <stage n="7" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</stage>
+  <stage n="8" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</stage>
+  <stage n="9" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
+  <stage n="10" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</stage>
+  <stage n="11" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</stage>
+  <stage n="11.5" name="Handoff Writing">Spawn handoff-writer. MANDATORY — do not skip.</stage>
+  <stage n="12" name="Team Cleanup">Verify all teammates terminated, worktree preserved.</stage>
+  <stage n="12.5" name="User Confirmation">Present summary to user for confirmation before merge.</stage>
+  <stage n="13" name="Commit and Merge">Git operations: commit spec directory + code, merge to main.</stage>
+  <stage n="14" name="Final Verification">Verify completion, worktree preserved for reference.</stage>
 </workflow>
 
 <processes>
-  <process name="Specification Setup (Phase 1)">
+  <process name="Specification Setup (Stage 2)">
     <step n="1" name="Spec Index">Scan main repo's `specification/` directory for highest `[XX]` prefix. Next index = max + 1 (zero-padded).</step>
     <step n="2" name="Spec Name">Derive from user request (e.g., "add auth" → `add-auth`). Kebab-case, lowercase.</step>
     <step n="3" name="Spec Identifier">Define as `[spec-index]-[spec-name]` (e.g., `22-xml-restructure`). Use this identifier for worktree, branch, spec directory, and all references.</step>
     <step n="4" name="Worktree">Create worktree: `git worktree add .worktree/[spec-identifier] -b [spec-identifier]`. Branch name = spec-identifier. Then `cd .worktree/[spec-identifier]`. ALL subsequent file operations happen inside the worktree.</step>
     <step n="5" name="Spec Directory">Create `specification/[spec-identifier]/` INSIDE the worktree.</step>
     <step n="6" name="Agent Team">Create team named `super-dev-[spec-name]` (e.g., `super-dev-xml-restructure`). All agents spawn into this team.</step>
-    <step n="7" name="Workflow JSON">Create `[spec-identifier]-workflow-tracking.json` in the worktree spec directory. Track phases, iterations, timestamps.</step>
+    <step n="7" name="Workflow JSON">Create `[spec-identifier]-workflow-tracking.json` in the worktree spec directory. Track stages, implementation phases, iterations, timestamps.</step>
   </process>
 
   <process name="First-Run Configuration">
@@ -54,13 +60,14 @@ license: MIT
     Gate scripts in `${CLAUDE_PLUGIN_ROOT}/scripts/gates/` exit 0 (PASS) or 1 (FAIL). Gates are NON-NEGOTIABLE — if a gate fails, loop back and fix.
 
     <step n="1" name="Gate Map">
-      <gate after="2 → 2.5" script="gate-requirements.sh" run_by="doc-validator" checks="Acceptance criteria, NFRs, summary" />
-      <gate after="2.5 → 3" script="gate-bdd.sh" run_by="doc-validator" checks="SCENARIO-IDs, Given/When/Then, AC traceability" />
-      <gate after="6 → 7" script="gate-spec-trace.sh" run_by="doc-validator" checks="Spec refs BDD scenarios, testing strategy" />
-      <gate after="7 → 8" script="gate-spec-review.sh" run_by="doc-validator" checks="Review verdict, 8 dimensions, grounding" />
-      <gate after="8 → 9" script="gate-build.sh" run_by="team-lead" checks="Build succeeds, tests pass, type checks" />
-      <gate after="9 → 10" script="gate-review.sh" run_by="doc-validator" checks="Code review approved, adversarial PASS" />
-      <gate after="10 → 10.5" script="gate-docs-drift.sh" run_by="team-lead" checks="Docs exist, no excessive TODOs" />
+      <gate after="3 → 3.5" script="gate-requirements.sh" run_by="doc-validator" checks="Acceptance criteria, NFRs, summary" />
+      <gate after="3.5 → 4" script="gate-bdd.sh" run_by="doc-validator" checks="SCENARIO-IDs, Given/When/Then, AC traceability" />
+      <gate after="7 → 8" script="gate-spec-trace.sh" run_by="doc-validator" checks="Spec refs BDD scenarios, testing strategy" />
+      <gate after="8 → 9" script="gate-spec-review.sh" run_by="doc-validator" checks="Review verdict, 8 dimensions, grounding" />
+      <gate after="9 → 10" script="gate-build.sh" run_by="team-lead" checks="Build succeeds, tests pass, type checks" />
+      <gate after="10 → 11" script="gate-review.sh" run_by="doc-validator" checks="Code review approved, adversarial PASS" />
+      <gate after="10 → 11" script="gate-implementation-complete.sh" run_by="team-lead" checks="ALL implementation-plan phases complete in tracking JSON" />
+      <gate after="11 → 11.5" script="gate-docs-drift.sh" run_by="team-lead" checks="Docs exist, no excessive TODOs" />
     </step>
     <step n="2" name="Execution">`bash ${CLAUDE_PLUGIN_ROOT}/scripts/gates/<gate-name>.sh <spec-dir>`</step>
     <step n="3" name="Failure Handling">Gate fails → report which checks failed → spawn appropriate agent to fix → re-run gate → proceed only on PASS (exit 0).</step>
@@ -71,21 +78,21 @@ license: MIT
 
     <step n="1">List spec directory, find highest existing `[XX]` prefix</step>
     <step n="2">Next index = max + 1 (zero-padded to 2 digits)</step>
-    <step n="3">For multi-doc phases, pre-allocate consecutive indices</step>
+    <step n="3">For multi-doc stages, pre-allocate consecutive indices</step>
     <step n="4">Pass EXACT filenames to agents via `OUTPUT FILENAME` in spawn prompts</step>
     <step n="5">Doc-validator receives same filenames and verifies (not renames)</step>
   </process>
 
-  <process name="Worktree Enforcement (PRE-PHASE GATE)">
-    At the START of every phase (Phase 2 onwards), before ANY action, run: `pwd | grep -q '\.worktree/'`
+  <process name="Worktree Enforcement (PRE-STAGE GATE)">
+    At the START of every stage (Stage 3 onwards), before ANY action, run: `pwd | grep -q '\.worktree/'`
 
-    If check fails: ABORT immediately. Do not proceed, do not spawn agents, do not read/write files. Print error: "WORKTREE VIOLATION: pwd is not inside .worktree/. Either run Phase 1 to create a worktree, or cd to the existing worktree (cd .worktree/[spec-name])."
+    If check fails: ABORT immediately. Do not proceed, do not spawn agents, do not read/write files. Print error: "WORKTREE VIOLATION: pwd is not inside .worktree/. Either run Stage 2 to create a worktree, or cd to the existing worktree (cd .worktree/[spec-name])."
 
-    This applies to ALL phases ≥2, not just agent spawning. File reads, greps, builds, commits — everything must happen inside the worktree. Wrong pwd means wrong relative paths for gate scripts, specs, and agent work.
+    This applies to ALL stages ≥3, not just agent spawning. File reads, greps, builds, commits — everything must happen inside the worktree. Wrong pwd means wrong relative paths for gate scripts, specs, and agent work.
   </process>
 
   <process name="Domain-Aware Agent Routing">
-    For Phase 8, spawn domain specialists directly instead of dev-executor:
+    For Stage 9, spawn domain specialists directly instead of dev-executor:
     <route domain="Rust" agent="rust-developer" />
     <route domain="Go" agent="golang-developer" />
     <route domain="Frontend" agent="frontend-developer" />
@@ -97,89 +104,114 @@ license: MIT
     <route domain="Unknown" agent="dev-executor" />
   </process>
 
-  <process name="Spec Iteration Loop (Phase 6/7)">
-    <step n="1" name="Trigger">Phase 7 spec-reviewer reports issues or gate-spec-review.sh fails.</step>
+  <process name="Spec Iteration Loop (Stage 7/8)">
+    <step n="1" name="Trigger">Stage 8 spec-reviewer reports issues or gate-spec-review.sh fails.</step>
     <step n="2" name="STOP">FREEZE — Do NOT open any spec file with Edit or Write. The Team Lead's ONLY action is to follow steps 3-5.</step>
     <step n="3" name="Spawn Fix">Team Lead spawns spec-writer + doc-validator (parallel) with reviewer findings as input. Include exact quotes from the reviewer's findings in the prompt.</step>
     <step n="4" name="Re-review">After spec-writer completes, spawn spec-reviewer + doc-validator (parallel) again.</step>
     <step n="5" name="Exit Criteria">Loop exits when: spec-reviewer approves AND gate-spec-review.sh passes. Max 3 iterations. After 3: escalate to user with findings summary.</step>
   </process>
 
-  <process name="Implementation Iteration Loop (Phase 8/9)">
-    <step n="1" name="Trigger">Phase 9 code-reviewer verdict is not "Approved" or adversarial-reviewer returns REJECT.</step>
+  <process name="Implementation Completeness Loop (Stage 9/10)">
+    <purpose>Ensures ALL phases defined in the implementation-plan are implemented before proceeding to Stage 11. Even if the plan has only one phase, this loop verifies completion.</purpose>
+
+    <step n="1" name="Initialize">At Stage 9 entry, Team Lead reads implementation-plan.md and task-list.md. Identify total number of implementation phases (N). Set currentPhase = 1. Update workflow tracking JSON: `implementationPhases[].status = "pending"` for all phases.</step>
+    <step n="2" name="Scope Current Phase">Extract tasks belonging to the current phase from implementation-plan. Include only this phase's scope in the specialist spawn prompt. Update tracking: `implementationPhases[currentPhase].status = "in_progress"`.</step>
+    <step n="3" name="Execute">Spawn domain specialist(s) + qa-agent (parallel) scoped to current phase tasks. Run gate-build.sh after completion.</step>
+    <step n="4" name="Review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel). If review fails → follow Implementation Iteration Loop (fix loop). If review passes → continue.</step>
+    <step n="5" name="Mark Complete">Update tracking: `implementationPhases[currentPhase].status = "complete"`. Increment currentPhase.</step>
+    <step n="6" name="Completeness Check">
+      If currentPhase > N (all phases done) → proceed to Stage 11.
+      If currentPhase ≤ N (more phases remain) → go to step 2.
+      CRITICAL: Do NOT proceed to Stage 11 until ALL implementation phases are complete.
+    </step>
+
+    <enforcement>
+      Before transitioning from Stage 10 to Stage 11, Team Lead MUST verify:
+      1. Read implementation-plan.md — count total phases
+      2. Read workflow tracking JSON — verify ALL `implementationPhases[].status == "complete"`
+      3. If ANY phase has status "pending" or "in_progress" → BLOCK transition, loop back to step 2
+      This check is NON-NEGOTIABLE. Partial implementation is a CRITICAL violation.
+    </enforcement>
+  </process>
+
+  <process name="Implementation Iteration Loop (Stage 9/10 Fix Loop)">
+    <step n="1" name="Trigger">Stage 10 code-reviewer verdict is not "Approved" or adversarial-reviewer returns REJECT.</step>
     <step n="2" name="STOP">FREEZE — Do NOT open any file with Edit or Write. Do NOT run any fix command in Bash. The Team Lead's ONLY action is to follow steps 3-7.</step>
     <step n="3" name="Extract">Read the review findings from code-review and adversarial-review reports. List every finding with: file path, line number, severity, description.</step>
     <step n="4" name="Compose Prompt">Write a sub-agent prompt that includes: (a) exact file paths and line numbers from review, (b) the specific finding and why it failed, (c) the expected fix or acceptance criteria. Do NOT paraphrase — quote the reviewer's words.</step>
     <step n="5" name="Spawn Fix">Spawn domain specialist(s) + qa-agent (parallel) with the composed prompt. This is the ONLY way to fix code — Team Lead never edits directly.</step>
     <step n="6" name="Wait and Verify">Wait for all spawned agents to complete. Run gate-build.sh to verify build and tests pass.</step>
     <step n="7" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
-    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations. After 3: escalate to user with review findings.</step>
+    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
 
     <anti-patterns name="VIOLATIONS — any of these is a workflow breach">
-      - Team Lead opens a code file with Edit after Phase 9 fails
-      - Team Lead runs a fix command in Bash after Phase 9 fails
+      - Team Lead opens a code file with Edit after Stage 10 fails
+      - Team Lead runs a fix command in Bash after Stage 10 fails
       - Team Lead reasons "it's a small fix" or "quick change" to justify direct edits
       - Team Lead skips spawning because the fix seems trivial
     </anti-patterns>
 
-    <self-check name="Before ANY Edit/Write after Phase 9">
-      Ask: "Am I the Team Lead? Is this a Phase 8/9 iteration?" → If YES to both: STOP and spawn a sub-agent instead.
+    <self-check name="Before ANY Edit/Write after Stage 10">
+      Ask: "Am I the Team Lead? Is this a Stage 9/10 iteration?" → If YES to both: STOP and spawn a sub-agent instead.
     </self-check>
   </process>
 
-  <process name="Research Deep-Dive Loop (Phase 3.5)">
-    <step n="1" name="Trigger">Phase 3 research report contains an ISSUES, FLAWS, AMBIGUITIES, or CONCERNS section listing unresolved items.</step>
-    <step n="2" name="Extract">Team Lead reads Phase 3 report, extracts each flagged issue with: topic, description, why it's unclear, what specifically needs deeper investigation.</step>
-    <step n="3" name="Spawn Deep Research">Spawn research-agent in deep-research mode. Prompt MUST include: (a) the specific issues extracted from Phase 3, (b) what is already known vs what remains unclear, (c) instruction to investigate root causes, resolution paths, and alternative approaches for each issue.</step>
+  <process name="Research Deep-Dive Loop (Stage 4.5)">
+    <step n="1" name="Trigger">Stage 4 research report contains an ISSUES, FLAWS, AMBIGUITIES, or CONCERNS section listing unresolved items.</step>
+    <step n="2" name="Extract">Team Lead reads Stage 4 report, extracts each flagged issue with: topic, description, why it's unclear, what specifically needs deeper investigation.</step>
+    <step n="3" name="Spawn Deep Research">Spawn research-agent in deep-research mode. Prompt MUST include: (a) the specific issues extracted from Stage 4, (b) what is already known vs what remains unclear, (c) instruction to investigate root causes, resolution paths, and alternative approaches for each issue.</step>
     <step n="4" name="Review Output">Team Lead reads the deep-research report. Check: are all flagged issues now clearly understood? Are there new issues or ambiguities surfaced?</step>
-    <step n="5" name="Loop Decision">If remaining unclear items or new ambiguities found → extract them and go to step 3 (next iteration). If all issues are clearly understood → proceed to Phase 4/5.</step>
+    <step n="5" name="Loop Decision">If remaining unclear items or new ambiguities found → extract them and go to step 3 (next iteration). If all issues are clearly understood → proceed to Stage 5/6.</step>
     <step n="6" name="Exit Criteria">Loop exits when: ALL issues have clear resolution paths with sufficient evidence. Max 3 iterations. After 3: present remaining ambiguities to user for decision.</step>
     <step n="7" name="Document Naming">Each iteration produces a separate document: `[XX]-deep-research-report-N.md` where N is the iteration number (1, 2, 3). Pre-compute filenames before spawning.</step>
   </process>
 
-  <process name="Phase Enforcement">
-    <entry phase="0" action="Invoke dev-rules skill" agents="none" />
-    <entry phase="1" action="Setup: worktree, spec dir, JSON, team" agents="none" />
-    <entry phase="2" action="Task tool" agents="requirements-clarifier + doc-validator (parallel)" />
-    <entry phase="2.5" action="Task tool, present to user" agents="bdd-scenario-writer + doc-validator (parallel)" />
-    <entry phase="3" action="Task tool, present options" agents="research-agent" />
-    <entry phase="3.5" action="Conditional loop, targeted deep research" agents="research-agent (deep-research mode)" />
-    <entry phase="4" action="Task tool (bugs only)" agents="debug-analyzer" />
-    <entry phase="5" action="Task tool" agents="code-assessor" />
-    <entry phase="5.3/5.4/5.5" action="Task tool, present options" agents="architecture-agent / product-designer / ui-ux-designer" />
-    <entry phase="6" action="Task tool" agents="spec-writer + doc-validator (parallel)" />
-    <entry phase="7" action="Task tool" agents="spec-reviewer + doc-validator (parallel)" />
-    <entry phase="8" action="Domain-Aware Routing" agents="specialist(s) + qa-agent (parallel)" />
-    <entry phase="9" action="Task tool" agents="code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel)" />
-    <entry phase="10" action="Task tool" agents="docs-executor" />
-    <entry phase="10.5" action="Task tool" agents="handoff-writer" />
-    <entry phase="11" action="Verify all terminated, worktree preserved" agents="varies" />
-    <entry phase="12" action="Git operations (commit, merge) — include spec directory" agents="none" />
-    <entry phase="13" action="Verify completion, worktree preserved" agents="none" />
+  <process name="Stage Enforcement">
+    <entry stage="1" action="Invoke dev-rules skill" agents="none" />
+    <entry stage="2" action="Setup: worktree, spec dir, JSON, team" agents="none" />
+    <entry stage="3" action="Task tool" agents="requirements-clarifier + doc-validator (parallel)" />
+    <entry stage="3.5" action="Task tool, present to user" agents="bdd-scenario-writer + doc-validator (parallel)" />
+    <entry stage="4" action="Task tool, present options" agents="research-agent" />
+    <entry stage="4.5" action="Conditional loop, targeted deep research" agents="research-agent (deep-research mode)" />
+    <entry stage="5" action="Task tool (bugs only)" agents="debug-analyzer" />
+    <entry stage="6" action="Task tool" agents="code-assessor" />
+    <entry stage="6.3/6.4/6.5" action="Task tool, present options" agents="architecture-agent / product-designer / ui-ux-designer" />
+    <entry stage="7" action="Task tool" agents="spec-writer + doc-validator (parallel)" />
+    <entry stage="8" action="Task tool" agents="spec-reviewer + doc-validator (parallel)" />
+    <entry stage="9" action="Domain-Aware Routing + Completeness Loop" agents="specialist(s) + qa-agent (parallel)" />
+    <entry stage="10" action="Task tool" agents="code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel)" />
+    <entry stage="11" action="Task tool" agents="docs-executor" />
+    <entry stage="11.5" action="Task tool" agents="handoff-writer" />
+    <entry stage="12" action="Verify all terminated, worktree preserved" agents="varies" />
+    <entry stage="12.5" action="Present summary for user confirmation" agents="none" />
+    <entry stage="13" action="Git operations (commit, merge) — include spec directory" agents="none" />
+    <entry stage="14" action="Verify completion, worktree preserved" agents="none" />
   </process>
 </processes>
 
 <criteria name="Success">
   <criterion name="Outcome">Feature/fix works correctly. All tests pass with new coverage. Code review resolves all Critical/High/Medium to zero. BDD scenario coverage 100%. Documentation updated. Handoff document generated.</criterion>
-  <criterion name="Efficiency">Phase iteration loops less than 3. Teammates terminated immediately after completion. Team Lead never performs agent work directly.</criterion>
+  <criterion name="Efficiency">Stage iteration loops less than 3. ALL implementation-plan phases completed. Teammates terminated immediately after completion. Team Lead never performs agent work directly.</criterion>
   <criterion name="Style">Git worktree with matching branch name. Spec directory structure followed. Workflow tracking JSON maintained. Commit messages follow conventions. All work inside worktree.</criterion>
 </criteria>
 
 <constraints>
-  <constraint name="Worktree-Only Modifications">NEVER modify, add, or delete files in the main repo. ALL file operations (code, specs, docs, configs) MUST happen inside the worktree. The only exception is Phase 1 step 1 (scanning main repo's specification/ for the next index — read-only). Phase 12 merges the worktree branch to main.</constraint>
+  <constraint name="Worktree-Only Modifications">NEVER modify, add, or delete files in the main repo. ALL file operations (code, specs, docs, configs) MUST happen inside the worktree. The only exception is Stage 2 step 1 (scanning main repo's specification/ for the next index — read-only). Stage 13 merges the worktree branch to main.</constraint>
   <constraint name="Worktree Paths in Spawn Prompts">ALL paths passed to agents (spec_directory, output paths, target files) MUST be worktree-relative. Team Lead must verify every path contains `.worktree/` before spawning. Agents write to whatever path they receive — wrong paths corrupt the main branch.</constraint>
   <constraint name="Delegation Mode">Team Lead spawns teammates for ALL work. Never implements directly.</constraint>
-  <constraint name="Sequential Phases">Each phase depends on previous phase completing successfully.</constraint>
-  <constraint name="Iteration Rules">Phase 6/7: follow Spec Iteration Loop process. Phase 8/9: follow Implementation Iteration Loop process. Both loops: max 3 iterations, Team Lead MUST spawn sub-agents for fixes (never fix directly), escalate to user after 3 failures.</constraint>
+  <constraint name="Sequential Stages">Each stage depends on previous stage completing successfully.</constraint>
+  <constraint name="Iteration Rules">Stage 7/8: follow Spec Iteration Loop process. Stage 9/10: follow Implementation Completeness Loop + Implementation Iteration Loop processes. Both loops: max 3 iterations, Team Lead MUST spawn sub-agents for fixes (never fix directly), escalate to user after 3 failures.</constraint>
+  <constraint name="Implementation Completeness">Do NOT proceed from Stage 10 to Stage 11 until ALL phases in the implementation-plan are implemented and reviewed. Partial implementation is a CRITICAL violation. Even a single-phase plan must be explicitly verified as complete.</constraint>
   <constraint name="Version Bump">Every modification to super-dev-plugin files requires patch version bump in plugin.json and marketplace.json.</constraint>
-  <constraint name="Phase 0+1 Gate">Phase 0 (dev rules) and Phase 1 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
-  <constraint name="No Early Code Analysis">Do NOT read code, grep, glob, or explore the codebase before Phase 5 (Code Assessment). Phases 0-4 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Phase 5 is the FIRST agent allowed to examine the codebase.</constraint>
-  <constraint name="Gate Scripts">Gate scripts must pass between phases.</constraint>
-  <constraint name="Parallel Doc-validator Rule">Phases 2, 2.5, 6, 7, 9: ALWAYS spawn doc-validator alongside writer/reviewer. Both in same action. Spawning only writer is a VIOLATION.</constraint>
-  <constraint name="Delegation Rule">If a phase requires work (2-11), Team Lead MUST spawn agents via Task tool. NEVER do work directly.</constraint>
-  <constraint name="Direct Peer Communication">Agents in same phase communicate directly (FINDING_SHARE, FINDING_ACK, REVIEW_COMPLETE, VALIDATION FAILED/PASS).</constraint>
-  <constraint name="MANDATORY Phase 9-12 Transition">Execute in strict order: Phase 10 → gate-docs-drift.sh → Phase 10.5 → Phase 11 → Phase 11.5 → Phase 12. Jumping Phase 9 → Phase 12 is a CRITICAL violation.</constraint>
-  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Phase 8 (specialists + qa-agent) and Phase 9 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
+  <constraint name="Stage 1+2 Gate">Stage 1 (dev rules) and Stage 2 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
+  <constraint name="No Early Code Analysis">Do NOT read code, grep, glob, or explore the codebase before Stage 6 (Code Assessment). Stages 1-5 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Stage 6 is the FIRST agent allowed to examine the codebase.</constraint>
+  <constraint name="Gate Scripts">Gate scripts must pass between stages.</constraint>
+  <constraint name="Parallel Doc-validator Rule">Stages 3, 3.5, 7, 8, 10: ALWAYS spawn doc-validator alongside writer/reviewer. Both in same action. Spawning only writer is a VIOLATION.</constraint>
+  <constraint name="Delegation Rule">If a stage requires work (3-12), Team Lead MUST spawn agents via Task tool. NEVER do work directly.</constraint>
+  <constraint name="Direct Peer Communication">Agents in same stage communicate directly (FINDING_SHARE, FINDING_ACK, REVIEW_COMPLETE, VALIDATION FAILED/PASS).</constraint>
+  <constraint name="MANDATORY Stage 10-13 Transition">Execute in strict order: Stage 11 → gate-docs-drift.sh → Stage 11.5 → Stage 12 → Stage 12.5 → Stage 13. Jumping Stage 10 → Stage 13 is a CRITICAL violation.</constraint>
+  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Stage 9 (specialists + qa-agent) and Stage 10 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
 </constraints>
 
 <rules>

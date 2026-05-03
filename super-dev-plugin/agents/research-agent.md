@@ -65,7 +65,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --p
   <step n="3" name="Firecrawl Deep Dive">Run `firecrawl_search` with highly specific queries per issue. Scrape relevant results. Use `firecrawl_extract` for structured data from technical docs. Use `firecrawl_agent` to investigate industry-standard resolutions.</step>
   <step n="4" name="Supplementary Deep Dive">Run targeted Exa, DeepWiki, Context7, GitHub searches focused on each specific issue. Look for: GitHub issues/PRs discussing the same problem, library changelogs explaining breaking changes, conference talks addressing the concern.</step>
   <step n="5" name="Resolution Analysis">For each issue: determine if it is (a) resolved with clear path, (b) partially resolved with trade-offs, or (c) still ambiguous needing further investigation. Document evidence for each determination.</step>
-  <step n="6" name="New Insights">Record any new paths, alternative approaches, or insights discovered during deep research that were not visible in the initial pass. These may change the recommended approach from Phase 3.</step>
+  <step n="6" name="New Insights">Record any new paths, alternative approaches, or insights discovered during deep research that were not visible in the initial pass. These may change the recommended approach from Stage 4.</step>
   <step n="7" name="Remaining Ambiguities">Explicitly list any issues that remain unclear after this deep dive, with explanation of why (conflicting sources, no authoritative guidance, edge case not documented, etc.).</step>
 </process>
 

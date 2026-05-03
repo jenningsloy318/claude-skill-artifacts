@@ -4,7 +4,7 @@
   <description>Comprehensive testing methodology covering CLI, Desktop UI, and Web applications with test planning, execution strategies, coverage tracking, and quality gates</description>
 </meta>
 
-<purpose>Reference for systematic quality assurance across multiple application modalities during Phase 8 (Implementation) of the super-dev workflow. Covers test planning, CLI testing, desktop UI testing, web app testing, static analysis, coverage tracking, and failure handling.</purpose>
+<purpose>Reference for systematic quality assurance across multiple application modalities during Stage 9 (Implementation) of the super-dev workflow. Covers test planning, CLI testing, desktop UI testing, web app testing, static analysis, coverage tracking, and failure handling.</purpose>
 
 <principles>
   <principle name="Specification-First Testing">Derive all test plans and cases from requirements and acceptance criteria — no testing without documented specifications</principle>
@@ -115,6 +115,6 @@
 </anti-patterns>
 
 <references>
-  <ref>Extracted from `super-dev:qa-agent` agent. For full agent behavior during Phase 8, invoke with subagent_type "super-dev:qa-agent".</ref>
+  <ref>Extracted from `super-dev:qa-agent` agent. For full agent behavior during Stage 9, invoke with subagent_type "super-dev:qa-agent".</ref>
   <ref>Uses Playwright MCP and Chrome DevTools MCP for web testing</ref>
 </references>

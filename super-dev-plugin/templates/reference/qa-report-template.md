@@ -91,7 +91,7 @@ gate-profile: gate-build.sh
       <list type="unordered">
         <item name="Total Scenarios">[N]</item>
         <item name="Covered (with passing test)">[M]</item>
-        <item name="Uncovered">[N-M] (must be 0 for Phase 9 gate)</item>
+        <item name="Uncovered">[N-M] (must be 0 for Stage 10 gate)</item>
         <item name="Coverage">[M/N * 100]%</item>
       </list>
     </subsection>

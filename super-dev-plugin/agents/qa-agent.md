@@ -71,5 +71,5 @@ describe('searchMarkets', () => {
 </quality-gates>
 
 <collaboration>
-  Runs in TRUE PARALLEL with dev-executor during Phase 8. Steps 1-2 (plan + author test stubs) execute concurrently with dev-executor's implementation — no waiting. Step 3 synchronizes on DEV_COMPLETE to adapt tests to actual code and run them. Uses Direct Peer Communication signals: DEV_COMPLETE (from dev), TEST_COMPLETE or TEST_BLOCKED (from QA). During Phase 9, coordinate with code-reviewer and adversarial-reviewer.
+  Runs in TRUE PARALLEL with dev-executor during Stage 9. Steps 1-2 (plan + author test stubs) execute concurrently with dev-executor's implementation — no waiting. Step 3 synchronizes on DEV_COMPLETE to adapt tests to actual code and run them. Uses Direct Peer Communication signals: DEV_COMPLETE (from dev), TEST_COMPLETE or TEST_BLOCKED (from QA). During Stage 10, coordinate with code-reviewer and adversarial-reviewer.
 </collaboration>

@@ -4,7 +4,7 @@
   <description>Software architecture patterns, principles, and best practices for system design</description>
 </meta>
 
-<purpose>Reference for software architecture design during Phase 5.3 (Architecture Design) of the super-dev workflow. Covers SOLID principles, module decomposition, data access, communication, state management, caching, and deployment patterns.</purpose>
+<purpose>Reference for software architecture design during Stage 6.3 (Architecture Design) of the super-dev workflow. Covers SOLID principles, module decomposition, data access, communication, state management, caching, and deployment patterns.</purpose>
 
 <principles>
   <principle name="YAGNI">Design only architecture explicitly required. No speculative modules or over-engineering. Each decision must serve documented requirements.</principle>
@@ -95,5 +95,5 @@
 </reference>
 
 <references>
-  <ref>Extracted from `super-dev:architecture-agent`. For full agent behavior during Phase 5.3, invoke with subagent_type "super-dev:architecture-agent".</ref>
+  <ref>Extracted from `super-dev:architecture-agent`. For full agent behavior during Stage 6.3, invoke with subagent_type "super-dev:architecture-agent".</ref>
 </references>

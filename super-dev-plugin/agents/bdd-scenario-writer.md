@@ -42,7 +42,7 @@ model: inherit
 </output>
 
 <collaboration>
-  A `doc-validator` agent runs alongside in parallel during Phase 2.5. After writing, the validator independently checks against `gate-bdd.sh` criteria. When you receive `VALIDATION FAILED`, fix every listed issue immediately. Message the validator `"FIXED: ready for re-check"`. Repeat until `"VALIDATED: PASS"`. Only report completion to Team Lead after validator confirms PASS. Do NOT ignore validator messages.
+  A `doc-validator` agent runs alongside in parallel during Stage 3.5. After writing, the validator independently checks against `gate-bdd.sh` criteria. When you receive `VALIDATION FAILED`, fix every listed issue immediately. Message the validator `"FIXED: ready for re-check"`. Repeat until `"VALIDATED: PASS"`. Only report completion to Team Lead after validator confirms PASS. Do NOT ignore validator messages.
 </collaboration>
 
 <quality-gates>

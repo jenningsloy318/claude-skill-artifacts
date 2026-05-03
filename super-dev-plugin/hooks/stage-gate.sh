@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Hook #9: Phase gate validation
+# Hook #9: Stage gate validation
 # PreToolUse hook for Agent tool
-# Validates prerequisite artifacts exist before spawning phase agents
+# Validates prerequisite artifacts exist before spawning stage agents
 # Exit 2 to block (missing artifacts), 0 to allow
 set -euo pipefail
 
@@ -11,12 +11,12 @@ agent_type=$(echo "$INPUT" | jq -r '.tool_input.subagent_type // ""' 2>/dev/null
 # Only gate super-dev agents
 [[ "$agent_type" != super-dev:* ]] && exit 0
 
-# Skip team-lead (it's the orchestrator, not a phase worker)
+# Skip team-lead (it's the orchestrator, not a stage worker)
 [[ "$agent_type" == "super-dev:team-lead" ]] && exit 0
 
 # Load manifest
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MANIFEST="${SCRIPT_DIR}/phase-manifest.json"
+MANIFEST="${SCRIPT_DIR}/stage-manifest.json"
 [ ! -f "$MANIFEST" ] && exit 0
 
 # Check if this agent type has gate requirements
@@ -98,7 +98,7 @@ fi
 SPEC_DIR="${SPEC_DIR%/}"
 
 # Check required files
-PHASE=$(echo "$GATE" | jq -r '.phase')
+STAGE=$(echo "$GATE" | jq -r '.stage')
 DESCRIPTION=$(echo "$GATE" | jq -r '.description')
 MISSING=""
 
@@ -143,13 +143,26 @@ while IFS= read -r req_file; do
 done < <(echo "$GATE" | jq -r '.requires[]' 2>/dev/null)
 
 if [ -n "$MISSING" ]; then
-  echo "PHASE GATE BLOCKED: Cannot start Phase ${PHASE} (${agent_type})." >&2
+  echo "STAGE GATE BLOCKED: Cannot start Stage ${STAGE} (${agent_type})." >&2
   echo "Reason: ${DESCRIPTION}" >&2
   echo "" >&2
   echo "Missing prerequisite artifacts in ${SPEC_DIR}:" >&2
   echo -e "$MISSING" >&2
-  echo "Complete the previous phase(s) and ensure all artifacts are written before proceeding." >&2
+  echo "Complete the previous stage(s) and ensure all artifacts are written before proceeding." >&2
   exit 2
+fi
+
+# Run additional gate script if defined in manifest
+GATE_SCRIPT=$(echo "$GATE" | jq -r '.gate // empty' 2>/dev/null)
+if [ -n "$GATE_SCRIPT" ]; then
+  GATE_SCRIPT_PATH="${SCRIPT_DIR}/../scripts/gates/${GATE_SCRIPT}"
+  if [ -x "$GATE_SCRIPT_PATH" ]; then
+    if ! "$GATE_SCRIPT_PATH" "$SPEC_DIR" 2>&1; then
+      echo "" >&2
+      echo "STAGE GATE BLOCKED: Gate script ${GATE_SCRIPT} FAILED for Stage ${STAGE} (${agent_type})." >&2
+      exit 2
+    fi
+  fi
 fi
 
 exit 0

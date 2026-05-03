@@ -5,7 +5,7 @@ description: Multi-lens adversarial review with Skeptic, Architect, and Minimali
 
 <purpose>Perform multi-lens adversarial review to challenge implementation correctness, structural fitness, and necessity. Apply Skeptic, Architect, and Minimalist lenses with attack vectors (V1-V8) and a Destructive Action Gate. Produce a verdict (PASS/CONTESTED/REJECT).</purpose>
 
-<triggers>Triggers on: "/super-dev:adversarial-review", Phase 9 invocation by Team Lead</triggers>
+<triggers>Triggers on: "/super-dev:adversarial-review", Stage 10 invocation by Team Lead</triggers>
 
 <workflow>
   <step n="1" name="Scope and Intent">Determine what to review. State intent. Assess change size for reviewer count (Small: 1 Skeptic, Medium: 2 Skeptic+Architect, Large: 3 all lenses).</step>

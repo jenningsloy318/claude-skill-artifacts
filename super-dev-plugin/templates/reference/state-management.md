@@ -33,13 +33,13 @@ An append-only log of every super-dev workflow run, stored per-project.
 ### Format (one JSON line per session)
 
 ```jsonl
-{"timestamp":"2026-03-24T10:00:00Z","spec":"01-user-auth","task":"Implement user authentication","phases_completed":[0,1,2,3,5,6,7,8,9,10,12],"duration_phases":13,"verdict":{"code_review":"Approved","adversarial":"PASS"},"files_changed":12,"language":"typescript","framework":"nextjs"}
+{"timestamp":"2026-03-24T10:00:00Z","spec":"01-user-auth","task":"Implement user authentication","stages_completed":[1,2,3,4,6,7,8,9,10,11,13],"duration_stages":13,"verdict":{"code_review":"Approved","adversarial":"PASS"},"files_changed":12,"language":"typescript","framework":"nextjs"}
 ```
 
 ### How to Write
 
 ```bash
-# Append at end of Phase 12 (commit)
+# Append at end of Stage 13 (commit)
 echo '{"timestamp":"...","spec":"...","task":"..."}' >> "${PROJECT_DATA}/session-history.log"
 ```
 
@@ -77,9 +77,9 @@ Stores conventions and patterns discovered during development, per-project.
 
 ### When to Update
 
-- After Phase 5 (Code Assessment): Record codebase conventions discovered
-- After Phase 9 (Code Review): Record patterns flagged by reviewers
-- After Phase 8 (Execution): Record successful patterns used
+- After Stage 6 (Code Assessment): Record codebase conventions discovered
+- After Stage 10 (Code Review): Record patterns flagged by reviewers
+- After Stage 9 (Execution): Record successful patterns used
 
 ## Usage Statistics
 
@@ -105,7 +105,7 @@ Tracks which skills and agents are invoked for optimization. Stored globally (no
     "code-reviewer": 0,
     "adversarial-reviewer": 0
   },
-  "phase_durations_avg": {},
+  "stage_durations_avg": {},
   "common_languages": {},
   "last_updated": ""
 }
@@ -114,7 +114,7 @@ Tracks which skills and agents are invoked for optimization. Stored globally (no
 ## Best Practices
 
 - **Always append, never overwrite** the session-history.log
-- **Read history at Phase 0** to inform the current session
+- **Read history at Stage 1** to inform the current session
 - **Update patterns.json** only when confidence is high (seen 2+ times)
 - **Update stats.json** (global) at the end of every workflow run
 - **Never store secrets** in any state file

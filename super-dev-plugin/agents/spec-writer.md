@@ -39,5 +39,5 @@ model: inherit
 </process>
 
 <collaboration>
-  A `doc-validator` agent runs alongside during Phase 6. Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.
+  A `doc-validator` agent runs alongside during Stage 7. Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.
 </collaboration>

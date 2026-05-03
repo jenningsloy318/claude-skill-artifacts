@@ -23,7 +23,7 @@ description: Core development rules and philosophy for coding standards, git pra
   <constraint name="ast-grep">Prefer AST-based pattern matching for structural code searches</constraint>
   <constraint name="Git Rules">Never create GitHub Actions. Don't `git add -A` — selective staging only. Only commit files you edited. Always generate proper commit messages.</constraint>
   <constraint name="Git Worktree (CRITICAL MANDATORY)">ALL development MUST be in a worktree. Verify with `test -f .git`. If not in worktree, create: `git worktree add .worktree/[spec-index]-[spec-name]`. Branch name MUST match worktree name.</constraint>
-  <constraint name="Git Safety">Stash before major operations. Commit after every completed task (small, atomic). Verify `git status` clean between phases. Clean working tree at end of session.</constraint>
+  <constraint name="Git Safety">Stash before major operations. Commit after every completed task (small, atomic). Verify `git status` clean between stages. Clean working tree at end of session.</constraint>
   <constraint name="Documentation Updates">Commit docs WITH code. Mark tasks complete immediately. Update implementation summary after each milestone. Update spec when code deviates (same commit).</constraint>
 </constraints>
 

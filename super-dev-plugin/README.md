@@ -4,14 +4,14 @@ A comprehensive team-lead-driven development workflow plugin for Claude Code wit
 
 Enhanced with best practices from [everything-claude-code](https://github.com/affaan-m/everything-claude-code)
 
-v2.3.36 — XML-Tagged Instruction Format:
-- XML-Tagged Structure: All 85 instruction files (agents, commands, rules, contexts, skills, reference docs) converted from Markdown headings to a unified three-tier XML tag schema for improved LLM parsing (~86% token reduction)
-- Persona-Based Agent Roles: Agents now use cognitive modes (YC Partner, Staff Engineer, QA Lead, Red Team) for deeper, more focused analysis
-- Continuous Verification Gates: Programmatic quality checks between every phase handoff (6 gate scripts in `scripts/gates/`)
+v2.3.52 — Stage-Based Workflow with Implementation Completeness:
+- Terminology Clarity: Workflow steps renamed from "Phase" to "Stage" (Stage 1–14). "Phase" now exclusively refers to implementation-plan phases (Phase 1, 2, 3…)
+- Implementation Completeness Loop: Stage 9/10 now iterates through ALL implementation-plan phases before proceeding to Stage 11
+- Continuous Verification Gates: Programmatic quality checks between every stage handoff (6 gate scripts in `scripts/gates/`)
 - Real Browser Testing: QA agent now runs browser smoke tests using chrome-devtools MCP for web apps
 - Autoresearch Skill: Auto-improve agent prompts using Karpathy's iterative test-measure-improve method
 - Investigation Protocol: New `investigator` agent for bounded mid-execution research when agents hit unknowns (inspired by gstack's `/investigate`)
-- 10 Automated Hooks: Hook-level enforcement for safety, formatting, linting, testing, phase gates, and checkpoints (inspired by @zodchiii's 8 hooks principle)
+- 10 Automated Hooks: Hook-level enforcement for safety, formatting, linting, testing, stage gates, and checkpoints (inspired by @zodchiii's 8 hooks principle)
 
 *Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, @zodchiii's Claude Code hooks, and Anthropic's official skill design lessons.*
 
@@ -21,7 +21,7 @@ This plugin provides a systematic development workflow orchestrated by a Coordin
 
 - Assigns tasks to specialized sub-agents
 - Monitors execution - no unauthorized stops
-- Enforces quality gates at each phase
+- Enforces quality gates at each stage
 - Manages build queue (Rust/Go serialization)
 - Ensures parallel execution during implementation (dev + qa + docs)
 
@@ -35,7 +35,7 @@ Directly invoke the `super-dev` skill:
 Invoke the super-dev skill and describe your task
 ```
 
-The Coordinator Agent will orchestrate all 13 phases automatically.
+The Coordinator Agent will orchestrate all 14 stages automatically.
 
 ### Examples
 
@@ -107,8 +107,8 @@ super-dev-plugin/
 │   ├── search-agent.md             # Multi-Source Search
 │   ├── qa-agent.md                 # QA Testing
 │   ├── adversarial-reviewer.md      # Multi-lens Adversarial Review
-│   ├── bdd-scenario-writer.md       # BDD Scenario Generation (Phase 2.5)
-│   ├── investigator.md              # Mid-Execution Investigation (any phase, on-demand)
+│   ├── bdd-scenario-writer.md       # BDD Scenario Generation (Stage 3.5)
+│   ├── investigator.md              # Mid-Execution Investigation (any stage, on-demand)
 │   │
 │   # Additional agents:
 │   ├── architect.md                # System Design
@@ -175,7 +175,7 @@ super-dev-plugin/
 │       ├── *-template.md              # XML-tagged document templates (14 files)
 │       └── project-guidelines-example.md
 │
-├── rules/                      # Always-follow guidelines (NEW - 7 files, XML-tagged)
+├── rules/                      # Always-follow guidelines (7 files, XML-tagged)
 │   ├── agents.md                 # When to delegate to subagents
 │   ├── coding-style.md           # Immutability, file organization
 │   ├── git-workflow.md           # Commit format, PR process
@@ -184,7 +184,7 @@ super-dev-plugin/
 │   ├── security.md               # Mandatory security checks
 │   └── testing.md                # TDD, coverage requirements
 │
-├── contexts/                   # Dynamic system prompt injection (NEW, XML-tagged)
+├── contexts/                   # Dynamic system prompt injection (XML-tagged)
 │   ├── dev.md                    # Development mode context
 │   ├── review.md                 # Code review mode context
 │   └── research.md               # Research/exploration mode context
@@ -195,17 +195,17 @@ super-dev-plugin/
 │   ├── protect-files.sh            # Block edits to sensitive files
 │   ├── log-commands.sh             # Audit trail of all commands
 │   ├── require-tests-pr.sh         # Gate: tests must pass before PR
-│   ├── phase-gate.sh               # Gate: validate phase artifacts before agent spawn
-│   ├── phase-manifest.json         # Phase → required artifacts mapping
+│   ├── stage-gate.sh               # Gate: validate stage artifacts before agent spawn
+│   ├── stage-manifest.json         # Stage → required artifacts mapping
 │   ├── auto-format.sh              # Auto-detect and run formatter
 │   ├── auto-lint.sh                # Auto-detect and run linter
 │   ├── run-tests.sh                # Run tests after edit (opt-in)
 │   └── auto-checkpoint.sh          # Git checkpoint on stop
 │
-├── plugins/                    # Plugin ecosystem documentation (NEW)
+├── plugins/                    # Plugin ecosystem documentation
 │   └── README.md                # Plugins and marketplaces guide
 │
-├── examples/                   # Example configurations (NEW)
+├── examples/                   # Example configurations
 │   ├── CLAUDE.md                # Example project-level config
 │   ├── user-CLAUDE.md           # Example user-level config
 │   └── statusline.json          # Example statusline config
@@ -214,39 +214,40 @@ super-dev-plugin/
     └── (existing scripts)
 ```
 
-## Workflow Phases
+## Workflow Stages
 
-| Phase | Name | Agent/Skill | Description |
+| Stage | Name | Agent/Skill | Description |
 |-------|------|-------------|-------------|
-| 0 | Apply Dev Rules | `super-dev:dev-rules` skill | Establish coding standards |
-| 1 | Specification Setup | Coordinator | Find or create spec directory |
-| 2 | Requirements Clarification | `super-dev:requirements-clarifier` | Gather complete requirements |
-| 2.5 | BDD Scenario Writing | `super-dev:bdd-scenario-writer` | Generate Given/When/Then scenarios (MANDATORY) |
-| 3 | Research | `super-dev:research-agent` | Find best practices (Time MCP) |
-| 4 | Debug Analysis | `super-dev:debug-analyzer` | Root cause analysis (grep/ast-grep) |
-| 5 | Code Assessment | `super-dev:code-assessor` | Evaluate codebase (grep/ast-grep) |
-| 5.3 | Architecture Design | `super-dev:architecture-agent` | For complex features (optional) |
-| 5.5 | UI/UX Design | `super-dev:ui-ux-designer` | For features with UI (optional) |
-| 6 | Specification Writing | `super-dev:spec-writer` | Create tech spec, plan, tasks |
-| 7 | Specification Review | Coordinator | Validate all documents |
-| 8-9 | Execution | PARALLEL: dev + qa + docs executors | Implement with parallel agents |
-| 9.5 | Quality Assurance | `super-dev:qa-agent` | Modality-specific testing |
-| 10-11 | Cleanup & Commit | Coordinator | Remove temp files, commit changes |
-| 12 | Final Verification | Coordinator | Verify all complete |
+| 1 | Apply Dev Rules | `super-dev:dev-rules` skill | Establish coding standards |
+| 2 | Specification Setup | Coordinator | Create worktree, spec dir, team |
+| 3 | Requirements Clarification | `super-dev:requirements-clarifier` | Gather complete requirements |
+| 3.5 | BDD Scenario Writing | `super-dev:bdd-scenario-writer` | Generate Given/When/Then scenarios (MANDATORY) |
+| 4 | Research | `super-dev:research-agent` | Find best practices |
+| 4.5 | Deep Research | `super-dev:research-agent` | Targeted investigation of flagged issues (conditional) |
+| 5 | Debug Analysis | `super-dev:debug-analyzer` | Root cause analysis (grep/ast-grep) |
+| 6 | Code Assessment | `super-dev:code-assessor` | Evaluate codebase (grep/ast-grep) |
+| 6.3 | Architecture Design | `super-dev:architecture-agent` | For complex features (optional) |
+| 6.5 | UI/UX Design | `super-dev:ui-ux-designer` | For features with UI (optional) |
+| 7 | Specification Writing | `super-dev:spec-writer` | Create tech spec, plan, tasks |
+| 8 | Specification Review | `super-dev:spec-reviewer` | Validate all documents |
+| 9-10 | Implementation + Review | PARALLEL: specialists + qa + reviewers | Implement ALL plan phases with review loop |
+| 11 | Documentation | `super-dev:docs-executor` | Update documentation |
+| 11.5 | Handoff | `super-dev:handoff-writer` | Session handoff document |
+| 12-13 | Cleanup & Commit | Coordinator | Terminate agents, commit, merge |
+| 14 | Final Verification | Coordinator | Verify all complete |
 
 ## Key Features
 
 ### Super-Dev Unique Features
 
-1. Coordinator Agent - Central orchestrator for all workflow phases
+1. Coordinator Agent - Central orchestrator for all workflow stages
 2. Git Worktree Requirement - MANDATORY isolation for development
 3. Specification-Aware Code Review - Validates against technical specs
-4. Parallel Execution - Three executors run simultaneously (dev + qa + docs)
+4. Parallel Execution - Specialists + QA run simultaneously
 5. Build Queue Management - Rust/Go serialization for resource safety
-6. Time MCP Integration - Freshness-aware research queries
-7. ast-grep Integration - Structural code analysis for assessment/debug
-8. BDD Integration - Mandatory Phase 2.5 for behavior scenario generation with 100% coverage gate
-9. Investigation Protocol - Bounded mid-execution investigation when agents hit unknowns (auto-triggered by dev-executor, qa-agent, code-reviewer)
+6. Implementation Completeness Loop - ALL plan phases must be implemented before docs stage
+7. BDD Integration - Mandatory Stage 3.5 for behavior scenario generation with 100% coverage gate
+8. Investigation Protocol - Bounded mid-execution investigation when agents hit unknowns (auto-triggered by dev-executor, qa-agent, code-reviewer)
 
 ### Additional Integrated Features
 
@@ -271,7 +272,7 @@ Hooks are automatic actions that fire every time Claude edits a file, runs a com
 | 3 | `protect-files.sh` | `Edit\|Write` | Block edits to `.env`, `.pem`, `secrets/`, `.git/` (exit 2) |
 | 4 | `log-commands.sh` | `Bash` | Timestamped audit trail of every command |
 | 5 | `require-tests-pr.sh` | `mcp__github__create_pull_request` | Hard gate: tests must pass before PR creation |
-| 6 | `phase-gate.sh` | `Agent` | Validate previous phase artifacts before spawning next agent |
+| 6 | `stage-gate.sh` | `Agent` | Validate previous stage artifacts before spawning next agent |
 
 ### PostToolUse Hooks (quality control after action)
 
@@ -287,19 +288,19 @@ Hooks are automatic actions that fire every time Claude edits a file, runs a com
 |---|------|---------|---------|
 | 10 | `auto-checkpoint.sh` | (all) | Create recoverable git checkpoint via `git stash create` |
 
-### Phase Gate (Hook #6)
+### Stage Gate (Hook #6)
 
-The phase-gate hook validates that prerequisite artifacts exist before spawning phase agents. It reads `phase-manifest.json` to map agent types to required files:
+The stage-gate hook validates that prerequisite artifacts exist before spawning stage agents. It reads `stage-manifest.json` to map agent types to required files:
 
 ```
-Phase 2.5 (BDD)        → requires [doc-index]-requirements.md
-Phase 3   (Research)    → requires [doc-index]-requirements.md + [doc-index]-behavior-scenarios.md
-Phase 5   (Assessment)  → requires [doc-index]-research-report.md
-Phase 6   (Spec)        → requires [doc-index]-code-assessment.md
-Phase 8   (Execution)   → requires [doc-index]-specification.md + [doc-index]-implementation-plan.md + [doc-index]-task-list.md
-Phase 9   (Review)      → requires [doc-index]-specification.md
-Phase 10  (Docs)        → requires [doc-index]-specification.md
-Phase 10.5 (Handoff)    → requires 06-specification.md
+Stage 3.5  (BDD)        → requires [doc-index]-requirements.md
+Stage 4    (Research)    → requires [doc-index]-requirements.md + [doc-index]-behavior-scenarios.md
+Stage 6    (Assessment)  → requires [doc-index]-research-report.md
+Stage 7    (Spec)        → requires [doc-index]-code-assessment.md
+Stage 9    (Execution)   → requires [doc-index]-specification.md + [doc-index]-implementation-plan.md + [doc-index]-task-list.md
+Stage 10   (Review)      → requires [doc-index]-specification.md
+Stage 11   (Docs)        → requires [doc-index]-specification.md
+Stage 11.5 (Handoff)     → requires [doc-index]-specification.md
 ```
 
 The gate also validates required sections within files (e.g., requirements.md must contain "Acceptance Criteria").
@@ -309,31 +310,32 @@ The gate also validates required sections within files (e.g., requirements.md mu
 Hooks are defined in `hooks/hooks.json` and activated automatically when the plugin is loaded. Environment variables:
 
 - `SUPER_DEV_TEST_ON_EDIT=1` — Enable test-on-edit feedback loop (Hook #9)
-- `SUPER_DEV_SPEC_DIR=/path` — Override spec directory detection for phase gates
+- `SUPER_DEV_SPEC_DIR=/path` — Override spec directory detection for stage gates
 
 ## Agents
 
 ### Coordinator Agent (Central Authority)
 
-The Coordinator Agent orchestrates ALL workflow phases:
+The Coordinator Agent orchestrates ALL workflow stages:
 
-- Task Assignment: Assigns correct sub-agent per phase
+- Task Assignment: Assigns correct sub-agent per stage
 - Monitoring: Ensures no unauthorized stops or missing tasks
 - Build Queue: Manages Rust/Go build serialization
-- Quality Gates: Enforces checkpoints at phase boundaries
+- Quality Gates: Enforces checkpoints at stage boundaries
+- Implementation Completeness: Verifies ALL plan phases are done before docs
 - Final Verification: Verifies all artifacts complete
 
 Invoke: `Task(subagent_type: "super-dev:team-lead")`
 
 ### Executor Agents (Parallel Execution)
 
-During Phase 8-9, THREE executors run in PARALLEL:
+During Stage 9-10, specialists + QA run in PARALLEL:
 
 | Agent | Purpose | Invoke Via |
 |-------|---------|------------|
 | `dev-executor` | Implements code, invokes specialists | `super-dev:dev-executor` |
-| `qa-executor` | Writes and runs tests | `super-dev:qa-executor` |
-| `docs-executor` | Updates documentation in real-time | `super-dev:docs-executor` |
+| `qa-agent` | Writes and runs tests | `super-dev:qa-agent` |
+| `docs-executor` | Updates documentation | `super-dev:docs-executor` |
 
 Build Policy (Rust/Go): Only ONE build at a time to prevent resource conflicts.
 
@@ -351,8 +353,8 @@ Build Policy (Rust/Go): Only ONE build at a time to prevent resource conflicts.
 | `ui-ux-designer` | Create UI/UX design specifications | `super-dev:ui-ux-designer` |
 | `spec-writer` | Write specifications | `super-dev:spec-writer` |
 | `qa-agent` | Modality-specific QA testing | `super-dev:qa-agent` |
-| `bdd-scenario-writer` | BDD scenario generation (Phase 2.5) | `super-dev:bdd-scenario-writer` |
-| `investigator` | Mid-execution investigation (any phase, on-demand) | `super-dev:investigator` |
+| `bdd-scenario-writer` | BDD scenario generation (Stage 3.5) | `super-dev:bdd-scenario-writer` |
+| `investigator` | Mid-execution investigation (any stage, on-demand) | `super-dev:investigator` |
 | `planner` | Implementation planning | `planner` |
 | `tdd-guide` | Test-driven development | `tdd-guide` |
 | `security-reviewer` | Security analysis | `security-reviewer` |
@@ -365,7 +367,7 @@ Build Policy (Rust/Go): Only ONE build at a time to prevent resource conflicts.
 
 ### super-dev
 
-Main entry point skill that documents the workflow. The Coordinator Agent is invoked to orchestrate all phases.
+Main entry point skill that documents the workflow. The Coordinator Agent is invoked to orchestrate all stages.
 
 ### dev-rules
 
@@ -382,7 +384,7 @@ Core development rules and standards including:
 - Codebase Search with ast-grep
 - Documentation Update Rules
 
-### tdd-workflow (NEW)
+### tdd-workflow
 
 Comprehensive test-driven development methodology with:
 - Tests BEFORE code requirement
@@ -392,7 +394,7 @@ Comprehensive test-driven development methodology with:
 - Coverage verification
 - Best practices and common mistakes
 
-### security-review (NEW)
+### security-review
 
 Security checklist and validation:
 - No hardcoded secrets

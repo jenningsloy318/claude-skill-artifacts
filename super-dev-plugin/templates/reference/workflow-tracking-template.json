@@ -1,6 +1,6 @@
 {
   "$schema": "Super Dev Workflow Tracking",
-  "$description": "Per-spec workflow state file. Created in Phase 1, updated every phase/task completion. Location: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json",
+  "$description": "Per-spec workflow state file. Created in Stage 2, updated every stage/task completion. Location: specification/[spec-index]-[spec-name]/[spec-index]-[spec-name]-workflow-tracking.json",
 
   "featureName": {
     "$type": "string",
@@ -22,78 +22,119 @@
 
   "startedAt": {
     "$type": "string (ISO 8601)",
-    "$description": "Timestamp when the workflow was initialized (Phase 1 completion)",
+    "$description": "Timestamp when the workflow was initialized (Stage 2 completion)",
     "$example": "2026-04-10T14:30:00Z"
   },
 
-  "phases": {
-    "$type": "array of Phase objects",
-    "$description": "Ordered list of all workflow phases and their execution status. Updated by Team Lead on phase start and completion.",
+  "stages": {
+    "$type": "array of Stage objects",
+    "$description": "Ordered list of all workflow stages and their execution status. Updated by Team Lead on stage start and completion.",
     "$item": {
       "id": {
         "$type": "number",
-        "$description": "Phase identifier matching the workflow phase number (0, 1, 2, 2.5, 3, 4, 5, 5.3, 5.4, 5.5, 6, 7, 8, 9, 10, 10.5, 11, 12, 13)",
-        "$example": 8
+        "$description": "Stage identifier matching the workflow stage number (1, 2, 3, 3.5, 4, 4.5, 5, 6, 6.3, 6.4, 6.5, 7, 8, 9, 10, 11, 11.5, 12, 12.5, 13, 14)",
+        "$example": 9
       },
       "name": {
         "$type": "string",
-        "$description": "Phase display name",
+        "$description": "Stage display name",
         "$example": "Implementation"
       },
       "status": {
         "$type": "string",
-        "$description": "Current phase execution state",
+        "$description": "Current stage execution state",
         "$enum": ["pending", "in_progress", "complete", "skipped"],
-        "$note": "'skipped' used for conditional phases like Phase 4 (bugs only) or Phase 5.3/5.4/5.5 selection"
+        "$note": "'skipped' used for conditional stages like Stage 5 (bugs only) or Stage 6.3/6.4/6.5 selection"
       },
       "startedAt": {
         "$type": "string (ISO 8601) | null",
-        "$description": "Timestamp when phase execution began"
+        "$description": "Timestamp when stage execution began"
       },
       "completedAt": {
         "$type": "string (ISO 8601) | null",
-        "$description": "Timestamp when phase finished (null if not yet complete)"
+        "$description": "Timestamp when stage finished (null if not yet complete)"
       },
       "docs": {
         "$type": "array of strings",
-        "$description": "Spec documents produced by this phase (filenames only, relative to spec directory). Empty array for phases that produce no documents.",
+        "$description": "Spec documents produced by this stage (filenames only, relative to spec directory). Empty array for stages that produce no documents.",
         "$example": ["05-specification.md", "06-implementation-plan.md", "07-task-list.md"]
       },
       "files": {
         "$type": "object",
-        "$description": "Code/config files changed during this phase, categorized by operation. All paths relative to worktree root. Empty arrays for doc-only phases.",
+        "$description": "Code/config files changed during this stage, categorized by operation. All paths relative to worktree root. Empty arrays for doc-only stages.",
         "created": {
           "$type": "array of strings",
-          "$description": "Files newly created in this phase",
+          "$description": "Files newly created in this stage",
           "$example": ["src/auth/login.ts", "src/auth/login.test.ts"]
         },
         "modified": {
           "$type": "array of strings",
-          "$description": "Existing files modified in this phase",
+          "$description": "Existing files modified in this stage",
           "$example": ["src/routes/index.ts", "src/types.ts"]
         },
         "deleted": {
           "$type": "array of strings",
-          "$description": "Files removed in this phase",
+          "$description": "Files removed in this stage",
           "$example": ["src/auth/legacy-login.ts"]
         }
       }
     }
   },
 
+  "implementationPhases": {
+    "$type": "array of ImplementationPhase objects",
+    "$description": "Tracks completion of each phase defined in the implementation-plan.md. Populated at Stage 9 entry by reading the plan. Even single-phase plans MUST have one entry. Team Lead verifies ALL entries are 'complete' before proceeding to Stage 11.",
+    "$item": {
+      "phaseNumber": {
+        "$type": "number",
+        "$description": "Phase number from the implementation plan (1, 2, 3, etc.)",
+        "$example": 1
+      },
+      "name": {
+        "$type": "string",
+        "$description": "Phase name from the implementation plan",
+        "$example": "Database Layer"
+      },
+      "status": {
+        "$type": "string",
+        "$description": "Current implementation phase state",
+        "$enum": ["pending", "in_progress", "implemented", "reviewed", "complete"],
+        "$note": "'implemented' = code written, gate-build passes. 'reviewed' = code review + adversarial pass. 'complete' = final state after both."
+      },
+      "tasks": {
+        "$type": "array of strings",
+        "$description": "Task IDs belonging to this phase (from implementation-plan)",
+        "$example": ["T1.1", "T1.2", "T1.3"]
+      },
+      "startedAt": {
+        "$type": "string (ISO 8601) | null",
+        "$description": "Timestamp when this phase's implementation began"
+      },
+      "completedAt": {
+        "$type": "string (ISO 8601) | null",
+        "$description": "Timestamp when this phase passed review (null if not yet complete)"
+      },
+      "reviewIterations": {
+        "$type": "number",
+        "$description": "Number of Stage 9→10 review cycles for this phase. Target: < 3",
+        "$example": 1
+      }
+    }
+  },
+
   "tasks": {
     "$type": "array of Task objects",
-    "$description": "Individual work items within phases. Task IDs use format T{phase}.{seq} (e.g., T8.1, T8.2). Updated on task start, file changes, and completion.",
+    "$description": "Individual work items within stages. Task IDs use format T{phase}.{seq} (e.g., T1.1, T1.2) matching implementation-plan phases. Updated on task start, file changes, and completion.",
     "$item": {
       "id": {
         "$type": "string",
-        "$description": "Task identifier in T{phase}.{seq} format",
-        "$example": "T8.3"
+        "$description": "Task identifier in T{phase}.{seq} format from implementation-plan",
+        "$example": "T1.3"
       },
-      "phase": {
+      "implementationPhase": {
         "$type": "number",
-        "$description": "Phase this task belongs to",
-        "$example": 8
+        "$description": "Implementation plan phase this task belongs to",
+        "$example": 1
       },
       "description": {
         "$type": "string",
@@ -133,15 +174,25 @@
 
   "iteration": {
     "$type": "object",
-    "$description": "Tracks Phase 8/9 review loops. Incremented each time Phase 9 review fails and loops back to Phase 8 for fixes.",
+    "$description": "Tracks Stage 9/10 review loops for the current implementation phase. Reset per phase.",
+    "currentPhase": {
+      "$type": "number",
+      "$description": "Which implementation plan phase is currently being worked on (1-indexed)",
+      "$example": 2
+    },
+    "totalPhases": {
+      "$type": "number",
+      "$description": "Total number of implementation plan phases",
+      "$example": 3
+    },
     "loops": {
       "$type": "number",
-      "$description": "Number of Phase 8 -> 9 iteration cycles completed. 0 means first pass. Target: < 3 loops (efficiency metric)",
+      "$description": "Number of Stage 9 → 10 iteration cycles for the current phase. 0 means first pass. Target: < 3 loops per phase",
       "$example": 1
     },
     "lastReviewVerdict": {
       "$type": "string | null",
-      "$description": "Most recent combined verdict from Phase 9 (code-reviewer + adversarial-reviewer). null before first review.",
+      "$description": "Most recent combined verdict from Stage 10 (code-reviewer + adversarial-reviewer). null before first review.",
       "$enum": [null, "Approved", "Approved with Comments", "Changes Requested", "Blocked", "PASS", "CONTESTED", "REJECT"],
       "$note": "Code review uses Approved/Changes Requested/Blocked. Adversarial uses PASS/CONTESTED/REJECT. Record the blocking verdict."
     }
@@ -174,18 +225,22 @@
 
   "status": {
     "$type": "object",
-    "$description": "Top-level workflow completion flags. Team Lead sets these during Phase 11-12 transition.",
-    "allPhasesComplete": {
+    "$description": "Top-level workflow completion flags. Team Lead sets these during Stage 12-13 transition.",
+    "allStagesComplete": {
       "$type": "boolean",
-      "$description": "True when all required phases (including 10, 10.5, 11) have status 'complete' or 'skipped'. Set during Phase 11."
+      "$description": "True when all required stages (including 11, 11.5, 12) have status 'complete' or 'skipped'. Set during Stage 12."
+    },
+    "allImplementationPhasesComplete": {
+      "$type": "boolean",
+      "$description": "True when every entry in implementationPhases has status 'complete'. MUST be true before Stage 11 begins."
     },
     "allTasksComplete": {
       "$type": "boolean",
-      "$description": "True when every task in the tasks array has status 'complete'. Set during Phase 11."
+      "$description": "True when every task in the tasks array has status 'complete'. Set during Stage 12."
     },
     "workflowDone": {
       "$type": "boolean",
-      "$description": "True after Phase 12 commit succeeds. Final flag indicating the workflow is fully finished."
+      "$description": "True after Stage 13 commit succeeds. Final flag indicating the workflow is fully finished."
     }
   }
 }

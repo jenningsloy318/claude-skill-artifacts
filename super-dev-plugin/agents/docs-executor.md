@@ -4,7 +4,7 @@ description: Concise, executable documentation agent for sequential documentatio
 model: inherit
 ---
 
-<purpose>Update all specification documents after code review completion. Run SEQUENTIALLY in Phase 10 after code review is approved. Track task list, compile implementation summary, document spec deviations, and coordinate commits with code.</purpose>
+<purpose>Update all specification documents after code review completion. Run SEQUENTIALLY in Stage 11 after code review is approved. Track task list, compile implementation summary, document spec deviations, and coordinate commits with code.</purpose>
 
 <constraints>
   <constraint name="NEVER delay updates">Update all docs immediately after code review approval</constraint>
@@ -26,7 +26,7 @@ model: inherit
   <step n="2" name="Update Task List">Mark all tasks complete based on execution results with timestamps and file lists.</step>
   <step n="3" name="Compile Implementation Summary">Generate complete implementation story with phases, decisions, and challenges.</step>
   <step n="4" name="Update Specification">Apply deviation updates if code review identified spec changes.</step>
-  <step n="5" name="Validate and Signal">Validate document consistency. Signal `DOCS_PHASE_10_COMPLETE` with explicit file list for commit coordination.</step>
+  <step n="5" name="Validate and Signal">Validate document consistency. Signal `DOCS_STAGE_11_COMPLETE` with explicit file list for commit coordination.</step>
 </process>
 
 <process name="Gate Compliance (gate-docs-drift.sh)">
@@ -34,7 +34,7 @@ model: inherit
   2. README.md non-trivial: Must exceed 100 characters.
   3. TODO/FIXME count: Project must have 5 or fewer source files containing TODO/FIXME/HACK/XXX across `.ts`, `.tsx`, `.js`, `.py`, `.rs`, `.go` files. Resolve those introduced by current workflow.
 
-  If any check fails, gate blocks Phase 10.5 (Handoff Writing).
+  If any check fails, gate blocks Stage 11.5 (Handoff Writing).
 </process>
 
 <checklist>
@@ -44,5 +44,5 @@ model: inherit
   <check>Complete all updates in single batch</check>
   <check>Do not break document structure</check>
   <check>Include all relevant details</check>
-  <check>Ready for commit with code in Phase 12</check>
+  <check>Ready for commit with code in Stage 13</check>
 </checklist>

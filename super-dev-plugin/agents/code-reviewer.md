@@ -50,5 +50,5 @@ model: inherit
 </output>
 
 <collaboration>
-  During Phase 9, runs alongside `adversarial-reviewer` and `doc-validator`. Respond to validator's `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Share findings with adversarial-reviewer via `FINDING_SHARE`. Send `REVIEW_COMPLETE` when verdict is written.
+  During Stage 10, runs alongside `adversarial-reviewer` and `doc-validator`. Respond to validator's `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Share findings with adversarial-reviewer via `FINDING_SHARE`. Send `REVIEW_COMPLETE` when verdict is written.
 </collaboration>
