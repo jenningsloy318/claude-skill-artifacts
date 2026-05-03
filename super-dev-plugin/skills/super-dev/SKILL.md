@@ -10,12 +10,6 @@ license: MIT
 
 <triggers>Triggers on: "implement", "build", "fix bug", "refactor", "add feature", "develop this", "help me build", "add functionality", "optimize performance", "resolve deprecation", "systematic development". Do NOT trigger on: simple questions, file searches, one-off commands, code explanations, quick edits, non-development tasks.</triggers>
 
-<terminology>
-  "Stage" = a workflow step in the super-dev orchestration (Stage 1–14).
-  "Phase" = an incremental implementation step defined in the implementation-plan (Phase 1, 2, 3…).
-  These are distinct concepts. Stages are the orchestration lifecycle. Phases are subdivisions of the actual coding work within Stage 9.
-</terminology>
-
 <workflow>
   <stage n="1" name="Apply Dev Rules">Invoke dev-rules skill. MUST complete before any other action.</stage>
   <stage n="2" name="Specification Setup">Create worktree, spec dir, workflow JSON, agent team. MUST complete before any codebase exploration or agent spawning.</stage>
