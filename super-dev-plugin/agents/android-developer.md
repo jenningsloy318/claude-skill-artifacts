@@ -61,6 +61,3 @@ model: inherit
   <anti-pattern>Hardcoded strings or secrets</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Android tasks. Inputs: task list, UI specs, existing app patterns. Outputs: idiomatic Kotlin 2.x, Compose UI, DI wiring (KSP), Room schema/migrations, Navigation 3 routing, tests, performance profile, accessible UI.
-</collaboration>

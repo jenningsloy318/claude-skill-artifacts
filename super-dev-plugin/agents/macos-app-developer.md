@@ -54,6 +54,3 @@ model: inherit
   <anti-pattern>Using XCTest for new unit tests — use Swift Testing</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Receive designs from ui-ux-designer. Coordinate with qa-agent on test coverage. Work with backend-developer for API integration. Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for macOS tasks.
-</collaboration>

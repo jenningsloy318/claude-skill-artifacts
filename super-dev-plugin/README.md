@@ -111,7 +111,6 @@ super-dev-plugin/
 │   ├── investigator.md              # Mid-Execution Investigation (any stage, on-demand)
 │   │
 │   # Additional agents:
-│   ├── architect.md                # System Design
 │   ├── build-error-resolver.md     # Build Error Resolution
 │   ├── doc-updater.md              # Documentation Updates
 │   ├── e2e-runner.md               # E2E Testing

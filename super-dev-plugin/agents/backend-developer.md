@@ -67,6 +67,3 @@ app.post('/users', zValidator('json', schema), async (c) => {
   <anti-pattern>Unbounded query results (missing pagination)</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for backend tasks.
-</collaboration>

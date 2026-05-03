@@ -138,17 +138,6 @@ license: MIT
     <step n="6" name="Wait and Verify">Wait for all spawned agents to complete. Run gate-build.sh to verify build and tests pass.</step>
     <step n="7" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
     <step n="8" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
-
-    <anti-patterns name="VIOLATIONS — any of these is a workflow breach">
-      - Team Lead opens a code file with Edit after Stage 10 fails
-      - Team Lead runs a fix command in Bash after Stage 10 fails
-      - Team Lead reasons "it's a small fix" or "quick change" to justify direct edits
-      - Team Lead skips spawning because the fix seems trivial
-    </anti-patterns>
-
-    <self-check name="Before ANY Edit/Write after Stage 10">
-      Ask: "Am I the Team Lead? Is this a Stage 9/10 iteration?" → If YES to both: STOP and spawn a sub-agent instead.
-    </self-check>
   </process>
 
   <process name="Research Deep-Dive Loop (Stage 4.5)">
@@ -160,28 +149,6 @@ license: MIT
     <step n="6" name="Exit Criteria">Loop exits when: ALL issues have clear resolution paths with sufficient evidence. Max 3 iterations. After 3: present remaining ambiguities to user for decision.</step>
     <step n="7" name="Document Naming">Each iteration produces a separate document: `[XX]-deep-research-report-N.md` where N is the iteration number (1, 2, 3). Pre-compute filenames before spawning.</step>
   </process>
-
-  <process name="Stage Enforcement">
-    <entry stage="1" action="Invoke dev-rules skill" agents="none" />
-    <entry stage="2" action="Setup: worktree, spec dir, JSON, team" agents="none" />
-    <entry stage="3" action="Task tool" agents="requirements-clarifier + doc-validator (parallel)" />
-    <entry stage="3.5" action="Task tool, present to user" agents="bdd-scenario-writer + doc-validator (parallel)" />
-    <entry stage="4" action="Task tool, present options" agents="research-agent" />
-    <entry stage="4.5" action="Conditional loop, targeted deep research" agents="research-agent (deep-research mode)" />
-    <entry stage="5" action="Task tool (bugs only)" agents="debug-analyzer" />
-    <entry stage="6" action="Task tool" agents="code-assessor" />
-    <entry stage="6.3/6.4/6.5" action="Task tool, present options" agents="architecture-agent / product-designer / ui-ux-designer" />
-    <entry stage="7" action="Task tool" agents="spec-writer + doc-validator (parallel)" />
-    <entry stage="8" action="Task tool" agents="spec-reviewer + doc-validator (parallel)" />
-    <entry stage="9" action="Domain-Aware Routing + Completeness Loop" agents="specialist(s) + qa-agent (parallel)" />
-    <entry stage="10" action="Task tool" agents="code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel)" />
-    <entry stage="11" action="Task tool" agents="docs-executor" />
-    <entry stage="11.5" action="Task tool" agents="handoff-writer" />
-    <entry stage="12" action="Verify all terminated, worktree preserved" agents="varies" />
-    <entry stage="12.5" action="Present summary for user confirmation" agents="none" />
-    <entry stage="13" action="Git operations (commit, merge) — include spec directory" agents="none" />
-    <entry stage="14" action="Verify completion, worktree preserved" agents="none" />
-  </process>
 </processes>
 
 <criteria name="Success">
@@ -191,21 +158,17 @@ license: MIT
 </criteria>
 
 <constraints>
-  <constraint name="Worktree-Only Modifications">NEVER modify, add, or delete files in the main repo. ALL file operations (code, specs, docs, configs) MUST happen inside the worktree. The only exception is Stage 2 step 1 (scanning main repo's specification/ for the next index — read-only). Stage 13 merges the worktree branch to main.</constraint>
-  <constraint name="Worktree Paths in Spawn Prompts">ALL paths passed to agents (spec_directory, output paths, target files) MUST be worktree-relative. Team Lead must verify every path contains `.worktree/` before spawning. Agents write to whatever path they receive — wrong paths corrupt the main branch.</constraint>
-  <constraint name="Delegation Mode">Team Lead spawns teammates for ALL work. Never implements directly.</constraint>
-  <constraint name="Sequential Stages">Each stage depends on previous stage completing successfully.</constraint>
-  <constraint name="Iteration Rules">Stage 7/8: follow Spec Iteration Loop process. Stage 9/10: follow Implementation Completeness Loop + Implementation Iteration Loop processes. Both loops: max 3 iterations, Team Lead MUST spawn sub-agents for fixes (never fix directly), escalate to user after 3 failures.</constraint>
-  <constraint name="Implementation Completeness">Do NOT proceed from Stage 10 to Stage 11 until ALL phases in the implementation-plan are implemented and reviewed. Partial implementation is a CRITICAL violation. Even a single-phase plan must be explicitly verified as complete.</constraint>
+  <constraint name="Worktree-Only Modifications">NEVER modify files in the main repo. ALL file operations MUST happen inside the worktree. Only exception: Stage 2 scanning main repo's specification/ for next index (read-only). Stage 13 merges to main.</constraint>
+  <constraint name="Worktree Paths in Spawn Prompts">ALL paths passed to agents MUST be worktree-relative. Verify every path contains `.worktree/` before spawning. Wrong paths corrupt the main branch.</constraint>
+  <constraint name="Delegation Mode">Team Lead spawns teammates for ALL work. Never implements directly. No exceptions for "small fixes" or "one-line changes".</constraint>
+  <constraint name="Iteration Rules">Stage 7/8: follow Spec Iteration Loop. Stage 9/10: follow Implementation Completeness Loop + Implementation Iteration Loop. Both: max 3 iterations, spawn sub-agents for fixes, escalate after 3.</constraint>
+  <constraint name="Implementation Completeness">Do NOT proceed from Stage 10 to Stage 11 until ALL phases in the implementation-plan are implemented and reviewed. Partial implementation is a CRITICAL violation.</constraint>
   <constraint name="Version Bump">Every modification to super-dev-plugin files requires patch version bump in plugin.json and marketplace.json.</constraint>
-  <constraint name="Stage 1+2 Gate">Stage 1 (dev rules) and Stage 2 (worktree, spec dir, team) MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning. No codebase interaction until the worktree and spec directory exist.</constraint>
-  <constraint name="No Early Code Analysis">Do NOT read code, grep, glob, or explore the codebase before Stage 6 (Code Assessment). Stages 1-5 work from requirements, BDD scenarios, and research only — not from reading source files. The code-assessor agent in Stage 6 is the FIRST agent allowed to examine the codebase.</constraint>
-  <constraint name="Gate Scripts">Gate scripts must pass between stages.</constraint>
-  <constraint name="Parallel Doc-validator Rule">Stages 3, 3.5, 7, 8, 10: ALWAYS spawn doc-validator alongside writer/reviewer. Both in same action. Spawning only writer is a VIOLATION.</constraint>
-  <constraint name="Delegation Rule">If a stage requires work (3-12), Team Lead MUST spawn agents via Task tool. NEVER do work directly.</constraint>
-  <constraint name="Direct Peer Communication">Agents in same stage communicate directly (FINDING_SHARE, FINDING_ACK, REVIEW_COMPLETE, VALIDATION FAILED/PASS).</constraint>
-  <constraint name="MANDATORY Stage 10-13 Transition">Execute in strict order: Stage 11 → gate-docs-drift.sh → Stage 11.5 → Stage 12 → Stage 12.5 → Stage 13. Jumping Stage 10 → Stage 13 is a CRITICAL violation.</constraint>
-  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Verify output, then shut down. Do NOT keep idle teammates running. Exception: In Stage 9 (specialists + qa-agent) and Stage 10 (code-reviewer + adversarial-reviewer + doc-validators), wait for ALL parallel agents to complete before terminating any.</constraint>
+  <constraint name="Stage 1+2 Gate">Stage 1 and 2 MUST complete before ANY exploration, code reading, grep, glob, research, or agent spawning.</constraint>
+  <constraint name="No Early Code Analysis">Do NOT read code or explore the codebase before Stage 6. Stages 1-5 work from requirements and research only.</constraint>
+  <constraint name="Parallel Doc-validator Rule">Stages 3, 3.5, 7, 8, 10: ALWAYS spawn doc-validator alongside writer/reviewer.</constraint>
+  <constraint name="MANDATORY Stage 10-13 Transition">Execute in strict order: Stage 11 → gate-docs-drift.sh → Stage 11.5 → Stage 12 → Stage 12.5 → Stage 13. Skipping is a CRITICAL violation.</constraint>
+  <constraint name="Teammate Termination">Terminate teammates immediately after their work completes. Exception: In Stage 9/10, wait for ALL parallel agents to complete first.</constraint>
 </constraints>
 
 <rules>

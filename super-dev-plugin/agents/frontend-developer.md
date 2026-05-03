@@ -78,6 +78,3 @@ function List({ items }: Props) {
   <anti-pattern>Interpolating user input in CSS — XSS risk</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Receive designs from ui-ux-designer. Get API contracts from backend-developer. Coordinate with qa-agent on test coverage. Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback).
-</collaboration>

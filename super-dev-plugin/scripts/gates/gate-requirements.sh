@@ -8,28 +8,13 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-requirements.sh <spec-dir>}"
+source "$(dirname "$0")/gate-lib.sh"
 
-# Dynamic file discovery: find *-requirements.md (incremental index)
 REQ_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-requirements.md' -type f 2>/dev/null | head -1)
 if [ -z "$REQ_FILE" ]; then
     echo "GATE FAIL: No *-requirements.md file found in: ${SPEC_DIR}"
     exit 1
 fi
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
 
 # File already confirmed to exist via dynamic discovery above
 
@@ -56,16 +41,4 @@ check "Has executive summary" "$([ "$has_summary" -gt 0 ] && echo true || echo f
 file_size=$(wc -c < "$REQ_FILE" | tr -d ' ')
 check "Requirements not just a template (>500 chars, actual: ${file_size})" "$([ "$file_size" -gt 500 ] && echo true || echo false)"
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Requirements Completeness"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Requirements Completeness"

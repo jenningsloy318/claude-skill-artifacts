@@ -8,21 +8,7 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-review.sh <spec-dir>}"
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
+source "$(dirname "$0")/gate-lib.sh"
 
 # Find code review file
 CODE_REVIEW=$(find "$SPEC_DIR" -name "*code-review*" -type f 2>/dev/null | head -1)
@@ -59,16 +45,4 @@ else
     check "Adversarial review file exists" "false"
 fi
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Review Verdicts"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Review Verdicts"

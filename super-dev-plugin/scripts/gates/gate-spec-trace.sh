@@ -8,27 +8,12 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-spec-trace.sh <spec-dir>}"
+source "$(dirname "$0")/gate-lib.sh"
 
-# Dynamic file discovery: find *-specification.md, *-behavior-scenarios.md, *-task-list.md, *-implementation-plan.md (incremental index)
 SPEC_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-specification.md' -type f 2>/dev/null | head -1)
 BDD_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-behavior-scenarios.md' -type f 2>/dev/null | head -1)
 TASK_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-task-list.md' -type f 2>/dev/null | head -1)
 PLAN_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-implementation-plan.md' -type f 2>/dev/null | head -1)
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
 
 # Check both files exist (dynamic discovery)
 if [ -z "$SPEC_FILE" ] || [ ! -f "$SPEC_FILE" ]; then
@@ -55,19 +40,4 @@ check "Task list file exists (*-task-list.md)" "$([ -n "$TASK_FILE" ] && [ -f "$
 # Check *-implementation-plan.md exists as separate file
 check "Implementation plan file exists (*-implementation-plan.md)" "$([ -n "$PLAN_FILE" ] && [ -f "$PLAN_FILE" ] && echo true || echo false)"
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Spec-to-BDD Traceability"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-echo "  Spec → BDD references: ${spec_refs}"
-echo "  Task list file: ${TASK_FILE:-NOT FOUND}"
-echo "  Implementation plan file: ${PLAN_FILE:-NOT FOUND}"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Spec-to-BDD Traceability"

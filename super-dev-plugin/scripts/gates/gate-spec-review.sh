@@ -8,23 +8,9 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-spec-review.sh <spec-dir>}"
+source "$(dirname "$0")/gate-lib.sh"
 
 REVIEW_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-spec-review.md' -type f 2>/dev/null | head -1)
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
 
 # Check review file exists
 if [ -z "$REVIEW_FILE" ] || [ ! -f "$REVIEW_FILE" ]; then
@@ -58,19 +44,4 @@ check "SR4: Grounding section contains verification results (found: ${has_ground
 has_summary=$(grep -ci "Critical\|High\|Medium\|Low\|finding" "$REVIEW_FILE" || true)
 check "SR5: Finding severity summary exists" "$([ "$has_summary" -ge 1 ] && echo true || echo false)"
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Specification Review Quality"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-echo "  Verdict references: ${has_verdict}"
-echo "  Dimensions covered: ${dim_count}/8"
-echo "  Grounding references: ${has_grounding_check}"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Specification Review Quality"

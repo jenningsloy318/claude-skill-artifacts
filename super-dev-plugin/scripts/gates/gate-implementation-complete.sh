@@ -8,21 +8,7 @@
 set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-implementation-complete.sh <spec-dir>}"
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
+source "$(dirname "$0")/gate-lib.sh"
 
 # Find implementation plan
 IMPL_PLAN=$(find "$SPEC_DIR" -name "*implementation-plan*" -type f 2>/dev/null | head -1)
@@ -86,19 +72,4 @@ fi
 ALL_COMPLETE_FLAG=$(jq -r '.status.allImplementationPhasesComplete // false' "$TRACKING_JSON" 2>/dev/null || echo "false")
 check "allImplementationPhasesComplete flag is true" "$([ "$ALL_COMPLETE_FLAG" = "true" ] && echo true || echo false)"
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Implementation Completeness"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo ""
-    echo "  All implementation-plan phases must be implemented and reviewed"
-    echo "  before proceeding to documentation (Stage 11)."
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Implementation Completeness"

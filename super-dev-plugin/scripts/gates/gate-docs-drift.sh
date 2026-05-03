@@ -9,21 +9,7 @@ set -euo pipefail
 
 SPEC_DIR="${1:?Usage: gate-docs-drift.sh <spec-dir> <project-dir>}"
 PROJECT_DIR="${2:?Usage: gate-docs-drift.sh <spec-dir> <project-dir>}"
-
-PASS=0
-FAIL=0
-ERRORS=""
-
-check() {
-    local desc="$1"
-    local result="$2"
-    if [ "$result" = "true" ]; then
-        PASS=$((PASS + 1))
-    else
-        FAIL=$((FAIL + 1))
-        ERRORS="${ERRORS}\n  FAIL: ${desc}"
-    fi
-}
+source "$(dirname "$0")/gate-lib.sh"
 
 # Check documentation files exist
 DOCS_FILE=$(find "$SPEC_DIR" -name "*documentation*" -o -name "*docs*" -type f 2>/dev/null | head -1)
@@ -54,16 +40,4 @@ else
     check "TODO/FIXME count acceptable (${todo_count} files)" "true"
 fi
 
-# Report
-TOTAL=$((PASS + FAIL))
-echo "GATE: Documentation-Code Drift"
-echo "  Score: ${PASS}/${TOTAL} checks passed"
-
-if [ "$FAIL" -gt 0 ]; then
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
-else
-    echo "GATE RESULT: PASS"
-    exit 0
-fi
+gate_report "Documentation-Code Drift"

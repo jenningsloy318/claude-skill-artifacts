@@ -298,15 +298,3 @@ Phase 1 [rust]         Phase 2 [frontend]     Phase 3 [mixed]
   </section>
 
 </document>
-
-## Usage Notes
-
-- Decompose complex work into **3-5 phases**; each phase should be independently verifiable
-- The `total-phases` metadata field MUST match the number of Phase rows in "Phase Definition"
-- The "Phase Definition" table MUST list every phase upfront — this is parsed by gate-implementation-complete.sh
-- "Phased Milestones" section provides the detailed breakdown for each phase defined above
-- Every `<task>` must specify a `file` attribute with the target file path, a `risk` level, and a `domain` attribute (rust, go, frontend, backend, ios, android, windows, macos, or mixed)
-- The `domain` attribute enables the Team Lead to detect cross-domain dependencies and decide between full parallel vs staggered parallel spawning in Stage 9
-- The dependency graph should reflect the actual task dependency chain, with domain labels on phases to visualize cross-domain boundaries
-- Update the timeline table as estimates are refined during execution
-- Cross-reference the `<reference>` tag to link back to requirements acceptance criteria

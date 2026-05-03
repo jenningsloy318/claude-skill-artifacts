@@ -72,6 +72,3 @@ mux.HandleFunc("POST /api/v1/users", createUser)
   <anti-pattern>Panic for expected errors — return errors</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Go tasks.
-</collaboration>

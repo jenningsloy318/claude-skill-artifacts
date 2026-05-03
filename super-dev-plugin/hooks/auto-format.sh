@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Hook #1: Auto-format every file Claude touches
 # PostToolUse hook for Write|Edit tools
-# Auto-detects project formatter (prettier/biome/deno/black/ruff/gofmt/rustfmt)
 set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 INPUT=$(cat)
 file=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""' 2>/dev/null || echo "")
@@ -11,21 +12,7 @@ file=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""' 2
 [ ! -f "$file" ] && exit 0
 
 ext="${file##*.}"
-
-# Find project root by walking up from the file
-find_project_root() {
-  local dir
-  dir="$(dirname "$file")"
-  while [ "$dir" != "/" ]; do
-    for marker in package.json Cargo.toml go.mod pyproject.toml setup.py .git; do
-      [ -e "$dir/$marker" ] && echo "$dir" && return
-    done
-    dir="$(dirname "$dir")"
-  done
-  dirname "$file"
-}
-
-PROJECT_ROOT=$(find_project_root)
+PROJECT_ROOT=$(find_project_root "$(dirname "$file")")
 
 case "$ext" in
   js|jsx|ts|tsx|css|scss|json|yaml|yml|html|vue|svelte|md)

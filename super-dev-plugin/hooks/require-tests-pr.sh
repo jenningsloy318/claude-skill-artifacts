@@ -1,22 +1,12 @@
 #!/usr/bin/env bash
 # Hook #5: Require passing tests before creating a PR
 # PreToolUse hook for mcp__github__create_pull_request
-# Hard gate: exit 2 blocks PR creation, 0 allows
+# Exit 2 blocks PR creation, 0 allows
 set -euo pipefail
 
-# Find project root
-find_project_root() {
-  local dir="$PWD"
-  while [ "$dir" != "/" ]; do
-    for marker in package.json Cargo.toml go.mod pyproject.toml setup.py .git; do
-      [ -e "$dir/$marker" ] && echo "$dir" && return
-    done
-    dir="$(dirname "$dir")"
-  done
-  echo "$PWD"
-}
+source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-PROJECT_ROOT=$(find_project_root)
+PROJECT_ROOT=$(find_project_root "$PWD")
 cd "$PROJECT_ROOT" 2>/dev/null || exit 0
 
 # Detect and run test suite

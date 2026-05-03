@@ -61,7 +61,3 @@ stream.for_each_concurrent(10, process).await;
   <anti-pattern>`block_on` inside async context</anti-pattern>
   <anti-pattern>Ignoring `JoinError` from spawned tasks</anti-pattern>
 </anti-patterns>
-
-<collaboration>
-  Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Rust tasks.
-</collaboration>

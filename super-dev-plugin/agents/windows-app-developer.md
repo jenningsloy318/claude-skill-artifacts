@@ -51,6 +51,3 @@ model: inherit
   <anti-pattern>Targeting .NET 8 — use .NET 10 LTS (8 reaches EOL Nov 2026)</anti-pattern>
 </anti-patterns>
 
-<collaboration>
-  Receive designs from ui-ux-designer. Coordinate with qa-agent on test coverage. Work with backend-developer for API integration. Triggered by Team Lead directly (Domain-Aware Agent Routing) or dev-executor (fallback) for Windows tasks.
-</collaboration>
