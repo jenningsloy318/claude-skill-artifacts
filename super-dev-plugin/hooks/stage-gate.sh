@@ -97,6 +97,40 @@ fi
 # Remove trailing slash
 SPEC_DIR="${SPEC_DIR%/}"
 
+# Check previous stage status in workflow-tracking.json
+PREV_STAGES=$(echo "$GATE" | jq -r '.previousStages[]? // empty' 2>/dev/null)
+if [ -n "$PREV_STAGES" ]; then
+  # Find the workflow-tracking.json in the spec directory
+  TRACKING_FILE=$(ls "$SPEC_DIR"/*-workflow-tracking.json 2>/dev/null | head -1 || echo "")
+  if [ -n "$TRACKING_FILE" ] && [ -f "$TRACKING_FILE" ]; then
+    BLOCKED_STAGES=""
+    while IFS= read -r prev_stage_id; do
+      [ -z "$prev_stage_id" ] && continue
+      # Look up the stage status in the tracking JSON (id can be number or float like 3.5)
+      prev_status=$(jq -r --argjson sid "$prev_stage_id" \
+        '.stages[]? | select(.id == $sid) | .status // "pending"' \
+        "$TRACKING_FILE" 2>/dev/null || echo "pending")
+      if [ "$prev_status" != "complete" ] && [ "$prev_status" != "skipped" ]; then
+        prev_name=$(jq -r --argjson sid "$prev_stage_id" \
+          '.stages[]? | select(.id == $sid) | .name // "Unknown"' \
+          "$TRACKING_FILE" 2>/dev/null || echo "Unknown")
+        BLOCKED_STAGES="${BLOCKED_STAGES}  - Stage ${prev_stage_id} (${prev_name}): status is '${prev_status}', expected 'complete' or 'skipped'\n"
+      fi
+    done <<< "$PREV_STAGES"
+
+    if [ -n "$BLOCKED_STAGES" ]; then
+      STAGE=$(echo "$GATE" | jq -r '.stage')
+      echo "STAGE GATE BLOCKED: Cannot start Stage ${STAGE} (${agent_type})." >&2
+      echo "Reason: Previous stage(s) not complete in workflow-tracking.json." >&2
+      echo "" >&2
+      echo "Incomplete prerequisite stages:" >&2
+      echo -e "$BLOCKED_STAGES" >&2
+      echo "Complete the previous stage(s) and update the tracking JSON before proceeding." >&2
+      exit 2
+    fi
+  fi
+fi
+
 # Check required files
 STAGE=$(echo "$GATE" | jq -r '.stage')
 DESCRIPTION=$(echo "$GATE" | jq -r '.description')

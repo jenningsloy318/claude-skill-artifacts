@@ -1,10 +1,11 @@
 {
-  "version": "2.0.0",
-  "description": "Maps super-dev agent types to required prerequisite artifacts from previous stages. Uses glob patterns (*-doctype.md) for dynamic incremental naming.",
+  "version": "3.0.0",
+  "description": "Maps super-dev agent types to required prerequisite artifacts and stage status checks. Uses glob patterns (*-doctype.md) for dynamic incremental naming. previousStages lists stage IDs that must be 'complete' or 'skipped' in workflow-tracking.json before this agent can spawn.",
   "gates": {
     "super-dev:bdd-scenario-writer": {
       "stage": "3.5",
       "description": "BDD Scenario Writing (Stage 3.5) requires completed requirements",
+      "previousStages": [3],
       "requires": ["[doc-index]-requirements.md"],
       "sections": {
         "[doc-index]-requirements.md": ["Acceptance Criteria"]
@@ -13,6 +14,7 @@
     "super-dev:research-agent": {
       "stage": "4",
       "description": "Research (Stage 4) requires completed requirements and BDD scenarios",
+      "previousStages": [3.5],
       "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {
         "[doc-index]-behavior-scenarios.md": ["Scenario", "Given"]
@@ -20,43 +22,49 @@
     },
     "super-dev:debug-analyzer": {
       "stage": "5",
-      "description": "Debug analysis (Stage 5) requires completed requirements",
+      "description": "Debug analysis (Stage 5) requires completed research",
+      "previousStages": [4],
       "requires": ["[doc-index]-requirements.md"],
       "sections": {}
     },
     "super-dev:code-assessor": {
       "stage": "6",
       "description": "Code assessment (Stage 6) requires research report",
+      "previousStages": [4],
       "requires": ["[doc-index]-research-report.md"],
       "sections": {}
     },
     "super-dev:architecture-agent": {
       "stage": "6.3",
       "description": "Architecture design (Stage 6.3) requires assessment",
+      "previousStages": [6],
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:product-designer": {
       "stage": "6.4",
       "description": "Product design (Stage 6.4) requires assessment with both arch and UI",
+      "previousStages": [6],
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:ui-ux-designer": {
       "stage": "6.5",
       "description": "UI/UX design (Stage 6.5) requires assessment",
+      "previousStages": [6],
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-writer": {
       "stage": "7",
       "description": "Spec writing (Stage 7) requires assessment and design documents",
+      "previousStages": [6],
       "requires": ["[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-reviewer": {
       "stage": "8",
-      "description": "Spec review (Stage 8) requires specification, implementation plan, and task list",
+      "description": "Spec review (Stage 8) requires specification, implementation plan, and task list. No previousStages check — participates in spec iteration loop.",
       "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
       "sections": {
         "[doc-index]-specification.md": ["Testing Strategy"]
@@ -65,6 +73,87 @@
     "super-dev:dev-executor": {
       "stage": "9",
       "description": "Execution (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:rust-developer": {
+      "stage": "9",
+      "description": "Rust implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:golang-developer": {
+      "stage": "9",
+      "description": "Go implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:frontend-developer": {
+      "stage": "9",
+      "description": "Frontend implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:backend-developer": {
+      "stage": "9",
+      "description": "Backend implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:ios-developer": {
+      "stage": "9",
+      "description": "iOS implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:android-developer": {
+      "stage": "9",
+      "description": "Android implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:windows-app-developer": {
+      "stage": "9",
+      "description": "Windows implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "sections": {
+        "[doc-index]-specification.md": ["Implementation"],
+        "[doc-index]-task-list.md": ["Task"]
+      }
+    },
+    "super-dev:macos-app-developer": {
+      "stage": "9",
+      "description": "macOS implementation (Stage 9) requires complete specification, plan, and task list",
+      "previousStages": [8],
       "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
@@ -74,24 +163,26 @@
     "super-dev:qa-agent": {
       "stage": "9",
       "description": "QA (Stage 9) requires complete specification and BDD scenarios",
+      "previousStages": [8],
       "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {}
     },
     "super-dev:code-reviewer": {
       "stage": "10",
-      "description": "Code review (Stage 10) requires specification (after execution)",
+      "description": "Code review (Stage 10) requires specification (after execution). No previousStages check — participates in implementation iteration loop.",
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:adversarial-reviewer": {
       "stage": "10",
-      "description": "Adversarial review (Stage 10) requires specification (after execution)",
+      "description": "Adversarial review (Stage 10) requires specification (after execution). No previousStages check — participates in implementation iteration loop.",
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     },
     "super-dev:docs-executor": {
       "stage": "11",
       "description": "Documentation (Stage 11) requires specification, all implementation phases complete, and gate-implementation-complete.sh PASS",
+      "previousStages": [10],
       "requires": ["[doc-index]-specification.md", "[doc-index]-workflow-tracking.json"],
       "sections": {},
       "gate": "gate-implementation-complete.sh"
@@ -99,6 +190,7 @@
     "super-dev:handoff-writer": {
       "stage": "11.5",
       "description": "Handoff (Stage 11.5) requires specification directory with all artifacts",
+      "previousStages": [11],
       "requires": ["[doc-index]-specification.md"],
       "sections": {}
     }
