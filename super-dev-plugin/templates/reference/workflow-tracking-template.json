@@ -89,7 +89,12 @@
 
   "implementationPhases": {
     "$type": "array of ImplementationPhase objects",
-    "$description": "Tracks completion of each phase defined in the implementation-plan.md. Populated at Stage 9 entry by reading the plan. Even single-phase plans MUST have one entry. Team Lead verifies ALL entries are 'complete' before proceeding to Stage 11.",
+    "$description": "Tracks completion of each phase defined in the implementation-plan.md. Populated at Stage 9 entry by reading the plan. Even single-phase plans MUST have one entry. Team Lead verifies ALL entries are 'complete' before proceeding to Stage 11. MUST be a JSON array, NOT an object.",
+    "$example": [
+      { "phaseNumber": 1, "name": "Database Layer", "status": "complete", "startedAt": "2026-05-04T13:30:00Z", "completedAt": "2026-05-04T14:15:30Z", "reviewIterations": 1 },
+      { "phaseNumber": 2, "name": "API Endpoints", "status": "in_progress", "startedAt": "2026-05-04T14:16:00Z", "completedAt": null, "reviewIterations": 0 },
+      { "phaseNumber": 3, "name": "UI Integration", "status": "pending", "startedAt": null, "completedAt": null, "reviewIterations": 0 }
+    ],
     "$item": {
       "phaseNumber": {
         "$type": "number",
@@ -104,13 +109,7 @@
       "status": {
         "$type": "string",
         "$description": "Current implementation phase state",
-        "$enum": ["pending", "in_progress", "implemented", "reviewed", "complete"],
-        "$note": "'implemented' = code written, gate-build passes. 'reviewed' = code review + adversarial pass. 'complete' = final state after both."
-      },
-      "tasks": {
-        "$type": "array of strings",
-        "$description": "Task IDs belonging to this phase (from implementation-plan)",
-        "$example": ["T1.1", "T1.2", "T1.3"]
+        "$enum": ["pending", "in_progress", "complete"]
       },
       "startedAt": {
         "$type": "string (ISO 8601, seconds precision) | null",
