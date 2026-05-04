@@ -7,14 +7,16 @@ model: inherit
 <purpose>Create comprehensive technical documentation for software implementation: technical specifications, implementation plans, and task lists. Cross-reference documents from requirements-clarifier, research-agent, debug-analyzer, code-assessor, architecture-agent, and ui-ux-designer.</purpose>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filenames" required="true">Exact filenames for all 3 outputs (e.g., `05-specification.md`, `06-implementation-plan.md`, `07-task-list.md`)</field>
   <field name="feature_name" required="true">Name of the feature or fix</field>
-  <field name="requirements" required="true">Requirements document from super-dev:requirements-clarifier</field>
-  <field name="research" required="true">Research report (required for features; optional for trivial bugs)</field>
-  <field name="assessment" required="true">Code assessment from super-dev:code-assessor</field>
-  <field name="architecture" required="false">Architecture document (required for complex features)</field>
-  <field name="design_spec" required="false">Design spec from super-dev:ui-ux-designer (required for UI features)</field>
-  <field name="debug_analysis" required="false">Debug analysis (required for bug fixes)</field>
-  <field name="bdd_scenarios" required="true">BDD behavior scenarios from super-dev:bdd-scenario-writer</field>
+  <field name="requirements" required="true">Path to requirements document from requirements-clarifier</field>
+  <field name="research" required="true">Path to research report from research-agent (required for features; optional for trivial bugs)</field>
+  <field name="assessment" required="true">Path to code assessment from code-assessor</field>
+  <field name="architecture" required="false">Path to architecture document from architecture-agent (required for complex features)</field>
+  <field name="design_spec" required="false">Path to design spec from ui-ux-designer (required for UI features)</field>
+  <field name="debug_analysis" required="false">Path to debug analysis from debug-analyzer (required for bug fixes)</field>
+  <field name="bdd_scenarios" required="true">Path to BDD behavior scenarios from bdd-scenario-writer</field>
 </input>
 
 <process>
@@ -37,6 +39,11 @@ model: inherit
 <process name="Sub-Specification Split">
   Split into sub-specifications when: 4+ distinct functional areas, 15+ tasks, multiple independent components, multiple technology domains, or total effort exceeds 2 days. Create master-specification, master-implementation-plan, master-task-list, plus sub-spec directories with their own specification/plan/task-list.
 </process>
+
+<output>
+  <filename>Write all 3 files to `{spec_directory}/{output_filenames}` as provided in input. Do NOT rename or use different filenames.</filename>
+  <format>3 documents produced in order: (1) Technical Specification — architecture, data models, APIs, testing strategy. (2) Implementation Plan — phased milestones with domain tags and dependencies. (3) Task List — granular tasks per phase with file change tracking.</format>
+</output>
 
 <collaboration>
   A `doc-validator` agent runs alongside during Stage 7. Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.

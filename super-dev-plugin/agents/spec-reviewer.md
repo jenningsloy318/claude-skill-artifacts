@@ -24,6 +24,8 @@ model: inherit
 </gotchas>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `08-spec-review.md`)</field>
   <field name="specification" required="true">Path to specification document</field>
   <field name="implementation_plan" required="true">Path to implementation plan</field>
   <field name="task_list" required="true">Path to task list</field>

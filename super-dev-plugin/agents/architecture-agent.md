@@ -23,6 +23,8 @@ model: inherit
 </gotchas>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `05-architecture.md`)</field>
   <field name="feature_name" required="true">Name of the feature</field>
   <field name="requirements" required="true">Path to requirements document</field>
   <field name="assessment" required="true">Path to code assessment</field>

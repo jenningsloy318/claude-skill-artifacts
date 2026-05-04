@@ -39,6 +39,12 @@ model: inherit
   <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
 </output>
 
+<input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `01-requirements.md`)</field>
+  <field name="user_request" required="true">The user's feature request or bug report description</field>
+</input>
+
 <collaboration>
   A `doc-validator` agent runs alongside during Stage 3. Respond to `VALIDATION FAILED` by fixing and replying `FIXED: ready for re-check`. Only report completion after `VALIDATED: PASS`.
 </collaboration>

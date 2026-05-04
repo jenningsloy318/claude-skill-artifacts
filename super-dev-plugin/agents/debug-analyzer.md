@@ -14,6 +14,8 @@ model: inherit
 </principles>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `04-debug-analysis.md`)</field>
   <field name="issue" required="true">Description of the bug or error</field>
   <field name="evidence" required="true">Available error messages, logs, screenshots</field>
   <field name="reproduction_steps" required="false">Steps to reproduce (if known)</field>
@@ -48,4 +50,5 @@ model: inherit
 
 <output>
   <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
+  <format>Debug analysis document with: issue summary, evidence collected, reproduction steps (rate + minimal repro), code execution path trace, hypotheses (ranked by likelihood with supporting/contradicting evidence), verified root cause, actionable fix with code locations, test plan, related issues, prevention recommendations.</format>
 </output>

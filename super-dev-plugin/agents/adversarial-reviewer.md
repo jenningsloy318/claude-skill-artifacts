@@ -23,6 +23,8 @@ model: inherit
 </gotchas>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `09-adversarial-review.md`)</field>
   <field name="specification" required="true">Path to technical spec</field>
   <field name="implementation_summary" required="true">What changed and why</field>
   <field name="base_sha" required="false">Base commit SHA for diff scoping (alternative to files_changed)</field>

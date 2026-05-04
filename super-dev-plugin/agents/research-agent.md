@@ -69,6 +69,13 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --p
   <step n="7" name="Remaining Ambiguities">Explicitly list any issues that remain unclear after this deep dive, with explanation of why (conflicting sources, no authoritative guidance, edge case not documented, etc.).</step>
 </process>
 
+<input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `03-research-report.md`)</field>
+  <field name="requirements" required="true">Path to requirements document</field>
+  <field name="bdd_scenarios" required="true">Path to BDD behavior scenarios</field>
+</input>
+
 <output>
   <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead in the spawn prompt. Do NOT rename or use a different filename.</filename>
   <format name="Standard Research Report">Research report with: date, research period, technologies, freshness score, summary (3-5 bullet points), options comparison (REQUIRED), deprecation warnings, best practices (recommended patterns with source citations), anti-patterns (with alternatives), implementation considerations (performance, security, compatibility), ISSUES/AMBIGUITIES section (flagged items needing deeper investigation), references (primary, secondary, community).</format>

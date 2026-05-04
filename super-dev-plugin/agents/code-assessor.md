@@ -14,9 +14,10 @@ model: inherit
 </principles>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `04-code-assessment.md`)</field>
   <field name="scope" required="true">Area to assess (folders/files)</field>
   <field name="focus" required="true">Architecture/standards/dependencies/patterns</field>
-  <field name="output_filename" required="true">Exact output filename provided by Team Lead (e.g., `04-code-assessment.md`). Write output to `{spec_directory}/{output_filename}`. Do NOT rename or use a different filename.</field>
   <field name="research_findings" required="false">Optional prior research to consider</field>
 </input>
 
@@ -43,3 +44,8 @@ model: inherit
   <check>Provide prioritized, actionable recommendations (effort + impact)</check>
   <check>Report coverage and list files examined</check>
 </checklist>
+
+<output>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided in input. Do NOT rename or use a different filename.</filename>
+  <format>Code assessment document with: architecture evaluation, code standards analysis, dependency review, framework patterns, better options analysis, prioritized recommendations (effort + impact), file coverage report.</format>
+</output>

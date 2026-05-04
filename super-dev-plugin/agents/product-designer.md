@@ -18,6 +18,8 @@ model: inherit
 </capabilities>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filenames" required="true">Exact output filenames for architecture and design docs (provided by Team Lead)</field>
   <field name="feature_name" required="true">Name of the feature being designed</field>
   <field name="requirements" required="true">Path to requirements document</field>
   <field name="assessment" required="true">Path to code assessment</field>
@@ -38,7 +40,8 @@ model: inherit
 </process>
 
 <output>
-  <template>Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`: `architecture-template.md`, `design-spec-template.md`, `product-design-summary-template.md`. Exact filenames from Team Lead.</template>
+  <filename>Write all outputs to `{spec_directory}/{output_filenames}` as provided in input. Do NOT rename or use different filenames.</filename>
+  <template>Load from `${CLAUDE_PLUGIN_ROOT}/templates/reference/`: `architecture-template.md`, `design-spec-template.md`, `product-design-summary-template.md`.</template>
 </output>
 
 <quality-gates>
