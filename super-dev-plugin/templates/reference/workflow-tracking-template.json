@@ -28,7 +28,13 @@
 
   "stages": {
     "$type": "array of Stage objects",
-    "$description": "Ordered list of all workflow stages and their execution status. Updated by Team Lead on stage start and completion.",
+    "$description": "Ordered list of all workflow stages and their execution status. Updated by Team Lead on stage start and completion. MUST be a JSON array, NOT an object.",
+    "$example": [
+      { "id": 1, "name": "dev-rules", "status": "complete", "startedAt": "2026-05-04T13:18:00Z", "completedAt": "2026-05-04T13:18:30Z", "docs": [], "files": { "created": [], "modified": [], "deleted": [] } },
+      { "id": 2, "name": "spec-setup", "status": "complete", "startedAt": "2026-05-04T13:18:30Z", "completedAt": "2026-05-04T13:19:00Z", "docs": [], "files": { "created": [], "modified": [], "deleted": [] } },
+      { "id": 3, "name": "requirements", "status": "in_progress", "startedAt": "2026-05-04T13:19:00Z", "completedAt": null, "docs": [], "files": { "created": [], "modified": [], "deleted": [] } },
+      { "id": 3.5, "name": "bdd", "status": "pending", "startedAt": null, "completedAt": null, "docs": [], "files": { "created": [], "modified": [], "deleted": [] } }
+    ],
     "$item": {
       "id": {
         "$type": "number",
