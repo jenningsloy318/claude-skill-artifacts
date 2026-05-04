@@ -35,6 +35,7 @@ model: inherit
 </process>
 
 <output>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
   <format>Executive summary, .pen design file reference (if Pencil available), user flows (Mermaid), screen inventory, component specifications, design tokens (YAML: typography, spacing, colors, border radius, breakpoints), accessibility requirements (WCAG 2.1 AA), responsive behavior, implementation notes, definition of done.</format>
 </output>
 

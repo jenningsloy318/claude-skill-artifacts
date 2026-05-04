@@ -45,3 +45,7 @@ model: inherit
   <check>Actionable fix and test plan provided</check>
   <check>Related issues and prevention steps noted</check>
 </checklist>
+
+<output>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
+</output>
