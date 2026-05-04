@@ -21,9 +21,9 @@
   },
 
   "startedAt": {
-    "$type": "string (ISO 8601)",
-    "$description": "Timestamp when the workflow was initialized (Stage 2 completion)",
-    "$example": "2026-04-10T14:30:00Z"
+    "$type": "string (ISO 8601, seconds precision)",
+    "$description": "Timestamp when the workflow was initialized (Stage 2 completion). Always use seconds precision.",
+    "$example": "2026-04-10T14:30:25Z"
   },
 
   "stages": {
@@ -47,11 +47,11 @@
         "$note": "'skipped' used for conditional stages like Stage 5 (bugs only) or Stage 6.3/6.4/6.5 selection"
       },
       "startedAt": {
-        "$type": "string (ISO 8601) | null",
+        "$type": "string (ISO 8601, seconds precision) | null",
         "$description": "Timestamp when stage execution began"
       },
       "completedAt": {
-        "$type": "string (ISO 8601) | null",
+        "$type": "string (ISO 8601, seconds precision) | null",
         "$description": "Timestamp when stage finished (null if not yet complete)"
       },
       "docs": {
@@ -107,11 +107,11 @@
         "$example": ["T1.1", "T1.2", "T1.3"]
       },
       "startedAt": {
-        "$type": "string (ISO 8601) | null",
+        "$type": "string (ISO 8601, seconds precision) | null",
         "$description": "Timestamp when this phase's implementation began"
       },
       "completedAt": {
-        "$type": "string (ISO 8601) | null",
+        "$type": "string (ISO 8601, seconds precision) | null",
         "$description": "Timestamp when this phase passed review (null if not yet complete)"
       },
       "reviewIterations": {
@@ -166,7 +166,7 @@
         }
       },
       "updatedAt": {
-        "$type": "string (ISO 8601)",
+        "$type": "string (ISO 8601, seconds precision)",
         "$description": "Timestamp of last status or file list change"
       }
     }
@@ -218,7 +218,7 @@
         "from": { "$type": "string", "$description": "Sender agent type" },
         "to": { "$type": "string", "$description": "Receiver agent type or 'all' for broadcast" },
         "content": { "$type": "string", "$description": "Brief message summary" },
-        "timestamp": { "$type": "string (ISO 8601)" }
+        "timestamp": { "$type": "string (ISO 8601, seconds precision)" }
       }
     }
   },
