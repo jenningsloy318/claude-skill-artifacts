@@ -36,6 +36,7 @@ model: inherit
 
 <output>
   <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/requirements-template.md` and fill in all placeholders.</template>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
 </output>
 
 <collaboration>

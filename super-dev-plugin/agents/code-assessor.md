@@ -16,6 +16,7 @@ model: inherit
 <input>
   <field name="scope" required="true">Area to assess (folders/files)</field>
   <field name="focus" required="true">Architecture/standards/dependencies/patterns</field>
+  <field name="output_filename" required="true">Exact output filename provided by Team Lead (e.g., `04-code-assessment.md`). Write output to `{spec_directory}/{output_filename}`. Do NOT rename or use a different filename.</field>
   <field name="research_findings" required="false">Optional prior research to consider</field>
 </input>
 

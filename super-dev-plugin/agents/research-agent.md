@@ -70,6 +70,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --p
 </process>
 
 <output>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead in the spawn prompt. Do NOT rename or use a different filename.</filename>
   <format name="Standard Research Report">Research report with: date, research period, technologies, freshness score, summary (3-5 bullet points), options comparison (REQUIRED), deprecation warnings, best practices (recommended patterns with source citations), anti-patterns (with alternatives), implementation considerations (performance, security, compatibility), ISSUES/AMBIGUITIES section (flagged items needing deeper investigation), references (primary, secondary, community).</format>
   <format name="Deep Research Report">Per-issue analysis with: issue title, prior understanding (what was known), investigation summary (searches performed, sources found), resolution status (resolved/partially-resolved/still-ambiguous), evidence (cited sources supporting conclusion), resolution path (concrete next steps or approach), new insights (anything discovered that changes prior recommendations), remaining ambiguities (what is still unclear and why).</format>
 </output>
