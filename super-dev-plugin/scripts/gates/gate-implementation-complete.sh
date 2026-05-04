@@ -68,8 +68,4 @@ if [ "$JSON_PHASE_COUNT" -gt 0 ]; then
     fi
 fi
 
-# Check allImplementationPhasesComplete flag
-ALL_COMPLETE_FLAG=$(jq -r '.status.allImplementationPhasesComplete // false' "$TRACKING_JSON" 2>/dev/null || echo "false")
-check "allImplementationPhasesComplete flag is true" "$([ "$ALL_COMPLETE_FLAG" = "true" ] && echo true || echo false)"
-
 gate_report "Implementation Completeness"

@@ -230,10 +230,6 @@
       "$type": "boolean",
       "$description": "True when all required stages (including 11, 11.5, 12) have status 'complete' or 'skipped'. Set during Stage 12."
     },
-    "allImplementationPhasesComplete": {
-      "$type": "boolean",
-      "$description": "True when every entry in implementationPhases has status 'complete'. MUST be true before Stage 11 begins."
-    },
     "allTasksComplete": {
       "$type": "boolean",
       "$description": "True when every task in the tasks array has status 'complete'. Set during Stage 12."
