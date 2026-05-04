@@ -14,7 +14,7 @@ license: MIT
   <stage n="1" name="Apply Dev Rules">Invoke dev-rules skill. MUST complete before any other action.</stage>
   <stage n="2" name="Specification Setup">Create worktree, spec dir, workflow JSON, agent team. MUST complete before any codebase exploration or agent spawning.</stage>
   <stage n="3" name="Requirements Clarification">Spawn requirements-clarifier + doc-validator (parallel). Gate: gate-requirements.sh.</stage>
-  <stage n="3.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). User confirmation required. Gate: gate-bdd.sh.</stage>
+  <stage n="3.5" name="BDD Scenarios">Spawn bdd-scenario-writer + doc-validator (parallel). Gate: gate-bdd.sh.</stage>
   <stage n="4" name="Research">Spawn research-agent. Firecrawl MCP first, then supplementary scripts. Present 3-5 options to user.</stage>
   <stage n="4.5" name="Deep Research">Conditional: only if Stage 4 report identifies issues, flaws, or ambiguities. Spawn research-agent in deep-research mode targeting specific issues. Loop until all issues are clearly understood (max 3 iterations).</stage>
   <stage n="5" name="Debug Analysis">Spawn debug-analyzer. Only for bug fixes — skip otherwise.</stage>
