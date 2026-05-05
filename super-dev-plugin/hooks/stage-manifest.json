@@ -64,8 +64,8 @@
     },
     "super-dev:spec-reviewer": {
       "stage": "8",
-      "description": "Spec review (Stage 8) requires specification, implementation plan, and task list. No previousStages check — participates in spec iteration loop.",
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "description": "Spec review (Stage 8) requires specification, implementation plan, task list, requirements, and BDD scenarios. No previousStages check — participates in spec iteration loop.",
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
       "sections": {
         "[doc-index]-specification.md": ["Testing Strategy"]
       }
