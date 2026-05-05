@@ -23,7 +23,7 @@ license: MIT
   <stage n="6.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</stage>
   <stage n="7" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</stage>
   <stage n="8" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Reviewer MUST verify spec covers ALL requirements ACs, ALL BDD scenarios, and aligns with architecture/UI design decisions. Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</stage>
-  <stage n="9" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Specialist MUST produce `*-implementation-summary.md` documenting changes, decisions, and challenges. Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
+  <stage n="9" name="Implementation">Sequential TDD workflow per phase: Step 9.1 spawn tdd-guide (write failing tests from req/bdd/spec/plan/tasks) → Step 9.2 spawn domain specialist (make tests pass, produce `*-implementation-summary.md`) → Step 9.3 spawn qa-agent (run tests, verify coverage, report). Each step MUST complete before the next begins. Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
   <stage n="10" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</stage>
   <stage n="11" name="Documentation Update">Spawn docs-executor. WAIT for `DOCS_STAGE_11_COMPLETE` signal or agent termination — do NOT proceed while docs-executor is still running. Then run gate-docs-drift.sh. MANDATORY — do not skip.</stage>
   <stage n="11.5" name="Handoff Writing">Spawn handoff-writer. WAIT for completion before Stage 12. MANDATORY — do not skip.</stage>
@@ -111,11 +111,13 @@ license: MIT
     <purpose>Ensures ALL phases defined in the implementation-plan are implemented before proceeding to Stage 11. Even if the plan has only one phase, this loop verifies completion.</purpose>
 
     <step n="1" name="Initialize">At Stage 9 entry, Team Lead reads implementation-plan.md and task-list.md. Identify total number of implementation phases (N). Set currentPhase = 1. Update workflow tracking JSON: `implementationPhases[].status = "pending"` for all phases.</step>
-    <step n="2" name="Scope Current Phase">Extract tasks belonging to the current phase from implementation-plan. Include only this phase's scope in the specialist spawn prompt. Update tracking: `implementationPhases[currentPhase].status = "in_progress"`.</step>
-    <step n="3" name="Execute">Spawn domain specialist(s) + qa-agent (parallel) scoped to current phase tasks. Specialist MUST produce/update `*-implementation-summary.md` documenting changes, decisions, challenges. Run gate-build.sh after completion.</step>
-    <step n="4" name="Review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel). If review fails → follow Implementation Iteration Loop (fix loop). If review passes → continue.</step>
-    <step n="5" name="Mark Complete">Update tracking: `implementationPhases[currentPhase].status = "complete"`. Increment currentPhase.</step>
-    <step n="6" name="Completeness Check">
+    <step n="2" name="Scope Current Phase">Extract tasks belonging to the current phase from implementation-plan. Include only this phase's scope in agent spawn prompts. Update tracking: `implementationPhases[currentPhase].status = "in_progress"`.</step>
+    <step n="3" name="Step 9.1 — TDD (SEQUENTIAL)">Spawn tdd-guide scoped to current phase. Provide: requirements.md, bdd-scenarios.md, specification.md, implementation-plan.md, task-list.md. tdd-guide writes failing tests (RED phase). WAIT for completion before Step 9.2.</step>
+    <step n="4" name="Step 9.2 — Implementation (SEQUENTIAL)">Spawn domain specialist(s) scoped to current phase. Provide: requirements.md, bdd-scenarios.md, specification.md, implementation-plan.md, task-list.md, plus test files from Step 9.1. Specialist makes tests pass (GREEN phase) and produces/updates `*-implementation-summary.md`. WAIT for completion before Step 9.3.</step>
+    <step n="5" name="Step 9.3 — QA Verification (SEQUENTIAL)">Spawn qa-agent. qa-agent runs all tests, verifies coverage (80%+ overall, 90%+ new code), validates BDD scenario coverage. Run gate-build.sh after qa-agent completes. If tests fail → spawn domain specialist to fix (max 2 attempts), then re-run qa-agent.</step>
+    <step n="6" name="Review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel). If review fails → follow Implementation Iteration Loop (fix loop). If review passes → continue.</step>
+    <step n="7" name="Mark Complete">Update tracking: `implementationPhases[currentPhase].status = "complete"`. Increment currentPhase.</step>
+    <step n="8" name="Completeness Check">
       If currentPhase > N (all phases done) → proceed to Stage 11.
       If currentPhase ≤ N (more phases remain) → go to step 2.
       CRITICAL: Do NOT proceed to Stage 11 until ALL implementation phases are complete.
@@ -132,13 +134,14 @@ license: MIT
 
   <process name="Implementation Iteration Loop (Stage 9/10 Fix Loop)">
     <step n="1" name="Trigger">Stage 10 code-reviewer verdict is not "Approved" or adversarial-reviewer returns REJECT.</step>
-    <step n="2" name="STOP">FREEZE — Do NOT open any file with Edit or Write. Do NOT run any fix command in Bash. The Team Lead's ONLY action is to follow steps 3-7.</step>
+    <step n="2" name="STOP">FREEZE — Do NOT open any file with Edit or Write. Do NOT run any fix command in Bash. The Team Lead's ONLY action is to follow steps 3-8.</step>
     <step n="3" name="Extract">Read the review findings from code-review and adversarial-review reports. List every finding with: file path, line number, severity, description.</step>
     <step n="4" name="Compose Prompt">Write a sub-agent prompt that includes: (a) exact file paths and line numbers from review, (b) the specific finding and why it failed, (c) the expected fix or acceptance criteria. Do NOT paraphrase — quote the reviewer's words.</step>
-    <step n="5" name="Spawn Fix">Spawn domain specialist(s) + qa-agent (parallel) with the composed prompt. This is the ONLY way to fix code — Team Lead never edits directly.</step>
-    <step n="6" name="Wait and Verify">Wait for all spawned agents to complete. Run gate-build.sh to verify build and tests pass.</step>
-    <step n="7" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
-    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer returns "Approved" (zero findings of any severity) AND adversarial-reviewer returns PASS. No partial approvals allowed — ALL findings must be resolved. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
+    <step n="5" name="Fix Tests (if needed)">If findings relate to missing/incorrect tests, spawn tdd-guide with findings. WAIT for completion.</step>
+    <step n="6" name="Fix Code">Spawn domain specialist(s) with the composed prompt. Provide: requirements.md, bdd-scenarios.md, specification.md, task-list.md as reference. WAIT for completion.</step>
+    <step n="7" name="QA Verify">Spawn qa-agent to run all tests and verify fixes. Run gate-build.sh after completion.</step>
+    <step n="8" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
+    <step n="9" name="Exit Criteria">Loop exits when: code-reviewer returns "Approved" (zero findings of any severity) AND adversarial-reviewer returns PASS. No partial approvals allowed — ALL findings must be resolved. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
   </process>
 
   <process name="Research Deep-Dive Loop (Stage 4.5)">
