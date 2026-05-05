@@ -55,8 +55,13 @@ Example: for an empty directory, Stage 3 = `01-requirements.md`, Stage 3.5 = `02
   NEVER pause during execution. NEVER ask to continue. ALWAYS fix errors before proceeding. ALWAYS report task completion with status. Complete ALL stages 11-13 before signaling done.
 </constraint>
 
-<constraint name="Stage 11-13 (MANDATORY)">
-  Stage 11: Spawn docs-executor to update ALL spec directory files (task-list, implementation-plan, implementation-summary, specification, design docs). Stage 11.5: Spawn handoff-writer for session handoff document. Stage 12: Terminate all remaining teammates. Verify all spec directory files are complete. Stage 13: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
+<constraint name="Stage 11-13 (MANDATORY — SEQUENTIAL, NOT PARALLEL)">
+  Stage 11: Spawn docs-executor. WAIT for it to signal `DOCS_STAGE_11_COMPLETE` or terminate. Do NOT proceed until docs-executor is done. Then run gate-docs-drift.sh — must PASS before continuing.
+  Stage 11.5: Spawn handoff-writer. WAIT for completion. Do NOT proceed until handoff is written.
+  Stage 12: Terminate all remaining teammates. Verify all spec directory files are complete.
+  Stage 12.5: Present summary to user for confirmation before merge.
+  Stage 13: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
+  CRITICAL: Each stage MUST fully complete before the next stage begins. Never spawn Stage 11.5 while Stage 11 is still running.
 </constraint>
 
 <quality-gates>
