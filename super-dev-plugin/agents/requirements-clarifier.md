@@ -41,7 +41,7 @@ model: inherit
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filename" required="true">Exact output filename (e.g., `01-requirements.md`)</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-requirements.md` where XX is computed index)</field>
   <field name="user_request" required="true">The user's feature request or bug report description</field>
 </input>
 

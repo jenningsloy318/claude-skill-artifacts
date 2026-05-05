@@ -15,7 +15,7 @@ model: inherit
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filename" required="true">Exact output filename (e.g., `04-code-assessment.md`)</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-code-assessment.md` where XX is computed index)</field>
   <field name="scope" required="true">Area to assess (folders/files)</field>
   <field name="focus" required="true">Architecture/standards/dependencies/patterns</field>
   <field name="research_findings" required="false">Optional prior research to consider</field>

@@ -8,7 +8,7 @@ model: inherit
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filenames" required="true">Exact filenames for all 3 outputs (e.g., `05-specification.md`, `06-implementation-plan.md`, `07-task-list.md`)</field>
+  <field name="output_filenames" required="true">Exact filenames for all 3 outputs (e.g., `[XX]-specification.md`, `[XX+1]-implementation-plan.md`, `[XX+2]-task-list.md` where XX is computed index)</field>
   <field name="feature_name" required="true">Name of the feature or fix</field>
   <field name="requirements" required="true">Path to requirements document from requirements-clarifier</field>
   <field name="research" required="true">Path to research report from research-agent (required for features; optional for trivial bugs)</field>

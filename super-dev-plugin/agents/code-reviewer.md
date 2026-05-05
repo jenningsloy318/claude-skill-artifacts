@@ -25,7 +25,7 @@ model: inherit
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filename" required="true">Exact output filename (e.g., `09-code-review.md`)</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-code-review.md` where XX is computed index)</field>
   <field name="specification" required="true">Path to technical spec</field>
   <field name="implementation_summary" required="true">Path to implementation summary from Stage 9</field>
   <field name="requirements" required="true">Path to requirements document — verify implementation achieves all acceptance criteria</field>

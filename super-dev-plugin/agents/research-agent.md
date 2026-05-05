@@ -71,7 +71,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --p
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filename" required="true">Exact output filename (e.g., `03-research-report.md`)</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-research-report.md` where XX is computed index)</field>
   <field name="requirements" required="true">Path to requirements document</field>
   <field name="bdd_scenarios" required="true">Path to BDD behavior scenarios</field>
 </input>

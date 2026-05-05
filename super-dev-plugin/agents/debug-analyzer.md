@@ -15,7 +15,7 @@ model: inherit
 
 <input>
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
-  <field name="output_filename" required="true">Exact output filename (e.g., `04-debug-analysis.md`)</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-debug-analysis.md` where XX is computed index)</field>
   <field name="issue" required="true">Description of the bug or error</field>
   <field name="evidence" required="true">Available error messages, logs, screenshots</field>
   <field name="reproduction_steps" required="false">Steps to reproduce (if known)</field>
