@@ -57,9 +57,9 @@
     },
     "super-dev:spec-writer": {
       "stage": "7",
-      "description": "Spec writing (Stage 7) requires assessment and design documents",
+      "description": "Spec writing (Stage 7) requires requirements, BDD scenarios, and code assessment",
       "previousStages": [6],
-      "requires": ["[doc-index]-code-assessment.md"],
+      "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md", "[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-reviewer": {

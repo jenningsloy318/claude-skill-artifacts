@@ -20,11 +20,11 @@ model: inherit
 </input>
 
 <process>
-  <step n="1" name="Synthesize Inputs">Review all input documents. Extract key requirements/constraints. Note best practices from research. Identify patterns from assessment. Reference architecture decisions and UI/UX specs.</step>
-  <step n="2" name="Create Technical Specification">Document all technical decisions and architecture. WRITE to disk immediately before proceeding. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md`.</step>
+  <step n="1" name="Synthesize Inputs">Read ALL input documents. For requirements: extract every AC-ID and its acceptance criteria. For BDD scenarios: extract every SCENARIO-ID. For architecture/design: extract key decisions and constraints. These form the coverage baseline — the spec MUST address every one.</step>
+  <step n="2" name="Create Technical Specification">Document all technical decisions and architecture. Every AC must map to a spec section. Every BDD scenario must be addressable by the design. Architecture decisions must be reflected in the technical approach. WRITE to disk immediately before proceeding. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/specification-template.md`.</step>
   <step n="3" name="Create Implementation Plan">Break specification into implementable milestones. Tag every task with `domain` attribute. Identify cross-domain dependencies. Document spawn ordering (parallel vs staggered). WRITE to disk immediately. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-plan-template.md`.</step>
   <step n="4" name="Create Task List">Generate granular tasks from implementation plan. WRITE to disk immediately. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/task-list-template.md`.</step>
-  <step n="5" name="Pre-Output Self-Check">Verify: Testing Strategy section exists with keywords, BDD scenario references (SCENARIO-XXX) present, all three output files produced.</step>
+  <step n="5" name="Pre-Output Self-Check">Verify: (1) Testing Strategy section exists with keywords. (2) Every SCENARIO-ID from BDD doc is referenced. (3) Every AC-ID from requirements is addressed by at least one spec section. (4) Architecture/design decisions are not contradicted. (5) All three output files produced. If any AC or scenario is not covered, add the missing section before completing.</step>
 </process>
 
 <constraints>
