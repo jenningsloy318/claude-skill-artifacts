@@ -44,7 +44,7 @@ model: inherit
   <step n="5.5" name="Naming Convention Check (BLOCKING)">Check for prohibited generic names (data, item, value, result, temp, list, handle, process, params, utils.ts). Required patterns: variables `[feature][entity][property]`, functions `[verb][Entity][Action]`, files `[feature]-[entity].ext`. Any violation is BLOCKING (Critical/High severity).</step>
   <step n="5.6" name="Rust Workspace Check (BLOCKING for Rust)">Verify `[workspace]` in root Cargo.toml, `crates/` directory with separate crates, proper `package.name` per crate. Monolithic single-crate structure is BLOCKING Critical severity.</step>
   <step n="6" name="Validate Against Spec">For each AC: Met/Not Met/Partial/N/A with file:line evidence. Check non-goals not implemented.</step>
-  <step n="6.1" name="BDD Scenario Coverage">Read behavior-scenarios and QA coverage report. Verify each SCENARIO-XXX has corresponding passing test. Missing scenarios → High severity, Changes Requested.</step>
+  <step n="6.1" name="BDD Scenario Coverage">Read bdd-scenarios and QA coverage report. Verify each SCENARIO-XXX has corresponding passing test. Missing scenarios → High severity, Changes Requested.</step>
   <step n="6.5" name="External Expert Review (Optional)">If `code-review-expert` skill available, invoke for SOLID/architecture review. Merge findings, deduplicate by location, prioritize higher severity.</step>
   <step n="7" name="Synthesize Report">Critical → Blocked. Any High, Medium, or Low finding, or AC not met, or scenario coverage less than 100% → Changes Requested. Zero findings → Approved. ALL findings of any severity MUST be resolved before approval — nothing deferred to handoff.</step>
 </process>

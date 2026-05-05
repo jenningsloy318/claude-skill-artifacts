@@ -30,7 +30,7 @@ model: inherit
   IF APPLICABLE (update when implementation deviated from design):
   - Architecture doc (`*-architecture.md`): Update if architecture decisions changed during implementation
   - UI/UX Design doc (`*-ui-ux-design.md`): Update if UI patterns or components changed
-  - BDD Scenarios (`*-behavior-scenarios.md`): Update if acceptance criteria were modified or new scenarios discovered
+  - BDD Scenarios (`*-bdd-scenarios.md`): Update if acceptance criteria were modified or new scenarios discovered
   - Requirements (`*-requirements.md`): Update if requirements were clarified or scope changed
 
   PROJECT-LEVEL:

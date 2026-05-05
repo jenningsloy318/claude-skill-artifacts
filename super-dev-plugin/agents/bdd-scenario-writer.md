@@ -17,7 +17,7 @@ model: inherit
 <input>
   <field name="requirements" required="true">Path to the requirements document (exact path provided by Team Lead)</field>
   <field name="spec_directory" required="true">Specification directory path</field>
-  <field name="output_filename" required="true">Exact output filename provided by Team Lead (e.g., `[XX]-behavior-scenarios.md` where XX is dynamically computed). Write output to `{spec_directory}/{output_filename}`. Do NOT rename or use a different filename.</field>
+  <field name="output_filename" required="true">Exact output filename provided by Team Lead (e.g., `[XX]-bdd-scenarios.md` where XX is dynamically computed). Write output to `{spec_directory}/{output_filename}`. Do NOT rename or use a different filename.</field>
   <field name="feature_name" required="true">Name of the feature</field>
 </input>
 
@@ -39,7 +39,7 @@ model: inherit
 </examples>
 
 <output>
-  <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/behavior-scenarios-template.md` and fill in all placeholders.</template>
+  <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/bdd-scenarios-template.md` and fill in all placeholders.</template>
   <filename>Write output to `{spec_directory}/{output_filename}` as provided in input. Do NOT rename or use a different filename.</filename>
 </output>
 

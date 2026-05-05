@@ -13,7 +13,7 @@
 <convention name="Scenario ID Convention">
   - Format: `SCENARIO-001`, `SCENARIO-002`, ..., `SCENARIO-NNN`
   - Sequential, zero-padded to 3 digits
-  - Unique within a single `[doc-index]-behavior-scenarios.md`
+  - Unique within a single `[doc-index]-bdd-scenarios.md`
   - Referenced in tests: `describe('SCENARIO-001: ...')` or `// SCENARIO-001`
 </convention>
 
@@ -35,7 +35,7 @@
 </constraints>
 
 <reference name="Traceability Matrix">
-  Every behavior-scenarios document MUST include a traceability matrix mapping each Acceptance Criterion to its covering Scenario IDs. Zero uncovered items allowed.
+  Every bdd-scenarios document MUST include a traceability matrix mapping each Acceptance Criterion to its covering Scenario IDs. Zero uncovered items allowed.
 </reference>
 
 <reference name="Test Reference Patterns">

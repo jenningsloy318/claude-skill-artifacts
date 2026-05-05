@@ -15,9 +15,9 @@
       "stage": "4",
       "description": "Research (Stage 4) requires completed requirements and BDD scenarios",
       "previousStages": [3.5],
-      "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
+      "requires": ["[doc-index]-requirements.md", "[doc-index]-bdd-scenarios.md"],
       "sections": {
-        "[doc-index]-behavior-scenarios.md": ["Scenario", "Given"]
+        "[doc-index]-bdd-scenarios.md": ["Scenario", "Given"]
       }
     },
     "super-dev:debug-analyzer": {
@@ -59,13 +59,13 @@
       "stage": "7",
       "description": "Spec writing (Stage 7) requires requirements, BDD scenarios, and code assessment",
       "previousStages": [6],
-      "requires": ["[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md", "[doc-index]-code-assessment.md"],
+      "requires": ["[doc-index]-requirements.md", "[doc-index]-bdd-scenarios.md", "[doc-index]-code-assessment.md"],
       "sections": {}
     },
     "super-dev:spec-reviewer": {
       "stage": "8",
       "description": "Spec review (Stage 8) requires specification, implementation plan, task list, requirements, and BDD scenarios. No previousStages check — participates in spec iteration loop.",
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-requirements.md", "[doc-index]-bdd-scenarios.md"],
       "sections": {
         "[doc-index]-specification.md": ["Testing Strategy"]
       }
@@ -164,19 +164,19 @@
       "stage": "9",
       "description": "QA (Stage 9) requires complete specification, BDD scenarios, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md", "[doc-index]-spec-review.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-bdd-scenarios.md", "[doc-index]-spec-review.md"],
       "sections": {}
     },
     "super-dev:code-reviewer": {
       "stage": "10",
       "description": "Code review (Stage 10) requires specification, implementation summary, requirements, and BDD scenarios. No previousStages check — participates in implementation iteration loop.",
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md", "[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md", "[doc-index]-requirements.md", "[doc-index]-bdd-scenarios.md"],
       "sections": {}
     },
     "super-dev:adversarial-reviewer": {
       "stage": "10",
       "description": "Adversarial review (Stage 10) requires specification, implementation summary, requirements, and BDD scenarios. No previousStages check — participates in implementation iteration loop.",
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md", "[doc-index]-requirements.md", "[doc-index]-behavior-scenarios.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md", "[doc-index]-requirements.md", "[doc-index]-bdd-scenarios.md"],
       "sections": {}
     },
     "super-dev:docs-executor": {

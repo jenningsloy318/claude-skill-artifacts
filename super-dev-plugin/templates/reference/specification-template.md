@@ -386,7 +386,7 @@ async function [featureName][action](
   </subsection>
 
   <subsection title="6.4 BDD Scenario References">
-    <paragraph>Tests MUST reference BDD scenario IDs from `[doc-index]-behavior-scenarios.md`:</paragraph>
+    <paragraph>Tests MUST reference BDD scenario IDs from `[doc-index]-bdd-scenarios.md`:</paragraph>
 
     <table>
       <row header="true">

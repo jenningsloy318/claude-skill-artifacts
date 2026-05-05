@@ -11,7 +11,7 @@ SPEC_DIR="${1:?Usage: gate-spec-trace.sh <spec-dir>}"
 source "$(dirname "$0")/gate-lib.sh"
 
 SPEC_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-specification.md' -type f 2>/dev/null | head -1)
-BDD_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-behavior-scenarios.md' -type f 2>/dev/null | head -1)
+BDD_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-bdd-scenarios.md' -type f 2>/dev/null | head -1)
 TASK_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-task-list.md' -type f 2>/dev/null | head -1)
 PLAN_FILE=$(find "$SPEC_DIR" -maxdepth 1 -name '*-implementation-plan.md' -type f 2>/dev/null | head -1)
 
@@ -22,7 +22,7 @@ if [ -z "$SPEC_FILE" ] || [ ! -f "$SPEC_FILE" ]; then
 fi
 
 if [ -z "$BDD_FILE" ] || [ ! -f "$BDD_FILE" ]; then
-    echo "GATE FAIL: No *-behavior-scenarios.md file found in: ${SPEC_DIR}"
+    echo "GATE FAIL: No *-bdd-scenarios.md file found in: ${SPEC_DIR}"
     exit 1
 fi
 

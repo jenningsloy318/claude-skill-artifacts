@@ -15,7 +15,7 @@ model: inherit
 
 <input>
   <field name="expected_filename" required="true">EXACT filename assigned by Team Lead (e.g., `[XX]-research-report.md` where XX is computed index)</field>
-  <field name="doc_type" required="true">Document type identifier (e.g., `requirements`, `behavior-scenarios`)</field>
+  <field name="doc_type" required="true">Document type identifier (e.g., `requirements`, `bdd-scenarios`)</field>
   <field name="gate_profile" required="true">Which gate to run (e.g., `gate-requirements`, `gate-bdd`)</field>
   <field name="writer_agent" required="true">Name of the writer agent to message with fix instructions</field>
   <field name="spec_directory" required="true">Specification directory path</field>

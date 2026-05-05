@@ -293,7 +293,7 @@ The stage-gate hook validates that prerequisite artifacts exist before spawning 
 
 ```
 Stage 3.5  (BDD)        → requires [doc-index]-requirements.md
-Stage 4    (Research)    → requires [doc-index]-requirements.md + [doc-index]-behavior-scenarios.md
+Stage 4    (Research)    → requires [doc-index]-requirements.md + [doc-index]-bdd-scenarios.md
 Stage 6    (Assessment)  → requires [doc-index]-research-report.md
 Stage 7    (Spec)        → requires [doc-index]-code-assessment.md
 Stage 9    (Execution)   → requires [doc-index]-specification.md + [doc-index]-implementation-plan.md + [doc-index]-task-list.md
@@ -426,7 +426,7 @@ Multi-source research, option presentation, Time MCP integration, and synthesis 
 
 ### Document Templates (XML-tagged)
 
-14 XML-tagged document templates in `templates/reference/*-template.md`. Each agent loads its template at runtime for consistent document formatting. Templates cover: requirements, behavior-scenarios, specification, implementation-plan, task-list, handoff, code-review, adversarial-review, implementation-summary, architecture, design-spec, product-design-summary, spec-review, qa-report.
+14 XML-tagged document templates in `templates/reference/*-template.md`. Each agent loads its template at runtime for consistent document formatting. Templates cover: requirements, bdd-scenarios, specification, implementation-plan, task-list, handoff, code-review, adversarial-review, implementation-summary, architecture, design-spec, product-design-summary, spec-review, qa-report.
 
 ### testing-patterns
 

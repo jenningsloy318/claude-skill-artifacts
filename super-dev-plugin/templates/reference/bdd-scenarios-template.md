@@ -1,11 +1,11 @@
 ---
-name: behavior-scenarios-template
+name: bdd-scenarios-template
 description: XML-tagged template for BDD behavior scenarios in Gherkin-like markdown. Used by bdd-scenario-writer agent to produce traceable Given/When/Then scenarios mapped to acceptance criteria with quality validation.
-doc-type: behavior-scenarios
+doc-type: bdd-scenarios
 gate-profile: gate-bdd.sh
 ---
 
-<document type="behavior-scenarios">
+<document type="bdd-scenarios">
 
   <metadata>
     <field name="title">Behavior Scenarios: [Feature Name]</field>

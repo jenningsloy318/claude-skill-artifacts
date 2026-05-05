@@ -13,7 +13,7 @@ gate-profile: gate-build.sh
     <field name="author">super-dev:qa-agent</field>
     <field name="status">PASS | FAIL</field>
     <field name="spec-reference">[path to [doc-index]-specification.md]</field>
-    <field name="bdd-reference">[path to [doc-index]-behavior-scenarios.md]</field>
+    <field name="bdd-reference">[path to [doc-index]-bdd-scenarios.md]</field>
     <field name="implementation-reference">[path to [doc-index]-implementation-summary.md]</field>
     <field name="application-modality">CLI | Desktop UI | Web App</field>
   </metadata>
@@ -249,6 +249,6 @@ When rendering this template to markdown:
 
 - Load this template via `${CLAUDE_PLUGIN_ROOT}/templates/reference/qa-report-template.md`
 - Write to the EXACT filename given by Team Lead in the spawn prompt's `OUTPUT FILENAME` field
-- Every BDD scenario from `[doc-index]-behavior-scenarios.md` MUST appear in the BDD Scenario Coverage table
+- Every BDD scenario from `[doc-index]-bdd-scenarios.md` MUST appear in the BDD Scenario Coverage table
 - Omit Browser Smoke Test and CodeRabbit sections when not applicable (do not leave empty tables)
 - Update Quality Gates Checklist items to `status="done"` as each gate passes
