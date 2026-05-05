@@ -22,7 +22,7 @@ license: MIT
   <stage n="6.3" name="Architecture Design">Spawn architecture-agent. Selection: Architecture ONLY → 6.3. UI ONLY → 6.5. BOTH → 6.4 (product-designer).</stage>
   <stage n="6.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</stage>
   <stage n="7" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</stage>
-  <stage n="8" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</stage>
+  <stage n="8" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Reviewer MUST verify spec covers ALL requirements ACs, ALL BDD scenarios, and aligns with architecture/UI design decisions. Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</stage>
   <stage n="9" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Specialist MUST produce `*-implementation-summary.md` documenting changes, decisions, and challenges. Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
   <stage n="10" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</stage>
   <stage n="11" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</stage>
