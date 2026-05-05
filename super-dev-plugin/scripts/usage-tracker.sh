@@ -44,7 +44,7 @@ if [ ! -f "$STATS_FILE" ]; then
 INIT
 fi
 
-# Increment counters using jq
+# Increment counters using jq (atomic write via temp file + mv)
 case "$TOOL_NAME" in
   Skill)
     UPDATED=$(jq --arg name "$SKILL_NAME" --arg ts "$TIMESTAMP" '
@@ -53,7 +53,9 @@ case "$TOOL_NAME" in
       .last_updated = $ts
     ' "$STATS_FILE" 2>/dev/null)
     if [ -n "$UPDATED" ]; then
-      echo "$UPDATED" > "$STATS_FILE"
+      TMP_STATS=$(mktemp)
+      echo "$UPDATED" > "$TMP_STATS"
+      mv "$TMP_STATS" "$STATS_FILE"
     fi
     ;;
   Agent)
@@ -63,7 +65,9 @@ case "$TOOL_NAME" in
       .last_updated = $ts
     ' "$STATS_FILE" 2>/dev/null)
     if [ -n "$UPDATED" ]; then
-      echo "$UPDATED" > "$STATS_FILE"
+      TMP_STATS=$(mktemp)
+      echo "$UPDATED" > "$TMP_STATS"
+      mv "$TMP_STATS" "$STATS_FILE"
     fi
     ;;
 esac

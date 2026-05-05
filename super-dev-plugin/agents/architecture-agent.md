@@ -62,15 +62,6 @@ model: inherit
   Verify every file path, API, and pattern reference against actual codebase using Grep/Glob/Read. If referencing an existing pattern, cite the exact file and line. If proposing a new pattern, explicitly mark as "NEW — does not exist in current codebase."
 </constraint>
 
-<code-sample lang="typescript" concept="Interface design: minimal surface">
-// Good: Minimal interface — expose only what's necessary
-interface UserService {
-  getById(id: string): Promise&lt;User&gt;;
-  create(data: CreateUserDTO): Promise&lt;User&gt;;
-}
-// Bad: Exposing internals (_validateEmail, _hashPassword)
-</code-sample>
-
 <output>
   <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/architecture-template.md` and fill in all placeholders.</template>
   <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>

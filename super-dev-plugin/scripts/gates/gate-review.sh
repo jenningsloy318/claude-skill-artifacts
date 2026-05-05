@@ -34,13 +34,13 @@ fi
 # Find adversarial review file
 ADV_REVIEW=$(find "$SPEC_DIR" -name "*adversarial*" -type f 2>/dev/null | head -1)
 if [ -n "$ADV_REVIEW" ]; then
-    # Check for PASS or CONTESTED verdict (CONTESTED = Team Lead accepted)
-    adv_verdict=$(grep -iE '(PASS|CONTESTED|REJECT|HALT)' "$ADV_REVIEW" | head -1 || echo "")
-    is_pass=$(echo "$adv_verdict" | grep -ciE "PASS|CONTESTED" || true)
+    # Check for PASS verdict
+    adv_verdict=$(grep -iE '(PASS|REJECT|HALT)' "$ADV_REVIEW" | head -1 || echo "")
+    is_pass=$(echo "$adv_verdict" | grep -ci "PASS" || true)
     is_reject=$(echo "$adv_verdict" | grep -ci "REJECT" || true)
 
     check "Adversarial review exists" "true"
-    check "Adversarial review PASS or CONTESTED (verdict: $(echo "$adv_verdict" | head -c 50))" "$([ "$is_pass" -gt 0 ] && [ "$is_reject" -eq 0 ] && echo true || echo false)"
+    check "Adversarial review PASS (verdict: $(echo "$adv_verdict" | head -c 50))" "$([ "$is_pass" -gt 0 ] && [ "$is_reject" -eq 0 ] && echo true || echo false)"
 else
     check "Adversarial review file exists" "false"
 fi

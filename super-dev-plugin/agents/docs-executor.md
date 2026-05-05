@@ -33,8 +33,8 @@ model: inherit
   - BDD Scenarios (`*-bdd-scenarios.md`): Update if acceptance criteria were modified or new scenarios discovered
   - Requirements (`*-requirements.md`): Update if requirements were clarified or scope changed
 
-  PROJECT-LEVEL:
-  - README.md: Update for user-facing changes (gate-docs-drift.sh requires this)
+  PROJECT-LEVEL (optional):
+  - README.md: Update for user-facing changes if applicable
 </output>
 
 <process>
@@ -49,9 +49,7 @@ model: inherit
 </process>
 
 <process name="Gate Compliance (gate-docs-drift.sh)">
-  1. README.md exists: If missing, create minimal one. If exists, update for user-facing changes.
-  2. README.md non-trivial: Must exceed 100 characters.
-  3. TODO/FIXME count: Project must have 5 or fewer source files containing TODO/FIXME/HACK/XXX across `.ts`, `.tsx`, `.js`, `.py`, `.rs`, `.go` files. Resolve those introduced by current workflow.
+  The gate checks spec directory markdown files for leftover placeholders (TODO/FIXME/TBD/PLACEHOLDER/[INSERT]/[FILL]). Threshold: 3 or fewer total across all spec .md files. Also verifies key artifacts exist (specification, implementation-plan, task-list, implementation-summary, workflow-tracking.json).
 
   If any check fails, gate blocks Stage 11.5 (Handoff Writing).
 </process>

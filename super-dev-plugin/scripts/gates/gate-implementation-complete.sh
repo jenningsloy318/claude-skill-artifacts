@@ -14,18 +14,14 @@ source "$(dirname "$0")/gate-lib.sh"
 IMPL_PLAN=$(find "$SPEC_DIR" -name "*implementation-plan*" -type f 2>/dev/null | head -1)
 if [ -z "$IMPL_PLAN" ]; then
     check "Implementation plan exists" "false"
-    echo "GATE: Implementation Completeness"
-    echo "  Score: 0/1 checks passed"
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
+    gate_report "Implementation Completeness"
 fi
 check "Implementation plan exists" "true"
 
-# Count phases in implementation plan (matches "Phase N:" pattern in section headings)
+# Count phases in implementation plan (matches multiple heading formats)
 PLAN_PHASE_COUNT=$(grep -cE '(Phase [0-9]+[[:space:]]*:|\bPhase [0-9]+\b.*Objective)' "$IMPL_PLAN" 2>/dev/null || echo "0")
 if [ "$PLAN_PHASE_COUNT" -eq 0 ]; then
-    # Fallback: count subsection titles with "Phase" in them
+    # Fallback: XML template format or markdown headings
     PLAN_PHASE_COUNT=$(grep -cE '(title="Phase [0-9]+|## Phase [0-9]+|### Phase [0-9]+)' "$IMPL_PLAN" 2>/dev/null || echo "0")
 fi
 check "Implementation plan has phases (found: ${PLAN_PHASE_COUNT})" "$([ "$PLAN_PHASE_COUNT" -gt 0 ] && echo true || echo false)"
@@ -34,12 +30,7 @@ check "Implementation plan has phases (found: ${PLAN_PHASE_COUNT})" "$([ "$PLAN_
 TRACKING_JSON=$(find "$SPEC_DIR" -name "*workflow-tracking*" -type f 2>/dev/null | head -1)
 if [ -z "$TRACKING_JSON" ]; then
     check "Workflow tracking JSON exists" "false"
-    TOTAL=$((PASS + FAIL))
-    echo "GATE: Implementation Completeness"
-    echo "  Score: ${PASS}/${TOTAL} checks passed"
-    echo -e "  Failures:${ERRORS}"
-    echo "GATE RESULT: FAIL"
-    exit 1
+    gate_report "Implementation Completeness"
 fi
 check "Workflow tracking JSON exists" "true"
 

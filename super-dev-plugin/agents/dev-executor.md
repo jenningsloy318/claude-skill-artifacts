@@ -24,11 +24,11 @@ model: inherit
   <step n="2" name="Build Management">For Rust/Go: request build through Coordinator (one build at a time). Build types: check (fast syntax), debug, release, test. JS/Python builds are concurrent and don't need queue.</step>
   <step n="3" name="Error Handling">On build failure: read error, locate code, analyze root cause, apply fix, re-request build (max 2 attempts). If still failing → trigger Investigation Protocol via super-dev:investigator. If investigation resolves → apply fix and rebuild. If inconclusive → report BUILD_BLOCKED.</step>
   <step n="4" name="Write Implementation Summary">After all tasks complete, write `{spec_directory}/{implementation_summary_filename}` documenting: tasks completed, files changed (created/modified/deleted), technical decisions with rationale, challenges encountered with solutions. Template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md`.</step>
-  <step n="5" name="Signal Completion">After implementing code: `DEV_COMPLETE: [task_id] [files_changed]`. After build: `BUILD_COMPLETE: [build_type] [timestamp]`. If blocked: `DEV_BLOCKED: [task_id] [error_description]`.</step>
+  <step n="5" name="Signal Completion">After all tasks: report completion to Team Lead with files_changed list. If blocked: `DEV_BLOCKED: [task_id] [error_description]`.</step>
 </process>
 
 <process name="Gate Compliance">
-  gate-build.sh: All code must compile/build and tests must pass. gate-docs-drift.sh: Project must have 5 or fewer source files with TODO/FIXME/HACK/XXX. Before signaling DEV_COMPLETE, check with `grep -rl "TODO\|FIXME\|HACK\|XXX"`.
+  gate-build.sh: All code must compile/build and tests must pass.
 </process>
 
 <checklist>
@@ -42,5 +42,5 @@ model: inherit
 </checklist>
 
 <collaboration>
-  Runs in parallel with `qa-agent` (tests) and `docs-executor` (documentation). Signal build completion for QA, task completion for docs. Notify if blocked.
+  Runs as Step 9.2 in the sequential TDD workflow: tdd-guide (9.1) → dev-executor (9.2) → qa-agent (9.3). Receives test files from Step 9.1 and makes them pass. Team Lead waits for completion before spawning qa-agent.
 </collaboration>

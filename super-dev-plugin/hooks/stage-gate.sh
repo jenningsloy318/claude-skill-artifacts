@@ -19,8 +19,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST="${SCRIPT_DIR}/stage-manifest.json"
 [ ! -f "$MANIFEST" ] && exit 0
 
-# Check if this agent type has gate requirements
+# Check if this agent type has gate requirements (direct lookup first, then groups)
 GATE=$(jq -r --arg agent "$agent_type" '.gates[$agent] // empty' "$MANIFEST" 2>/dev/null)
+if [ -z "$GATE" ]; then
+  # Check groups for matching agent
+  GATE=$(jq -r --arg agent "$agent_type" '
+    .groups[]? | select(.match[] == $agent) | .gate
+  ' "$MANIFEST" 2>/dev/null | head -1)
+fi
 [ -z "$GATE" ] && exit 0
 
 # Extract spec directory from agent prompt
@@ -48,12 +54,7 @@ fi
 
 # Method 3: Scan for spec directories in current working directory
 if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
-  for candidate in specification/*/; do
-    if [ -d "$candidate" ]; then
-      SPEC_DIR=$(ls -td specification/*/ 2>/dev/null | head -1 || echo "")
-      break
-    fi
-  done
+  SPEC_DIR=$(ls -td specification/*/ 2>/dev/null | head -1 || echo "")
 fi
 
 # Method 4: Check worktree paths (hook runs from main repo root, but spec is inside worktree)
@@ -81,12 +82,7 @@ fi
 
 # Method 5: Check parent directory (already inside worktree)
 if [ -z "$SPEC_DIR" ] || [ ! -d "$SPEC_DIR" ]; then
-  for candidate in ../specification/*/; do
-    if [ -d "$candidate" ]; then
-      SPEC_DIR=$(ls -td ../specification/*/ 2>/dev/null | head -1 || echo "")
-      break
-    fi
-  done
+  SPEC_DIR=$(ls -td ../specification/*/ 2>/dev/null | head -1 || echo "")
 fi
 
 # If no spec directory found, allow (early phases haven't created it yet)
@@ -96,6 +92,10 @@ fi
 
 # Remove trailing slash
 SPEC_DIR="${SPEC_DIR%/}"
+
+# Extract stage info once
+STAGE=$(echo "$GATE" | jq -r '.stage')
+DESCRIPTION=$(echo "$GATE" | jq -r '.description')
 
 # Check previous stage status in workflow-tracking.json
 PREV_STAGES=$(echo "$GATE" | jq -r '.previousStages[]? // empty' 2>/dev/null)
@@ -119,7 +119,6 @@ if [ -n "$PREV_STAGES" ]; then
     done <<< "$PREV_STAGES"
 
     if [ -n "$BLOCKED_STAGES" ]; then
-      STAGE=$(echo "$GATE" | jq -r '.stage')
       echo "STAGE GATE BLOCKED: Cannot start Stage ${STAGE} (${agent_type})." >&2
       echo "Reason: Previous stage(s) not complete in workflow-tracking.json." >&2
       echo "" >&2
@@ -132,8 +131,6 @@ if [ -n "$PREV_STAGES" ]; then
 fi
 
 # Check required files
-STAGE=$(echo "$GATE" | jq -r '.stage')
-DESCRIPTION=$(echo "$GATE" | jq -r '.description')
 MISSING=""
 
 while IFS= read -r req_file; do

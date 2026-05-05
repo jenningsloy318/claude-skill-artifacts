@@ -26,20 +26,6 @@ model: inherit
   Supplementary Bash Scripts (after Firecrawl): Exa, DeepWiki, Context7, GitHub. All at `${CLAUDE_PLUGIN_ROOT}/scripts/`.
 </tools>
 
-<code-sample lang="bash" concept="Supplementary search script arguments">
-# Exa web search
-${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_search.sh --query "[query]" --type auto --results 10
-# Exa code search
-${CLAUDE_PLUGIN_ROOT}/scripts/exa/exa_code.sh --query "[query]" --tokens 5000
-# DeepWiki repo docs
-${CLAUDE_PLUGIN_ROOT}/scripts/deepwiki/deepwiki_ask.sh --repo "[owner/repo]" --question "[question]"
-# Context7 library docs
-${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_resolve.sh --library "[library-name]"
-${CLAUDE_PLUGIN_ROOT}/scripts/context7/context7_docs.sh --library-id "[id]" --mode code --topic "[topic]"
-# GitHub code search
-${CLAUDE_PLUGIN_ROOT}/scripts/github/github_search_code.sh --query "[query]" --per-page 10
-</code-sample>
-
 <constraints>
   <constraint name="Option Presentation (MANDATORY)">ALWAYS present 3-5 options with detailed comparisons for decision points (technology selection, framework choices, architecture patterns, implementation approaches)</constraint>
   <constraint name="Time MCP Integration">Get current timestamp before any research. Include year in all search queries. Apply recency scoring (less than 6 months: Fresh, 6-12 months: Current, 1-2 years: Dated, over 2 years: Potentially Outdated). Flag deprecated sources.</constraint>
