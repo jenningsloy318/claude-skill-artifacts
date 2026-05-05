@@ -72,9 +72,9 @@
     },
     "super-dev:dev-executor": {
       "stage": "9",
-      "description": "Execution (Stage 9) requires complete specification, plan, and task list",
+      "description": "Execution (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -82,9 +82,9 @@
     },
     "super-dev:rust-developer": {
       "stage": "9",
-      "description": "Rust implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Rust implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -92,9 +92,9 @@
     },
     "super-dev:golang-developer": {
       "stage": "9",
-      "description": "Go implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Go implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -102,9 +102,9 @@
     },
     "super-dev:frontend-developer": {
       "stage": "9",
-      "description": "Frontend implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Frontend implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -112,9 +112,9 @@
     },
     "super-dev:backend-developer": {
       "stage": "9",
-      "description": "Backend implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Backend implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -122,9 +122,9 @@
     },
     "super-dev:ios-developer": {
       "stage": "9",
-      "description": "iOS implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "iOS implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -132,9 +132,9 @@
     },
     "super-dev:android-developer": {
       "stage": "9",
-      "description": "Android implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Android implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -142,9 +142,9 @@
     },
     "super-dev:windows-app-developer": {
       "stage": "9",
-      "description": "Windows implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "Windows implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -152,9 +152,9 @@
     },
     "super-dev:macos-app-developer": {
       "stage": "9",
-      "description": "macOS implementation (Stage 9) requires complete specification, plan, and task list",
+      "description": "macOS implementation (Stage 9) requires complete specification, plan, task list, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-plan.md", "[doc-index]-task-list.md", "[doc-index]-spec-review.md"],
       "sections": {
         "[doc-index]-specification.md": ["Implementation"],
         "[doc-index]-task-list.md": ["Task"]
@@ -162,9 +162,9 @@
     },
     "super-dev:qa-agent": {
       "stage": "9",
-      "description": "QA (Stage 9) requires complete specification and BDD scenarios",
+      "description": "QA (Stage 9) requires complete specification, BDD scenarios, and approved spec review",
       "previousStages": [8],
-      "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md"],
+      "requires": ["[doc-index]-specification.md", "[doc-index]-behavior-scenarios.md", "[doc-index]-spec-review.md"],
       "sections": {}
     },
     "super-dev:code-reviewer": {
