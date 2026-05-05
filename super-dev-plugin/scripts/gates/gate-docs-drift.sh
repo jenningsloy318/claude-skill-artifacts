@@ -28,7 +28,8 @@ TODO_COUNT=0
 PLACEHOLDER_FILES=""
 for md_file in "$SPEC_DIR"/*.md; do
     [ -f "$md_file" ] || continue
-    file_todos=$(grep -ci 'TODO\|FIXME\|TBD\|PLACEHOLDER\|\[INSERT\]\|\[FILL' "$md_file" 2>/dev/null || echo "0")
+    file_todos=$(grep -ciE 'TODO|FIXME|TBD|PLACEHOLDER|\[INSERT\]|\[FILL' "$md_file" 2>/dev/null) || true
+    file_todos=${file_todos:-0}
     if [ "$file_todos" -gt 0 ]; then
         TODO_COUNT=$((TODO_COUNT + file_todos))
         PLACEHOLDER_FILES="${PLACEHOLDER_FILES}    $(basename "$md_file"): ${file_todos} placeholders\n"

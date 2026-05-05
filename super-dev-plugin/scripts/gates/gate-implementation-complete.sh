@@ -19,10 +19,12 @@ fi
 check "Implementation plan exists" "true"
 
 # Count phases in implementation plan (matches multiple heading formats)
-PLAN_PHASE_COUNT=$(grep -cE '(Phase [0-9]+[[:space:]]*:|\bPhase [0-9]+\b.*Objective)' "$IMPL_PLAN" 2>/dev/null || echo "0")
+PLAN_PHASE_COUNT=$(grep -cE '(Phase [0-9]+[[:space:]]*:|\bPhase [0-9]+\b.*Objective)' "$IMPL_PLAN" 2>/dev/null) || true
+PLAN_PHASE_COUNT=${PLAN_PHASE_COUNT:-0}
 if [ "$PLAN_PHASE_COUNT" -eq 0 ]; then
     # Fallback: XML template format or markdown headings
-    PLAN_PHASE_COUNT=$(grep -cE '(title="Phase [0-9]+|## Phase [0-9]+|### Phase [0-9]+)' "$IMPL_PLAN" 2>/dev/null || echo "0")
+    PLAN_PHASE_COUNT=$(grep -cE '(title="Phase [0-9]+|## Phase [0-9]+|### Phase [0-9]+)' "$IMPL_PLAN" 2>/dev/null) || true
+    PLAN_PHASE_COUNT=${PLAN_PHASE_COUNT:-0}
 fi
 check "Implementation plan has phases (found: ${PLAN_PHASE_COUNT})" "$([ "$PLAN_PHASE_COUNT" -gt 0 ] && echo true || echo false)"
 
