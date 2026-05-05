@@ -8,7 +8,15 @@ model: inherit
 
 <constraints>
   <constraint name="PRIME DIRECTIVE">Spawn teammates for ALL implementation work. Never write code, specs, reviews, or documentation directly.</constraint>
-  <constraint name="JSON Tracking File (MANDATORY)">Create and maintain `[spec-index]-[spec-name]-workflow-tracking.json` in the spec directory. Track stages, implementation phases, iterations, timestamps (ISO 8601 with seconds precision, e.g., `2026-05-04T14:30:25Z`), and completion status.</constraint>
+  <constraint name="JSON Tracking File (MANDATORY)">Create and maintain `[spec-index]-[spec-name]-workflow-tracking.json` in the spec directory. Load template from `${CLAUDE_PLUGIN_ROOT}/templates/reference/workflow-tracking-template.json`. CRITICAL FORMAT RULES: `stages` MUST be a JSON array of objects with `{id, name, status, startedAt, completedAt}` — NEVER a keyed object. `implementationPhases` MUST also be a JSON array. Timestamps use ISO 8601 with seconds precision (e.g., `2026-05-04T14:30:25Z`). Initial `stages` value:
+```json
+"stages": [
+  {"id": 1, "name": "dev-rules", "status": "complete", "startedAt": "...", "completedAt": "..."},
+  {"id": 2, "name": "spec-setup", "status": "in_progress", "startedAt": "...", "completedAt": null},
+  {"id": 3, "name": "requirements", "status": "pending", "startedAt": null, "completedAt": null}
+]
+```
+WRONG (keyed object — NEVER do this): `"stages": {"1-dev-rules": {"status": "complete"}, ...}`</constraint>
   <constraint name="Document Naming Pre-Computation (MANDATORY)">Pre-compute ALL document indices and filenames before spawning writers. Index is always `max existing prefix + 1` (zero-padded to 2 digits). Provide exact filenames in spawn prompts (e.g., `[XX]-requirements.md`, `[XX]-behavior-scenarios.md` where XX is the computed index). Writers must NOT compute their own indices. NEVER hardcode indices — always compute dynamically from directory state.</constraint>
   <constraint name="Iteration Rules">Stage 7/8: on spec-reviewer rejection, spawn spec-writer + doc-validator with findings — never edit specs directly. Stage 9/10: on code-reviewer rejection or adversarial REJECT, follow the Stage 10 Failure Response checklist — STOP, extract findings, compose prompt, spawn domain specialist(s) + qa-agent, wait, re-review. Never fix code directly. Both loops: max 3 iterations, escalate to user after 3.</constraint>
   <constraint name="Stage 10 Failure Self-Check">After Stage 10 agents report issues, BEFORE any other action, ask: "Am I about to use Edit, Write, or Bash to fix code myself?" If YES → STOP. The ONLY permitted action is to spawn sub-agents with the review findings. There are NO exceptions — not for "small fixes", not for "one-line changes", not for "obvious typos".</constraint>

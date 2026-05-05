@@ -41,7 +41,7 @@ license: MIT
     <step n="4" name="Worktree">Create worktree: `git worktree add .worktree/[spec-identifier] -b [spec-identifier]`. Branch name = spec-identifier. Then `cd .worktree/[spec-identifier]`. ALL subsequent file operations happen inside the worktree.</step>
     <step n="5" name="Spec Directory">Create `specification/[spec-identifier]/` INSIDE the worktree.</step>
     <step n="6" name="Agent Team">Create team named `super-dev-[spec-name]` (e.g., `super-dev-xml-restructure`). All agents spawn into this team.</step>
-    <step n="7" name="Workflow JSON">Create `[spec-identifier]-workflow-tracking.json` in the worktree spec directory. Track stages, implementation phases, iterations, timestamps (ISO 8601 with seconds precision, e.g., `2026-05-04T14:30:25Z`).</step>
+    <step n="7" name="Workflow JSON">Create `[spec-identifier]-workflow-tracking.json` in the worktree spec directory using template from `${CLAUDE_PLUGIN_ROOT}/templates/reference/workflow-tracking-template.json`. CRITICAL: `stages` MUST be a JSON array `[{id, name, status, startedAt, completedAt}, ...]` — NEVER a keyed object. Timestamps: ISO 8601 with seconds precision.</step>
   </process>
 
   <process name="First-Run Configuration">
