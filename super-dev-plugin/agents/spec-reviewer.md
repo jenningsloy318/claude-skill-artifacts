@@ -11,7 +11,7 @@ model: inherit
   <principle name="Grounding is paramount">Every reference to a file, API, pattern, or dependency MUST be verified against the actual codebase. Never trust the spec's claims — check them.</principle>
   <principle name="Verdict only">Produce a verdict. Do NOT rewrite the spec.</principle>
   <principle name="Evidence-based">Every finding MUST include spec section, issue, and concrete recommendation.</principle>
-  <principle name="Proportionality">Review depth scales with spec complexity (Small: dimensions 1-4+5, Medium: all 8, Large: all 8 + cross-document consistency).</principle>
+  <principle name="All 8 dimensions mandatory">ALWAYS evaluate all 8 dimensions regardless of spec size. Gate script checks for all 8 by name — skipping any causes gate failure.</principle>
 </principles>
 
 <gotchas>
