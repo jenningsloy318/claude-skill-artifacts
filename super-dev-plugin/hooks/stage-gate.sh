@@ -20,14 +20,16 @@ MANIFEST="${SCRIPT_DIR}/stage-manifest.json"
 [ ! -f "$MANIFEST" ] && exit 0
 
 # Check if this agent type has gate requirements (direct lookup first, then groups)
-GATE=$(jq -r --arg agent "$agent_type" '.gates[$agent] // empty' "$MANIFEST" 2>/dev/null)
+GATE=$(jq -c --arg agent "$agent_type" '.gates[$agent] // empty' "$MANIFEST" 2>/dev/null || true)
 if [ -z "$GATE" ]; then
   # Check groups for matching agent (compact output so head -1 gets full JSON)
   GATE=$(jq -c --arg agent "$agent_type" '
     .groups[]? | select(.match[] == $agent) | .gate
-  ' "$MANIFEST" 2>/dev/null | head -1)
+  ' "$MANIFEST" 2>/dev/null | head -1 || true)
 fi
 [ -z "$GATE" ] && exit 0
+# Validate GATE is valid JSON before proceeding
+echo "$GATE" | jq empty 2>/dev/null || exit 0
 
 # Extract spec directory from agent prompt
 # The team-lead always includes "specification/[spec-index]-[spec-name]" in the prompt
@@ -94,8 +96,8 @@ fi
 SPEC_DIR="${SPEC_DIR%/}"
 
 # Extract stage info once
-STAGE=$(echo "$GATE" | jq -r '.stage')
-DESCRIPTION=$(echo "$GATE" | jq -r '.description')
+STAGE=$(echo "$GATE" | jq -r '.stage' 2>/dev/null || echo "unknown")
+DESCRIPTION=$(echo "$GATE" | jq -r '.description' 2>/dev/null || echo "")
 
 # Check previous stage status in workflow-tracking.json
 PREV_STAGES=$(echo "$GATE" | jq -r '.previousStages[]? // empty' 2>/dev/null)
