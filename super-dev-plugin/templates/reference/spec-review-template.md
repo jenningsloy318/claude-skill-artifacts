@@ -40,8 +40,8 @@ gate-profile: spec-review
     <row><cell>D4: Testability</cell><cell>X</cell><cell>Pass/Fail</cell></row>
     <row><cell>D5: Traceability</cell><cell>X</cell><cell>Pass/Fail</cell></row>
     <row><cell>D6: Grounding</cell><cell>X</cell><cell>Pass/Fail</cell></row>
-    <row><cell>D7: Complexity Fitness</cell><cell>X</cell><cell>Pass/Fail</cell></row>
-    <row><cell>D8: Ambiguity Detection</cell><cell>X</cell><cell>Pass/Fail</cell></row>
+    <row><cell>D7: Complexity</cell><cell>X</cell><cell>Pass/Fail</cell></row>
+    <row><cell>D8: Ambiguity</cell><cell>X</cell><cell>Pass/Fail</cell></row>
   </table>
 </section>
 
@@ -126,7 +126,7 @@ gate-profile: spec-review
   </findings>
 </section>
 
-<section title="D7: Complexity Fitness">
+<section title="D7: Complexity">
   <checklist>
     <item status="open">File count proportional to scope</item>
     <item status="open">Abstractions justified (2+ implementors)</item>
@@ -138,7 +138,7 @@ gate-profile: spec-review
   </findings>
 </section>
 
-<section title="D8: Ambiguity Detection">
+<section title="D8: Ambiguity">
   <checklist>
     <item status="open">API schemas fully defined</item>
     <item status="open">State transitions explicit</item>
