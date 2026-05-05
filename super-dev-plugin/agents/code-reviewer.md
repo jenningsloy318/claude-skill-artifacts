@@ -27,7 +27,9 @@ model: inherit
   <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
   <field name="output_filename" required="true">Exact output filename (e.g., `09-code-review.md`)</field>
   <field name="specification" required="true">Path to technical spec</field>
-  <field name="implementation_summary" required="true">What changed and why</field>
+  <field name="implementation_summary" required="true">Path to implementation summary from Stage 9</field>
+  <field name="requirements" required="true">Path to requirements document — verify implementation achieves all acceptance criteria</field>
+  <field name="bdd_scenarios" required="true">Path to BDD behavior scenarios — verify implementation covers all scenarios</field>
   <field name="base_sha" required="false">Base commit SHA for diff scoping</field>
   <field name="head_sha" required="false">Head commit SHA for diff scoping</field>
   <field name="files_changed" required="false">List of changed files</field>
