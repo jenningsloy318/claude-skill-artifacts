@@ -68,13 +68,14 @@ license: MIT
   </process>
 
   <process name="Document Naming Pre-Computation">
-    Team Lead pre-computes exact filenames BEFORE spawning agents. Agents receive concrete names (e.g., `03-research-report.md`), never `[doc-index]` placeholders.
+    Team Lead pre-computes exact filenames BEFORE spawning agents. Agents receive concrete names, never `[doc-index]` placeholders.
 
     <step n="1">List spec directory, find highest existing `[XX]` prefix</step>
     <step n="2">Next index = max + 1 (zero-padded to 2 digits)</step>
     <step n="3">For multi-doc stages, pre-allocate consecutive indices</step>
-    <step n="4">Pass EXACT filenames to agents via `OUTPUT FILENAME` in spawn prompts</step>
-    <step n="5">Doc-validator receives same filenames and verifies (not renames)</step>
+    <step n="4">Use canonical suffixes from team-lead constraint lookup table — NEVER derive from stage display name</step>
+    <step n="5">Pass EXACT filenames to agents via `OUTPUT FILENAME` in spawn prompts</step>
+    <step n="6">Doc-validator receives same filenames and verifies (not renames)</step>
   </process>
 
   <process name="Worktree Enforcement (PRE-STAGE GATE)">
