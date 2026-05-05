@@ -16,6 +16,8 @@ model: inherit
 </principles>
 
 <input>
+  <field name="spec_directory" required="true">Path to specification directory inside worktree</field>
+  <field name="output_filename" required="true">Exact output filename (e.g., `[XX]-qa-report.md` where XX is computed index)</field>
   <field name="requirements" required="true">Path to requirements document (AC-IDs to verify)</field>
   <field name="bdd_scenarios" required="true">Path to BDD scenarios (SCENARIO-IDs to verify coverage)</field>
   <field name="specification" required="true">Path to technical specification (expected behavior reference)</field>
@@ -29,7 +31,7 @@ model: inherit
   <step n="2" name="Run All Tests">Execute full test suite. Rust/Go: `cargo test` / `go test ./...`. JS/Python: `npm test` / `pytest`. Record traces for all executions.</step>
   <step n="3" name="Verify Coverage">Check coverage meets thresholds: overall 80%+, new/changed code 90%+, critical paths 100%. Map each AC-ID and SCENARIO-ID to passing test cases.</step>
   <step n="4" name="BDD Scenario Validation">For each SCENARIO-ID in bdd-scenarios.md: verify at least one passing test covers it. Report any uncovered scenarios.</step>
-  <step n="5" name="Report">Status (pass/fail, failing test names with errors). Coverage (overall and new/changed code delta). BDD scenario coverage mapping. Defect list with evidence.</step>
+  <step n="5" name="Write Report">Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/qa-report-template.md` and fill in all placeholders. Write report to `{spec_directory}/{output_filename}`. Include: test status, coverage metrics, BDD scenario mapping, defect list.</step>
   <step n="6" name="Handle Failures">Max 3 attempts. Classify: code bug → report to Team Lead for domain specialist fix, test bug → fix test directly, flaky → stabilize, env → document/workaround. If unresolved → emit QA_BLOCKED with evidence.</step>
 </process>
 
@@ -47,6 +49,7 @@ model: inherit
 
 <output>
   <template>Load `${CLAUDE_PLUGIN_ROOT}/templates/reference/qa-report-template.md` and fill in all placeholders.</template>
+  <filename>Write output to `{spec_directory}/{output_filename}` as provided by Team Lead. Do NOT rename or use a different filename.</filename>
 </output>
 
 <quality-gates>
