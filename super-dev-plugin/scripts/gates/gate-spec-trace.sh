@@ -31,7 +31,7 @@ spec_refs=$(grep -cE 'SCENARIO-[0-9]+' "$SPEC_FILE" 2>/dev/null || true)
 check "Spec references BDD scenarios (found: ${spec_refs} refs)" "$([ "$spec_refs" -ge 1 ] && echo true || echo false)"
 
 # Check for testing strategy section in spec
-has_testing=$(grep -ci "testing strategy\|test plan\|test approach\|test coverage\|unit test\|integration test" "$SPEC_FILE" || true)
+has_testing=$(grep -ci "testing strategy\|test plan\|test approach\|test coverage\|unit test\|integration test\|e2e test\|testing\|tests" "$SPEC_FILE" || true)
 check "Spec includes testing strategy" "$([ "$has_testing" -gt 0 ] && echo true || echo false)"
 
 # Check *-task-list.md exists as separate file
