@@ -23,7 +23,7 @@ license: MIT
   <stage n="6.5" name="UI/UX Design">Spawn ui-ux-designer. Only if UI feature.</stage>
   <stage n="7" name="Specification Writing">Spawn spec-writer + doc-validator (parallel). Produces specification, implementation plan, task list. Gate: gate-spec-trace.sh.</stage>
   <stage n="8" name="Specification Review">Spawn spec-reviewer + doc-validator (parallel). Gate: gate-spec-review.sh. On failure: follow Spec Iteration Loop.</stage>
-  <stage n="9" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
+  <stage n="9" name="Implementation">Domain-Aware Agent Routing: spawn specialist(s) + qa-agent (parallel). Specialist MUST produce `*-implementation-summary.md` documenting changes, decisions, and challenges. Gate: gate-build.sh. Loops through ALL implementation-plan phases via Implementation Completeness Loop.</stage>
   <stage n="10" name="Code Review + Adversarial Review">Spawn code-reviewer + adversarial-reviewer + 2x doc-validator (4 parallel). Gate: gate-review.sh. On failure: follow Implementation Iteration Loop.</stage>
   <stage n="11" name="Documentation Update">Spawn docs-executor. Gate: gate-docs-drift.sh. MANDATORY — do not skip.</stage>
   <stage n="11.5" name="Handoff Writing">Spawn handoff-writer. MANDATORY — do not skip.</stage>
@@ -111,7 +111,7 @@ license: MIT
 
     <step n="1" name="Initialize">At Stage 9 entry, Team Lead reads implementation-plan.md and task-list.md. Identify total number of implementation phases (N). Set currentPhase = 1. Update workflow tracking JSON: `implementationPhases[].status = "pending"` for all phases.</step>
     <step n="2" name="Scope Current Phase">Extract tasks belonging to the current phase from implementation-plan. Include only this phase's scope in the specialist spawn prompt. Update tracking: `implementationPhases[currentPhase].status = "in_progress"`.</step>
-    <step n="3" name="Execute">Spawn domain specialist(s) + qa-agent (parallel) scoped to current phase tasks. Run gate-build.sh after completion.</step>
+    <step n="3" name="Execute">Spawn domain specialist(s) + qa-agent (parallel) scoped to current phase tasks. Specialist MUST produce/update `*-implementation-summary.md` documenting changes, decisions, challenges. Run gate-build.sh after completion.</step>
     <step n="4" name="Review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel). If review fails → follow Implementation Iteration Loop (fix loop). If review passes → continue.</step>
     <step n="5" name="Mark Complete">Update tracking: `implementationPhases[currentPhase].status = "complete"`. Increment currentPhase.</step>
     <step n="6" name="Completeness Check">

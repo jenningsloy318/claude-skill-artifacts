@@ -169,14 +169,14 @@
     },
     "super-dev:code-reviewer": {
       "stage": "10",
-      "description": "Code review (Stage 10) requires specification (after execution). No previousStages check — participates in implementation iteration loop.",
-      "requires": ["[doc-index]-specification.md"],
+      "description": "Code review (Stage 10) requires specification and implementation summary. No previousStages check — participates in implementation iteration loop.",
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md"],
       "sections": {}
     },
     "super-dev:adversarial-reviewer": {
       "stage": "10",
-      "description": "Adversarial review (Stage 10) requires specification (after execution). No previousStages check — participates in implementation iteration loop.",
-      "requires": ["[doc-index]-specification.md"],
+      "description": "Adversarial review (Stage 10) requires specification and implementation summary. No previousStages check — participates in implementation iteration loop.",
+      "requires": ["[doc-index]-specification.md", "[doc-index]-implementation-summary.md"],
       "sections": {}
     },
     "super-dev:docs-executor": {

@@ -68,4 +68,8 @@ if [ "$JSON_PHASE_COUNT" -gt 0 ]; then
     fi
 fi
 
+# Check implementation-summary exists
+IMPL_SUMMARY=$(find "$SPEC_DIR" -name "*implementation-summary*" -type f 2>/dev/null | head -1)
+check "Implementation summary exists" "$([ -n "$IMPL_SUMMARY" ] && [ -s "$IMPL_SUMMARY" ] && echo true || echo false)"
+
 gate_report "Implementation Completeness"

@@ -46,7 +46,7 @@ model: inherit
 </constraint>
 
 <constraint name="Stage 11-13 (MANDATORY)">
-  Stage 11: Spawn docs-executor to update task-list, implementation-summary, and specification. Stage 11.5: Spawn handoff-writer for session handoff document. Stage 12: Terminate all remaining teammates. Verify all spec directory files are complete. Stage 13: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
+  Stage 11: Spawn docs-executor to update ALL spec directory files (task-list, implementation-plan, implementation-summary, specification, design docs). Stage 11.5: Spawn handoff-writer for session handoff document. Stage 12: Terminate all remaining teammates. Verify all spec directory files are complete. Stage 13: Commit all changes (spec directory + code) with descriptive message. Merge to main if on feature branch.
 </constraint>
 
 <quality-gates>
