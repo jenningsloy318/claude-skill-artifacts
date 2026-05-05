@@ -37,7 +37,7 @@ model: inherit
 </input>
 
 <process>
-  <step n="1" name="Gather Context">Read workflow tracking JSON for stage completion status and iteration count. Scan ALL spec directory artifacts — note only key decisions, unfinished items, risks. Run `git log --oneline main..HEAD` for commit count (do NOT list individual files). Identify deferred items from code review and adversarial review.</step>
+  <step n="1" name="Gather Context">Read workflow tracking JSON for stage completion status and iteration count. Scan ALL spec directory artifacts — note only key decisions, risks, and any items deferred to future work (NOT review findings — those are all resolved before reaching handoff). Run `git log --oneline main..HEAD` for commit count (do NOT list individual files). Unfinished Items section should only contain genuine future work (features explicitly scoped out, performance optimizations deferred, etc.) — never unresolved review findings.</step>
   <step n="2" name="Write the Handoff">Write to the EXACT filename provided in spawn prompt's `OUTPUT FILENAME` field. For each section ask: "Can the next agent get this from a source file?" If yes, point to the file instead.</step>
   <step n="3" name="Validate Conciseness">Verify: under 300 lines total, no section exceeds 30 lines, no copy-pasted content from spec artifacts, every file path is relative to project root, "Next Steps" has 3-5 concrete numbered actions.</step>
 </process>

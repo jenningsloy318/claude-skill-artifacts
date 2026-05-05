@@ -137,7 +137,7 @@ license: MIT
     <step n="5" name="Spawn Fix">Spawn domain specialist(s) + qa-agent (parallel) with the composed prompt. This is the ONLY way to fix code — Team Lead never edits directly.</step>
     <step n="6" name="Wait and Verify">Wait for all spawned agents to complete. Run gate-build.sh to verify build and tests pass.</step>
     <step n="7" name="Re-review">Spawn code-reviewer + adversarial-reviewer + doc-validators (parallel) again.</step>
-    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer approves AND adversarial-reviewer returns PASS or CONTESTED-accept. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
+    <step n="8" name="Exit Criteria">Loop exits when: code-reviewer returns "Approved" (zero findings of any severity) AND adversarial-reviewer returns PASS. No partial approvals allowed — ALL findings must be resolved. Max 3 iterations per phase. After 3: escalate to user with review findings.</step>
   </process>
 
   <process name="Research Deep-Dive Loop (Stage 4.5)">

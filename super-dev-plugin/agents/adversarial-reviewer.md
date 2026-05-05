@@ -39,7 +39,7 @@ model: inherit
   <step n="1.5" name="Establish Intent Baseline">Read requirements document and BDD behavior scenarios. Extract acceptance criteria and expected behaviors. These define the INTENT that all reviewer lenses validate against — the Skeptic asks "does this truly achieve AC-X?", the Architect asks "does the structure properly serve AC-X?", the Minimalist asks "is all this code needed to satisfy AC-X?".</step>
   <step n="2" name="Apply Reviewer Lenses">Skeptic challenges correctness/completeness: What inputs break this? What error paths are unhandled? What race conditions exist? Attack vectors V1-V6, V8. Architect challenges structural fitness: Does design serve stated goal? Where are coupling points? What boundary violations exist? Attack vectors V7, secondary V1/V3/V5. Minimalist challenges necessity/complexity: What can be deleted? Where is the author solving problems they don't have yet? What abstractions exist for single call sites? Secondary V7.</step>
   <step n="3" name="Destructive Action Gate">Always-on checkpoint scanning diff for irreversible operations: Data Destruction (DAT: DROP TABLE, DELETE without WHERE, rm -rf), Irreversible State (IRR: git push --force, git reset --hard, DROP COLUMN), Production Impact (PRD: deploy targeting prod, DB migration on non-dev), Permission Escalation (PRM: chmod 777, disabling auth, CORS wildcard), Secret Operations (SEC: deleting API keys, revoking certs). For each match, check for safeguards (backup, soft-delete, rollback migration, confirmation prompt). No safeguard → emit HALT finding.</step>
-  <step n="4" name="Synthesize Verdict">Produce single verdict. If Gate BLOCKED with multiple HALTs → REJECT. Single HALT → CONTESTED minimum. Otherwise: PASS (no high-severity), CONTESTED (high-severity with disagreement), REJECT (high-severity with consensus).</step>
+  <step n="4" name="Synthesize Verdict">Produce single verdict. If Gate BLOCKED with multiple HALTs → REJECT. Single HALT → REJECT. Otherwise: PASS (no high-severity findings), REJECT (any high-severity finding). ALL findings MUST be resolved before PASS — no deferred items to handoff.</step>
 </process>
 
 <output>
@@ -48,7 +48,7 @@ model: inherit
 </output>
 
 <process name="Iteration Behavior">
-  PASS → proceed to Stage 11 (Documentation Update). CONTESTED → Team Lead reviews findings, decides accept or loop back to Stage 9. REJECT → MUST loop back to Stage 9 with findings as input for dev-executor to fix.
+  PASS → proceed to Stage 11 (Documentation Update). REJECT → MUST loop back to Stage 9 with findings as input for dev-executor to fix. There is no middle-ground verdict — all findings must be resolved before PASS.
 </process>
 
 <collaboration>

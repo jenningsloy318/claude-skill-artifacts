@@ -46,7 +46,7 @@ model: inherit
   <step n="6" name="Validate Against Spec">For each AC: Met/Not Met/Partial/N/A with file:line evidence. Check non-goals not implemented.</step>
   <step n="6.1" name="BDD Scenario Coverage">Read behavior-scenarios and QA coverage report. Verify each SCENARIO-XXX has corresponding passing test. Missing scenarios → High severity, Changes Requested.</step>
   <step n="6.5" name="External Expert Review (Optional)">If `code-review-expert` skill available, invoke for SOLID/architecture review. Merge findings, deduplicate by location, prioritize higher severity.</step>
-  <step n="7" name="Synthesize Report">Critical → Blocked. High greater than 3 or AC not met or scenario coverage less than 100% → Changes Requested. High/Medium exist → Approved with Comments. Else → Approved.</step>
+  <step n="7" name="Synthesize Report">Critical → Blocked. Any High, Medium, or Low finding, or AC not met, or scenario coverage less than 100% → Changes Requested. Zero findings → Approved. ALL findings of any severity MUST be resolved before approval — nothing deferred to handoff.</step>
 </process>
 
 <output>
