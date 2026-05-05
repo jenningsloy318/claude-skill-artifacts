@@ -22,8 +22,8 @@ MANIFEST="${SCRIPT_DIR}/stage-manifest.json"
 # Check if this agent type has gate requirements (direct lookup first, then groups)
 GATE=$(jq -r --arg agent "$agent_type" '.gates[$agent] // empty' "$MANIFEST" 2>/dev/null)
 if [ -z "$GATE" ]; then
-  # Check groups for matching agent
-  GATE=$(jq -r --arg agent "$agent_type" '
+  # Check groups for matching agent (compact output so head -1 gets full JSON)
+  GATE=$(jq -c --arg agent "$agent_type" '
     .groups[]? | select(.match[] == $agent) | .gate
   ' "$MANIFEST" 2>/dev/null | head -1)
 fi
