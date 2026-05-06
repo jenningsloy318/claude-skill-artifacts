@@ -1,22 +1,23 @@
 ---
-description: Conduct multi-source research
-agent: research-agent
+name: research
+description: Conduct comprehensive research on best practices, patterns, and documentation
 ---
 
-Research best practices and implementation approaches:
+<purpose>Activate the research-agent to research best practices, documentation, and patterns with Time MCP integration for recency awareness. Firecrawl MCP first, then supplementary search tools.</purpose>
 
-1. Search official documentation (Context7)
-2. Find code examples (GitHub Search)
-3. Query web resources (Exa/Perplexity)
-4. Analyze similar projects (DeepWiki)
+<usage>/super-dev:research [research topic]</usage>
 
-Present findings as:
-- 3-5 implementation options
-- Comparison matrix
-- Clear trade-offs
-- Recommendation with justification
+<reference name="Research Areas">
+  Best Practices and Design Patterns: Established patterns, anti-patterns, recommended architectures, industry standards. Official Documentation: API references, configuration options, language-specific guidelines. Community Knowledge: Blog posts, tutorials, Stack Overflow, GitHub issues, conference talks. Performance and Edge Cases: Benchmarks, known limitations, security considerations.
+</reference>
 
-Research topic: $ARGUMENTS
+<output>
+  <format>Research report (`[doc-index]-research-report.md`) with: summary, deprecation warnings, best practices and anti-patterns, official docs, community insights, performance considerations, source freshness analysis.</format>
+</output>
 
-Cite all sources and provide actionable recommendations.
-Create research report in specification/[index]-research-report.md
+<constraints>
+  <constraint>Firecrawl MCP first, then supplementary scripts</constraint>
+  <constraint>No source limits; focus on latest industry standards</constraint>
+  <constraint>Emphasizes recent sources (last 6-12 months)</constraint>
+  <constraint>Flags deprecated patterns</constraint>
+</constraints>

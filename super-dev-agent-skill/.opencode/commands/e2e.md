@@ -1,21 +1,26 @@
 ---
-description: Generate and run E2E tests with Playwright
-agent: qa-agent
+name: e2e
+description: Generate and run end-to-end tests with Playwright including test journeys, screenshots, videos, and traces
 ---
 
-Generate and run End-to-End tests using Playwright:
+<purpose>Invoke the e2e-runner agent to generate, maintain, and execute end-to-end tests using Playwright. Creates test journeys, runs tests across browsers, captures artifacts, quarantines flaky tests, and ensures critical user flows work.</purpose>
 
-1. Identify critical user workflows
-2. Generate E2E test cases
-3. Run tests and report results
-4. Fix any failing tests
+<usage>/super-dev:e2e [feature or user flow to test]</usage>
 
-Coverage requirements:
-- Critical user workflows covered
-- Cross-browser testing (Chrome, Firefox, Safari)
-- Mobile responsiveness tests
-- Error scenario tests
+<output name="What It Does">
+  Test Generation: Create Playwright tests from requirements and BDD scenarios. Cross-Browser: Run across Chrome, Firefox, Safari (WebKit). Artifact Management: Capture screenshots on failure, videos for critical flows, traces for debugging. Flaky Test Handling: Detect, quarantine, and stabilize intermittent failures.
+</output>
 
-For: $ARGUMENTS
+<process>
+  <step n="1" name="Analyze">Read requirements and BDD scenarios. Map critical user flows to test journeys.</step>
+  <step n="2" name="Generate">Create Playwright test files with page object model. Semantic selectors, setup/teardown, happy/error/edge paths.</step>
+  <step n="3" name="Execute">Run headless across browsers. Record traces, screenshots, network, console.</step>
+  <step n="4" name="Report">Pass/fail with evidence. Classify failures. Quarantine flaky tests.</step>
+</process>
 
-Create tests in the e2e/ or tests/e2e/ directory following Playwright best practices.
+<constraints>
+  <constraint>Semantic selectors (data-testid, role, text) over CSS/XPath</constraint>
+  <constraint>Each test independent — no shared state</constraint>
+  <constraint>Explicit waits, not arbitrary timeouts</constraint>
+  <constraint>Traces recorded for all CI runs</constraint>
+</constraints>

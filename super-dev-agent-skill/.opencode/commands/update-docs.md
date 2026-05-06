@@ -1,30 +1,17 @@
 ---
-description: Update project documentation
-agent: docs-executor
+name: update-docs
+description: Sync documentation from source-of-truth (package.json and .env.example)
 ---
 
-Update project documentation:
+<purpose>Read package.json scripts and .env.example to generate docs/CONTRIB.md (development workflow, scripts, environment setup, testing) and docs/RUNBOOK.md (deployment, monitoring, common issues, rollback). Identify obsolete documentation not modified in 90+ days.</purpose>
 
-1. Update README with new features/changes
-2. Update CHANGELOG with recent changes
-3. Add/update code comments
-4. Update API documentation
+<process>
+  <step n="1" name="Extract">Read package.json scripts section. Read .env.example for environment variables.</step>
+  <step n="2" name="Generate CONTRIB">Development workflow, available scripts, environment setup, testing procedures.</step>
+  <step n="3" name="Generate RUNBOOK">Deployment procedures, monitoring and alerts, common issues and fixes, rollback procedures.</step>
+  <step n="4" name="Audit">Find docs not modified in 90+ days. List for manual review. Show diff summary.</step>
+</process>
 
-Documentation to update:
-- README.md - Features, usage, installation
-- CHANGELOG.md - Recent changes
-- API.md - API documentation
-- Code comments and docstrings
-- Configuration docs
-
-Recent changes to document:
-!`git log --oneline -10`
-
-Files modified:
-!`git diff --name-only HEAD~5..HEAD`
-
-Ensure:
-- Documentation is accurate
-- Examples are correct
-- Links work
-- Follows project conventions
+<constraints>
+  <constraint>Single source of truth: package.json and .env.example</constraint>
+</constraints>

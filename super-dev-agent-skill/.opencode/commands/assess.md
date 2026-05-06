@@ -1,34 +1,20 @@
 ---
-description: Assess codebase architecture and patterns
-agent: code-assessor
+name: code-assessment
+description: Assess existing codebase for architecture, standards, and framework patterns
 ---
 
-Assess existing codebase:
+<purpose>Activate the code-assessor agent to evaluate codebase architecture, standards compliance, framework patterns, and technical debt. Maps existing patterns before implementing changes.</purpose>
 
-1. Analyze architecture and patterns
-2. Document technology stack
-3. Identify code conventions
-4. Evaluate quality metrics
+<usage>/super-dev:code-assessment [feature/area to assess]</usage>
 
-Assessment areas:
-- Architecture patterns
-- Technology stack
-- Code patterns and conventions
-- Quality indicators (coverage, complexity)
-- Dependencies health
+<reference name="Assessment Areas">
+  Architecture: Module organization, design patterns, code structure, integration boundaries. Standards Compliance: Coding style, naming conventions, error handling, testing practices. Framework Usage: Frameworks/libraries, version compatibility, integration patterns, custom configs. Technical Debt: Complexity hotspots, duplication, outdated patterns, performance concerns.
+</reference>
 
-Use ast-grep for structural analysis:
-!`ast-grep --version 2>/dev/null || echo "ast-grep not installed"`
+<arguments>
+  Feature or area to implement, specific concerns, integration requirements.
+</arguments>
 
-Configuration analysis:
-!`ls -la package.json tsconfig.json Cargo.toml go.mod requirements.txt 2>/dev/null | head -5`
-
-Output: Create assessment report in specification/[index]-assessment.md
-
-Include:
-- Architecture overview
-- Technology stack
-- Code patterns catalog
-- Style conventions
-- Quality metrics
-- Implementation recommendations
+<output>
+  <format>Assessment report (`[doc-index]-code-assessment.md`) with: architecture overview, standards findings, framework inventory, integration recommendations, technical debt assessment, implementation guidance.</format>
+</output>

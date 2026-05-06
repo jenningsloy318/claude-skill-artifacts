@@ -1,13 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "name": "super-dev",
-  "description": "Coordinator-driven development workflow with parallel agent execution",
+  "description": "Team Lead-driven development workflow with parallel agent execution",
   "agent": {
-    "coordinator": {
+    "team-lead": {
       "mode": "primary",
       "description": "Team Lead orchestrator for the super-dev workflow",
       "temperature": 0.2,
-      "prompt": "{file:.opencode/agents/coordinator.md}",
+      "prompt": "{file:.opencode/agents/team-lead.md}",
       "tools": {
         "write": true,
         "edit": true,
@@ -20,6 +20,17 @@
       "description": "Requirements clarification specialist",
       "temperature": 0.3,
       "prompt": "{file:.opencode/agents/requirements-clarifier.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "bdd-scenario-writer": {
+      "mode": "subagent",
+      "description": "BDD scenario writing specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/bdd-scenario-writer.md}",
       "tools": {
         "write": true,
         "edit": true,
@@ -85,6 +96,17 @@
         "bash": false
       }
     },
+    "product-designer": {
+      "mode": "subagent",
+      "description": "Product designer (architecture + UI/UX)",
+      "temperature": 0.4,
+      "prompt": "{file:.opencode/agents/product-designer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
     "spec-writer": {
       "mode": "subagent",
       "description": "Specification writing specialist",
@@ -94,6 +116,42 @@
         "write": true,
         "edit": true,
         "bash": false
+      }
+    },
+    "spec-reviewer": {
+      "mode": "subagent",
+      "description": "Specification review specialist",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/spec-reviewer.md}",
+      "tools": {
+        "write": true,
+        "edit": false,
+        "bash": false,
+        "read": true
+      }
+    },
+    "doc-validator": {
+      "mode": "subagent",
+      "description": "Document validation and gate script runner",
+      "temperature": 0.1,
+      "prompt": "{file:.opencode/agents/doc-validator.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "read": true
+      }
+    },
+    "tdd-guide": {
+      "mode": "subagent",
+      "description": "Test-driven development guide (RED phase)",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/tdd-guide.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
       }
     },
     "dev-executor": {
@@ -136,6 +194,21 @@
         "write": "deny"
       }
     },
+    "adversarial-reviewer": {
+      "mode": "subagent",
+      "description": "Multi-lens adversarial review specialist",
+      "temperature": 0.1,
+      "prompt": "{file:.opencode/agents/adversarial-reviewer.md}",
+      "tools": {
+        "write": true,
+        "edit": false,
+        "bash": false,
+        "read": true
+      },
+      "permission": {
+        "edit": "deny"
+      }
+    },
     "docs-executor": {
       "mode": "subagent",
       "description": "Documentation update specialist",
@@ -145,6 +218,18 @@
         "write": true,
         "edit": true,
         "bash": false
+      }
+    },
+    "handoff-writer": {
+      "mode": "subagent",
+      "description": "Handoff document writer",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/handoff-writer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false,
+        "read": true
       }
     },
     "build-error-resolver": {
@@ -186,12 +271,170 @@
         "edit": "deny",
         "write": "deny"
       }
+    },
+    "planner": {
+      "mode": "subagent",
+      "description": "Implementation planning specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/planner.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "rust-developer": {
+      "mode": "subagent",
+      "description": "Rust systems programming specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/rust-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "golang-developer": {
+      "mode": "subagent",
+      "description": "Go backend development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/golang-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "frontend-developer": {
+      "mode": "subagent",
+      "description": "React/Next.js/TypeScript development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/frontend-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "backend-developer": {
+      "mode": "subagent",
+      "description": "Node.js/Python backend development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/backend-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "ios-developer": {
+      "mode": "subagent",
+      "description": "Swift/SwiftUI iOS development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/ios-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "android-developer": {
+      "mode": "subagent",
+      "description": "Kotlin/Jetpack Compose Android development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/android-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "macos-app-developer": {
+      "mode": "subagent",
+      "description": "Swift/SwiftUI/AppKit macOS development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/macos-app-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "windows-app-developer": {
+      "mode": "subagent",
+      "description": "C#/.NET/WinUI Windows development specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/windows-app-developer.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "e2e-runner": {
+      "mode": "subagent",
+      "description": "Playwright E2E testing specialist",
+      "temperature": 0.2,
+      "prompt": "{file:.opencode/agents/e2e-runner.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "search-agent": {
+      "mode": "subagent",
+      "description": "Multi-source search specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/search-agent.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "webfetch": true
+      }
+    },
+    "investigator": {
+      "mode": "subagent",
+      "description": "Deep investigation specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/investigator.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "webfetch": true
+      }
+    },
+    "doc-updater": {
+      "mode": "subagent",
+      "description": "Documentation update specialist",
+      "temperature": 0.3,
+      "prompt": "{file:.opencode/agents/doc-updater.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false,
+        "read": true
+      }
     }
   },
   "command": {
     "plan": {
       "description": "Create implementation plan with planner agent",
-      "agent": "coordinator",
+      "agent": "team-lead",
       "template": "{file:.opencode/commands/plan.md}"
     },
     "code-review": {
@@ -199,15 +442,25 @@
       "agent": "code-reviewer",
       "template": "{file:.opencode/commands/code-review.md}"
     },
+    "adversarial-review": {
+      "description": "Multi-lens adversarial review",
+      "agent": "adversarial-reviewer",
+      "template": "{file:.opencode/commands/adversarial-review.md}"
+    },
     "tdd": {
       "description": "Run Test-Driven Development workflow",
-      "agent": "dev-executor",
+      "agent": "tdd-guide",
       "template": "{file:.opencode/commands/tdd.md}"
     },
     "e2e": {
       "description": "Generate and run E2E tests with Playwright",
-      "agent": "qa-agent",
+      "agent": "e2e-runner",
       "template": "{file:.opencode/commands/e2e.md}"
+    },
+    "test-coverage": {
+      "description": "Analyze test coverage and generate missing tests",
+      "agent": "qa-agent",
+      "template": "{file:.opencode/commands/test-coverage.md}"
     },
     "build-fix": {
       "description": "Fix build and type errors",
@@ -223,6 +476,11 @@
       "description": "Update project documentation",
       "agent": "docs-executor",
       "template": "{file:.opencode/commands/update-docs.md}"
+    },
+    "documentation": {
+      "description": "Full documentation update after code review",
+      "agent": "docs-executor",
+      "template": "{file:.opencode/commands/documentation.md}"
     },
     "research": {
       "description": "Conduct multi-source research",
@@ -243,11 +501,46 @@
       "description": "Debug analysis and root cause identification",
       "agent": "debug-analyzer",
       "template": "{file:.opencode/commands/debug.md}"
+    },
+    "architecture-design": {
+      "description": "Design architecture with ADRs",
+      "agent": "architecture-agent",
+      "template": "{file:.opencode/commands/architecture-design.md}"
+    },
+    "ui-ux-design": {
+      "description": "Create UI/UX design specifications",
+      "agent": "ui-ux-designer",
+      "template": "{file:.opencode/commands/ui-ux-design.md}"
+    },
+    "execute": {
+      "description": "Execute dev + QA in parallel",
+      "agent": "team-lead",
+      "template": "{file:.opencode/commands/execute.md}"
+    },
+    "golang": {
+      "description": "Go development specialist",
+      "agent": "golang-developer",
+      "template": "{file:.opencode/commands/golang.md}"
+    },
+    "learn": {
+      "description": "Extract patterns from current session",
+      "agent": "team-lead",
+      "template": "{file:.opencode/commands/learn.md}"
+    },
+    "update-codemaps": {
+      "description": "Analyze and update architecture documentation",
+      "agent": "team-lead",
+      "template": "{file:.opencode/commands/update-codemaps.md}"
+    },
+    "usage-report": {
+      "description": "View skill and agent usage statistics",
+      "agent": "team-lead",
+      "template": "{file:.opencode/commands/usage-report.md}"
     }
   },
   "skill": {
     "super-dev": {
-      "description": "Coordinator-driven development workflow",
+      "description": "Team Lead-driven development workflow",
       "file": "SKILL.md"
     }
   }

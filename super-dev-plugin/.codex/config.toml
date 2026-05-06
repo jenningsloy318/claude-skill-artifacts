@@ -1,0 +1,142 @@
+# Super Dev Agent Skill - Codex Configuration
+# Team-based development system with specialized agent teammates
+
+[agents.team-lead]
+description = "Team Lead Agent for orchestrating agent team development workflow"
+config_file = "./agents/team-lead.toml"
+
+[agents.requirements-clarifier]
+description = "Gather and document complete requirements"
+config_file = "./agents/requirements-clarifier.toml"
+
+[agents.research-agent]
+description = "Conduct comprehensive research on best practices and patterns"
+config_file = "./agents/research-agent.toml"
+
+[agents.debug-analyzer]
+description = "Systematic root-cause debugging with evidence collection"
+config_file = "./agents/debug-analyzer.toml"
+
+[agents.code-assessor]
+description = "Specification-aware code assessment of architecture and patterns"
+config_file = "./agents/code-assessor.toml"
+
+[agents.architecture-agent]
+description = "Architecture design with module decomposition and ADRs"
+config_file = "./agents/architecture-agent.toml"
+
+[agents.ui-ux-designer]
+description = "UI/UX design specifications with wireframes and tokens"
+config_file = "./agents/ui-ux-designer.toml"
+
+[agents.product-designer]
+description = "Orchestrate architecture + UI/UX for holistic design"
+config_file = "./agents/product-designer.toml"
+
+[agents.spec-writer]
+description = "Write technical specifications, implementation plans, and task lists"
+config_file = "./agents/spec-writer.toml"
+
+[agents.spec-reviewer]
+description = "Multi-dimensional specification review across 8 quality dimensions"
+config_file = "./agents/spec-reviewer.toml"
+
+[agents.dev-executor]
+description = "Fallback development executor for implementing code changes"
+config_file = "./agents/dev-executor.toml"
+
+[agents.qa-agent]
+description = "QA verification with test execution and coverage validation"
+config_file = "./agents/qa-agent.toml"
+
+[agents.code-reviewer]
+description = "Specification-first code reviews for correctness and security"
+config_file = "./agents/code-reviewer.toml"
+
+[agents.adversarial-reviewer]
+description = "Multi-lens adversarial challenge (Skeptic, Architect, Minimalist)"
+config_file = "./agents/adversarial-reviewer.toml"
+
+[agents.docs-executor]
+description = "Documentation updates after code review completion"
+config_file = "./agents/docs-executor.toml"
+
+[agents.handoff-writer]
+description = "Generate structured session handoff documents"
+config_file = "./agents/handoff-writer.toml"
+
+[agents.doc-validator]
+description = "Independent document validator using gate scripts"
+config_file = "./agents/doc-validator.toml"
+
+[agents.doc-updater]
+description = "Documentation and codemap specialist"
+config_file = "./agents/doc-updater.toml"
+
+[agents.bdd-scenario-writer]
+description = "Write BDD behavior scenarios from acceptance criteria"
+config_file = "./agents/bdd-scenario-writer.toml"
+
+[agents.planner]
+description = "Expert planning specialist for complex features and refactoring"
+config_file = "./agents/planner.toml"
+
+[agents.tdd-guide]
+description = "Test-Driven Development specialist enforcing write-tests-first"
+config_file = "./agents/tdd-guide.toml"
+
+[agents.security-reviewer]
+description = "Security vulnerability detection and remediation specialist"
+config_file = "./agents/security-reviewer.toml"
+
+[agents.build-error-resolver]
+description = "Build and TypeScript error resolution specialist"
+config_file = "./agents/build-error-resolver.toml"
+
+[agents.refactor-cleaner]
+description = "Dead code cleanup and consolidation specialist"
+config_file = "./agents/refactor-cleaner.toml"
+
+[agents.e2e-runner]
+description = "End-to-end testing specialist using Playwright"
+config_file = "./agents/e2e-runner.toml"
+
+[agents.search-agent]
+description = "Intelligent multi-source search with query expansion and re-ranking"
+config_file = "./agents/search-agent.toml"
+
+[agents.investigator]
+description = "Systematic root-cause investigation for mid-development unknowns"
+config_file = "./agents/investigator.toml"
+
+[agents.rust-developer]
+description = "Rust engineer enforcing Edition 2024, async traits, Axum 0.8"
+config_file = "./agents/rust-developer.toml"
+
+[agents.golang-developer]
+description = "Go engineer enforcing modern Go 1.24+ best practices"
+config_file = "./agents/golang-developer.toml"
+
+[agents.frontend-developer]
+description = "Frontend engineer with React 19, Next.js 16, TypeScript 6.0"
+config_file = "./agents/frontend-developer.toml"
+
+[agents.backend-developer]
+description = "Backend engineer with Node.js 22/TypeScript 6.0 and Python 3.14"
+config_file = "./agents/backend-developer.toml"
+
+[agents.android-developer]
+description = "Android engineer with Kotlin 2.x, Jetpack Compose, Navigation 3"
+config_file = "./agents/android-developer.toml"
+
+[agents.ios-developer]
+description = "iOS engineer enforcing Swift 6.x with strict concurrency and SwiftUI"
+config_file = "./agents/ios-developer.toml"
+
+[agents.macos-app-developer]
+description = "macOS engineer with Swift 6.x/SwiftUI and Liquid Glass design"
+config_file = "./agents/macos-app-developer.toml"
+
+[agents.windows-app-developer]
+description = "Windows engineer with .NET 10/C# 14/WinUI 3"
+config_file = "./agents/windows-app-developer.toml"

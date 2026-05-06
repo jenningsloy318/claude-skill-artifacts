@@ -1,21 +1,27 @@
 ---
-description: Perform code review for quality and best practices
-agent: code-reviewer
+name: code-review
+description: Perform specification-aware code review focused on correctness, security, performance, and maintainability
 ---
 
-Review the current code changes for:
-1. Code quality and best practices
-2. Potential bugs and edge cases
-3. Performance implications
-4. Security considerations
+<purpose>Activate the code-reviewer agent to review code against specification. Assess correctness, security, performance, and maintainability. Runs in parallel with adversarial review in Stage 10.</purpose>
 
-Focus on specification compliance and provide constructive feedback.
+<usage>/super-dev:code-review [code changes context]</usage>
 
-Check:
-- Specification compliance
-- Code correctness
-- Security issues
-- Performance issues
-- Maintainability
+<reference name="Review Focus Areas">
+  Correctness: Logic matches specifications, edge cases handled, error handling comprehensive, data flow correct. Security: No hardcoded secrets, proper input validation, auth checks, injection prevention. Performance: Efficient algorithms, no unnecessary queries, proper caching, resource optimization. Maintainability: Follows project patterns, readable code, adequate comments, modular components.
+</reference>
 
-Generate a code review report with severity classifications (Critical/High/Medium/Low).
+<arguments>
+  Context of changes made, specification references, specific areas of concern.
+</arguments>
+
+<output>
+  <format>Review report with: overall verdict (Approved/Needs Changes/Blocked), findings by severity (Critical/High/Medium/Low), line references and suggestions, acceptance criteria status.</format>
+</output>
+
+<constraints>
+  <constraint>Specification-aware review using requirements and design docs</constraint>
+  <constraint>Runs in parallel with adversarial review in Stage 10</constraint>
+  <constraint>Iterative: loops back to execution if blocking issues found</constraint>
+  <constraint>Proceed only when both code review approved AND adversarial review PASS</constraint>
+</constraints>

@@ -1,38 +1,26 @@
 ---
-description: Debug analysis and root cause identification
-agent: debug-analyzer
+name: debug-analysis
+description: Perform systematic root cause analysis for bugs and errors
 ---
 
-Perform debug analysis:
+<purpose>Activate the debug-analyzer agent for systematic root cause analysis with evidence collection, pattern search, and reproducible steps.</purpose>
 
-1. Collect evidence (logs, errors, stack traces)
-2. Generate and test hypotheses
-3. Identify root cause
-4. Design solution
+<usage>/super-dev:debug-analysis [bug description or error details]</usage>
 
-Debug methodology:
-- Evidence collection
-- Pattern recognition
-- Hypothesis generation
-- Hypothesis testing
-- Solution design
+<process name="Analysis Process">
+  Evidence Collection: Parse error messages and stack traces, identify affected components, collect logs. Pattern Search: Search for similar error patterns (grep/ast-grep), find related code, identify recent changes. Root Cause Analysis: Trace execution flow, identify failure points, analyze data flow, check edge cases. Reproduction: Document exact steps, note required conditions, create test scenarios.
+</process>
 
-Analysis techniques:
-- Log analysis
-- Code review
-- Error pattern matching
-- Environment checks
+<arguments>
+  Error messages or stack traces, description of unexpected behavior, steps already attempted, context about when the issue occurs.
+</arguments>
 
-Output: Create debug analysis report in specification/[index]-debug-analysis.md
+<output>
+  <format>Debug analysis report (`[doc-index]-debug-analysis.md`) with: issue summary, evidence, root cause analysis, reproduction steps, proposed solutions, related findings.</format>
+</output>
 
-Include:
-- Bug description
-- Environment details
-- Reproduction steps
-- Evidence collected
-- Hypotheses tested
-- Root cause identified
-- Solution design
-- Prevention recommendations
-
-For bug: $ARGUMENTS
+<constraints>
+  <constraint>Only used for bugs and errors (skip for new features)</constraint>
+  <constraint>Requires clear error description or logs</constraint>
+  <constraint>Produces actionable fix recommendations</constraint>
+</constraints>

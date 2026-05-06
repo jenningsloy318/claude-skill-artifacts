@@ -1,0 +1,35 @@
+{
+  "name": "super-dev",
+  "displayName": "Super Dev",
+  "version": "1.0.0",
+  "description": "Team-lead-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
+  "shortDescription": "Orchestrate specialized agents through research, architecture, coding, QA, and documentation phases",
+  "author": {
+    "name": "Jennings Liu",
+    "email": "jenningsloy318@gmail.com",
+    "url": "https://github.com/jenningsloy318"
+  },
+  "homepage": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
+  "repository": "https://github.com/jenningsloy318/super-skill-claude-artifacts",
+  "license": "MIT",
+  "keywords": [
+    "development",
+    "workflow",
+    "debugging",
+    "implementation",
+    "refactoring",
+    "specification",
+    "team-lead",
+    "parallel",
+    "agent-teams"
+  ],
+  "category": "development",
+  "capabilities": [
+    "orchestration",
+    "code-review",
+    "testing",
+    "documentation",
+    "architecture"
+  ],
+  "skills": "./skills/"
+}

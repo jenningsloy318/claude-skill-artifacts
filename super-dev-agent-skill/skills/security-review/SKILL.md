@@ -1,0 +1,36 @@
+---
+name: security-review
+description: Comprehensive security review skill for authentication, user input, secrets, API endpoints, and OWASP Top 10
+---
+
+<purpose>Provide comprehensive security checklist and patterns when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.</purpose>
+
+<triggers>Triggers on: adding authentication, handling user input, working with secrets, creating API endpoints, implementing payment/sensitive features</triggers>
+
+<workflow>
+  <step n="1" name="Automated Scan">Run npm audit, eslint-plugin-security, grep for hardcoded secrets, check exposed env vars.</step>
+  <step n="2" name="OWASP Top 10">Check each category — injection, broken auth, sensitive data exposure, XXE, broken access control, security misconfiguration, XSS, insecure deserialization, vulnerable components, insufficient logging.</step>
+  <step n="3" name="Domain-Specific Checks">Financial security (atomic transactions, balance checks, rate limiting), blockchain security (wallet signatures, private keys, slippage protection), authentication (JWT validation, session management), database (RLS, parameterized queries), API (auth required, input validation, CORS).</step>
+  <step n="4" name="Report">Findings by severity (Critical/High/Medium/Low) with: description, impact, proof of concept, remediation code, OWASP/CWE references.</step>
+</workflow>
+
+<constraints>
+  <constraint name="CRITICAL">No hardcoded secrets — use environment variables</constraint>
+  <constraint name="CRITICAL">Parameterized queries only — no string interpolation in SQL</constraint>
+  <constraint name="CRITICAL">No shell command injection — use libraries, not exec()</constraint>
+  <constraint name="CRITICAL">Hashed password comparison only — never plaintext</constraint>
+  <constraint name="CRITICAL">Authorization check on every protected route</constraint>
+  <constraint name="CRITICAL">Atomic transactions for financial operations with row locks</constraint>
+  <constraint name="HIGH">Rate limiting on all financial and auth endpoints</constraint>
+  <constraint name="HIGH">XSS prevention — never innerHTML with user input</constraint>
+  <constraint name="HIGH">SSRF prevention — validate URLs against domain allowlist</constraint>
+  <constraint name="MEDIUM">Sanitize logs — never log passwords, API keys, or full PII</constraint>
+</constraints>
+
+<principles>
+  <principle>Defense in depth — multiple layers of security</principle>
+  <principle>Least privilege — minimum permissions required</principle>
+  <principle>Fail securely — errors must not expose data</principle>
+  <principle>Don't trust input — validate and sanitize everything</principle>
+  <principle>Verify context before flagging — not every finding is a vulnerability</principle>
+</principles>
