@@ -23,8 +23,8 @@ fi
 scenario_count=$(grep -cE 'SCENARIO-[0-9]+' "$BDD_FILE" 2>/dev/null || true)
 check "Has SCENARIO-IDs (found: ${scenario_count})" "$([ "$scenario_count" -ge 1 ] && echo true || echo false)"
 
-# Check for Given/When/Then structure (supports plain and bold markdown: **Given**)
-gwt_count=$(grep -ciE '^\s*\*{0,2}(given|when|then|and)' "$BDD_FILE" 2>/dev/null || true)
+# Check for Given/When/Then structure (supports plain, bold markdown **Given**, and bullet-prefixed: - Given / * Given)
+gwt_count=$(grep -ciE '^\s*(-\s+|\*\s+)?\*{0,2}(given|when|then|and)' "$BDD_FILE" 2>/dev/null || true)
 check "Has Given/When/Then structure (found: ${gwt_count} keywords)" "$([ "$gwt_count" -ge 3 ] && echo true || echo false)"
 
 # Check for AC references (traceability)

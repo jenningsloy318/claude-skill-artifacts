@@ -65,6 +65,10 @@ function List({ items }: Props) {
   <gate>Performance: Lighthouse 90+, LCP 2.5s or less, INP 200ms or less, CLS 0.1 or less, JS bundle 200KB or less gzipped</gate>
 </quality-gates>
 
+<collaboration>
+  Runs as Step 9.2 in the sequential TDD workflow: tdd-guide (9.1) → frontend-developer (9.2) → qa-agent (9.3). Receives test files from Step 9.1 and makes them pass. After completing all assigned tasks for the current phase, create or update `{spec_directory}/{implementation_summary_filename}` documenting: tasks completed, files changed (created/modified/deleted), technical decisions with rationale, challenges encountered with solutions. Use template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md`. If the file already exists (from a prior phase), APPEND a new progress section — do NOT overwrite previous entries.
+</collaboration>
+
 <anti-patterns>
   <anti-pattern>Using `any` — use proper typing or `unknown`</anti-pattern>
   <anti-pattern>Mutating props/state — use immutable updates</anti-pattern>

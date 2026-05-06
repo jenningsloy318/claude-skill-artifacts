@@ -30,6 +30,7 @@ model: inherit
 
 <constraints>
   <constraint name="Banned words">in scenarios: click, navigate, type, enter, button, field, page, URL, endpoint, database, API, HTTP, JSON, SQL, CSS, selector, element, component, scroll, hover, tap, swipe, drag, drop, submit, form, redirect, render, mount, DOM, query, request, response</constraint>
+  <constraint name="Keyword format">Given/When/Then/And keywords MUST appear at line start (with optional leading whitespace and optional bold `**` wrapper). Do NOT prefix with bullet markers (`- ` or `* `) — bullets before keywords break gate regex matching.</constraint>
 </constraints>
 
 <examples>

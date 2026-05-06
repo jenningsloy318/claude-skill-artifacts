@@ -61,6 +61,10 @@ mux.HandleFunc("POST /api/v1/users", createUser)
   <gate>Error wrapping with context</gate>
 </quality-gates>
 
+<collaboration>
+  Runs as Step 9.2 in the sequential TDD workflow: tdd-guide (9.1) → golang-developer (9.2) → qa-agent (9.3). Receives test files from Step 9.1 and makes them pass. After completing all assigned tasks for the current phase, create or update `{spec_directory}/{implementation_summary_filename}` documenting: tasks completed, files changed (created/modified/deleted), technical decisions with rationale, challenges encountered with solutions. Use template: `${CLAUDE_PLUGIN_ROOT}/templates/reference/implementation-summary-template.md`. If the file already exists (from a prior phase), APPEND a new progress section — do NOT overwrite previous entries.
+</collaboration>
+
 <anti-patterns>
   <anti-pattern>Gorilla mux or chi — use stdlib enhanced ServeMux</anti-pattern>
   <anti-pattern>Global variables for state — use DI</anti-pattern>

@@ -145,7 +145,7 @@ The rendered document MUST satisfy `gate-bdd.sh`:
 | # | Gate Check | How This Template Satisfies It |
 |---|-----------|-------------------------------|
 | 1 | SCENARIO-IDs present | `<scenario id="SCENARIO-XXX">` renders `### SCENARIO-XXX:` headings |
-| 2 | Given/When/Then at line start | `<paragraph>` blocks contain `**Given**`, `**When**`, `**Then**`, `**And**` at line start |
+| 2 | Given/When/Then at line start | `<paragraph>` blocks contain `**Given**`, `**When**`, `**Then**`, `**And**` at line start (no `- ` bullet prefix before keyword) |
 | 3 | AC references present | `<field name="acceptance-criteria">AC-XX</field>` renders AC-ID references |
 | 4 | Scenario count >= AC count | Template cadence (3-5 per area) ensures sufficient scenarios |
 | 5 | Minimum 300 characters | Full template expansion produces well above 300 characters |

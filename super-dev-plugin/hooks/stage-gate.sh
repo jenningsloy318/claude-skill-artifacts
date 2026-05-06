@@ -109,13 +109,17 @@ if [ -n "$PREV_STAGES" ]; then
     while IFS= read -r prev_stage_id; do
       [ -z "$prev_stage_id" ] && continue
       # Look up the stage status in the tracking JSON (id can be number or float like 3.5)
+      # Supports both .stages[] (current format) and .phases[] (legacy format)
+      # jq select() returns empty output (exit 0) when no match — default to "pending"
       prev_status=$(jq -r --argjson sid "$prev_stage_id" \
-        '.stages[]? | select(.id == $sid) | .status // "pending"' \
-        "$TRACKING_FILE" 2>/dev/null || echo "pending")
+        '(.stages // .phases // [])[] | select(.id == $sid) | .status // "pending"' \
+        "$TRACKING_FILE" 2>/dev/null || true)
+      prev_status="${prev_status:-pending}"
       if [ "$prev_status" != "complete" ] && [ "$prev_status" != "skipped" ]; then
         prev_name=$(jq -r --argjson sid "$prev_stage_id" \
-          '.stages[]? | select(.id == $sid) | .name // "Unknown"' \
-          "$TRACKING_FILE" 2>/dev/null || echo "Unknown")
+          '(.stages // .phases // [])[] | select(.id == $sid) | .name // "Unknown"' \
+          "$TRACKING_FILE" 2>/dev/null || true)
+        prev_name="${prev_name:-Unknown}"
         BLOCKED_STAGES="${BLOCKED_STAGES}  - Stage ${prev_stage_id} (${prev_name}): status is '${prev_status}', expected 'complete' or 'skipped'\n"
       fi
     done <<< "$PREV_STAGES"
