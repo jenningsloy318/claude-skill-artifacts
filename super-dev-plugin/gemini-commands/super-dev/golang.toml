@@ -1,0 +1,18 @@
+prompt = """
+<purpose>Spawn the golang-developer agent for Go-specific tasks. Enforces Go 1.24+ features (iterators, enhanced ServeMux, os.Root), idiomatic patterns (functional options, interface design, error wrapping), quality gates (golangci-lint v2, 80%+ coverage), and performance best practices.</purpose>
+
+<usage>/super-dev:golang [task description]</usage>
+
+<constraints>
+  <constraint>Agent enforces Go 1.24+ features, idiomatic patterns, and quality gates</constraint>
+  <constraint>Runs golangci-lint v2 with modernize before declaring complete</constraint>
+</constraints>
+
+<examples>
+  <example>/super-dev:golang implement a REST API for user management with JWT auth</example>
+  <example>/super-dev:golang review this handler for idiomatic Go patterns</example>
+  <example>/super-dev:golang refactor the database layer to use repository pattern</example>
+</examples>
+
+User request: {{args}}
+"""

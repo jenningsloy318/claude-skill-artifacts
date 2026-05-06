@@ -1,0 +1,19 @@
+prompt = """
+<purpose>Activate dev-executor and qa-agent in PARALLEL for Stage 9 implementation. Dev-executor implements code according to specifications. QA-agent writes and runs tests. Build queue managed for Rust/Go projects.</purpose>
+
+<usage>/super-dev:execute [specification directory path]</usage>
+
+<process name="Parallel Execution">
+  Dev Executor: Reads task-list for tasks, implements features per specs, invokes specialist agents (rust-developer, frontend-developer, etc.), follows established patterns. QA Agent: Creates unit tests, writes integration tests, verifies build success, tests against requirements. Build Queue: Rust/Go projects: one build at a time via coordinator. JS/Python: concurrent.
+</process>
+
+<arguments>
+  Path to specification directory, any specific implementation focus areas.
+</arguments>
+
+<output>
+  <format>Implemented code files and test suites. Documentation updates handled separately in Stage 11.</format>
+</output>
+
+User request: {{args}}
+"""

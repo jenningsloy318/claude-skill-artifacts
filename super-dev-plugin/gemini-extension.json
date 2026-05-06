@@ -1,0 +1,6 @@
+{
+  "name": "super-dev",
+  "version": "1.0.0",
+  "description": "Team-lead-driven development workflow with parallel agent execution for implementing features, fixing bugs, and refactoring code",
+  "contextFileName": "GEMINI.md"
+}

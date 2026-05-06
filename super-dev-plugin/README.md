@@ -47,6 +47,27 @@ Alternatively, install agents manually:
 ./scripts/setup-codex-agents.sh --project
 ```
 
+### Gemini CLI
+
+```bash
+gemini extensions install jenningsloy318/claude-skill-artifacts
+```
+
+Or link locally for development:
+
+```bash
+cd super-dev-plugin
+gemini extensions link .
+```
+
+Then in Gemini CLI, use the commands:
+
+```
+/super-dev:plan implement user authentication
+/super-dev:research JWT best practices
+/super-dev:code-review
+```
+
 ## Overview
 
 This plugin provides a systematic development workflow orchestrated by a Coordinator Agent that:
@@ -130,7 +151,9 @@ super-dev-plugin/
 ├── .codex/                      # Codex agent definitions (TOML)
 │   ├── config.toml                 # Agent declarations
 │   └── agents/*.toml               # 35 agents in Codex TOML format
+├── gemini-extension.json        # Gemini CLI extension manifest
 ├── AGENTS.md                    # Codex project-level instructions
+├── GEMINI.md                    # Gemini CLI context instructions
 ├── agents/                    # Specialized agents (35 total, XML-tagged)
 │   ├── team-lead.md              # Central Team Lead Agent (super-dev unique)
 │   ├── dev-executor.md             # Development Executor
@@ -189,6 +212,9 @@ super-dev-plugin/
 │   ├── test-coverage.md
 │   ├── update-codemaps.md
 │   └── update-docs.md
+│
+├── gemini-commands/            # Gemini CLI commands (TOML format)
+│   └── super-dev/                # /super-dev:* namespace (20 commands)
 │
 ├── skills/                     # Skills (6 items, XML-tagged)
 │   # super-dev skills:
