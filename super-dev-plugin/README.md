@@ -15,6 +15,38 @@ v2.3.52 — Stage-Based Workflow with Implementation Completeness:
 
 *Inspired by: gstack (Garry Tan), Boris's Claude Code workflow, agentic engineering best practices 2026, @zodchiii's Claude Code hooks, and Anthropic's official skill design lessons.*
 
+## Installation
+
+### Claude Code
+
+```bash
+claude plugin add jenningsloy318/claude-skill-artifacts
+```
+
+Then enable the super-dev plugin in your project or globally.
+
+### OpenAI Codex
+
+```bash
+codex plugin marketplace add jenningsloy318/claude-skill-artifacts
+```
+
+Then inside Codex, enable the plugin:
+
+```
+/plugins enable super-dev
+```
+
+Alternatively, install agents manually:
+
+```bash
+# Global install (available in all Codex sessions)
+./scripts/setup-codex-agents.sh --global
+
+# Project-level install
+./scripts/setup-codex-agents.sh --project
+```
+
 ## Overview
 
 This plugin provides a systematic development workflow orchestrated by a Coordinator Agent that:
@@ -91,7 +123,15 @@ All instruction files (agents, commands, rules, contexts, skills, reference docs
 
 ```
 super-dev-plugin/
-├── agents/                    # Specialized agents (30 total, XML-tagged)
+├── .claude-plugin/              # Claude Code plugin manifest
+│   └── plugin.json
+├── .codex-plugin/               # OpenAI Codex plugin manifest
+│   └── plugin.json
+├── .codex/                      # Codex agent definitions (TOML)
+│   ├── config.toml                 # Agent declarations
+│   └── agents/*.toml               # 35 agents in Codex TOML format
+├── AGENTS.md                    # Codex project-level instructions
+├── agents/                    # Specialized agents (35 total, XML-tagged)
 │   ├── team-lead.md              # Central Team Lead Agent (super-dev unique)
 │   ├── dev-executor.md             # Development Executor
 │   ├── qa-executor.md              # QA Executor
